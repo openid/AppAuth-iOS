@@ -71,7 +71,7 @@ manually. Here we construct it manually by specifying the endpoints.
               authState.lastTokenResponse.accessToken);
         [self setAuthState:authState];
       } else {
-        NSLog("Authorization error: %@", [error localizedDescription]);
+        NSLog(@"Authorization error: %@", [error localizedDescription]);
         [self setAuthState:nil];
       }
     }];
