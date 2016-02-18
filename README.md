@@ -36,6 +36,7 @@ authorization state of the session.
 The OAuth configuration can be fetched via OpenID Connect discovery, or created
 manually. Here we construct it manually by specifying the endpoints.
 
+```objc
     // property of the app's AppDelegate
     @property(nonatomic, strong, nullable) id<OIDAuthorizationFlowSession> currentAuthorizationFlow;
 
@@ -74,6 +75,7 @@ manually. Here we construct it manually by specifying the endpoints.
         [self setAuthState:nil];
       }
     }];
+```
 
 ### Passing through the Authorization Grant
 
@@ -81,6 +83,7 @@ The authorization response URL is returned to the app via the iOS openURL
 app delegate method, so you need to pipe this through to the current
 authorization session (created in the previous session).
 
+```objc
     - (BOOL)application:(UIApplication *)app
                 openURL:(NSURL *)url
                 options:(NSDictionary<NSString *, id> *)options {
@@ -95,6 +98,7 @@ authorization session (created in the previous session).
 
       return NO;
     }
+```
 
 ### Making API Calls
 
@@ -103,7 +107,7 @@ recommend that users of the `OIDAuthState` convenience wrapper use the provided
 `withFreshTokensPerformAction:` method to perform their API calls to avoid
 needing to worry about token freshness.
 
-
+```objc
     [_authState withFreshTokensPerformAction:^(NSString *_Nonnull accessToken,
                                                NSString *_Nonnull idToken,
                                                NSError *_Nullable error) {
@@ -114,6 +118,7 @@ needing to worry about token freshness.
 
       // perform your API request using the tokens
     }];
+```
 
 ## Included Sample
 
