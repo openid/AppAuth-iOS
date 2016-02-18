@@ -1,0 +1,547 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		341741DB1C5D8243000EF209 /* OIDAuthorizationRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741B51C5D8243000EF209 /* OIDAuthorizationRequest.m */; };
+		341741DC1C5D8243000EF209 /* OIDAuthorizationResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741B71C5D8243000EF209 /* OIDAuthorizationResponse.m */; };
+		341741DD1C5D8243000EF209 /* OIDAuthorizationService.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741B91C5D8243000EF209 /* OIDAuthorizationService.m */; };
+		341741DE1C5D8243000EF209 /* OIDAuthState.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741BB1C5D8243000EF209 /* OIDAuthState.m */; };
+		341741DF1C5D8243000EF209 /* OIDError.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741C01C5D8243000EF209 /* OIDError.m */; };
+		341741E01C5D8243000EF209 /* OIDErrorUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741C21C5D8243000EF209 /* OIDErrorUtilities.m */; };
+		341741E11C5D8243000EF209 /* OIDFieldMapping.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741C41C5D8243000EF209 /* OIDFieldMapping.m */; };
+		341741E21C5D8243000EF209 /* OIDGrantTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741C61C5D8243000EF209 /* OIDGrantTypes.m */; };
+		341741E31C5D8243000EF209 /* OIDResponseTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741C81C5D8243000EF209 /* OIDResponseTypes.m */; };
+		341741E41C5D8243000EF209 /* OIDScopes.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741CA1C5D8243000EF209 /* OIDScopes.m */; };
+		341741E51C5D8243000EF209 /* OIDScopeUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741CC1C5D8243000EF209 /* OIDScopeUtilities.m */; };
+		341741E61C5D8243000EF209 /* OIDServiceConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741CE1C5D8243000EF209 /* OIDServiceConfiguration.m */; };
+		341741E71C5D8243000EF209 /* OIDServiceDiscovery.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741D01C5D8243000EF209 /* OIDServiceDiscovery.m */; };
+		341741E81C5D8243000EF209 /* OIDTokenRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741D21C5D8243000EF209 /* OIDTokenRequest.m */; };
+		341741E91C5D8243000EF209 /* OIDTokenResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741D41C5D8243000EF209 /* OIDTokenResponse.m */; };
+		341741EA1C5D8243000EF209 /* OIDTokenUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741D61C5D8243000EF209 /* OIDTokenUtilities.m */; };
+		341741EB1C5D8243000EF209 /* OIDURLQueryComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741D81C5D8243000EF209 /* OIDURLQueryComponent.m */; };
+		341741F51C5D8283000EF209 /* libAppAuth.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 340E737C1C5D819B0076B1F6 /* libAppAuth.a */; };
+		341742171C5D82D3000EF209 /* OIDAuthorizationRequestTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 341742011C5D82D3000EF209 /* OIDAuthorizationRequestTests.m */; };
+		341742181C5D82D3000EF209 /* OIDAuthorizationResponseTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 341742031C5D82D3000EF209 /* OIDAuthorizationResponseTests.m */; };
+		341742191C5D82D3000EF209 /* OIDAuthStateTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 341742051C5D82D3000EF209 /* OIDAuthStateTests.m */; };
+		3417421A1C5D82D3000EF209 /* OIDGrantTypesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 341742061C5D82D3000EF209 /* OIDGrantTypesTests.m */; };
+		3417421B1C5D82D3000EF209 /* OIDResponseTypesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 341742071C5D82D3000EF209 /* OIDResponseTypesTests.m */; };
+		3417421C1C5D82D3000EF209 /* OIDScopesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 341742081C5D82D3000EF209 /* OIDScopesTests.m */; };
+		3417421D1C5D82D3000EF209 /* OIDServiceConfigurationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3417420A1C5D82D3000EF209 /* OIDServiceConfigurationTests.m */; };
+		3417421E1C5D82D3000EF209 /* OIDServiceDiscoveryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3417420C1C5D82D3000EF209 /* OIDServiceDiscoveryTests.m */; };
+		3417421F1C5D82D3000EF209 /* OIDTokenRequestTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3417420E1C5D82D3000EF209 /* OIDTokenRequestTests.m */; };
+		341742201C5D82D3000EF209 /* OIDTokenResponseTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 341742101C5D82D3000EF209 /* OIDTokenResponseTests.m */; };
+		341742211C5D82D3000EF209 /* OIDURLQueryComponentTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 341742121C5D82D3000EF209 /* OIDURLQueryComponentTests.m */; };
+		341742221C5D82D3000EF209 /* OIDURLQueryComponentTestsIOS7.m in Sources */ = {isa = PBXBuildFile; fileRef = 341742131C5D82D3000EF209 /* OIDURLQueryComponentTestsIOS7.m */; };
+		341742241C5D8317000EF209 /* UnitTestsInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 341742231C5D8317000EF209 /* UnitTestsInfo.plist */; };
+		3417422B1C5D8502000EF209 /* SafariServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3417422A1C5D8502000EF209 /* SafariServices.framework */; };
+		3417422D1C5D850C000EF209 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3417422C1C5D850C000EF209 /* Security.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		341741F61C5D8283000EF209 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 340E73741C5D819B0076B1F6 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 340E737B1C5D819B0076B1F6;
+			remoteInfo = AppAuth;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		340E737A1C5D819B0076B1F6 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		340E737C1C5D819B0076B1F6 /* libAppAuth.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libAppAuth.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		341741AF1C5D8243000EF209 /* AppAuth.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppAuth.h; sourceTree = "<group>"; };
+		341741B41C5D8243000EF209 /* OIDAuthorizationRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OIDAuthorizationRequest.h; sourceTree = "<group>"; };
+		341741B51C5D8243000EF209 /* OIDAuthorizationRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OIDAuthorizationRequest.m; sourceTree = "<group>"; };
+		341741B61C5D8243000EF209 /* OIDAuthorizationResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OIDAuthorizationResponse.h; sourceTree = "<group>"; };
+		341741B71C5D8243000EF209 /* OIDAuthorizationResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OIDAuthorizationResponse.m; sourceTree = "<group>"; };
+		341741B81C5D8243000EF209 /* OIDAuthorizationService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OIDAuthorizationService.h; sourceTree = "<group>"; };
+		341741B91C5D8243000EF209 /* OIDAuthorizationService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OIDAuthorizationService.m; sourceTree = "<group>"; };
+		341741BA1C5D8243000EF209 /* OIDAuthState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OIDAuthState.h; sourceTree = "<group>"; };
+		341741BB1C5D8243000EF209 /* OIDAuthState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OIDAuthState.m; sourceTree = "<group>"; };
+		341741BC1C5D8243000EF209 /* OIDAuthStateChangeDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OIDAuthStateChangeDelegate.h; sourceTree = "<group>"; };
+		341741BD1C5D8243000EF209 /* OIDAuthStateErrorDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OIDAuthStateErrorDelegate.h; sourceTree = "<group>"; };
+		341741BE1C5D8243000EF209 /* OIDDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OIDDefines.h; sourceTree = "<group>"; };
+		341741BF1C5D8243000EF209 /* OIDError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OIDError.h; sourceTree = "<group>"; };
+		341741C01C5D8243000EF209 /* OIDError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OIDError.m; sourceTree = "<group>"; };
+		341741C11C5D8243000EF209 /* OIDErrorUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OIDErrorUtilities.h; sourceTree = "<group>"; };
+		341741C21C5D8243000EF209 /* OIDErrorUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OIDErrorUtilities.m; sourceTree = "<group>"; };
+		341741C31C5D8243000EF209 /* OIDFieldMapping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OIDFieldMapping.h; sourceTree = "<group>"; };
+		341741C41C5D8243000EF209 /* OIDFieldMapping.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OIDFieldMapping.m; sourceTree = "<group>"; };
+		341741C51C5D8243000EF209 /* OIDGrantTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OIDGrantTypes.h; sourceTree = "<group>"; };
+		341741C61C5D8243000EF209 /* OIDGrantTypes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OIDGrantTypes.m; sourceTree = "<group>"; };
+		341741C71C5D8243000EF209 /* OIDResponseTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OIDResponseTypes.h; sourceTree = "<group>"; };
+		341741C81C5D8243000EF209 /* OIDResponseTypes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OIDResponseTypes.m; sourceTree = "<group>"; };
+		341741C91C5D8243000EF209 /* OIDScopes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OIDScopes.h; sourceTree = "<group>"; };
+		341741CA1C5D8243000EF209 /* OIDScopes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OIDScopes.m; sourceTree = "<group>"; };
+		341741CB1C5D8243000EF209 /* OIDScopeUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OIDScopeUtilities.h; sourceTree = "<group>"; };
+		341741CC1C5D8243000EF209 /* OIDScopeUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OIDScopeUtilities.m; sourceTree = "<group>"; };
+		341741CD1C5D8243000EF209 /* OIDServiceConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OIDServiceConfiguration.h; sourceTree = "<group>"; };
+		341741CE1C5D8243000EF209 /* OIDServiceConfiguration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OIDServiceConfiguration.m; sourceTree = "<group>"; };
+		341741CF1C5D8243000EF209 /* OIDServiceDiscovery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OIDServiceDiscovery.h; sourceTree = "<group>"; };
+		341741D01C5D8243000EF209 /* OIDServiceDiscovery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OIDServiceDiscovery.m; sourceTree = "<group>"; };
+		341741D11C5D8243000EF209 /* OIDTokenRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OIDTokenRequest.h; sourceTree = "<group>"; };
+		341741D21C5D8243000EF209 /* OIDTokenRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OIDTokenRequest.m; sourceTree = "<group>"; };
+		341741D31C5D8243000EF209 /* OIDTokenResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OIDTokenResponse.h; sourceTree = "<group>"; };
+		341741D41C5D8243000EF209 /* OIDTokenResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OIDTokenResponse.m; sourceTree = "<group>"; };
+		341741D51C5D8243000EF209 /* OIDTokenUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OIDTokenUtilities.h; sourceTree = "<group>"; };
+		341741D61C5D8243000EF209 /* OIDTokenUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OIDTokenUtilities.m; sourceTree = "<group>"; };
+		341741D71C5D8243000EF209 /* OIDURLQueryComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OIDURLQueryComponent.h; sourceTree = "<group>"; };
+		341741D81C5D8243000EF209 /* OIDURLQueryComponent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OIDURLQueryComponent.m; sourceTree = "<group>"; };
+		341741F01C5D8283000EF209 /* AppAuthTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AppAuthTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		341742001C5D82D3000EF209 /* OIDAuthorizationRequestTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OIDAuthorizationRequestTests.h; sourceTree = "<group>"; };
+		341742011C5D82D3000EF209 /* OIDAuthorizationRequestTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OIDAuthorizationRequestTests.m; sourceTree = "<group>"; };
+		341742021C5D82D3000EF209 /* OIDAuthorizationResponseTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OIDAuthorizationResponseTests.h; sourceTree = "<group>"; };
+		341742031C5D82D3000EF209 /* OIDAuthorizationResponseTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OIDAuthorizationResponseTests.m; sourceTree = "<group>"; };
+		341742041C5D82D3000EF209 /* OIDAuthStateTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OIDAuthStateTests.h; sourceTree = "<group>"; };
+		341742051C5D82D3000EF209 /* OIDAuthStateTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OIDAuthStateTests.m; sourceTree = "<group>"; };
+		341742061C5D82D3000EF209 /* OIDGrantTypesTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OIDGrantTypesTests.m; sourceTree = "<group>"; };
+		341742071C5D82D3000EF209 /* OIDResponseTypesTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OIDResponseTypesTests.m; sourceTree = "<group>"; };
+		341742081C5D82D3000EF209 /* OIDScopesTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OIDScopesTests.m; sourceTree = "<group>"; };
+		341742091C5D82D3000EF209 /* OIDServiceConfigurationTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OIDServiceConfigurationTests.h; sourceTree = "<group>"; };
+		3417420A1C5D82D3000EF209 /* OIDServiceConfigurationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OIDServiceConfigurationTests.m; sourceTree = "<group>"; };
+		3417420B1C5D82D3000EF209 /* OIDServiceDiscoveryTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OIDServiceDiscoveryTests.h; sourceTree = "<group>"; };
+		3417420C1C5D82D3000EF209 /* OIDServiceDiscoveryTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OIDServiceDiscoveryTests.m; sourceTree = "<group>"; };
+		3417420D1C5D82D3000EF209 /* OIDTokenRequestTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OIDTokenRequestTests.h; sourceTree = "<group>"; };
+		3417420E1C5D82D3000EF209 /* OIDTokenRequestTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OIDTokenRequestTests.m; sourceTree = "<group>"; };
+		3417420F1C5D82D3000EF209 /* OIDTokenResponseTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OIDTokenResponseTests.h; sourceTree = "<group>"; };
+		341742101C5D82D3000EF209 /* OIDTokenResponseTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OIDTokenResponseTests.m; sourceTree = "<group>"; };
+		341742111C5D82D3000EF209 /* OIDURLQueryComponentTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OIDURLQueryComponentTests.h; sourceTree = "<group>"; };
+		341742121C5D82D3000EF209 /* OIDURLQueryComponentTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OIDURLQueryComponentTests.m; sourceTree = "<group>"; };
+		341742131C5D82D3000EF209 /* OIDURLQueryComponentTestsIOS7.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OIDURLQueryComponentTestsIOS7.m; sourceTree = "<group>"; };
+		341742231C5D8317000EF209 /* UnitTestsInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = UnitTestsInfo.plist; sourceTree = "<group>"; };
+		3417422A1C5D8502000EF209 /* SafariServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SafariServices.framework; path = System/Library/Frameworks/SafariServices.framework; sourceTree = SDKROOT; };
+		3417422C1C5D850C000EF209 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		340E73791C5D819B0076B1F6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		341741ED1C5D8283000EF209 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3417422D1C5D850C000EF209 /* Security.framework in Frameworks */,
+				3417422B1C5D8502000EF209 /* SafariServices.framework in Frameworks */,
+				341741F51C5D8283000EF209 /* libAppAuth.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		340E73731C5D819B0076B1F6 = {
+			isa = PBXGroup;
+			children = (
+				341742291C5D84D0000EF209 /* Frameworks */,
+				341741FB1C5D82D3000EF209 /* UnitTests */,
+				341741AE1C5D8243000EF209 /* Source */,
+				340E737D1C5D819B0076B1F6 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		340E737D1C5D819B0076B1F6 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				340E737C1C5D819B0076B1F6 /* libAppAuth.a */,
+				341741F01C5D8283000EF209 /* AppAuthTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		341741AE1C5D8243000EF209 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				341741AF1C5D8243000EF209 /* AppAuth.h */,
+				341741B41C5D8243000EF209 /* OIDAuthorizationRequest.h */,
+				341741B51C5D8243000EF209 /* OIDAuthorizationRequest.m */,
+				341741B61C5D8243000EF209 /* OIDAuthorizationResponse.h */,
+				341741B71C5D8243000EF209 /* OIDAuthorizationResponse.m */,
+				341741B81C5D8243000EF209 /* OIDAuthorizationService.h */,
+				341741B91C5D8243000EF209 /* OIDAuthorizationService.m */,
+				341741BA1C5D8243000EF209 /* OIDAuthState.h */,
+				341741BB1C5D8243000EF209 /* OIDAuthState.m */,
+				341741BC1C5D8243000EF209 /* OIDAuthStateChangeDelegate.h */,
+				341741BD1C5D8243000EF209 /* OIDAuthStateErrorDelegate.h */,
+				341741BE1C5D8243000EF209 /* OIDDefines.h */,
+				341741BF1C5D8243000EF209 /* OIDError.h */,
+				341741C01C5D8243000EF209 /* OIDError.m */,
+				341741C11C5D8243000EF209 /* OIDErrorUtilities.h */,
+				341741C21C5D8243000EF209 /* OIDErrorUtilities.m */,
+				341741C31C5D8243000EF209 /* OIDFieldMapping.h */,
+				341741C41C5D8243000EF209 /* OIDFieldMapping.m */,
+				341741C51C5D8243000EF209 /* OIDGrantTypes.h */,
+				341741C61C5D8243000EF209 /* OIDGrantTypes.m */,
+				341741C71C5D8243000EF209 /* OIDResponseTypes.h */,
+				341741C81C5D8243000EF209 /* OIDResponseTypes.m */,
+				341741C91C5D8243000EF209 /* OIDScopes.h */,
+				341741CA1C5D8243000EF209 /* OIDScopes.m */,
+				341741CB1C5D8243000EF209 /* OIDScopeUtilities.h */,
+				341741CC1C5D8243000EF209 /* OIDScopeUtilities.m */,
+				341741CD1C5D8243000EF209 /* OIDServiceConfiguration.h */,
+				341741CE1C5D8243000EF209 /* OIDServiceConfiguration.m */,
+				341741CF1C5D8243000EF209 /* OIDServiceDiscovery.h */,
+				341741D01C5D8243000EF209 /* OIDServiceDiscovery.m */,
+				341741D11C5D8243000EF209 /* OIDTokenRequest.h */,
+				341741D21C5D8243000EF209 /* OIDTokenRequest.m */,
+				341741D31C5D8243000EF209 /* OIDTokenResponse.h */,
+				341741D41C5D8243000EF209 /* OIDTokenResponse.m */,
+				341741D51C5D8243000EF209 /* OIDTokenUtilities.h */,
+				341741D61C5D8243000EF209 /* OIDTokenUtilities.m */,
+				341741D71C5D8243000EF209 /* OIDURLQueryComponent.h */,
+				341741D81C5D8243000EF209 /* OIDURLQueryComponent.m */,
+			);
+			path = Source;
+			sourceTree = "<group>";
+		};
+		341741FB1C5D82D3000EF209 /* UnitTests */ = {
+			isa = PBXGroup;
+			children = (
+				341742231C5D8317000EF209 /* UnitTestsInfo.plist */,
+				341742001C5D82D3000EF209 /* OIDAuthorizationRequestTests.h */,
+				341742011C5D82D3000EF209 /* OIDAuthorizationRequestTests.m */,
+				341742021C5D82D3000EF209 /* OIDAuthorizationResponseTests.h */,
+				341742031C5D82D3000EF209 /* OIDAuthorizationResponseTests.m */,
+				341742041C5D82D3000EF209 /* OIDAuthStateTests.h */,
+				341742051C5D82D3000EF209 /* OIDAuthStateTests.m */,
+				341742061C5D82D3000EF209 /* OIDGrantTypesTests.m */,
+				341742071C5D82D3000EF209 /* OIDResponseTypesTests.m */,
+				341742081C5D82D3000EF209 /* OIDScopesTests.m */,
+				341742091C5D82D3000EF209 /* OIDServiceConfigurationTests.h */,
+				3417420A1C5D82D3000EF209 /* OIDServiceConfigurationTests.m */,
+				3417420B1C5D82D3000EF209 /* OIDServiceDiscoveryTests.h */,
+				3417420C1C5D82D3000EF209 /* OIDServiceDiscoveryTests.m */,
+				3417420D1C5D82D3000EF209 /* OIDTokenRequestTests.h */,
+				3417420E1C5D82D3000EF209 /* OIDTokenRequestTests.m */,
+				3417420F1C5D82D3000EF209 /* OIDTokenResponseTests.h */,
+				341742101C5D82D3000EF209 /* OIDTokenResponseTests.m */,
+				341742111C5D82D3000EF209 /* OIDURLQueryComponentTests.h */,
+				341742121C5D82D3000EF209 /* OIDURLQueryComponentTests.m */,
+				341742131C5D82D3000EF209 /* OIDURLQueryComponentTestsIOS7.m */,
+			);
+			path = UnitTests;
+			sourceTree = "<group>";
+		};
+		341742291C5D84D0000EF209 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				3417422C1C5D850C000EF209 /* Security.framework */,
+				3417422A1C5D8502000EF209 /* SafariServices.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		340E737B1C5D819B0076B1F6 /* AppAuth */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 340E73851C5D819B0076B1F6 /* Build configuration list for PBXNativeTarget "AppAuth" */;
+			buildPhases = (
+				340E73781C5D819B0076B1F6 /* Sources */,
+				340E73791C5D819B0076B1F6 /* Frameworks */,
+				340E737A1C5D819B0076B1F6 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = AppAuth;
+			productName = AppAuth;
+			productReference = 340E737C1C5D819B0076B1F6 /* libAppAuth.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		341741EF1C5D8283000EF209 /* AppAuthTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 341741F81C5D8283000EF209 /* Build configuration list for PBXNativeTarget "AppAuthTests" */;
+			buildPhases = (
+				341741EC1C5D8283000EF209 /* Sources */,
+				341741ED1C5D8283000EF209 /* Frameworks */,
+				341741EE1C5D8283000EF209 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				341741F71C5D8283000EF209 /* PBXTargetDependency */,
+			);
+			name = AppAuthTests;
+			productName = AppAuthTests;
+			productReference = 341741F01C5D8283000EF209 /* AppAuthTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		340E73741C5D819B0076B1F6 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0720;
+				ORGANIZATIONNAME = "Google Inc";
+				TargetAttributes = {
+					340E737B1C5D819B0076B1F6 = {
+						CreatedOnToolsVersion = 7.2;
+					};
+					341741EF1C5D8283000EF209 = {
+						CreatedOnToolsVersion = 7.2;
+					};
+				};
+			};
+			buildConfigurationList = 340E73771C5D819B0076B1F6 /* Build configuration list for PBXProject "AppAuth" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 340E73731C5D819B0076B1F6;
+			productRefGroup = 340E737D1C5D819B0076B1F6 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				340E737B1C5D819B0076B1F6 /* AppAuth */,
+				341741EF1C5D8283000EF209 /* AppAuthTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		341741EE1C5D8283000EF209 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				341742241C5D8317000EF209 /* UnitTestsInfo.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		340E73781C5D819B0076B1F6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				341741E01C5D8243000EF209 /* OIDErrorUtilities.m in Sources */,
+				341741EA1C5D8243000EF209 /* OIDTokenUtilities.m in Sources */,
+				341741E21C5D8243000EF209 /* OIDGrantTypes.m in Sources */,
+				341741E81C5D8243000EF209 /* OIDTokenRequest.m in Sources */,
+				341741E91C5D8243000EF209 /* OIDTokenResponse.m in Sources */,
+				341741E51C5D8243000EF209 /* OIDScopeUtilities.m in Sources */,
+				341741DC1C5D8243000EF209 /* OIDAuthorizationResponse.m in Sources */,
+				341741E61C5D8243000EF209 /* OIDServiceConfiguration.m in Sources */,
+				341741DE1C5D8243000EF209 /* OIDAuthState.m in Sources */,
+				341741DD1C5D8243000EF209 /* OIDAuthorizationService.m in Sources */,
+				341741EB1C5D8243000EF209 /* OIDURLQueryComponent.m in Sources */,
+				341741E11C5D8243000EF209 /* OIDFieldMapping.m in Sources */,
+				341741DF1C5D8243000EF209 /* OIDError.m in Sources */,
+				341741DB1C5D8243000EF209 /* OIDAuthorizationRequest.m in Sources */,
+				341741E31C5D8243000EF209 /* OIDResponseTypes.m in Sources */,
+				341741E41C5D8243000EF209 /* OIDScopes.m in Sources */,
+				341741E71C5D8243000EF209 /* OIDServiceDiscovery.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		341741EC1C5D8283000EF209 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				341742211C5D82D3000EF209 /* OIDURLQueryComponentTests.m in Sources */,
+				341742201C5D82D3000EF209 /* OIDTokenResponseTests.m in Sources */,
+				341742221C5D82D3000EF209 /* OIDURLQueryComponentTestsIOS7.m in Sources */,
+				3417421E1C5D82D3000EF209 /* OIDServiceDiscoveryTests.m in Sources */,
+				3417421F1C5D82D3000EF209 /* OIDTokenRequestTests.m in Sources */,
+				341742181C5D82D3000EF209 /* OIDAuthorizationResponseTests.m in Sources */,
+				341742171C5D82D3000EF209 /* OIDAuthorizationRequestTests.m in Sources */,
+				3417421A1C5D82D3000EF209 /* OIDGrantTypesTests.m in Sources */,
+				3417421B1C5D82D3000EF209 /* OIDResponseTypesTests.m in Sources */,
+				341742191C5D82D3000EF209 /* OIDAuthStateTests.m in Sources */,
+				3417421D1C5D82D3000EF209 /* OIDServiceConfigurationTests.m in Sources */,
+				3417421C1C5D82D3000EF209 /* OIDScopesTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		341741F71C5D8283000EF209 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 340E737B1C5D819B0076B1F6 /* AppAuth */;
+			targetProxy = 341741F61C5D8283000EF209 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		340E73831C5D819B0076B1F6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		340E73841C5D819B0076B1F6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		340E73861C5D819B0076B1F6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		340E73871C5D819B0076B1F6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		341741F91C5D8283000EF209 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/";
+				INFOPLIST_FILE = UnitTests/UnitTestsInfo.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = net.openid.appauth.AppAuthTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		341741FA1C5D8283000EF209 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/";
+				INFOPLIST_FILE = UnitTests/UnitTestsInfo.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = net.openid.appauth.AppAuthTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		340E73771C5D819B0076B1F6 /* Build configuration list for PBXProject "AppAuth" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				340E73831C5D819B0076B1F6 /* Debug */,
+				340E73841C5D819B0076B1F6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		340E73851C5D819B0076B1F6 /* Build configuration list for PBXNativeTarget "AppAuth" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				340E73861C5D819B0076B1F6 /* Debug */,
+				340E73871C5D819B0076B1F6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		341741F81C5D8283000EF209 /* Build configuration list for PBXNativeTarget "AppAuthTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				341741F91C5D8283000EF209 /* Debug */,
+				341741FA1C5D8283000EF209 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 340E73741C5D819B0076B1F6 /* Project object */;
+}
