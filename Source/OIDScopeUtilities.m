@@ -39,12 +39,14 @@
 }
 
 + (NSString *)scopesWithArray:(NSArray<NSString *> *)scopes {
+#if !defined(NS_BLOCK_ASSERTIONS)
   NSCharacterSet *disallowedCharacters = [self disallowedScopeCharacters];
   for (NSString *scope in scopes) {
     NSAssert(scope.length, @"Found illegal empty scope string.");
     NSAssert([scope rangeOfCharacterFromSet:disallowedCharacters].location == NSNotFound,
              @"Found illegal character in scope string.");
   }
+#endif // !defined(NS_BLOCK_ASSERTIONS)
 
   NSString *scopeString = [scopes componentsJoinedByString:@" "];
   return scopeString;
