@@ -37,14 +37,14 @@ static NSString *const kIssuer = @"https://accounts.google.com";
 static NSString *const kClientID =
     @"YOUR_CLIENT.apps.googleusercontent.com";
 
-/*! @var KRedirectURI
+/*! @var kRedirectURI
     @brief The OAuth redirect URI for the client @c kClientID.
     @discussion With Google, the scheme of the redirect URI is the reverse DNS notation of the
         client id. This scheme must be registered as a scheme in the project's Info
         property list ("CFBundleURLTypes" plist key). Any path component will work, we use
         'oauthredirect' here to help disambiguate from any other use of this scheme.
  */
-static NSString *const KRedirectURI =
+static NSString *const kRedirectURI =
     @"com.googleusercontent.apps.YOUR_CLIENT:/oauthredirect";
 
 /*! @var kAppAuthExampleAuthStateKey
@@ -61,9 +61,27 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
 - (void)viewDidLoad {
   [super viewDidLoad];
 
+#if !defined(NS_BLOCK_ASSERTIONS)
+  // verifies that the client ID and redirect URI have been supplied
   NSAssert(![kClientID isEqualToString:@"YOUR_CLIENT.apps.googleusercontent.com"],
            @"Please follow the instructions in the Example/README.md to create your own OAuth "
             "client credentials and configure this example with them.");
+  NSAssert(![kRedirectURI isEqualToString:@"com.googleusercontent.apps.YOUR_CLIENT:/oauthredirect"],
+           @"Please follow the instructions in the Example/README.md to create your own OAuth "
+            "client credentials and configure this example with them.");
+
+  // verifies that the custom URI scheme has been updated in the Info.plist
+  NSArray __unused* urlTypes =
+      [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleURLTypes"];
+  NSAssert([urlTypes count] > 0, @"No custom URI scheme has been configured for the project.");
+  NSArray *urlSchemes =
+      [(NSDictionary *)[urlTypes objectAtIndex:0] objectForKey:@"CFBundleURLSchemes"];
+  NSAssert([urlSchemes count] > 0, @"No custom URI scheme has been configured for the project.");
+  NSString *urlScheme = [urlSchemes objectAtIndex:0];
+  NSAssert(![urlScheme isEqualToString:@"com.googleusercontent.apps.YOUR_CLIENT"],
+           @"Configure your URI scheme in the Info.plist, per the instructions in the "
+            "Example/README.md.");
+#endif // !defined(NS_BLOCK_ASSERTIONS)
 
   _logTextView.layer.borderColor = [UIColor colorWithWhite:0.8 alpha:1.0].CGColor;
   _logTextView.layer.borderWidth = 1.0f;
@@ -144,7 +162,7 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
 
 - (IBAction)authWithAutoCodeExchange:(nullable id)sender {
   NSURL *issuer = [NSURL URLWithString:kIssuer];
-  NSURL *redirectURI = [NSURL URLWithString:KRedirectURI];
+  NSURL *redirectURI = [NSURL URLWithString:kRedirectURI];
 
   [self logMessage:@"Fetching configuration for issuer: %@", issuer];
 
@@ -191,7 +209,7 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
 
 - (IBAction)authNoCodeExchange:(nullable id)sender {
   NSURL *issuer = [NSURL URLWithString:kIssuer];
-  NSURL *redirectURI = [NSURL URLWithString:KRedirectURI];
+  NSURL *redirectURI = [NSURL URLWithString:kRedirectURI];
 
   [self logMessage:@"Fetching configuration for issuer: %@", issuer];
 
