@@ -125,6 +125,12 @@ typedef NS_ENUM(NSInteger, OIDErrorCode) {
       @brief Indicates a problem occurred constructing the token response from the JSON.
    */
   OIDErrorCodeTokenResponseConstructionError = -8,
+
+  /*! @var OIDErrorCodeSafariOpenError
+      @brief @c UIApplication.openURL: returned NO when attempting to open the authorization
+          request in mobile Safari.
+   */
+  OIDErrorCodeSafariOpenError = -9,
 };
 
 /*! @enum OIDErrorCodeOAuth

@@ -52,7 +52,7 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 @implementation OIDAuthorizationFlowSessionImplementation {
-  __weak SFSafariViewController *_safari;
+  __weak SFSafariViewController *_safariVC;
   OIDAuthorizationRequest *_request;
   OIDAuthorizationCallback _pendingauthorizationFlowCallback;
 }
@@ -67,18 +67,28 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)presentSafariViewControllerWithViewController:(UIViewController *)parentViewController
     callback:(OIDAuthorizationCallback)authorizationFlowCallback {
-  NSURL *URL = [_request authorizationRequestURL];
-  SFSafariViewController *safari = [[SFSafariViewController alloc] initWithURL:URL
-                                                       entersReaderIfAvailable:NO];
-  safari.delegate = self;
-  _safari = safari;
   _pendingauthorizationFlowCallback = authorizationFlowCallback;
-  [parentViewController presentViewController:safari animated:YES completion:nil];
+  NSURL *URL = [_request authorizationRequestURL];
+  if ([SFSafariViewController class]) {
+    SFSafariViewController *safariVC = [[SFSafariViewController alloc] initWithURL:URL
+                                                           entersReaderIfAvailable:NO];
+    safariVC.delegate = self;
+    _safariVC = safariVC;
+    [parentViewController presentViewController:safariVC animated:YES completion:nil];
+  } else {
+    BOOL openedSafari = [[UIApplication sharedApplication] openURL:URL];
+    if (!openedSafari) {
+      NSError *safariError = [OIDErrorUtilities errorWithCode:OIDErrorCodeSafariOpenError
+                                              underlyingError:nil
+                                                  description:@"Unable to open Safari."];
+      [self didFinishWithResponse:nil error:safariError];
+    }
+  }
 }
 
 - (void)cancel {
-  SFSafariViewController *safari = _safari;
-  _safari = nil;
+  SFSafariViewController *safari = _safariVC;
+  _safariVC = nil;
   [safari dismissViewControllerAnimated:YES completion:^{
     NSError *error = [OIDErrorUtilities errorWithCode:OIDErrorCodeUserCanceledAuthorizationFlow
                                       underlyingError:nil
@@ -143,11 +153,15 @@ NS_ASSUME_NONNULL_BEGIN
                             userInfo:userInfo];
   }
 
-  SFSafariViewController *safari = _safari;
-  _safari = nil;
-  [safari dismissViewControllerAnimated:YES completion:^{
+  if (_safariVC) {
+    SFSafariViewController *safari = _safariVC;
+    _safariVC = nil;
+    [safari dismissViewControllerAnimated:YES completion:^{
+      [self didFinishWithResponse:response error:error];
+    }];
+  } else {
     [self didFinishWithResponse:response error:error];
-  }];
+  }
 
   return YES;
 }
@@ -167,7 +181,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)didFinishWithResponse:(nullable OIDAuthorizationResponse *)response
                         error:(nullable NSError *)error {
   OIDAuthorizationCallback callback = _pendingauthorizationFlowCallback;
-  _safari = nil;
+  _safariVC = nil;
   _pendingauthorizationFlowCallback = nil;
 
   if (callback) {

@@ -25,6 +25,13 @@
 			remoteGlobalIDString = 1DD70E292248C19F00000000;
 			remoteInfo = AppAuth;
 		};
+		34B7AB711C76B364005600D4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 341563F21C48767F00ECA3D9 /* AppAuth.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 341741F01C5D8283000EF209;
+			remoteInfo = AppAuthTests;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -59,6 +66,7 @@
 			isa = PBXGroup;
 			children = (
 				341563F71C48767F00ECA3D9 /* libAppAuth.a */,
+				34B7AB721C76B364005600D4 /* AppAuthTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -75,7 +83,7 @@
 			isa = PBXGroup;
 			children = (
 				341563F21C48767F00ECA3D9 /* AppAuth.xcodeproj */,
-				346E916B1C29D42800D3620B /* Example */,
+				346E916B1C29D42800D3620B /* Source */,
 				341564001C487ABA00ECA3D9 /* Frameworks */,
 				346E916A1C29D42800D3620B /* Products */,
 			);
@@ -89,7 +97,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		346E916B1C29D42800D3620B /* Example */ = {
+		346E916B1C29D42800D3620B /* Source */ = {
 			isa = PBXGroup;
 			children = (
 				346E916D1C29D42800D3620B /* main.m */,
@@ -169,6 +177,13 @@
 			fileType = archive.ar;
 			path = libAppAuth.a;
 			remoteRef = 341563F61C48767F00ECA3D9 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		34B7AB721C76B364005600D4 /* AppAuthTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = AppAuthTests.xctest;
+			remoteRef = 34B7AB711C76B364005600D4 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -308,6 +323,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = Source/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = net.openid.appauth.Example;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -319,6 +335,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = Source/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = net.openid.appauth.Example;
 				PRODUCT_NAME = "$(TARGET_NAME)";
