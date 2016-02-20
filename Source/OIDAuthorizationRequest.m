@@ -88,12 +88,7 @@ static NSUInteger const kStateSizeBytes = 32;
  */
 static NSUInteger const kCodeVerifierBytes = 32;
 
-/*! @var kPKCEChallengeMethodS256
-    @brief The code_challenge_method used by this library (always S256 since iOS is capable of
-        generating a SHA256 hash easily).
-    @see https://tools.ietf.org/html/rfc7636#section-4.3
- */
-static NSString *const kPKCEChallengeMethodS256 = @"S256";
+NSString *const OIDOAuthorizationRequestCodeChallengeMethodS256 = @"S256";
 
 @implementation OIDAuthorizationRequest
 
@@ -101,11 +96,9 @@ static NSString *const kPKCEChallengeMethodS256 = @"S256";
     OID_UNAVAILABLE_USE_INITIALIZER(
         @selector(initWithConfiguration:
                                clientId:
-                                  scope:
+                                 scopes:
                             redirectURL:
                            responseType:
-                                  state:
-                           codeVerifier:
                    additionalParameters:)
     );
 
@@ -116,7 +109,10 @@ static NSString *const kPKCEChallengeMethodS256 = @"S256";
             responseType:(NSString *)responseType
                    state:(nullable NSString *)state
             codeVerifier:(nullable NSString *)codeVerifier
-    additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters {
+           codeChallenge:(nullable NSString *)codeChallenge
+     codeChallengeMethod:(nullable NSString *)codeChallengeMethod
+    additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters
+{
   self = [super init];
   if (self) {
     _configuration = [configuration copy];
@@ -126,6 +122,9 @@ static NSString *const kPKCEChallengeMethodS256 = @"S256";
     _responseType = [responseType copy];
     _state = [state copy];
     _codeVerifier = [codeVerifier copy];
+    _codeChallenge = [codeChallenge copy];
+    _codeChallengeMethod = [codeChallengeMethod copy];
+
     _additionalParameters =
         [[NSDictionary alloc] initWithDictionary:additionalParameters copyItems:YES];
   }
@@ -138,13 +137,20 @@ static NSString *const kPKCEChallengeMethodS256 = @"S256";
              redirectURL:(NSURL *)redirectURL
             responseType:(NSString *)responseType
     additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters {
+
+  // generates PKCE code verifier and challenge
+  NSString *codeVerifier = [[self class] generateCodeVerifier];
+  NSString *codeChallenge = [[self class] codeChallengeS256ForVerifier:codeVerifier];
+
   return [self initWithConfiguration:configuration
                             clientId:clientID
                                scope:[OIDScopeUtilities scopesWithArray:scopes]
                          redirectURL:redirectURL
                         responseType:responseType
                                state:[[self class] generateState]
-                        codeVerifier:[[self class] generateCodeVerifier]
+                        codeVerifier:codeVerifier
+                       codeChallenge:codeChallenge
+                 codeChallengeMethod:OIDOAuthorizationRequestCodeChallengeMethodS256
                 additionalParameters:additionalParameters];
 }
 
@@ -174,6 +180,10 @@ static NSString *const kPKCEChallengeMethodS256 = @"S256";
   NSURL *redirectURL = [aDecoder decodeObjectOfClass:[NSURL class] forKey:kRedirectURLKey];
   NSString *state = [aDecoder decodeObjectOfClass:[NSString class] forKey:kStateKey];
   NSString *codeVerifier = [aDecoder decodeObjectOfClass:[NSString class] forKey:kCodeVerifierKey];
+  NSString *codeChallenge =
+      [aDecoder decodeObjectOfClass:[NSString class] forKey:kCodeChallengeKey];
+  NSString *codeChallengeMethod =
+      [aDecoder decodeObjectOfClass:[NSString class] forKey:kCodeChallengeMethodKey];
   NSSet *additionalParameterCodingClasses = [NSSet setWithArray:@[
     [NSDictionary class],
     [NSString class]
@@ -189,6 +199,8 @@ static NSString *const kPKCEChallengeMethodS256 = @"S256";
                         responseType:responseType
                                state:state
                         codeVerifier:codeVerifier
+                       codeChallenge:codeChallenge
+                 codeChallengeMethod:codeChallengeMethod
                 additionalParameters:additionalParameters];
   return self;
 }
@@ -201,6 +213,8 @@ static NSString *const kPKCEChallengeMethodS256 = @"S256";
   [aCoder encodeObject:_redirectURL forKey:kRedirectURLKey];
   [aCoder encodeObject:_state forKey:kStateKey];
   [aCoder encodeObject:_codeVerifier forKey:kCodeVerifierKey];
+  [aCoder encodeObject:_codeChallenge forKey:kCodeChallengeKey];
+  [aCoder encodeObject:_codeChallengeMethod forKey:kCodeChallengeMethodKey];
   [aCoder encodeObject:_additionalParameters forKey:kAdditionalParametersKey];
 }
 
@@ -213,36 +227,26 @@ static NSString *const kPKCEChallengeMethodS256 = @"S256";
                                     self.authorizationRequestURL];
 }
 
-#pragma mark - CodeVerifier/state Generation Methods
+#pragma mark - State and PKCE verifier/challenge generation Methods
 
-+ (NSString *)generateCodeVerifier {
++ (nullable NSString *)generateCodeVerifier {
   return [OIDTokenUtilities randomURLSafeStringWithSize:kCodeVerifierBytes];
 }
 
-+ (NSString *)generateState {
++ (nullable NSString *)generateState {
   return [OIDTokenUtilities randomURLSafeStringWithSize:kStateSizeBytes];
 }
 
-#pragma mark - PKCE params
-
-- (NSString *)codeChallenge {
-  if (!_codeVerifier) {
++ (nullable NSString *)codeChallengeS256ForVerifier:(NSString *)codeVerifier {
+  if (!codeVerifier) {
     return nil;
   }
   // generates the code_challenge per spec https://tools.ietf.org/html/rfc7636#section-4.2
   // code_challenge = BASE64URL-ENCODE(SHA256(ASCII(code_verifier)))
   // NB. the ASCII conversion on the code_verifier entropy was done at time of generation.
-  NSData *sha256Verifier = [OIDTokenUtilities sha265:_codeVerifier];
+  NSData *sha256Verifier = [OIDTokenUtilities sha265:codeVerifier];
   return [OIDTokenUtilities encodeBase64urlNoPadding:sha256Verifier];
 }
-
-- (NSString *)codeChallengeMethod {
-  if (!_codeVerifier) {
-    return nil;
-  }
-  return kPKCEChallengeMethodS256;
-}
-
 
 #pragma mark -
 
@@ -266,9 +270,11 @@ static NSString *const kPKCEChallengeMethodS256 = @"S256";
   if (_state) {
     [query addParameter:kStateKey value:_state];
   }
-  if (_codeVerifier) {
-    [query addParameter:kCodeChallengeKey value:self.codeChallenge];
-    [query addParameter:kCodeChallengeMethodKey value:self.codeChallengeMethod];
+  if (_codeChallenge) {
+    [query addParameter:kCodeChallengeKey value:_codeChallenge];
+  }
+  if (_codeChallengeMethod) {
+    [query addParameter:kCodeChallengeMethodKey value:_codeChallengeMethod];
   }
 
   // Construct the URL:
