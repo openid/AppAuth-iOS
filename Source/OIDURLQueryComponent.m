@@ -20,6 +20,13 @@
 
 BOOL gOIDURLQueryComponentForceIOS7Handling = NO;
 
+/*! @var kQueryStringParamAdditionalDisallowedCharacters
+    @brief String representing the set of characters that are valid for the URL query
+        (per @ NSCharacterSet.URLQueryAllowedCharacterSet), but are disallowed in URL query
+        parameters and values.
+ */
+static NSString *const kQueryStringParamAdditionalDisallowedCharacters = @"=&";
+
 @implementation OIDURLQueryComponent {
   /*! @var _parameters
       @brief A dictionary of parameter names and values representing the contents of the query.
@@ -38,7 +45,7 @@ BOOL gOIDURLQueryComponentForceIOS7Handling = NO;
 - (nullable instancetype)initWithURL:(NSURL *)URL {
   self = [self init];
   if (self) {
-    if (!gOIDURLQueryComponentForceIOS7Handling && NSClassFromString(@"NSURLQueryItem")) {
+    if (!gOIDURLQueryComponentForceIOS7Handling && [NSURLQueryItem class]) {
       // If NSURLQueryItem is available, use it for deconstructing the new URL. (iOS 8+)
       NSURLComponents *components =
           [NSURLComponents componentsWithURL:URL resolvingAgainstBaseURL:NO];
@@ -103,6 +110,11 @@ BOOL gOIDURLQueryComponentForceIOS7Handling = NO;
   }
 }
 
+/*! @fn queryItems
+    @brief Builds a query items array that can be set to @c NSURLComponents.queryItems
+    @discussion The parameter names and values are NOT URL encoded.
+    @return An array of unencoded @c NSURLQueryItem objects.
+ */
 - (NSMutableArray<NSURLQueryItem *> *)queryItems {
   NSMutableArray<NSURLQueryItem *> *queryParameters = [NSMutableArray array];
   for (NSString *parameterName in _parameters.allKeys) {
@@ -115,18 +127,27 @@ BOOL gOIDURLQueryComponentForceIOS7Handling = NO;
   return queryParameters;
 }
 
+/*! @fn queryString
+    @brief Builds a query string that can be set to @c NSURLComponents.percentEncodedQuery
+    @discussion This string is percentage encoded, and shouldn't be used with
+        @c NSURLComponents.query.
+    @return An percentage encoded query string.
+ */
 - (NSString *)queryString {
   NSMutableArray<NSString *> *parameterizedValues = [NSMutableArray array];
-  NSCharacterSet *allowedQueryCharacters = [NSCharacterSet URLQueryAllowedCharacterSet];
+
+  NSMutableCharacterSet *allowedParamCharacters =
+      [[NSCharacterSet URLQueryAllowedCharacterSet] mutableCopy];
+  [allowedParamCharacters removeCharactersInString:kQueryStringParamAdditionalDisallowedCharacters];
 
   for (NSString *parameterName in _parameters.allKeys) {
     NSString *encodedParameterName =
-        [parameterName stringByAddingPercentEncodingWithAllowedCharacters:allowedQueryCharacters];
+        [parameterName stringByAddingPercentEncodingWithAllowedCharacters:allowedParamCharacters];
 
     NSArray<NSString *> *values = _parameters[parameterName];
     for (NSString *value in values) {
       NSString *encodedValue =
-          [value stringByAddingPercentEncodingWithAllowedCharacters:allowedQueryCharacters];
+          [value stringByAddingPercentEncodingWithAllowedCharacters:allowedParamCharacters];
       NSString *parameterizedValue =
           [NSString stringWithFormat:@"%@=%@", encodedParameterName, encodedValue];
       [parameterizedValues addObject:parameterizedValue];
@@ -138,15 +159,14 @@ BOOL gOIDURLQueryComponentForceIOS7Handling = NO;
 }
 
 - (NSString *)URLEncodedParameters {
-  // If NSURLQueryItem is available, use it for constructing the new URL. (iOS 8+)
-  if (!gOIDURLQueryComponentForceIOS7Handling && NSClassFromString(@"NSURLQueryItem")) {
+  // If NSURLQueryItem is available, uses it for constructing the encoded parameters. (iOS 8+)
+  if (!gOIDURLQueryComponentForceIOS7Handling && [NSURLQueryItem class]) {
     NSURLComponents *components = [[NSURLComponents alloc] init];
-    NSMutableArray<NSURLQueryItem *> *queryItems = [self queryItems];
-    components.queryItems = queryItems;
-    NSString *query = components.query;
-    return query;
+    components.queryItems = [self queryItems];
+    return components.query;
   }
 
+  // else, falls back to building query string manually (iOS 7)
   return [self queryString];
 }
 
@@ -155,13 +175,13 @@ BOOL gOIDURLQueryComponentForceIOS7Handling = NO;
       [NSURLComponents componentsWithURL:URL resolvingAgainstBaseURL:NO];
 
   // If NSURLQueryItem is available, use it for constructing the new URL. (iOS 8+)
-  if (!gOIDURLQueryComponentForceIOS7Handling && NSClassFromString(@"NSURLQueryItem")) {
+  if (!gOIDURLQueryComponentForceIOS7Handling && [NSURLQueryItem class]) {
     NSMutableArray<NSURLQueryItem *> *queryItems = [self queryItems];
     components.queryItems = queryItems;
   } else {
     // Fallback for iOS 7
     NSString *queryString = [self queryString];
-    components.query = queryString;
+    components.percentEncodedQuery = queryString;
   }
 
   NSURL *URLWithParameters = components.URL;

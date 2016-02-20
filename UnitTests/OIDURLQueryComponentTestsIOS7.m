@@ -22,6 +22,7 @@
 
 @interface OIDURLQueryComponentTestsIOS7 : OIDURLQueryComponentTests
 @end
+
 @implementation OIDURLQueryComponentTestsIOS7
 
 - (void)setUp {

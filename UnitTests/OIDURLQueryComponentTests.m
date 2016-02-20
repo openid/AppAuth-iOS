@@ -38,26 +38,26 @@ static NSString *const kTestParameterValue = @"ParameterValue";
 /*! @var kTestParameterValue2
     @brief A different testing parameter value.
  */
-static NSString *const kTestParameterValue2 = @"ParameterValue2";
+static NSString *const kTestParameterValue2 = @"Parameter Va=l&ue2";
+static NSString *const kTestParameterValue2Encoded = @"Parameter%20Va%3Dl%26ue2";
 
-/*! @var kTestSimpleParameterString
+/*! @var kTestSimpleParameterStringEncoded
     @brief The result of generating a parameter string from:
         @@{ kTestParameterName : kTestParameterValue, kTestParameterName2 : kTestParameterValue2 }
  */
-static NSString *const kTestSimpleParameterString =
-    @"ParameterName=ParameterValue&ParameterName2=ParameterValue2";
+static NSString *const kTestSimpleParameterStringEncoded =
+    @"ParameterName=ParameterValue&ParameterName2=Parameter%20Va%3Dl%26ue2";
 
-/*! @var kTestMultipleValuesForKeyParameterString
-    @brief The result of generating a parameter string from:
-        @@{ kTestParameterName : @[ kTestParameterValue, kTestParameterValue2 ] }
+/*! @var kTestSimpleParameterStringEncodedRev
+    @brief Same as @c kTestSimpleParameterStringEncoded but with the parameter order reversed.
  */
-static NSString *const kTestMultipleValuesForKeyParameterString =
-    @"ParameterName=ParameterValue&ParameterName=ParameterValue2";
+static NSString *const kTestSimpleParameterStringEncodedRev =
+    @"ParameterName2=Parameter%20Va%3Dl%26ue2&ParameterName=ParameterValue";
 
 /*! @var kTestURLRoot
     @brief A URL string to use for testing.
  */
-static NSString *const kTestURLRoot = @"https://www.google.com/";
+static NSString *const kTestURLRoot = @"https://www.example.com/";
 
 @implementation OIDURLQueryComponentTests
 
@@ -108,13 +108,16 @@ static NSString *const kTestURLRoot = @"https://www.google.com/";
   NSDictionary<NSString *, NSString *> *parameters =
       @{
         kTestParameterName : kTestParameterValue,
-        kTestParameterName2 : kTestParameterValue2
+        kTestParameterName2 : kTestParameterValue2,
       };
   NSURL *rootURL = [NSURL URLWithString:kTestURLRoot];
 
   OIDURLQueryComponent *query = [[OIDURLQueryComponent alloc] init];
   [query addParameters:parameters];
   NSURL *rootURLWithParameters = [query URLByReplacingQueryInURL:rootURL];
+
+  XCTAssert([rootURLWithParameters.query isEqualToString:kTestSimpleParameterStringEncoded]
+            || [rootURLWithParameters.query isEqualToString:kTestSimpleParameterStringEncodedRev]);
 
   OIDURLQueryComponent *parsedParameters =
       [[OIDURLQueryComponent alloc] initWithURL:rootURLWithParameters];
@@ -124,7 +127,7 @@ static NSString *const kTestURLRoot = @"https://www.google.com/";
 
 - (void)testParsingQueryString {
   NSString *URLString =
-      [NSString stringWithFormat:@"%@?%@", kTestURLRoot, kTestSimpleParameterString];
+      [NSString stringWithFormat:@"%@?%@", kTestURLRoot, kTestSimpleParameterStringEncoded];
   NSURL *URLToParse = [NSURL URLWithString:URLString];
   OIDURLQueryComponent *query = [[OIDURLQueryComponent alloc] initWithURL:URLToParse];
 
