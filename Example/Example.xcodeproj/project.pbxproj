@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		341563F81C4876C600ECA3D9 /* libAppAuth.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 341563F71C48767F00ECA3D9 /* libAppAuth.a */; };
+		340513291C79223600C0979A /* libAppAuth.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 340513281C79223600C0979A /* libAppAuth.a */; };
 		346E916E1C29D42800D3620B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 346E916D1C29D42800D3620B /* main.m */; };
 		346E91711C29D42800D3620B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 346E91701C29D42800D3620B /* AppDelegate.m */; };
 		346E91791C29D42800D3620B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 346E91781C29D42800D3620B /* Assets.xcassets */; };
@@ -17,25 +17,8 @@
 		34CB09BE1C42007600A54261 /* AppAuthExampleViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 34CB09BC1C42007600A54261 /* AppAuthExampleViewController.xib */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		341563F61C48767F00ECA3D9 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 341563F21C48767F00ECA3D9 /* AppAuth.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 1DD70E292248C19F00000000;
-			remoteInfo = AppAuth;
-		};
-		34B7AB711C76B364005600D4 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 341563F21C48767F00ECA3D9 /* AppAuth.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 341741F01C5D8283000EF209;
-			remoteInfo = AppAuthTests;
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXFileReference section */
-		341563F21C48767F00ECA3D9 /* AppAuth.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AppAuth.xcodeproj; path = ../AppAuth.xcodeproj; sourceTree = "<group>"; };
+		340513281C79223600C0979A /* libAppAuth.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libAppAuth.a; path = "../build/Debug-iphoneos/libAppAuth.a"; sourceTree = "<group>"; };
 		346E91691C29D42800D3620B /* Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		346E916D1C29D42800D3620B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		346E916F1C29D42800D3620B /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -54,7 +37,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				341563F81C4876C600ECA3D9 /* libAppAuth.a in Frameworks */,
+				340513291C79223600C0979A /* libAppAuth.a in Frameworks */,
 				346E91991C2A245000D3620B /* SafariServices.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -62,18 +45,10 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		341563F31C48767F00ECA3D9 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				341563F71C48767F00ECA3D9 /* libAppAuth.a */,
-				34B7AB721C76B364005600D4 /* AppAuthTests.xctest */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		341564001C487ABA00ECA3D9 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				340513281C79223600C0979A /* libAppAuth.a */,
 				346E91981C2A245000D3620B /* SafariServices.framework */,
 			);
 			name = Frameworks;
@@ -82,7 +57,6 @@
 		346E91601C29D42800D3620B = {
 			isa = PBXGroup;
 			children = (
-				341563F21C48767F00ECA3D9 /* AppAuth.xcodeproj */,
 				346E916B1C29D42800D3620B /* Source */,
 				341564001C487ABA00ECA3D9 /* Frameworks */,
 				346E916A1C29D42800D3620B /* Products */,
@@ -158,35 +132,12 @@
 			mainGroup = 346E91601C29D42800D3620B;
 			productRefGroup = 346E916A1C29D42800D3620B /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = 341563F31C48767F00ECA3D9 /* Products */;
-					ProjectRef = 341563F21C48767F00ECA3D9 /* AppAuth.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				346E91681C29D42800D3620B /* Example */,
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		341563F71C48767F00ECA3D9 /* libAppAuth.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libAppAuth.a;
-			remoteRef = 341563F61C48767F00ECA3D9 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		34B7AB721C76B364005600D4 /* AppAuthTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = AppAuthTests.xctest;
-			remoteRef = 34B7AB711C76B364005600D4 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		346E91671C29D42800D3620B /* Resources */ = {
