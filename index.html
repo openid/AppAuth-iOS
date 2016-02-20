@@ -1,0 +1,162 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>AppAuth for iOS by openid</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-light.css">
+    <meta name="viewport" content="width=device-width">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>AppAuth for iOS</h1>
+        <p></p>
+
+        <p class="view"><a href="https://github.com/openid/AppAuth-iOS">View the Project on GitHub <small>openid/AppAuth-iOS</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/openid/AppAuth-iOS/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/openid/AppAuth-iOS/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/openid/AppAuth-iOS">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <p>AppAuth for iOS is a client SDK for communicating with <a href="https://tools.ietf.org/html/rfc6749">OAuth 2.0</a> and <a href="http://openid.net/specs/openid-connect-core-1_0.html">OpenID Connect</a> providers. It strives to
+directly map the requests and responses of those specifications, while following
+the idiomatic style of the implementation language. In addition to mapping the
+raw protocol flows, convenience methods are available to assist with common
+tasks like performing an action with fresh tokens.</p>
+
+<p>It follows the best practices set out in <a href="https://tools.ietf.org/html/draft-ietf-oauth-native-apps">OAuth 2.0 for Native Apps</a>
+including using <code>SFSafariViewController</code> for the auth request. For this reason,
+<code>UIWebView</code> is explicitly <em>not</em> supported due to usability and security reasons.</p>
+
+<p>It also supports the <a href="https://tools.ietf.org/html/rfc7636">PKCE</a> extension to
+OAuth which was created to secure authorization codes in public clients when
+custom URI scheme redirects are used. The library is friendly to other
+extensions (standard or otherwise) with the ability to handle additional params
+in all protocol requests and responses.</p>
+
+<h2>
+<a id="example-auth-flow" class="anchor" href="#example-auth-flow" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Example Auth Flow</h2>
+
+<p>AppAuth supports both manual interaction with the Authorization Server
+where you need to perform your own token exchanges, as well as convenience
+methods that perform some of this logic for you. This example uses the
+convenience method which returns either an <code>OIDAuthState</code> object, or an error.</p>
+
+<p><code>OIDAuthState</code> is a class that keeps track of the authorization and token
+requests and responses, and provides a convenience method to call an API with
+fresh tokens. This is the only object that you need to serialize to retain the
+authorization state of the session.</p>
+
+<h3>
+<a id="authorizing" class="anchor" href="#authorizing" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Authorizing</h3>
+
+<p>The OAuth configuration can be fetched via OpenID Connect discovery, or created
+manually. Here we construct it manually by specifying the endpoints.</p>
+
+<div class="highlight highlight-source-objc"><pre>    <span class="pl-c">// property of the app's AppDelegate</span>
+    @property(nonatomic, strong, nullable) <span class="pl-k">id</span>&lt;OIDAuthorizationFlowSession&gt; currentAuthorizationFlow;
+
+    <span class="pl-c">// property of the containing class</span>
+    @property(nonatomic, strong, nullable) OIDAuthState *authState;
+
+    <span class="pl-c">//...</span>
+
+    OIDServiceConfiguration *configuration =
+        [[OIDServiceConfiguration <span class="pl-c1">alloc</span>] <span class="pl-c1">initWithAuthorizationEndpoint:</span><span class="pl-c1">kAuthorizationEndpoint</span>
+                                                         <span class="pl-c1">tokenEndpoint:</span><span class="pl-c1">kTokenEndpoint</span>];
+    <span class="pl-c">// builds authentication request</span>
+    OIDAuthorizationRequest *request =
+        [[OIDAuthorizationRequest <span class="pl-c1">alloc</span>] <span class="pl-c1">initWithConfiguration:</span>configuration
+                                                      <span class="pl-c1">clientId:</span><span class="pl-c1">kClientID</span>
+                                                        <span class="pl-c1">scopes:</span>@[OIDScopeOpenID, OIDScopeProfile]
+                                                   <span class="pl-c1">redirectURL:</span>KRedirectURI
+                                                  <span class="pl-c1">responseType:</span>OIDResponseTypeCode
+                                          <span class="pl-c1">additionalParameters:</span><span class="pl-c1">nil</span>];
+
+    <span class="pl-c">// performs authentication request</span>
+    AppDelegate *appDelegate = (AppDelegate *)[UIApplication <span class="pl-c1">sharedApplication</span>].delegate;
+    <span class="pl-c1">NSLog</span>(<span class="pl-s"><span class="pl-pds">@"</span>Initiating authorization request with scope: <span class="pl-c1">%@</span><span class="pl-pds">"</span></span>, request.scope);
+
+    appDelegate.currentAuthorizationFlow =
+        [OIDAuthState <span class="pl-c1">authStateByPresentingAuthorizationRequest:</span>request
+            <span class="pl-c1">presentingViewController:</span><span class="pl-v">self</span>
+                            <span class="pl-c1">callback:</span>^(OIDAuthState *_Nullable authState,
+                                       <span class="pl-c1">NSError</span> *_Nullable error) {
+      <span class="pl-k">if</span> (authState) {
+        <span class="pl-c1">NSLog</span>(<span class="pl-s"><span class="pl-pds">@"</span>Got authorization tokens. Access token: <span class="pl-c1">%@</span><span class="pl-pds">"</span></span>,
+              authState.<span class="pl-smi">lastTokenResponse</span>.<span class="pl-smi">accessToken</span>);
+        [<span class="pl-v">self</span> <span class="pl-c1">setAuthState:</span>authState];
+      } <span class="pl-k">else</span> {
+        <span class="pl-c1">NSLog</span>(<span class="pl-s"><span class="pl-pds">@"</span>Authorization error: <span class="pl-c1">%@</span><span class="pl-pds">"</span></span>, [error <span class="pl-c1">localizedDescription</span>]);
+        [<span class="pl-v">self</span> <span class="pl-c1">setAuthState:</span><span class="pl-c1">nil</span>];
+      }
+    }];</pre></div>
+
+<h3>
+<a id="passing-through-the-authorization-grant" class="anchor" href="#passing-through-the-authorization-grant" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Passing through the Authorization Grant</h3>
+
+<p>The authorization response URL is returned to the app via the iOS openURL
+app delegate method, so you need to pipe this through to the current
+authorization session (created in the previous session).</p>
+
+<div class="highlight highlight-source-objc"><pre>    - (<span class="pl-k">BOOL</span>)application:(UIApplication *)app
+                openURL:(<span class="pl-c1">NSURL</span> *)url
+                options:(<span class="pl-c1">NSDictionary</span>&lt;<span class="pl-c1">NSString</span> *, <span class="pl-k">id</span>&gt; *)options {
+      <span class="pl-c">// Sends the URL to the current authorization flow (if any) which will</span>
+      <span class="pl-c">// process it if it relates to an authorization response.</span>
+      <span class="pl-k">if</span> ([_currentAuthorizationFlow <span class="pl-c1">resumeAuthorizationFlowWithURL:</span>url]) {
+        _currentAuthorizationFlow = <span class="pl-c1">nil</span>;
+        <span class="pl-k">return</span> <span class="pl-c1">YES</span>;
+      }
+
+      <span class="pl-c">// Your additional URL handling (if any) goes here.</span>
+
+      <span class="pl-k">return</span> <span class="pl-c1">NO</span>;
+    }</pre></div>
+
+<h3>
+<a id="making-api-calls" class="anchor" href="#making-api-calls" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Making API Calls</h3>
+
+<p>AppAuth gives you the raw token information, if you need it. However we
+recommend that users of the <code>OIDAuthState</code> convenience wrapper use the provided
+<code>withFreshTokensPerformAction:</code> method to perform their API calls to avoid
+needing to worry about token freshness.</p>
+
+<div class="highlight highlight-source-objc"><pre>    [_authState <span class="pl-c1">withFreshTokensPerformAction:</span>^(<span class="pl-c1">NSString</span> *_Nonnull accessToken,
+                                               <span class="pl-c1">NSString</span> *_Nonnull idToken,
+                                               <span class="pl-c1">NSError</span> *_Nullable error) {
+      <span class="pl-k">if</span> (error) {
+        <span class="pl-c1">NSLog</span>(<span class="pl-s"><span class="pl-pds">@"</span>Error fetching fresh tokens: <span class="pl-c1">%@</span><span class="pl-pds">"</span></span>, [error <span class="pl-c1">localizedDescription</span>]);
+        <span class="pl-k">return</span>;
+      }
+
+      <span class="pl-c">// perform your API request using the tokens</span>
+    }];</pre></div>
+
+<h2>
+<a id="included-sample" class="anchor" href="#included-sample" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Included Sample</h2>
+
+<p>Try out the included example project <code>Example/Example.xcodeproj</code>.</p>
+
+<p>Be sure to follow the instructions in <a href="Example/README.md">Example/README.md</a>
+to configure your own OAuth client ID for use with the example.</p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/openid">openid</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
