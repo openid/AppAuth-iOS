@@ -40,11 +40,11 @@ NS_ASSUME_NONNULL_BEGIN
  */
 + (NSString *)encodeBase64urlNoPadding:(NSData *)data;
 
-/*! @fn randomURLSafeStringWithLength:
-    @brief Generates a URL-safe string with random data.
+/*! @fn randomURLSafeStringWithSize:
+    @brief Generates a URL-safe string of random data.
     @param size The number of random bytes to encode. NB. the length of the output string will be
-        greater than the number of random bytes due to the URL-safe encoding.
-    @return The base64url encoded data as a NSString.
+        greater than the number of random bytes, due to the URL-safe encoding.
+    @return Random data encoded with base64url.
  */
 + (nullable NSString *)randomURLSafeStringWithSize:(NSUInteger)size;
 
