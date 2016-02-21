@@ -60,9 +60,9 @@ typedef _Nullable id(^OIDFieldMappingConversionFunction)(NSObject *_Nullable val
     @param type The type of the instance variable.
     @param conversion An optional conversion function which specifies a transform from the incoming
         data to the instance variable value. Used during the process performed by
-        @c remainingParametersWithMap:parameters:instance: but not during encoding/decoding, since
-        the encoded and decoded values should already be of the type specified by the @c type
-        parameter.
+        @c OIDFieldMapping.remainingParametersWithMap:parameters:instance: but not during
+        encoding/decoding, since the encoded and decoded values should already be of the type
+        specified by the @c type parameter.
  */
 - (nullable instancetype)initWithName:(NSString *)name
                                  type:(Class)type

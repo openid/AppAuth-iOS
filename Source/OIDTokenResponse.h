@@ -101,8 +101,8 @@ NS_ASSUME_NONNULL_BEGIN
     @param request The serviced request.
     @param parameters The decoded parameters returned from the Authorization Server.
     @remarks Known parameters are extracted from the @c parameters parameter and the normative
-        properties are populated. Non-normative parameters are placed in the @c additionalParameters
-        dictionary.
+        properties are populated. Non-normative parameters are placed in the
+        @c #additionalParameters dictionary.
  */
 - (nullable instancetype)initWithRequest:(OIDTokenRequest *)request
     parameters:(NSDictionary<NSString *, NSObject<NSCopying> *> *)parameters

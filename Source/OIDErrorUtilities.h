@@ -28,8 +28,8 @@ NS_ASSUME_NONNULL_BEGIN
 @interface OIDErrorUtilities : NSObject
 
 /*! @fn errorWithCode:underlyingError:description:
-    @brief Creates a standard @c NSError from an @c OIDErrorCode and custom user info. Automatically
-        populates the localized error description.
+    @brief Creates a standard @c NSError from an @c ::OIDErrorCode and custom user info.
+        Automatically populates the localized error description.
     @param code The error code.
     @param underlyingError The underlying error which occurred, if applicable.
     @param description A custom description, if applicable.
@@ -40,10 +40,10 @@ NS_ASSUME_NONNULL_BEGIN
                         description:(nullable NSString *)description;
 
 /*! @fn OAuthErrorWithDomain:OAuthResponse:underlyingError:
-    @brief Creates a standard @c NSError from an @c OIDErrorCode and custom user info. Automatically
-        populates the localized error description.
-    @param OAuthErrorDomain The OAuth error domain. Must be @c OIDOAuthAuthorizationErrorDomain or
-        @c OIDOAuthTokenErrorDomain.
+    @brief Creates a standard @c NSError from an @c ::OIDErrorCode and custom user info.
+        Automatically populates the localized error description.
+    @param OAuthErrorDomain The OAuth error domain. Must be @c ::OIDOAuthAuthorizationErrorDomain or
+        @c ::OIDOAuthTokenErrorDomain.
     @param errorResponse The dictionary from an OAuth error response (as per RFC6749 Section 5.2).
     @param underlyingError The underlying error which occurred, if applicable.
     @return An @c NSError representing the OAuth error.
@@ -54,17 +54,15 @@ NS_ASSUME_NONNULL_BEGIN
                            underlyingError:(nullable NSError *)underlyingError;
 
 /*! @fn resourceServerAuthorizationErrorWithCode:errorResponse:underlyingError:
-    @brief Creates a standard @c NSError from an @c OIDErrorCode and custom user info. Automatically
-        populates the localized error description.
-    @param OAuthErrorDomain The OAuth error domain. Must be @c OIDOAuthAuthorizationErrorDomain or
-        @c OIDOAuthTokenErrorDomain.
-    @param errorResponse The dictionary from an OAuth error response (as per RFC6749 Section 5.2).
+    @brief Creates a @c NSError indicating that the resource server responded with an authorization
+        error.
+    @param code Your error code.
+    @param errorResponse The resource server error response, if any.
     @param underlyingError The underlying error which occurred, if applicable.
-    @return An @c NSError representing the OAuth error.
-    @see https://tools.ietf.org/html/rfc6749#section-5.2
+    @return An @c NSError representing the authorization error from the resource server.
  */
 + (nullable NSError *)resourceServerAuthorizationErrorWithCode:(NSInteger)code
-                                                errorResponse:(NSDictionary *)errorResponse
+                                                errorResponse:(nullable NSDictionary *)errorResponse
                                               underlyingError:(nullable NSError *)underlyingError;
 
 
@@ -94,9 +92,9 @@ NS_ASSUME_NONNULL_BEGIN
 + (void)raiseException:(NSString *)name message:(NSString *)message;
 
 /*! @fn OAuthErrorCodeFromString:
-    @brief Converts an OAuth error code into an @c OIDErrorCodeOAuth error code.
+    @brief Converts an OAuth error code into an @c ::OIDErrorCodeOAuth error code.
     @param errorCode The OAuth error code.
-    @discussion Returns @c OIDErrorCodeOAuthOther if the string is not in AppAuth's list.
+    @discussion Returns @c ::OIDErrorCodeOAuthOther if the string is not in AppAuth's list.
     @see https://tools.ietf.org/html/rfc6749#section-4.1.2.1
     @see https://tools.ietf.org/html/rfc6749#section-5.2
  */

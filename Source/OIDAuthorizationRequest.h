@@ -113,7 +113,7 @@ NS_ASSUME_NONNULL_BEGIN
     @discussion If this request includes @c codeChallenge, this value be "S256", otherwise nil.
        The PKCE "plain" method is not supported by AppAuth, as iOS is capable of generating a SHA256
        hash and is mandatory to implement (MTI) for servers who support PKCE. If you need to use
-       "plain" for some reason, it is possible to do manually using the @c additionalParameters.
+       "plain" for some reason, it is possible to do manually using the @c #additionalParameters.
     @see https://tools.ietf.org/html/rfc7636#section-4.3
  */
 @property(nonatomic, readonly, nullable) NSString *codeChallengeMethod;

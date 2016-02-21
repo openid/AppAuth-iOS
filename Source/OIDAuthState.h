@@ -49,15 +49,15 @@ typedef void (^OIDAuthStateAuthorizationCallback)(OIDAuthState *_Nullable authSt
                                                   NSError *_Nullable error);
 
 /*! @class OIDAuthState
-    @brief A convenience class that retains the auth state between @c OIDAuthorizationResponses
-        and @c OIDTokenResponses.
+    @brief A convenience class that retains the auth state between @c OIDAuthorizationResponse%s
+        and @c OIDTokenResponse%s.
  */
 @interface OIDAuthState : NSObject <NSSecureCoding>
 
 /*! @property refreshToken
     @brief The most recent refresh token received from the server.
     @discussion Rather than using this property directly, you should call
-        @c OIDAuthState.withFreshTokenPerformAction:.
+        @c OIDAuthState.withFreshTokensPerformAction:.
     @remarks refresh_token
     @see https://tools.ietf.org/html/rfc6749#section-5.1
  */
@@ -86,10 +86,11 @@ typedef void (^OIDAuthStateAuthorizationCallback)(OIDAuthState *_Nullable authSt
 /*! @property authorizationError
     @brief The authorization error that invalidated this @c OIDAuthState.
     @discussion The authorization error encountered by @c OIDAuthState or set by the user via
-        @c updateWithAuthorizationError that invalidated this @c OIDAuthState. Authorization
-        errors from @c OIDAuthState will always have a domain of @c OIDOAuthAuthorizationErrorDomain
-        or @c OIDOAuthTokenErrorDomain. Note: that after unarchiving the @c OIDAuthState object,
-        the @ NSError.userInfo property of this error will be nil.
+        @c OIDAuthState.updateWithAuthorizationError: that invalidated this @c OIDAuthState.
+        Authorization errors from @c OIDAuthState will always have a domain of
+        @c ::OIDOAuthAuthorizationErrorDomain or @c ::OIDOAuthTokenErrorDomain. Note: that after
+        unarchiving the @c OIDAuthState object, the @ NSError.userInfo property of this error will
+        be nil.
  */
 @property(nonatomic, readonly, nullable) NSError *authorizationError;
 
@@ -160,10 +161,10 @@ typedef void (^OIDAuthStateAuthorizationCallback)(OIDAuthState *_Nullable authSt
     @brief Updates the authorization state based on a new authorization response.
     @param authorizationResponse The new authorization response to update the state with.
     @param error Any error encountered when performing the authorization request. Errors in the
-        domain @c OIDOAuthAuthorizationErrorDomain are reflected in the auth state, other errors
+        domain @c ::OIDOAuthAuthorizationErrorDomain are reflected in the auth state, other errors
         are assumed to be transient, and ignored.
     @discussion Typically called with the response from an incremental authorization request,
-        or if using the implicit flow. Will clear the @c OIDAuthState.lastTokenResponse: property.
+        or if using the implicit flow. Will clear the @c #lastTokenResponse property.
  */
 - (void)updateWithAuthorizationResponse:(nullable OIDAuthorizationResponse *)authorizationResponse
                                   error:(nullable NSError *)error;
@@ -172,7 +173,7 @@ typedef void (^OIDAuthStateAuthorizationCallback)(OIDAuthState *_Nullable authSt
     @brief Updates the authorization state based on a new token response.
     @param tokenResponse The new token response to update the state from.
     @param error Any error encountered when performing the authorization request. Errors in the
-        domain @c OIDOAuthTokenErrorDomain are reflected in the auth state, other errors
+        domain @c ::OIDOAuthTokenErrorDomain are reflected in the auth state, other errors
         are assumed to be transient, and ignored.
     @discussion Typically called with the response from an authorization code exchange, or a token
         refresh.
@@ -187,12 +188,12 @@ typedef void (^OIDAuthStateAuthorizationCallback)(OIDAuthState *_Nullable authSt
         invalidate the authentication state of this @c OIDAuthState. Don't call with errors
         unrelated to authorization, such as transient network errors.
         The OIDAuthStateErrorDelegate.authState:didEncounterAuthorizationError: method of
-        @c errorDelegate will be called with the error.
+        @c #errorDelegate will be called with the error.
         You may optionally use the convenience method
         OIDErrorUtilities.resourceServerAuthorizationErrorWithCode:errorResponse:underlyingError:
         to create @c NSError objects for use here.
-        The latest error received is stored in @c authorizationError. Note: that after unarchiving
-        this object, the @ NSError.userInfo property of this error will be nil.
+        The latest error received is stored in @c #authorizationError. Note: that after unarchiving
+        this object, the @c NSError.userInfo property of this error will be nil.
  */
 - (void)updateWithAuthorizationError:(NSError *)authorizationError;
 
@@ -205,17 +206,17 @@ typedef void (^OIDAuthStateAuthorizationCallback)(OIDAuthState *_Nullable authSt
 - (void)withFreshTokensPerformAction:(OIDAuthStateAction)action;
 
 /*! @fn setNeedsTokenRefresh
-    @brief Forces a token refresh the next time @c withFreshTokensPerformAction is called, even if
-        the current tokens are considered valid.
+    @brief Forces a token refresh the next time @c OIDAuthState.withFreshTokensPerformAction: is
+        called, even if the current tokens are considered valid.
  */
 - (void)setNeedsTokenRefresh;
 
 /*! @fn tokenRefreshRequest
     @brief Creates a token request suitable for refreshing an access token.
     @return A @c OIDTokenRequest suitable for using a refresh token to obtain a new access token.
-    @discussion After performing the refresh, call @c updateWithTokenResponse: to update the
-        authorization state based on the response. Rather than doing the token refresh yourself,
-        you should use @c OIDAuthState.withFreshTokenPerformAction:.
+    @discussion After performing the refresh, call @c OIDAuthState.updateWithTokenResponse:error:
+        to update the authorization state based on the response. Rather than doing the token refresh
+        yourself, you should use @c OIDAuthState.withFreshTokensPerformAction:.
     @see https://tools.ietf.org/html/rfc6749#section-1.5
  */
 - (nullable OIDTokenRequest *)tokenRefreshRequest;
@@ -224,9 +225,9 @@ typedef void (^OIDAuthStateAuthorizationCallback)(OIDAuthState *_Nullable authSt
     @brief Creates a token request suitable for refreshing an access token.
     @param additionalParameters Additional parameters for the token request.
     @return A @c OIDTokenRequest suitable for using a refresh token to obtain a new access token.
-    @discussion After performing the refresh, call @c updateWithTokenResponse: to update the
-        authorization state based on the response. Rather than doing the token refresh yourself,
-        you should use @c OIDAuthState.withFreshTokenPerformAction:.
+    @discussion After performing the refresh, call @c OIDAuthState.updateWithTokenResponse:error:
+        to update the authorization state based on the response. Rather than doing the token refresh
+        yourself, you should use @c OIDAuthState.withFreshTokensPerformAction:.
     @see https://tools.ietf.org/html/rfc6749#section-1.5
  */
 - (nullable OIDTokenRequest *)tokenRefreshRequestWithAdditionalParameters:

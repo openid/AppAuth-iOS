@@ -135,17 +135,19 @@ typedef NSDictionary<NSString *, NSString *> *_Nullable OIDTokenEndpointParamete
 @protocol OIDAuthorizationFlowSession <NSObject>
 
 /*! @brief Cancels the code flow session, invoking the request's callback with a cancelled error.
-    @remarks Has no effect if called more than once, or after a @c resumeAuthorizationFlowWithURL:
-        message was received. Will cause an error with code:
-        @c OIDErrorCodeProgramCanceledAuthorizationFlow to be passed to the @c callback block
-        passed to @c presentAuthorizationRequest:presentingViewController:callback:
+    @remarks Has no effect if called more than once, or after a
+        @c OIDAuthorizationFlowSession.resumeAuthorizationFlowWithURL: message was received. Will
+        cause an error with code: @c ::OIDErrorCodeProgramCanceledAuthorizationFlow to be passed to
+        the @c callback block passed to
+        @c OIDAuthorizationService.presentAuthorizationRequest:presentingViewController:callback:
  */
 - (void)cancel;
 
 /*! @brief Clients should call this method with the result of the authorization code flow if it
         becomes available. Causes the @c SFSafariViewController created by the
-        @c OIDAuthorizationService.getAuthorizationCodeWithRequest:callback: method to be dismissed,
-        the pending request's completion block is invoked, and this method returns.
+        @c OIDAuthorizationService::presentAuthorizationRequest:presentingViewController:callback:
+        method to be dismissed, the pending request's completion block is invoked, and this method
+        returns.
     @param URL The redirect URL invoked by the authorization server.
     @remarks Has no effect if called more than once, or after a @c cancel message was received.
     @return YES if the passed URL matches the expected redirect URL and was consumed, NO otherwise.

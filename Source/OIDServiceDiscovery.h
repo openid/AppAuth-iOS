@@ -361,7 +361,7 @@ NS_ASSUME_NONNULL_BEGIN
     @brief Decodes a OpenID Connect Discovery 1.0 JSON document.
     @param serviceDiscoveryJSON An OpenID Connect Service Discovery document.
     @param error If a required field is missing from the dictionary, an error with domain
-        @c OIDGeneralErrorDomain and code @c OIDErrorCodeInvalidDiscoveryDocument will be
+        @c ::OIDGeneralErrorDomain and code @c ::OIDErrorCodeInvalidDiscoveryDocument will be
         returned.
  */
 - (nullable instancetype)initWithJSON:(NSString *)serviceDiscoveryJSON
@@ -371,7 +371,7 @@ NS_ASSUME_NONNULL_BEGIN
     @brief Decodes a OpenID Connect Discovery 1.0 JSON document.
     @param serviceDiscoveryJSONData An OpenID Connect Service Discovery document.
     @param error If a required field is missing from the dictionary, an error with domain
-        @c OIDGeneralErrorDomain and code @c OIDErrorCodeInvalidDiscoveryDocument will be
+        @c ::OIDGeneralErrorDomain and code @c ::OIDErrorCodeInvalidDiscoveryDocument will be
         returned.
  */
 - (nullable instancetype)initWithJSONData:(NSData *)serviceDiscoveryJSONData
@@ -383,7 +383,7 @@ NS_ASSUME_NONNULL_BEGIN
     @param serviceDiscoveryDictionary A dictionary representing an OpenID Connect Service Discovery
         document.
     @param error If a required field is missing from the dictionary, an error with domain
-        @c OIDGeneralErrorDomain and code @c OIDErrorCodeInvalidDiscoveryDocument will be
+        @c ::OIDGeneralErrorDomain and code @c ::OIDErrorCodeInvalidDiscoveryDocument will be
         returned.
  */
 - (nullable instancetype)initWithDictionary:(NSDictionary *)serviceDiscoveryDictionary

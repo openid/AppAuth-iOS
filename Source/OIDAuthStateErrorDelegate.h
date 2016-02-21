@@ -32,14 +32,14 @@ NS_ASSUME_NONNULL_BEGIN
     @param error The authorization error.
     @discussion This is a hard error (not a transient network issue) that indicates a problem with
         the authorization. You should stop using the @c OIDAuthState when such an error is
-        encountered. If the @c NSError.error code is @c OIDErrorCodeOAuthInvalidGrant then
+        encountered. If the @c NSError.error code is @c ::OIDErrorCodeOAuthInvalidGrant then
         the session may be recoverable with user interaction (i.e. re-authentication). In all cases
         you should consider the user unauthorized, and remove locally cached resources that require
         that authorization.  @c OIDAuthState will call this method automatically if it encounters
         an OAuth error (that is, an HTTP 400 response with a valid OAuth error response) during
         authorization or token refresh (such as performed automatically when using
         @c OIDAuthState.withFreshTokensPerformAction:). You can signal authorization errors with
-        @c OIDAuthState.updateWithOAuthError:.
+        @c OIDAuthState.updateWithAuthorizationError:.
     @see https://tools.ietf.org/html/rfc6749#section-5.2
  */
 - (void)authState:(OIDAuthState *)state didEncounterAuthorizationError:(NSError *)error;

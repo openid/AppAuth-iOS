@@ -43,11 +43,13 @@
 }
 
 + (nullable NSError *)resourceServerAuthorizationErrorWithCode:(NSInteger)code
-                                                 errorResponse:(NSDictionary *)errorResponse
-                                               underlyingError:(nullable NSError *)underlyingError {
+      errorResponse:(nullable NSDictionary *)errorResponse
+    underlyingError:(nullable NSError *)underlyingError {
   // builds the userInfo dictionary with the full OAuth response and other information
   NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
-  userInfo[OIDOAuthErrorResponseErrorKey] = errorResponse;
+  if (errorResponse) {
+    userInfo[OIDOAuthErrorResponseErrorKey] = errorResponse;
+  }
   if (underlyingError) {
     userInfo[NSUnderlyingErrorKey] = underlyingError;
   }
