@@ -62,13 +62,22 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
   [super viewDidLoad];
 
 #if !defined(NS_BLOCK_ASSERTIONS)
-  // verifies that the client ID and redirect URI have been supplied
+
+  // NOTE:
+  //
+  // To run this sample, you need to register your own iOS client at
+  // https://console.developers.google.com/apis/credentials?project=_ and update three configuration
+  // points in the sample: kClientID and kRedirectURI constants in AppAuthExampleViewController.m
+  // and the URI scheme in Info.plist. Full instructions:
+  // https://github.com/openid/AppAuth-iOS/blob/master/Example/README.md
+
   NSAssert(![kClientID isEqualToString:@"YOUR_CLIENT.apps.googleusercontent.com"],
-           @"Please follow the instructions in the Example/README.md to create your own OAuth "
-            "client credentials and configure this example with them.");
+           @"Update kClientID with your own client id. "
+            "Instructions: https://github.com/openid/AppAuth-iOS/blob/master/Example/README.md");
+
   NSAssert(![kRedirectURI isEqualToString:@"com.googleusercontent.apps.YOUR_CLIENT:/oauthredirect"],
-           @"Please follow the instructions in the Example/README.md to create your own OAuth "
-            "client credentials and configure this example with them.");
+           @"Update kRedirectURI with your own redirect URI. "
+            "Instructions: https://github.com/openid/AppAuth-iOS/blob/master/Example/README.md");
 
   // verifies that the custom URI scheme has been updated in the Info.plist
   NSArray __unused* urlTypes =
@@ -78,9 +87,12 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
       [(NSDictionary *)[urlTypes objectAtIndex:0] objectForKey:@"CFBundleURLSchemes"];
   NSAssert([urlSchemes count] > 0, @"No custom URI scheme has been configured for the project.");
   NSString *urlScheme = [urlSchemes objectAtIndex:0];
+
   NSAssert(![urlScheme isEqualToString:@"com.googleusercontent.apps.YOUR_CLIENT"],
-           @"Configure your URI scheme in the Info.plist, per the instructions in the "
-            "Example/README.md.");
+           @"Configure the URI scheme in Info.plist (URL Types -> 0 -> URL Schemes -> 0) with "
+            "the scheme of your redirect URI. Full instructions: "
+            "https://github.com/openid/AppAuth-iOS/blob/master/Example/README.md");
+
 #endif // !defined(NS_BLOCK_ASSERTIONS)
 
   _logTextView.layer.borderColor = [UIColor colorWithWhite:0.8 alpha:1.0].CGColor;
