@@ -30,8 +30,8 @@ extern NSString *const OIDGeneralErrorDomain;
         with an explicit OAuth error, as defined by RFC6749 Section 4.1.2.1. If the authorization
         response is invalid and not explicitly an error response, another error domain will be used.
         The error response parameter dictionary is available in the
-        @c NSError.userInfo dictionary using the @c ::OIDOAuthErrorResponseErrorKey key.
-        The @c NSError.code will be one of the @c ::OIDErrorCodeOAuthAuthorization enum values.
+        \NSError_userInfo dictionary using the @c ::OIDOAuthErrorResponseErrorKey key.
+        The \NSError_code will be one of the @c ::OIDErrorCodeOAuthAuthorization enum values.
     @see https://tools.ietf.org/html/rfc6749#section-4.1.2.1
  */
 extern NSString *const OIDOAuthAuthorizationErrorDomain;
@@ -41,11 +41,11 @@ extern NSString *const OIDOAuthAuthorizationErrorDomain;
     @discussion This error domain is used when the server responds with HTTP 400 and an OAuth error,
         as defined RFC6749 Section 5.2. If an HTTP 400 response does not parse as an OAuth error
         (i.e. no 'error' field is present or the JSON is invalid), another error domain will be
-        used. The entire OAuth error response dictionary is available in the @c NSError.userInfo
+        used. The entire OAuth error response dictionary is available in the \NSError_userInfo
         dictionary using the @c ::OIDOAuthErrorResponseErrorKey key. Unlike transient network
         errors, errors in this domain invalidate the authentication state, and either indicate a
         client error or require user interaction (i.e. reauthentication) to resolve.
-        The @c NSError.code will be one of the @c ::OIDErrorCodeOAuthToken enum values.
+        The \NSError_code will be one of the @c ::OIDErrorCodeOAuthToken enum values.
     @see https://tools.ietf.org/html/rfc6749#section-5.2
  */
 extern NSString *const OIDOAuthTokenErrorDomain;
@@ -195,7 +195,7 @@ typedef NS_ENUM(NSInteger, OIDErrorCodeOAuth) {
   /*! @brief An OAuth error not known to this library
       @discussion Indicates an OAuth error as per RFC6749, but the error code was not in our
           list. It could be a custom error code, or one from an OAuth extension. See the "error" key
-          of the @c NSError:userInfo property. Such errors are assumed to invalidate the
+          of the \NSError_userInfo property. Such errors are assumed to invalidate the
           authentication state
    */
   OIDErrorCodeOAuthOther = -0xF000,
@@ -253,7 +253,7 @@ typedef NS_ENUM(NSInteger, OIDErrorCodeOAuthAuthorization) {
   /*! @brief An authorization OAuth error not known to this library
       @discussion this indicates an OAuth error as per RFC6749, but the error code was not in our
           list. It could be a custom error code, or one from an OAuth extension. See the "error" key
-          of the @c NSError:userInfo property. We assume such errors are not transient.
+          of the \NSError_userInfo property. We assume such errors are not transient.
       @see https://tools.ietf.org/html/rfc6749#section-4.1.2.1
    */
   OIDErrorCodeOAuthAuthorizationOther = OIDErrorCodeOAuthOther,
@@ -301,7 +301,7 @@ typedef NS_ENUM(NSInteger, OIDErrorCodeOAuthToken) {
   /*! @brief A token endpoint OAuth error not known to this library
       @discussion this indicates an OAuth error as per RFC6749, but the error code was not in our
           list. It could be a custom error code, or one from an OAuth extension. See the "error" key
-          of the @c NSError:userInfo property. We assume such errors are not transient.
+          of the \NSError_userInfo property. We assume such errors are not transient.
       @see https://tools.ietf.org/html/rfc6749#section-5.2
    */
   OIDErrorCodeOAuthTokenOther = OIDErrorCodeOAuthOther,

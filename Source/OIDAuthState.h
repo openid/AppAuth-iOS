@@ -89,7 +89,7 @@ typedef void (^OIDAuthStateAuthorizationCallback)(OIDAuthState *_Nullable authSt
         @c OIDAuthState.updateWithAuthorizationError: that invalidated this @c OIDAuthState.
         Authorization errors from @c OIDAuthState will always have a domain of
         @c ::OIDOAuthAuthorizationErrorDomain or @c ::OIDOAuthTokenErrorDomain. Note: that after
-        unarchiving the @c OIDAuthState object, the @ NSError.userInfo property of this error will
+        unarchiving the @c OIDAuthState object, the \NSError_userInfo property of this error will
         be nil.
  */
 @property(nonatomic, readonly, nullable) NSError *authorizationError;
@@ -125,7 +125,7 @@ typedef void (^OIDAuthStateAuthorizationCallback)(OIDAuthState *_Nullable authSt
         and performing the authorization code exchange in the case of code flow requests.
     @param authorizationRequest The authorization request to present.
     @param presentingViewController The view controller from which to present the
-        @c SFSafariViewController.
+        \SFSafariViewController.
     @param callback The method called when the request has completed or failed.
     @return A @c OIDAuthorizationFlowSession instance which will terminate when it
         receives a @c OIDAuthorizationFlowSession.cancel message, or after processing a
@@ -191,9 +191,9 @@ typedef void (^OIDAuthStateAuthorizationCallback)(OIDAuthState *_Nullable authSt
         @c #errorDelegate will be called with the error.
         You may optionally use the convenience method
         OIDErrorUtilities.resourceServerAuthorizationErrorWithCode:errorResponse:underlyingError:
-        to create @c NSError objects for use here.
+        to create \NSError objects for use here.
         The latest error received is stored in @c #authorizationError. Note: that after unarchiving
-        this object, the @c NSError.userInfo property of this error will be nil.
+        this object, the \NSError_userInfo property of this error will be nil.
  */
 - (void)updateWithAuthorizationError:(NSError *)authorizationError;
 

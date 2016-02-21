@@ -37,7 +37,13 @@ MULTILINE_CPP_IS_BRIEF = NO
 INHERIT_DOCS           = YES
 SEPARATE_MEMBER_PAGES  = NO
 TAB_SIZE               = 4
-ALIASES                = 
+# Alias external references. ref: http://stackoverflow.com/a/24076896/72176
+ALIASES                += SFSafariViewController="<code><a href=\"https://developer.apple.com/library/ios/documentation/SafariServices/Reference/SFSafariViewController_Ref/index.html\">SFSafariViewController</a></code>"
+ALIASES                += NSURLSession="<code><a href=\"https://developer.apple.com/library/ios/documentation/Foundation/Reference/NSURLSession_class/\">NSURLSession</a></code>"
+ALIASES                += NSError_userInfo="<code><a href=\"https://developer.apple.com/library/mac/documentation/Cocoa/Reference/Foundation/Classes/NSError_Class/#//apple_ref/occ/instp/NSError/userInfo\">NSError.userInfo</a></code>"
+ALIASES                += NSError_code="<code><a href=\"https://developer.apple.com/library/mac/documentation/Cocoa/Reference/Foundation/Classes/NSError_Class/#//apple_ref/occ/instp/NSError/code\">NSError.code</a></code>"
+ALIASES                += NSError="<code><a href=\"https://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/Classes/NSError_Class/\">NSError</a></code>"
+ALIASES                += NSHTTPURLResponse="<code><a href=\"https://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/Classes/NSHTTPURLResponse_Class/\">NSHTTPURLResponse</a></code>"
 TCL_SUBST              = 
 OPTIMIZE_OUTPUT_FOR_C  = NO
 OPTIMIZE_OUTPUT_JAVA   = NO

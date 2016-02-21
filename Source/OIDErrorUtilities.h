@@ -23,30 +23,30 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /*! @class OIDErrorUtilities
-    @brief Convenience methods for creating standardized @c NSError instances.
+    @brief Convenience methods for creating standardized \NSError instances.
  */
 @interface OIDErrorUtilities : NSObject
 
 /*! @fn errorWithCode:underlyingError:description:
-    @brief Creates a standard @c NSError from an @c ::OIDErrorCode and custom user info.
+    @brief Creates a standard \NSError from an @c ::OIDErrorCode and custom user info.
         Automatically populates the localized error description.
     @param code The error code.
     @param underlyingError The underlying error which occurred, if applicable.
     @param description A custom description, if applicable.
-    @return An @c NSError representing the error code.
+    @return An \NSError representing the error code.
  */
 + (nullable NSError *)errorWithCode:(OIDErrorCode)code
                     underlyingError:(nullable NSError *)underlyingError
                         description:(nullable NSString *)description;
 
 /*! @fn OAuthErrorWithDomain:OAuthResponse:underlyingError:
-    @brief Creates a standard @c NSError from an @c ::OIDErrorCode and custom user info.
+    @brief Creates a standard \NSError from an @c ::OIDErrorCode and custom user info.
         Automatically populates the localized error description.
     @param OAuthErrorDomain The OAuth error domain. Must be @c ::OIDOAuthAuthorizationErrorDomain or
         @c ::OIDOAuthTokenErrorDomain.
     @param errorResponse The dictionary from an OAuth error response (as per RFC6749 Section 5.2).
     @param underlyingError The underlying error which occurred, if applicable.
-    @return An @c NSError representing the OAuth error.
+    @return An \NSError representing the OAuth error.
     @see https://tools.ietf.org/html/rfc6749#section-5.2
  */
 + (nullable NSError *)OAuthErrorWithDomain:(NSString *)OAuthErrorDomain
@@ -54,12 +54,12 @@ NS_ASSUME_NONNULL_BEGIN
                            underlyingError:(nullable NSError *)underlyingError;
 
 /*! @fn resourceServerAuthorizationErrorWithCode:errorResponse:underlyingError:
-    @brief Creates a @c NSError indicating that the resource server responded with an authorization
+    @brief Creates a \NSError indicating that the resource server responded with an authorization
         error.
     @param code Your error code.
     @param errorResponse The resource server error response, if any.
     @param underlyingError The underlying error which occurred, if applicable.
-    @return An @c NSError representing the authorization error from the resource server.
+    @return An \NSError representing the authorization error from the resource server.
  */
 + (nullable NSError *)resourceServerAuthorizationErrorWithCode:(NSInteger)code
                                                 errorResponse:(nullable NSDictionary *)errorResponse
@@ -67,13 +67,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 /*! @fn HTTPErrorWithHTTPResponse:data:
-    @brief Creates a standard @c NSError from an @c NSHTTPURLResponse. Automatically
+    @brief Creates a standard \NSError from an \NSHTTPURLResponse. Automatically
         populates the localized error description with the response data associated with the
-        @c NSHTTPURLResponse, if available.
+        \NSHTTPURLResponse, if available.
     @param HTTPURLResponse The response which indicates an error occurred.
     @param data The response data associated with the response which should be converted to an
         @c NSString assuming a UTF-8 encoding, if available.
-    @return An @c NSError representing the error.
+    @return An \NSError representing the error.
  */
 + (nullable NSError *)HTTPErrorWithHTTPResponse:(NSHTTPURLResponse *)HTTPURLResponse
                                            data:(nullable NSData *)data;

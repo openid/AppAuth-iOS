@@ -32,7 +32,7 @@ NS_ASSUME_NONNULL_BEGIN
     @param error The authorization error.
     @discussion This is a hard error (not a transient network issue) that indicates a problem with
         the authorization. You should stop using the @c OIDAuthState when such an error is
-        encountered. If the @c NSError.error code is @c ::OIDErrorCodeOAuthInvalidGrant then
+        encountered. If the \NSError_code is @c ::OIDErrorCodeOAuthInvalidGrant then
         the session may be recoverable with user interaction (i.e. re-authentication). In all cases
         you should consider the user unauthorized, and remove locally cached resources that require
         that authorization.  @c OIDAuthState will call this method automatically if it encounters

@@ -62,8 +62,8 @@ typedef void (^OIDTokenCallback)(OIDTokenResponse *_Nullable tokenResponse,
 typedef NSDictionary<NSString *, NSString *> *_Nullable OIDTokenEndpointParameters;
 
 /*! @class OIDAuthorizationService
-    @brief Performs various OAuth and OpenID Connect related RPCs via @c SFSafariViewController or
-        @c NSURLSession.
+    @brief Performs various OAuth and OpenID Connect related RPCs via \SFSafariViewController or
+        \NSURLSession.
  */
 @interface OIDAuthorizationService : NSObject
 
@@ -106,10 +106,10 @@ typedef NSDictionary<NSString *, NSString *> *_Nullable OIDTokenEndpointParamete
                                          completion:(OIDDiscoveryCallback)completion;
 
 /*! @fn presentAuthorizationRequest:presentingViewController:callback:
-    @brief Perform an authorization flow using @c SFSafariViewController.
+    @brief Perform an authorization flow using \SFSafariViewController.
     @param request The authorization request.
     @param presentingViewController The view controller from which to present the
-        @c SFSafariViewController.
+        \SFSafariViewController.
     @param callback The method called when the request has completed or failed.
     @return A @c OIDAuthorizationFlowSession instance which will terminate when it
         receives a @c OIDAuthorizationFlowSession.cancel message, or after processing a
@@ -144,7 +144,7 @@ typedef NSDictionary<NSString *, NSString *> *_Nullable OIDTokenEndpointParamete
 - (void)cancel;
 
 /*! @brief Clients should call this method with the result of the authorization code flow if it
-        becomes available. Causes the @c SFSafariViewController created by the
+        becomes available. Causes the \SFSafariViewController created by the
         @c OIDAuthorizationService::presentAuthorizationRequest:presentingViewController:callback:
         method to be dismissed, the pending request's completion block is invoked, and this method
         returns.
