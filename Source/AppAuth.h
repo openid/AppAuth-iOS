@@ -55,4 +55,8 @@
     extensions (standard or otherwise) with the ability to handle additional params
     in all protocol requests and responses.
 
+    <b>Homepage</b>: http://openid.github.io/AppAuth-iOS/ <br>
+    <b>API Documentation</b>: http://openid.github.io/AppAuth-iOS/docs/latest <br>
+    <b>Git Repository</b>: https://github.com/openid/AppAuth-iOS <br>
+
  */
