@@ -79,11 +79,15 @@ authorization state of the session.
 You can configure AppAuth by specifying the endpoints directly:
 
 ```objc
-NSURL *authorizationEndpoint = [NSURL URLWithString:@"https://accounts.google.com/o/oauth2/v2/auth"];
-NSURL *tokenEndpoint = [NSURL URLWithString:@"https://www.googleapis.com/oauth2/v4/token"];
+NSURL *authorizationEndpoint =
+    [NSURL URLWithString:@"https://accounts.google.com/o/oauth2/v2/auth"];
+NSURL *tokenEndpoint =
+    [NSURL URLWithString:@"https://www.googleapis.com/oauth2/v4/token"];
+
 OIDServiceConfiguration *configuration =
-    [[OIDServiceConfiguration alloc] initWithAuthorizationEndpoint:authorizationEndpoint
-                                                     tokenEndpoint:tokenEndpoint];
+    [[OIDServiceConfiguration alloc]
+        initWithAuthorizationEndpoint:authorizationEndpoint
+                        tokenEndpoint:tokenEndpoint];
 
 // perform the auth request...
 ```
@@ -92,11 +96,14 @@ Or through discovery:
 
 ```objc
 NSURL *issuer = [NSURL URLWithString:@"https://accounts.google.com"];
+
 [OIDAuthorizationService discoverServiceConfigurationForIssuer:issuer
-    completion:^(OIDServiceConfiguration *_Nullable configuration, NSError *_Nullable error) {
+    completion:^(OIDServiceConfiguration *_Nullable configuration,
+                 NSError *_Nullable error) {
 
   if (!configuration) {
-    NSLog(@"Error retrieving discovery document: %@", [error localizedDescription]);
+    NSLog(@"Error retrieving discovery document: %@",
+          [error localizedDescription]);
     return;
   }
 
@@ -106,12 +113,13 @@ NSURL *issuer = [NSURL URLWithString:@"https://accounts.google.com"];
 
 ### Authorizing
 
-First you need to have a property in your AppDelegate to hold the session, in order to continue the
-authorization flow from the redirect.
+First you need to have a property in your AppDelegate to hold the session, in
+order to continue the authorization flow from the redirect.
 
 ```objc
 // property of the app's AppDelegate
-@property(nonatomic, strong, nullable) id<OIDAuthorizationFlowSession> currentAuthorizationFlow;
+@property(nonatomic, strong, nullable)
+    id<OIDAuthorizationFlowSession> currentAuthorizationFlow;
 ```
 
 And your main class, a property to store the auth state:
@@ -121,25 +129,27 @@ And your main class, a property to store the auth state:
 @property(nonatomic, strong, nullable) OIDAuthState *authState;
 ```
 
-Then, initiate the authorization request. By using the `authStateByPresentingAuthorizationRequest`
-convenience method, the token exchange will be performed automatically, and everything will be
-protected with PKCE (if the server supports it). AppAuth also allows you to perform these
-requests manually. See the `authNoCodeExchange` method in the included Example app for a demonstration.
+Then, initiate the authorization request. By using the 
+`authStateByPresentingAuthorizationRequest` convenience method, the token
+exchange will be performed automatically, and everything will be protected with
+PKCE (if the server supports it). AppAuth also allows you to perform these
+requests manually. See the `authNoCodeExchange` method in the included Example
+app for a demonstration.
 
 ```objc
 // builds authentication request
 OIDAuthorizationRequest *request =
     [[OIDAuthorizationRequest alloc] initWithConfiguration:configuration
                                                   clientId:kClientID
-                                                    scopes:@[OIDScopeOpenID, OIDScopeProfile]
+                                                    scopes:@[OIDScopeOpenID,
+                                                             OIDScopeProfile]
                                                redirectURL:KRedirectURI
                                               responseType:OIDResponseTypeCode
                                       additionalParameters:nil];
 
 // performs authentication request
-AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-NSLog(@"Initiating authorization request with scope: %@", request.scope);
-
+AppDelegate *appDelegate =
+    (AppDelegate *)[UIApplication sharedApplication].delegate;
 appDelegate.currentAuthorizationFlow =
     [OIDAuthState authStateByPresentingAuthorizationRequest:request
         presentingViewController:self
@@ -201,7 +211,8 @@ needing to worry about token freshness.
 
 ## API Documentation
 
-Browse the [API documentation](http://openid.github.io/AppAuth-iOS/docs/latest/annotated.html).
+Browse the [API documentation]
+(http://openid.github.io/AppAuth-iOS/docs/latest/annotated.html).
 
 ## Included Sample
 
