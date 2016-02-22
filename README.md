@@ -36,8 +36,8 @@ Safari) on earlier versions.
 Both Custom URI Schemes (all supported versions of iOS) and Universal Links
 (iOS 9+) can be used with the library.
 
-In general, AppAuth can work with any Authorization Server (AS) that [supports
-apps](https://tools.ietf.org/html/draft-ietf-oauth-native-apps-00),
+In general, AppAuth can work with any Authorization Server (AS) that supports
+[native apps](https://tools.ietf.org/html/draft-ietf-oauth-native-apps-00),
 either through custom URI scheme redirects, or universal links.
 AS's that assume all clients are web-based or require clients to maintain
 confidentiality of the client secrets may not work well.
@@ -74,23 +74,59 @@ requests and responses, and provides a convenience method to call an API with
 fresh tokens. This is the only object that you need to serialize to retain the
 authorization state of the session.
 
+### Configuration
+
+You can configure AppAuth by specifying the endpoints directly:
+
+```objc
+NSURL *authorizationEndpoint = [NSURL URLWithString:@"https://accounts.google.com/o/oauth2/v2/auth"];
+NSURL *tokenEndpoint = [NSURL URLWithString:@"https://www.googleapis.com/oauth2/v4/token"];
+OIDServiceConfiguration *configuration =
+    [[OIDServiceConfiguration alloc] initWithAuthorizationEndpoint:authorizationEndpoint
+                                                     tokenEndpoint:tokenEndpoint];
+
+// perform the auth request...
+```
+
+Or through discovery:
+
+```objc
+NSURL *issuer = [NSURL URLWithString:@"https://accounts.google.com"];
+[OIDAuthorizationService discoverServiceConfigurationForIssuer:issuer
+    completion:^(OIDServiceConfiguration *_Nullable configuration, NSError *_Nullable error) {
+
+  if (!configuration) {
+    NSLog(@"Error retrieving discovery document: %@", [error localizedDescription]);
+    return;
+  }
+
+  // perform the auth request...
+}];
+```
+
 ### Authorizing
 
-The OAuth configuration can be fetched via OpenID Connect discovery, or created
-manually. Here we construct it manually by specifying the endpoints.
+First you need to have a property in your AppDelegate to hold the session, in order to continue the
+authorization flow from the redirect.
 
 ```objc
 // property of the app's AppDelegate
 @property(nonatomic, strong, nullable) id<OIDAuthorizationFlowSession> currentAuthorizationFlow;
+```
 
+And your main class, a property to store the auth state:
+
+```objc
 // property of the containing class
 @property(nonatomic, strong, nullable) OIDAuthState *authState;
+```
 
-//...
+Then, initiate the authorization request. By using the `authStateByPresentingAuthorizationRequest`
+convenience method, the token exchange will be performed automatically, and everything will be
+protected with PKCE (if the server supports it). AppAuth also allows you to perform these
+requests manually. See the `authNoCodeExchange` method in the included Example app for a demonstration.
 
-OIDServiceConfiguration *configuration =
-    [[OIDServiceConfiguration alloc] initWithAuthorizationEndpoint:kAuthorizationEndpoint
-                                                     tokenEndpoint:kTokenEndpoint];
+```objc
 // builds authentication request
 OIDAuthorizationRequest *request =
     [[OIDAuthorizationRequest alloc] initWithConfiguration:configuration
