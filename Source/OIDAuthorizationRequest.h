@@ -27,6 +27,12 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/*! @brief The @c code_challenge_method  value for the S256 code challenge.
+    @see https://tools.ietf.org/html/rfc7636#section-4.3
+ */
+extern NSString *const OIDOAuthorizationRequestCodeChallengeMethodS256;
+
+
 /*! @class OIDAuthorizationRequest
     @brief Represents an authorization request.
     @see https://tools.ietf.org/html/rfc6749#section-4
@@ -87,9 +93,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /*! @property codeVerifier
     @brief The PKCE code verifier.
-    @discussion The PKCE codeVerifier (if not nil) is used to generate the @c codeChallenge which is
-        sent in the request. The codeVerifier itself is not included in the authorization request
-        that is sent on the wire, but should be sent in the token exchange request.
+    @remarks code_verifier
+    @discussion The code verifier itself is not included in the authorization request that is sent
+        on the wire, but needs to be in the token exchange request.
         @c OIDAuthorizationResponse.tokenExchangeRequest will create a @c OIDTokenRequest that
         includes this parameter automatically.
     @see https://tools.ietf.org/html/rfc7636#section-4.1
@@ -97,23 +103,15 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic, readonly, nullable) NSString *codeVerifier;
 
 /*! @property codeChallenge
-    @brief The PKCE code_challenge.
+    @brief The PKCE code challenge, derived from #codeVerifier.
     @remarks code_challenge
-    @discussion The PKCE code_challenge derived from the @c codeVerifier per the specification,
-        by base64url encoding (with no padding) the SHA256 of the @c codeVerifier. If
-        @c codeVerifier is set, it will be calculated and sent along with @c codeChallengeMethod
-        in the authorization request.
     @see https://tools.ietf.org/html/rfc7636#section-4.2
  */
 @property(nonatomic, readonly, nullable) NSString *codeChallenge;
 
 /*! @property codeChallengeMethod
-    @brief The PKCE code challenge method.
+    @brief The method used to compute the @c #codeChallenge
     @remarks code_challenge_method
-    @discussion If this request includes @c codeChallenge, this value be "S256", otherwise nil.
-       The PKCE "plain" method is not supported by AppAuth, as iOS is capable of generating a SHA256
-       hash and is mandatory to implement (MTI) for servers who support PKCE. If you need to use
-       "plain" for some reason, it is possible to do manually using the @c #additionalParameters.
     @see https://tools.ietf.org/html/rfc7636#section-4.3
  */
 @property(nonatomic, readonly, nullable) NSString *codeChallengeMethod;
@@ -132,14 +130,16 @@ NS_ASSUME_NONNULL_BEGIN
 - (nullable instancetype)init NS_UNAVAILABLE;
 
 /*! @fn initWithConfiguration:clientId:scopes:redirectURL:responseType:additionalParameters:
-    @brief Creates an authorization request.
+    @brief Creates an authorization request with opinionated defaults (a secure @c state, and
+        PKCE with S256 as the @c code_challenge_method).
     @param configuration The service's configuration.
     @param clientID The client identifier.
     @param scopes An array of scopes to combine into a single scope string per the OAuth2 spec.
     @param redirectURL The client's redirect URI.
     @param responseType The expected response type.
     @param additionalParameters The client's additional authorization parameters.
-    @remarks This convenience initializer generates a state parameter automatically.
+    @remarks This convenience initializer generates a state parameter and PKCE challenges
+        automatically.
  */
 - (nullable instancetype)initWithConfiguration:(OIDServiceConfiguration *)configuration
                 clientId:(NSString *)clientID
@@ -148,16 +148,22 @@ NS_ASSUME_NONNULL_BEGIN
             responseType:(NSString *)responseType
     additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters;
 
-/*! @fn initWithConfiguration:clientId:scope:redirectURL:responseType:state:codeVerifier:additionalParameters:
+/*! @fn initWithConfiguration:clientId:scope:redirectURL:responseType:state:codeVerifier:codeChallenge:codeChallengeMethod:additionalParameters:
     @brief Designated initializer.
     @param configuration The service's configuration.
     @param clientID The client identifier.
-    @param scope A scope string per the OAuth2 spec (a space-delimited set of scopes.)
+    @param scope A scope string per the OAuth2 spec (a space-delimited set of scopes).
     @param redirectURL The client's redirect URI.
     @param responseType The expected response type.
     @param state An opaque value used by the client to maintain state between the request and
         callback.
-    @param codeVerifier The PKCE code verifier.
+    @param codeVerifier The PKCE code verifier. See @c OIDAuthorizationRequest.generateCodeVerifier.
+    @param codeChallenge The PKCE code challenge, calculated from the code verifier such as with
+        @c OIDAuthorizationRequest.codeChallengeS256ForVerifier:.
+    @param codeChallengeMethod The PKCE code challenge method.
+        ::OIDOAuthorizationRequestCodeChallengeMethodS256 when
+        @c OIDAuthorizationRequest.codeChallengeS256ForVerifier: is used to create the code
+        challenge.
     @param additionalParameters The client's additional authorization parameters.
  */
 - (nullable instancetype)initWithConfiguration:(OIDServiceConfiguration *)configuration
@@ -167,6 +173,8 @@ NS_ASSUME_NONNULL_BEGIN
             responseType:(NSString *)responseType
                    state:(nullable NSString *)state
             codeVerifier:(nullable NSString *)codeVerifier
+           codeChallenge:(nullable NSString *)codeChallenge
+     codeChallengeMethod:(nullable NSString *)codeChallengeMethod
     additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters
     NS_DESIGNATED_INITIALIZER;
 
@@ -183,14 +191,26 @@ NS_ASSUME_NONNULL_BEGIN
     @return The generated state.
     @see https://tools.ietf.org/html/rfc6819#section-5.3.5
  */
-+ (NSString *)generateState;
++ (nullable NSString *)generateState;
 
 /*! @fn generateCodeVerifier
     @brief Constructs a PKCE-compliant code verifier.
     @return The generated code verifier.
     @see https://tools.ietf.org/html/rfc7636#section-4.1
  */
-+ (NSString *)generateCodeVerifier;
++ (nullable NSString *)generateCodeVerifier;
+
+/*! @fn codeChallengeS256ForVerifier:
+    @brief Creates a PKCE S256 codeChallenge from the codeVerifier.
+    @param codeVerifier The code verifier from which the code challenge will be derived.
+    @return The generated code challenge.
+    @details Generate a secure code verifier to pass into this method with
+        @c OIDAuthorizationRequest.generateCodeVerifier. The matching @c #codeChallengeMethod for
+        @c #codeChallenge%s created by this method is
+        ::OIDOAuthorizationRequestCodeChallengeMethodS256.
+    @see https://tools.ietf.org/html/rfc7636#section-4.1
+ */
++ (nullable NSString *)codeChallengeS256ForVerifier:(nullable NSString *)codeVerifier;
 
 @end
 

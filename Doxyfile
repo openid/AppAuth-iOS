@@ -327,7 +327,9 @@ SEARCH_INCLUDES        = YES
 INCLUDE_PATH           = 
 INCLUDE_FILE_PATTERNS  = 
 PREDEFINED             = NS_UNAVAILABLE \
-                         "NS_ENUM(type, name)=enum name"
+                         "NS_ENUM(type, name)=enum name" \
+                         NS_ASSUME_NONNULL_BEGIN \
+                         NS_ASSUME_NONNULL_END
 EXPAND_AS_DEFINED      = 
 SKIP_FUNCTION_MACROS   = YES
 #---------------------------------------------------------------------------
