@@ -6,7 +6,6 @@
     <title>AppAuth for iOS by openid</title>
 
     <link rel="stylesheet" href="stylesheets/styles.css">
-    <link rel="stylesheet" href="stylesheets/styles-override.css">
     <link rel="stylesheet" href="stylesheets/github-light.css">
     <meta name="viewport" content="width=device-width">
     <!--[if lt IE 9]>
@@ -46,7 +45,55 @@ extensions (standard or otherwise) with the ability to handle additional params
 in all protocol requests and responses.</p>
 
 <h2>
-<a id="example-auth-flow" class="anchor" href="#example-auth-flow" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Example Auth Flow</h2>
+<a id="specification" class="anchor" href="#specification" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Specification</h2>
+
+<h3>
+<a id="supported-ios-versions" class="anchor" href="#supported-ios-versions" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Supported iOS Versions</h3>
+
+<p>AppAuth supports iOS 7 and above.</p>
+
+<p>iOS 9+ uses the in-app browser tab pattern
+(via <code>SFSafariViewController</code>), and falls back to the system browser (mobile
+Safari) on earlier versions.</p>
+
+<h3>
+<a id="authorization-server-support" class="anchor" href="#authorization-server-support" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Authorization Server Support</h3>
+
+<p>Both Custom URI Schemes (all supported versions of iOS) and Universal Links
+(iOS 9+) can be used with the library.</p>
+
+<p>In general, AppAuth can work with any Authorization Server (AS) that supports
+<a href="https://tools.ietf.org/html/draft-ietf-oauth-native-apps-00">native apps</a>,
+either through custom URI scheme redirects, or universal links.
+AS's that assume all clients are web-based or require clients to maintain
+confidentiality of the client secrets may not work well.</p>
+
+<h2>
+<a id="try" class="anchor" href="#try" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Try</h2>
+
+<p>Want to try out AppAuth? Just run:</p>
+
+<pre><code>pod try AppAuth
+</code></pre>
+
+<p>Follow the instructions in <a href="Example/README.md">Example/README.md</a> to configure
+with your own OAuth client (you need to update 3 configuration points with your
+client info to try the demo).</p>
+
+<h2>
+<a id="setup" class="anchor" href="#setup" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Setup</h2>
+
+<p>If you use <a href="https://guides.cocoapods.org/using/getting-started.html">CocoaPods</a>,
+simply add:</p>
+
+<pre><code>pod 'AppAuth'
+</code></pre>
+
+<p>To your <code>Podfile</code> and run <code>pod install</code>. Otherwise, add <code>AppAuth.xcodeproj</code>
+into your workspace.</p>
+
+<h2>
+<a id="auth-flow" class="anchor" href="#auth-flow" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Auth Flow</h2>
 
 <p>AppAuth supports both manual interaction with the Authorization Server
 where you need to perform your own token exchanges, as well as convenience
@@ -59,71 +106,110 @@ fresh tokens. This is the only object that you need to serialize to retain the
 authorization state of the session.</p>
 
 <h3>
-<a id="authorizing" class="anchor" href="#authorizing" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Authorizing</h3>
+<a id="configuration" class="anchor" href="#configuration" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Configuration</h3>
 
-<p>The OAuth configuration can be fetched via OpenID Connect discovery, or created
-manually. Here we construct it manually by specifying the endpoints.</p>
+<p>You can configure AppAuth by specifying the endpoints directly:</p>
 
-<div class="highlight highlight-source-objc"><pre>    <span class="pl-c">// property of the app's AppDelegate</span>
-    @property(nonatomic, strong, nullable) <span class="pl-k">id</span>&lt;OIDAuthorizationFlowSession&gt; currentAuthorizationFlow;
+<div class="highlight highlight-source-objc"><pre><span class="pl-c1">NSURL</span> *authorizationEndpoint =
+    [<span class="pl-c1">NSURL</span> <span class="pl-c1">URLWithString:</span><span class="pl-s"><span class="pl-pds">@"</span>https://accounts.google.com/o/oauth2/v2/auth<span class="pl-pds">"</span></span>];
+<span class="pl-c1">NSURL</span> *tokenEndpoint =
+    [<span class="pl-c1">NSURL</span> <span class="pl-c1">URLWithString:</span><span class="pl-s"><span class="pl-pds">@"</span>https://www.googleapis.com/oauth2/v4/token<span class="pl-pds">"</span></span>];
 
-    <span class="pl-c">// property of the containing class</span>
-    @property(nonatomic, strong, nullable) OIDAuthState *authState;
+OIDServiceConfiguration *configuration =
+    [[OIDServiceConfiguration <span class="pl-c1">alloc</span>]
+        <span class="pl-c1">initWithAuthorizationEndpoint:</span>authorizationEndpoint
+                        <span class="pl-c1">tokenEndpoint:</span>tokenEndpoint];
 
-    <span class="pl-c">//...</span>
+<span class="pl-c">// perform the auth request...</span></pre></div>
 
-    OIDServiceConfiguration *configuration =
-        [[OIDServiceConfiguration <span class="pl-c1">alloc</span>] <span class="pl-c1">initWithAuthorizationEndpoint:</span><span class="pl-c1">kAuthorizationEndpoint</span>
-                                                         <span class="pl-c1">tokenEndpoint:</span><span class="pl-c1">kTokenEndpoint</span>];
-    <span class="pl-c">// builds authentication request</span>
-    OIDAuthorizationRequest *request =
-        [[OIDAuthorizationRequest <span class="pl-c1">alloc</span>] <span class="pl-c1">initWithConfiguration:</span>configuration
-                                                      <span class="pl-c1">clientId:</span><span class="pl-c1">kClientID</span>
-                                                        <span class="pl-c1">scopes:</span>@[OIDScopeOpenID, OIDScopeProfile]
-                                                   <span class="pl-c1">redirectURL:</span>KRedirectURI
-                                                  <span class="pl-c1">responseType:</span>OIDResponseTypeCode
-                                          <span class="pl-c1">additionalParameters:</span><span class="pl-c1">nil</span>];
+<p>Or through discovery:</p>
 
-    <span class="pl-c">// performs authentication request</span>
-    AppDelegate *appDelegate = (AppDelegate *)[UIApplication <span class="pl-c1">sharedApplication</span>].delegate;
-    <span class="pl-c1">NSLog</span>(<span class="pl-s"><span class="pl-pds">@"</span>Initiating authorization request with scope: <span class="pl-c1">%@</span><span class="pl-pds">"</span></span>, request.scope);
+<div class="highlight highlight-source-objc"><pre><span class="pl-c1">NSURL</span> *issuer = [<span class="pl-c1">NSURL</span> <span class="pl-c1">URLWithString:</span><span class="pl-s"><span class="pl-pds">@"</span>https://accounts.google.com<span class="pl-pds">"</span></span>];
 
-    appDelegate.currentAuthorizationFlow =
-        [OIDAuthState <span class="pl-c1">authStateByPresentingAuthorizationRequest:</span>request
-            <span class="pl-c1">presentingViewController:</span><span class="pl-v">self</span>
-                            <span class="pl-c1">callback:</span>^(OIDAuthState *_Nullable authState,
-                                       <span class="pl-c1">NSError</span> *_Nullable error) {
-      <span class="pl-k">if</span> (authState) {
-        <span class="pl-c1">NSLog</span>(<span class="pl-s"><span class="pl-pds">@"</span>Got authorization tokens. Access token: <span class="pl-c1">%@</span><span class="pl-pds">"</span></span>,
-              authState.<span class="pl-smi">lastTokenResponse</span>.<span class="pl-smi">accessToken</span>);
-        [<span class="pl-v">self</span> <span class="pl-c1">setAuthState:</span>authState];
-      } <span class="pl-k">else</span> {
-        <span class="pl-c1">NSLog</span>(<span class="pl-s"><span class="pl-pds">@"</span>Authorization error: <span class="pl-c1">%@</span><span class="pl-pds">"</span></span>, [error <span class="pl-c1">localizedDescription</span>]);
-        [<span class="pl-v">self</span> <span class="pl-c1">setAuthState:</span><span class="pl-c1">nil</span>];
-      }
-    }];</pre></div>
+[OIDAuthorizationService <span class="pl-c1">discoverServiceConfigurationForIssuer:</span>issuer
+    <span class="pl-c1">completion:</span>^(OIDServiceConfiguration *_Nullable configuration,
+                 <span class="pl-c1">NSError</span> *_Nullable error) {
+
+  <span class="pl-k">if</span> (!configuration) {
+    <span class="pl-c1">NSLog</span>(<span class="pl-s"><span class="pl-pds">@"</span>Error retrieving discovery document: <span class="pl-c1">%@</span><span class="pl-pds">"</span></span>,
+          [error <span class="pl-c1">localizedDescription</span>]);
+    <span class="pl-k">return</span>;
+  }
+
+  <span class="pl-c">// perform the auth request...</span>
+}];</pre></div>
 
 <h3>
-<a id="passing-through-the-authorization-grant" class="anchor" href="#passing-through-the-authorization-grant" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Passing through the Authorization Grant</h3>
+<a id="authorizing" class="anchor" href="#authorizing" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Authorizing</h3>
+
+<p>First you need to have a property in your AppDelegate to hold the session, in
+order to continue the authorization flow from the redirect.</p>
+
+<div class="highlight highlight-source-objc"><pre><span class="pl-c">// property of the app's AppDelegate</span>
+@property(nonatomic, strong, nullable)
+    <span class="pl-k">id</span>&lt;OIDAuthorizationFlowSession&gt; currentAuthorizationFlow;</pre></div>
+
+<p>And your main class, a property to store the auth state:</p>
+
+<div class="highlight highlight-source-objc"><pre><span class="pl-c">// property of the containing class</span>
+@property(nonatomic, strong, nullable) OIDAuthState *authState;</pre></div>
+
+<p>Then, initiate the authorization request. By using the 
+<code>authStateByPresentingAuthorizationRequest</code> convenience method, the token
+exchange will be performed automatically, and everything will be protected with
+PKCE (if the server supports it). AppAuth also allows you to perform these
+requests manually. See the <code>authNoCodeExchange</code> method in the included Example
+app for a demonstration.</p>
+
+<div class="highlight highlight-source-objc"><pre><span class="pl-c">// builds authentication request</span>
+OIDAuthorizationRequest *request =
+    [[OIDAuthorizationRequest <span class="pl-c1">alloc</span>] <span class="pl-c1">initWithConfiguration:</span>configuration
+                                                  <span class="pl-c1">clientId:</span><span class="pl-c1">kClientID</span>
+                                                    <span class="pl-c1">scopes:</span>@[OIDScopeOpenID,
+                                                             <span class="pl-c1">OIDScopeProfile</span>]
+                                               <span class="pl-c1">redirectURL:</span>KRedirectURI
+                                              <span class="pl-c1">responseType:</span>OIDResponseTypeCode
+                                      <span class="pl-c1">additionalParameters:</span><span class="pl-c1">nil</span>];
+
+<span class="pl-c">// performs authentication request</span>
+AppDelegate *appDelegate =
+    (AppDelegate *)[UIApplication <span class="pl-c1">sharedApplication</span>].delegate;
+appDelegate.currentAuthorizationFlow =
+    [OIDAuthState <span class="pl-c1">authStateByPresentingAuthorizationRequest:</span>request
+        <span class="pl-c1">presentingViewController:</span><span class="pl-v">self</span>
+                        <span class="pl-c1">callback:</span>^(OIDAuthState *_Nullable authState,
+                                   <span class="pl-c1">NSError</span> *_Nullable error) {
+  <span class="pl-k">if</span> (authState) {
+    <span class="pl-c1">NSLog</span>(<span class="pl-s"><span class="pl-pds">@"</span>Got authorization tokens. Access token: <span class="pl-c1">%@</span><span class="pl-pds">"</span></span>,
+          authState.<span class="pl-smi">lastTokenResponse</span>.<span class="pl-smi">accessToken</span>);
+    [<span class="pl-v">self</span> <span class="pl-c1">setAuthState:</span>authState];
+  } <span class="pl-k">else</span> {
+    <span class="pl-c1">NSLog</span>(<span class="pl-s"><span class="pl-pds">@"</span>Authorization error: <span class="pl-c1">%@</span><span class="pl-pds">"</span></span>, [error <span class="pl-c1">localizedDescription</span>]);
+    [<span class="pl-v">self</span> <span class="pl-c1">setAuthState:</span><span class="pl-c1">nil</span>];
+  }
+}];</pre></div>
+
+<h3>
+<a id="handling-the-redirect" class="anchor" href="#handling-the-redirect" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Handling the Redirect</h3>
 
 <p>The authorization response URL is returned to the app via the iOS openURL
 app delegate method, so you need to pipe this through to the current
 authorization session (created in the previous session).</p>
 
-<div class="highlight highlight-source-objc"><pre>    - (<span class="pl-k">BOOL</span>)application:(UIApplication *)app
-                openURL:(<span class="pl-c1">NSURL</span> *)url
-                options:(<span class="pl-c1">NSDictionary</span>&lt;<span class="pl-c1">NSString</span> *, <span class="pl-k">id</span>&gt; *)options {
-      <span class="pl-c">// Sends the URL to the current authorization flow (if any) which will</span>
-      <span class="pl-c">// process it if it relates to an authorization response.</span>
-      <span class="pl-k">if</span> ([_currentAuthorizationFlow <span class="pl-c1">resumeAuthorizationFlowWithURL:</span>url]) {
-        _currentAuthorizationFlow = <span class="pl-c1">nil</span>;
-        <span class="pl-k">return</span> <span class="pl-c1">YES</span>;
-      }
+<div class="highlight highlight-source-objc"><pre>- (<span class="pl-k">BOOL</span>)application:(UIApplication *)app
+            openURL:(<span class="pl-c1">NSURL</span> *)url
+            options:(<span class="pl-c1">NSDictionary</span>&lt;<span class="pl-c1">NSString</span> *, <span class="pl-k">id</span>&gt; *)options {
+  <span class="pl-c">// Sends the URL to the current authorization flow (if any) which will</span>
+  <span class="pl-c">// process it if it relates to an authorization response.</span>
+  <span class="pl-k">if</span> ([_currentAuthorizationFlow <span class="pl-c1">resumeAuthorizationFlowWithURL:</span>url]) {
+    _currentAuthorizationFlow = <span class="pl-c1">nil</span>;
+    <span class="pl-k">return</span> <span class="pl-c1">YES</span>;
+  }
 
-      <span class="pl-c">// Your additional URL handling (if any) goes here.</span>
+  <span class="pl-c">// Your additional URL handling (if any) goes here.</span>
 
-      <span class="pl-k">return</span> <span class="pl-c1">NO</span>;
-    }</pre></div>
+  <span class="pl-k">return</span> <span class="pl-c1">NO</span>;
+}</pre></div>
 
 <h3>
 <a id="making-api-calls" class="anchor" href="#making-api-calls" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Making API Calls</h3>
@@ -133,21 +219,31 @@ recommend that users of the <code>OIDAuthState</code> convenience wrapper use th
 <code>withFreshTokensPerformAction:</code> method to perform their API calls to avoid
 needing to worry about token freshness.</p>
 
-<div class="highlight highlight-source-objc"><pre>    [_authState <span class="pl-c1">withFreshTokensPerformAction:</span>^(<span class="pl-c1">NSString</span> *_Nonnull accessToken,
-                                               <span class="pl-c1">NSString</span> *_Nonnull idToken,
-                                               <span class="pl-c1">NSError</span> *_Nullable error) {
-      <span class="pl-k">if</span> (error) {
-        <span class="pl-c1">NSLog</span>(<span class="pl-s"><span class="pl-pds">@"</span>Error fetching fresh tokens: <span class="pl-c1">%@</span><span class="pl-pds">"</span></span>, [error <span class="pl-c1">localizedDescription</span>]);
-        <span class="pl-k">return</span>;
-      }
+<div class="highlight highlight-source-objc"><pre>[_authState <span class="pl-c1">withFreshTokensPerformAction:</span>^(<span class="pl-c1">NSString</span> *_Nonnull accessToken,
+                                           <span class="pl-c1">NSString</span> *_Nonnull idToken,
+                                           <span class="pl-c1">NSError</span> *_Nullable error) {
+  <span class="pl-k">if</span> (error) {
+    <span class="pl-c1">NSLog</span>(<span class="pl-s"><span class="pl-pds">@"</span>Error fetching fresh tokens: <span class="pl-c1">%@</span><span class="pl-pds">"</span></span>, [error <span class="pl-c1">localizedDescription</span>]);
+    <span class="pl-k">return</span>;
+  }
 
-      <span class="pl-c">// perform your API request using the tokens</span>
-    }];</pre></div>
+  <span class="pl-c">// perform your API request using the tokens</span>
+}];</pre></div>
+
+<h2>
+<a id="api-documentation" class="anchor" href="#api-documentation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>API Documentation</h2>
+
+<p>Browse the <a href="http://openid.github.io/AppAuth-iOS/docs/latest/annotated.html">API documentation</a>.</p>
 
 <h2>
 <a id="included-sample" class="anchor" href="#included-sample" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Included Sample</h2>
 
-<p>Try out the included example project <code>Example/Example.xcodeproj</code>.</p>
+<p>You can try out sample included in the source distribution by opening
+<code>Example/Example.xcworkspace</code>. You can easily convert the Example
+workspace to a Pod workspace by deleting the <code>AppAuth</code> project, and
+<a href="#setup">configuring the pod</a>.</p>
+
+<p>You can also <a href="#try">try out the sample via CocoaPods</a>.</p>
 
 <p>Be sure to follow the instructions in <a href="Example/README.md">Example/README.md</a>
 to configure your own OAuth client ID for use with the example.</p>
