@@ -46,6 +46,11 @@ typedef void (^OIDServiceConfigurationCreated)
  */
 @property(nonatomic, readonly) NSURL *tokenEndpoint;
 
+/*! @property registrationEndpoint
+    @brief The dynamic client registration endpoint URI.
+ */
+@property(nonatomic, readonly, nullable) NSURL *registrationEndpoint;
+
 /*! @property discoveryDocument
     @brief The discovery document.
  */
@@ -61,9 +66,11 @@ typedef void (^OIDServiceConfigurationCreated)
 /*! @fn initWithAuthorizationEndpoint:tokenEndpoint:
     @param authorizationEndpoint The authorization endpoint URI.
     @param tokenEndpoint The token exchange and refresh endpoint URI.
+    @param registrationEndpoint The dynamic client registration endpoint URI.
  */
 - (nullable instancetype)initWithAuthorizationEndpoint:(NSURL *)authorizationEndpoint
-                                         tokenEndpoint:(NSURL *)tokenEndpoint;
+                                         tokenEndpoint:(NSURL *)tokenEndpoint
+                                  registrationEndpoint:(nullable NSURL *)registrationEndpoint;
 
 /*! @fn initWithDiscoveryDocument:
     @param discoveryDocument The discovery document from which to extract the required OAuth

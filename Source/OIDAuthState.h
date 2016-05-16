@@ -20,6 +20,7 @@
 @class OIDAuthorizationRequest;
 @class OIDAuthorizationResponse;
 @class OIDAuthState;
+@class OIDRegistrationResponse;
 @class OIDTokenResponse;
 @class OIDTokenRequest;
 @protocol OIDAuthorizationFlowSession;
@@ -82,6 +83,12 @@ typedef void (^OIDAuthStateAuthorizationCallback)(OIDAuthState *_Nullable authSt
         contain the latest access token.
  */
 @property(nonatomic, readonly, nullable) OIDTokenResponse *lastTokenResponse;
+
+/*! @property lastRegistrationResponse
+    @brief The most recent registration response used to update this authorization state. This will
+        contain the latest client credentials.
+ */
+@property(nonatomic, readonly, nullable) OIDRegistrationResponse *lastRegistrationResponse;
 
 /*! @property authorizationError
     @brief The authorization error that invalidated this @c OIDAuthState.
@@ -149,6 +156,13 @@ typedef void (^OIDAuthStateAuthorizationCallback)(OIDAuthState *_Nullable authSt
 - (nullable instancetype)initWithAuthorizationResponse:
     (OIDAuthorizationResponse *)authorizationResponse;
 
+/*! @fn initWithRegistrationResponse:
+    @brief Creates an auth state from an registration response.
+    @param response The registration response.
+ */
+- (nullable instancetype)initWithRegistrationResponse:
+        (OIDRegistrationResponse *)registrationResponse;
+
 /*! @fn initWithAuthorizationResponse:tokenResponse:
     @brief Creates an auth state from an authorization response.
     @param response The authorization response.
@@ -156,6 +170,14 @@ typedef void (^OIDAuthStateAuthorizationCallback)(OIDAuthState *_Nullable authSt
 - (nullable instancetype)initWithAuthorizationResponse:
     (OIDAuthorizationResponse *)authorizationResponse
                                          tokenResponse:(nullable OIDTokenResponse *)tokenResponse;
+
+/*! @fn updateWithRegistrationResponse:
+    @brief Updates the authorization state based on a new registration response.
+    @param registrationResponse The new registration response to update the state with.
+    @discussion Typically called with the response from a successful client registration
+        request. Will reset the auth state.
+ */
+- (void)updateWithRegistrationResponse:(nullable OIDRegistrationResponse *)registrationResponse;
 
 /*! @fn updateWithAuthorizationResponse:error:
     @brief Updates the authorization state based on a new authorization response.

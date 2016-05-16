@@ -19,10 +19,12 @@
 #import "OIDAuthStateTests.h"
 
 #import "OIDAuthorizationResponseTests.h"
+#import "OIDRegistrationResponseTests.h"
 #import "OIDTokenResponseTests.h"
 #import "Source/OIDAuthState.h"
 #import "Source/OIDAuthorizationResponse.h"
 #import "Source/OIDErrorUtilities.h"
+#import "Source/OIDRegistrationResponse.h"
 #import "Source/OIDTokenResponse.h"
 
 @interface OIDAuthStateTests () <OIDAuthStateChangeDelegate, OIDAuthStateErrorDelegate>
@@ -243,6 +245,23 @@
   NSError *oauthError = [[self class] OAuthAuthorizationError];
   [authState updateWithAuthorizationResponse:authorizationResponse error:oauthError];
   XCTAssertNotNil(authState.authorizationError);
+}
+
+/*! @fn testupdateWithRegistrationResponse
+    @brief Tests @c OIDAuthState.updateWithRegistrationResponse: with a success
+        response.
+ */
+- (void)testupdateWithRegistrationResponse {
+  OIDAuthState *authState = [[self class] testInstance];
+  OIDRegistrationResponse *registrationResponse =
+          [OIDRegistrationResponseTests testInstance];
+  [authState updateWithRegistrationResponse:registrationResponse];
+  XCTAssertEqualObjects(authState.lastRegistrationResponse, registrationResponse);
+  XCTAssertNil(authState.refreshToken);
+  XCTAssertNil(authState.scope);
+  XCTAssertNil(authState.lastAuthorizationResponse);
+  XCTAssertNil(authState.authorizationError);
+  XCTAssertFalse(authState.isAuthorized);
 }
 
 /*! @fn testupdateWithTokenResponseSuccess
