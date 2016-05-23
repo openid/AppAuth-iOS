@@ -118,6 +118,12 @@ typedef NS_ENUM(NSInteger, OIDErrorCode) {
           request in the default browser.
    */
   OIDErrorCodeBrowserOpenError = -10,
+
+  /*! @brief Indicates a problem when trying to refresh the tokens.
+   */
+  OIDErrorCodeTokenRefreshError = -11,
+
+
 };
 
 /*! @brief Enum of all possible OAuth error codes as defined by RFC6749
