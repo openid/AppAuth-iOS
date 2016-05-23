@@ -121,6 +121,10 @@ typedef NS_ENUM(NSInteger, OIDErrorCode) {
           request in mobile Safari.
    */
   OIDErrorCodeSafariOpenError = -9,
+
+  /*! @brief Indicates a problem when trying to refresh the tokens.
+  */
+  OIDErrorCodeTokenRefreshError = -10,
 };
 
 /*! @brief Enum of all possible OAuth error codes as defined by RFC6749
