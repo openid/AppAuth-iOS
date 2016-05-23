@@ -322,6 +322,7 @@ static const NSUInteger kExpiryTimeTolerance = 60;
   _lastAuthorizationResponse = nil;
   _lastTokenResponse = nil;
   _authorizationError = nil;
+  [self didChangeState];
 }
 
 - (void)updateWithAuthorizationResponse:(nullable OIDAuthorizationResponse *)authorizationResponse
