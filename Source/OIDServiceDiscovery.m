@@ -134,10 +134,12 @@ static NSString *const kOPTosURIKey = @"op_tos_uri";
 
   for (NSString *field in requiredFields) {
     if (!dictionary[field]) {
-      NSString *errorText = [NSString stringWithFormat:kMissingFieldErrorText, field];
-      *error = [OIDErrorUtilities errorWithCode:OIDErrorCodeInvalidDiscoveryDocument
-                                underlyingError:nil
-                                    description:errorText];
+      if (error) {
+        NSString *errorText = [NSString stringWithFormat:kMissingFieldErrorText, field];
+        *error = [OIDErrorUtilities errorWithCode:OIDErrorCodeInvalidDiscoveryDocument
+                                  underlyingError:nil
+                                      description:errorText];
+      }
       return NO;
     }
   }
@@ -151,10 +153,12 @@ static NSString *const kOPTosURIKey = @"op_tos_uri";
 
   for (NSString *field in requiredURLFields) {
     if (![NSURL URLWithString:dictionary[field]]) {
-      NSString *errorText = [NSString stringWithFormat:kInvalidURLFieldErrorText, field];
-      *error = [OIDErrorUtilities errorWithCode:OIDErrorCodeInvalidDiscoveryDocument
-                                underlyingError:nil
-                                    description:errorText];
+      if (error) {
+        NSString *errorText = [NSString stringWithFormat:kInvalidURLFieldErrorText, field];
+        *error = [OIDErrorUtilities errorWithCode:OIDErrorCodeInvalidDiscoveryDocument
+                                  underlyingError:nil
+                                      description:errorText];
+      }
       return NO;
     }
   }
