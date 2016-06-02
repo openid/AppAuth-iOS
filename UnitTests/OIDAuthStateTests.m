@@ -198,10 +198,10 @@
   XCTAssertNoThrow([NSKeyedArchiver archivedDataWithRootObject:authstate]);
 }
 
-/*! @fn testupdateWithAuthorizationResponseSuccess
+/*! @fn testUpdateWithAuthorizationResponseSuccess
     @brief Tests @c OIDAuthState.updateWithAuthorizationResponse:error: with a success response.
  */
-- (void)testupdateWithAuthorizationResponseSuccess {
+- (void)testUpdateWithAuthorizationResponseSuccess {
   OIDAuthState *authState = [[self class] testInstance];
   OIDAuthorizationResponse *authorizationResponse =
       [OIDAuthorizationResponseTests testInstanceCodeFlow];
@@ -210,33 +210,33 @@
   XCTAssertNil(authState.authorizationError);
 }
 
-/*! @fn testupdateWithAuthorizationResponseOAuthError
+/*! @fn testUpdateWithAuthorizationResponseOAuthError
     @brief Tests @c OIDAuthState.updateWithAuthorizationResponse:error: with an authorization
         error.
  */
-- (void)testupdateWithAuthorizationResponseOAuthError {
+- (void)testUpdateWithAuthorizationResponseOAuthError {
   OIDAuthState *authState = [[self class] testInstance];
   NSError *oauthError = [[self class] OAuthAuthorizationError];
   [authState updateWithAuthorizationResponse:nil error:oauthError];
   XCTAssertNotNil(authState.authorizationError);
 }
 
-/*! @fn testupdateWithAuthorizationResponseTransientError
+/*! @fn testUpdateWithAuthorizationResponseTransientError
     @brief Tests @c OIDAuthState.updateWithAuthorizationResponse:error: with a transient
         (non-OAuth) error.
  */
-- (void)testupdateWithAuthorizationResponseTransientError {
+- (void)testUpdateWithAuthorizationResponseTransientError {
   OIDAuthState *authState = [[self class] testInstance];
   NSError *transientError = [[NSError alloc] init];
   [authState updateWithAuthorizationResponse:nil error:transientError];
   XCTAssertNil(authState.authorizationError);
 }
 
-/*! @fn testupdateWithAuthorizationResponseBothSuccessAndError
+/*! @fn testUpdateWithAuthorizationResponseBothSuccessAndError
     @brief Tests @c OIDAuthState.updateWithAuthorizationResponse:error: with both a success
         response and an authorization error.
  */
-- (void)testupdateWithAuthorizationResponseBothSuccessAndError {
+- (void)testUpdateWithAuthorizationResponseBothSuccessAndError {
   OIDAuthState *authState = [[self class] testInstance];
   OIDAuthorizationResponse *authorizationResponse =
       [OIDAuthorizationResponseTests testInstanceCodeFlow];
@@ -245,10 +245,10 @@
   XCTAssertNotNil(authState.authorizationError);
 }
 
-/*! @fn testupdateWithTokenResponseSuccess
+/*! @fn testUpdateWithTokenResponseSuccess
     @brief Tests @c OIDAuthState.updateWithTokenResponse:error: with a success response.
  */
-- (void)testupdateWithTokenResponseSuccess {
+- (void)testUpdateWithTokenResponseSuccess {
   OIDAuthState *authState = [[self class] testInstance];
   OIDTokenResponse *tokenResponse = [OIDTokenResponseTests testInstanceRefresh];
   [authState updateWithTokenResponse:tokenResponse error:nil];
@@ -258,10 +258,10 @@
   XCTAssertNil(authState.authorizationError);
 }
 
-/*! @fn testupdateWithTokenResponseOAuthError
+/*! @fn testUpdateWithTokenResponseOAuthError
     @brief Tests @c OIDAuthState.updateWithTokenResponse:error: with an authorization error.
  */
-- (void)testupdateWithTokenResponseOAuthError {
+- (void)testUpdateWithTokenResponseOAuthError {
   OIDAuthState *authState = [[self class] testInstance];
   NSError *oauthError = [[self class] OAuthTokenInvalidGrantErrorWithUnderlyingError:nil];
   [authState updateWithTokenResponse:nil error:oauthError];
@@ -269,10 +269,10 @@
   XCTAssertNotNil(authState.authorizationError);
 }
 
-/*! @fn testupdateWithTokenResponseTransientError
+/*! @fn testUpdateWithTokenResponseTransientError
     @brief Tests @c OIDAuthState.updateWithTokenResponse:error: with a transient (non-OAuth) error.
  */
-- (void)testupdateWithTokenResponseTransientError {
+- (void)testUpdateWithTokenResponseTransientError {
   OIDAuthState *authState = [[self class] testInstance];
   NSError *transientError = [[NSError alloc] init];
   [authState updateWithTokenResponse:nil error:transientError];
@@ -282,11 +282,11 @@
   XCTAssertNil(authState.authorizationError);
 }
 
-/*! @fn testupdateWithTokenResponseBothSuccessAndError
+/*! @fn testUpdateWithTokenResponseBothSuccessAndError
     @brief Tests @c OIDAuthState.updateWithTokenResponse:error: with both a success response
         and an authorization error.
  */
-- (void)testupdateWithTokenResponseBothSuccessAndError {
+- (void)testUpdateWithTokenResponseBothSuccessAndError {
   OIDAuthState *authState = [[self class] testInstance];
   OIDTokenResponse *tokenResponse = [OIDTokenResponseTests testInstanceRefresh];
   NSError *oauthError = [[self class] OAuthTokenInvalidGrantErrorWithUnderlyingError:nil];
