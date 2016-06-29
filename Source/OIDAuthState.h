@@ -136,6 +136,26 @@ typedef void (^OIDAuthStateAuthorizationCallback)(OIDAuthState *_Nullable authSt
     presentingViewController:(UIViewController *)presentingViewController
                     callback:(OIDAuthStateAuthorizationCallback)callback;
 
+/*! @fn authStateByPresentingAuthorizationRequest:presentingViewController:modalPresentationStyle:modalTransitionStyle:callback:
+    @brief Convenience method to create a @c OIDAuthState by presenting an authorization request
+        and performing the authorization code exchange in the case of code flow requests.
+    @param authorizationRequest The authorization request to present.
+    @param presentingViewController The view controller from which to present the
+        \SFSafariViewController.
+    @param modalPresentationStyle Modal presentation style for the \SFSafariViewController.
+    @param modalTransitionStyle Modal transition style for the \SFSafariViewController.
+    @param callback The method called when the request has completed or failed.
+    @return A @c OIDAuthorizationFlowSession instance which will terminate when it
+        receives a @c OIDAuthorizationFlowSession.cancel message, or after processing a
+        @c OIDAuthorizationFlowSession.resumeAuthorizationFlowWithURL: message.
+ */
++ (id<OIDAuthorizationFlowSession>)authStateByPresentingAuthorizationRequest:
+    (OIDAuthorizationRequest *)authorizationRequest
+    presentingViewController:(UIViewController *)presentingViewController
+      modalPresentationStyle:(UIModalPresentationStyle)modalPresentationStyle
+        modalTransitionStyle:(UIModalTransitionStyle)modalTransitionStyle
+                    callback:(OIDAuthStateAuthorizationCallback)callback;
+
 /*! @fn init
     @internal
     @brief Unavailable. Please use @c initWithAuthorizationResponse:.

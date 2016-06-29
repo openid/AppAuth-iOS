@@ -120,6 +120,25 @@ typedef NSDictionary<NSString *, NSString *> *_Nullable OIDTokenEndpointParamete
        presentingViewController:(UIViewController *)presentingViewController
                        callback:(OIDAuthorizationCallback)callback;
 
+/*! @fn presentAuthorizationRequest:presentingViewController:modalPresentationStyle:modalTransitionStyle:callback:
+    @brief Perform an authorization flow using \SFSafariViewController.
+    @param request The authorization request.
+    @param presentingViewController The view controller from which to present the
+        \SFSafariViewController.
+    @param modalPresentationStyle Modal presentation style for the \SFSafariViewController.
+    @param modalTransitionStyle Modal transition style for the \SFSafariViewController.
+    @param callback The method called when the request has completed or failed.
+    @return A @c OIDAuthorizationFlowSession instance which will terminate when it
+        receives a @c OIDAuthorizationFlowSession.cancel message, or after processing a
+        @c OIDAuthorizationFlowSession.resumeAuthorizationFlowWithURL: message.
+ */
++ (id<OIDAuthorizationFlowSession>)
+    presentAuthorizationRequest:(OIDAuthorizationRequest *)request
+       presentingViewController:(UIViewController *)presentingViewController
+         modalPresentationStyle:(UIModalPresentationStyle)modalPresentationStyle
+           modalTransitionStyle:(UIModalTransitionStyle)modalTransitionStyle
+                       callback:(OIDAuthorizationCallback)callback;
+
 /*! @fn performTokenRequest:callback:
     @brief Performs a token request.
     @param request The token request.
