@@ -16,7 +16,7 @@
         limitations under the License.
  */
 
-#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
 
 @class OIDAuthorization;
 @class OIDAuthorizationRequest;
@@ -25,6 +25,7 @@
 @class OIDTokenRequest;
 @class OIDTokenResponse;
 @protocol OIDAuthorizationFlowSession;
+@protocol OIDAuthorizationUICoordinator;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -62,8 +63,8 @@ typedef void (^OIDTokenCallback)(OIDTokenResponse *_Nullable tokenResponse,
 typedef NSDictionary<NSString *, NSString *> *_Nullable OIDTokenEndpointParameters;
 
 /*! @class OIDAuthorizationService
-    @brief Performs various OAuth and OpenID Connect related RPCs via \SFSafariViewController or
-        \NSURLSession.
+    @brief Performs various OAuth and OpenID Connect related RPCs via @c SFSafariViewController or
+        @c NSURLSession.
  */
 @interface OIDAuthorizationService : NSObject
 
@@ -105,11 +106,11 @@ typedef NSDictionary<NSString *, NSString *> *_Nullable OIDTokenEndpointParamete
 + (void)discoverServiceConfigurationForDiscoveryURL:(NSURL *)discoveryURL
                                          completion:(OIDDiscoveryCallback)completion;
 
-/*! @fn presentAuthorizationRequest:presentingViewController:callback:
-    @brief Perform an authorization flow using \SFSafariViewController.
+/*! @fn presentAuthorizationRequest:UICoordinator:callback:
+    @brief Perform an authorization flow using a generic flow shim.
     @param request The authorization request.
-    @param presentingViewController The view controller from which to present the
-        \SFSafariViewController.
+    @param UICoordinator Generic authorization UI coordinator that can present an authorization
+        request.
     @param callback The method called when the request has completed or failed.
     @return A @c OIDAuthorizationFlowSession instance which will terminate when it
         receives a @c OIDAuthorizationFlowSession.cancel message, or after processing a
@@ -117,7 +118,7 @@ typedef NSDictionary<NSString *, NSString *> *_Nullable OIDTokenEndpointParamete
  */
 + (id<OIDAuthorizationFlowSession>)
     presentAuthorizationRequest:(OIDAuthorizationRequest *)request
-       presentingViewController:(UIViewController *)presentingViewController
+                  UICoordinator:(id<OIDAuthorizationUICoordinator>)UICoordinator
                        callback:(OIDAuthorizationCallback)callback;
 
 /*! @fn performTokenRequest:callback:
@@ -144,7 +145,7 @@ typedef NSDictionary<NSString *, NSString *> *_Nullable OIDTokenEndpointParamete
 - (void)cancel;
 
 /*! @brief Clients should call this method with the result of the authorization code flow if it
-        becomes available. Causes the \SFSafariViewController created by the
+        becomes available. Causes the @c SFSafariViewController created by the
         @c OIDAuthorizationService::presentAuthorizationRequest:presentingViewController:callback:
         method to be dismissed, the pending request's completion block is invoked, and this method
         returns.
@@ -153,6 +154,13 @@ typedef NSDictionary<NSString *, NSString *> *_Nullable OIDTokenEndpointParamete
     @return YES if the passed URL matches the expected redirect URL and was consumed, NO otherwise.
  */
 - (BOOL)resumeAuthorizationFlowWithURL:(NSURL *)URL;
+
+/*! @brief @c OIDAuthorizationUICoordinator or clients should call this method when the
+         authorization flow failed with a non-OAuth error.
+    @param error The error that is the reason for the failure of this authorization flow.
+    @remarks Has no effect if called more than once, or after a @c cancel message was received.
+ */
+- (void)failAuthorizationFlowWithError:(NSError *)error;
 
 @end
 

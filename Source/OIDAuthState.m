@@ -116,42 +116,50 @@ static const NSUInteger kExpiryTimeTolerance = 60;
 
 #pragma mark - Convenience initializers
 
-+ (id<OIDAuthorizationFlowSession>)authStateByPresentingAuthorizationRequest:
-    (OIDAuthorizationRequest *)authorizationRequest
-    presentingViewController:(UIViewController *)presentingViewController
-                    callback:(OIDAuthStateAuthorizationCallback)callback {
++ (id<OIDAuthorizationFlowSession>)
+    authStateByPresentingAuthorizationRequest:(OIDAuthorizationRequest *)authorizationRequest
+                                UICoordinator:(id<OIDAuthorizationUICoordinator>)UICoordinator
+                                     callback:(OIDAuthStateAuthorizationCallback)callback {
   // presents the authorization request
-  id<OIDAuthorizationFlowSession> authFlowSession =
-      [OIDAuthorizationService presentAuthorizationRequest:authorizationRequest
-                                  presentingViewController:presentingViewController
-          callback:^(OIDAuthorizationResponse *_Nullable authorizationResponse,
-                     NSError *_Nullable error) {
-    // inspects response and processes further if needed (e.g. authorization code exchange)
-    if (authorizationResponse) {
-      if ([authorizationRequest.responseType isEqualToString:OIDResponseTypeCode]) {
-        // if the request is for the code flow (NB. not hybrid), assumes the code is intended for
-        // this client, and performs the authorization code exchange
-        OIDTokenRequest *tokenExchangeRequest = [authorizationResponse tokenExchangeRequest];
-        [OIDAuthorizationService performTokenRequest:tokenExchangeRequest
-                                            callback:^(OIDTokenResponse *_Nullable tokenResponse,
-                                                       NSError *_Nullable error) {
-          OIDAuthState *authState;
-          if (tokenResponse) {
-            authState = [[OIDAuthState alloc] initWithAuthorizationResponse:authorizationResponse
-                                                              tokenResponse:tokenResponse];
-          }
-          callback(authState, error);
-        }];
-      } else {
-        // implicit or hybrid flow (hybrid flow assumes code is not for this client)
-        OIDAuthState *authState =
-            [[OIDAuthState alloc] initWithAuthorizationResponse:authorizationResponse];
-        callback(authState, error);
-      }
-    } else {
-      callback(nil, error);
-    }
-  }];
+  id<OIDAuthorizationFlowSession> authFlowSession = [OIDAuthorizationService
+      presentAuthorizationRequest:authorizationRequest
+                    UICoordinator:UICoordinator
+                         callback:^(OIDAuthorizationResponse *_Nullable authorizationResponse,
+                                    NSError *_Nullable authorizationError) {
+                           // inspects response and processes further if needed (e.g. authorization
+                           // code exchange)
+                           if (authorizationResponse) {
+                             if ([authorizationRequest.responseType
+                                     isEqualToString:OIDResponseTypeCode]) {
+                               // if the request is for the code flow (NB. not hybrid), assumes the
+                               // code is intended for this client, and performs the authorization
+                               // code exchange
+                               OIDTokenRequest *tokenExchangeRequest =
+                                   [authorizationResponse tokenExchangeRequest];
+                               [OIDAuthorizationService
+                                   performTokenRequest:tokenExchangeRequest
+                                              callback:^(OIDTokenResponse *_Nullable tokenResponse,
+                                                         NSError *_Nullable tokenError) {
+                                                OIDAuthState *authState;
+                                                if (tokenResponse) {
+                                                  authState = [[OIDAuthState alloc]
+                                                      initWithAuthorizationResponse:
+                                                          authorizationResponse
+                                                                      tokenResponse:tokenResponse];
+                                                }
+                                                callback(authState, tokenError);
+                                              }];
+                             } else {
+                               // implicit or hybrid flow (hybrid flow assumes code is not for this
+                               // client)
+                               OIDAuthState *authState = [[OIDAuthState alloc]
+                                   initWithAuthorizationResponse:authorizationResponse];
+                               callback(authState, authorizationError);
+                             }
+                           } else {
+                             callback(nil, authorizationError);
+                           }
+                         }];
   return authFlowSession;
 }
 

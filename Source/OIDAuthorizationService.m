@@ -18,10 +18,9 @@
 
 #import "OIDAuthorizationService.h"
 
-#import <SafariServices/SafariServices.h>
-
 #import "OIDAuthorizationRequest.h"
 #import "OIDAuthorizationResponse.h"
+#import "OIDAuthorizationUICoordinator.h"
 #import "OIDDefines.h"
 #import "OIDErrorUtilities.h"
 #import "OIDServiceConfiguration.h"
@@ -38,22 +37,18 @@ static NSString *const kOpenIDConfigurationWellKnownPath = @".well-known/openid-
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface OIDAuthorizationFlowSessionImplementation : NSObject <OIDAuthorizationFlowSession,
-                                                                 SFSafariViewControllerDelegate>
+@interface OIDAuthorizationFlowSessionImplementation : NSObject<OIDAuthorizationFlowSession>
 
 - (instancetype)init NS_UNAVAILABLE;
 
 - (nullable instancetype)initWithRequest:(OIDAuthorizationRequest *)request
     NS_DESIGNATED_INITIALIZER;
 
-- (void)presentSafariViewControllerWithViewController:(UIViewController *)parentViewController
-    callback:(OIDAuthorizationCallback)authorizationFlowCallback;
-
 @end
 
 @implementation OIDAuthorizationFlowSessionImplementation {
-  __weak SFSafariViewController *_safariVC;
   OIDAuthorizationRequest *_request;
+  id<OIDAuthorizationUICoordinator> _UICoordinator;
   OIDAuthorizationCallback _pendingauthorizationFlowCallback;
 }
 
@@ -65,36 +60,29 @@ NS_ASSUME_NONNULL_BEGIN
   return self;
 }
 
-- (void)presentSafariViewControllerWithViewController:(UIViewController *)parentViewController
-    callback:(OIDAuthorizationCallback)authorizationFlowCallback {
+- (void)presentAuthorizationWithCoordinator:(id<OIDAuthorizationUICoordinator>)UICoordinator
+                                   callback:(OIDAuthorizationCallback)authorizationFlowCallback {
+  _UICoordinator = UICoordinator;
   _pendingauthorizationFlowCallback = authorizationFlowCallback;
   NSURL *URL = [_request authorizationRequestURL];
-  if ([SFSafariViewController class]) {
-    SFSafariViewController *safariVC = [[SFSafariViewController alloc] initWithURL:URL
-                                                           entersReaderIfAvailable:NO];
-    safariVC.delegate = self;
-    _safariVC = safariVC;
-    [parentViewController presentViewController:safariVC animated:YES completion:nil];
-  } else {
-    BOOL openedSafari = [[UIApplication sharedApplication] openURL:URL];
-    if (!openedSafari) {
-      NSError *safariError = [OIDErrorUtilities errorWithCode:OIDErrorCodeSafariOpenError
-                                              underlyingError:nil
-                                                  description:@"Unable to open Safari."];
-      [self didFinishWithResponse:nil error:safariError];
-    }
+  BOOL authorizationFlowStarted = [_UICoordinator presentAuthorizationWithURL:URL session:self];
+  if (!authorizationFlowStarted) {
+    NSError *safariError = [OIDErrorUtilities errorWithCode:OIDErrorCodeSafariOpenError
+                                            underlyingError:nil
+                                                description:@"Unable to open Safari."];
+    [self didFinishWithResponse:nil error:safariError];
   }
 }
 
 - (void)cancel {
-  SFSafariViewController *safari = _safariVC;
-  _safariVC = nil;
-  [safari dismissViewControllerAnimated:YES completion:^{
-    NSError *error = [OIDErrorUtilities errorWithCode:OIDErrorCodeUserCanceledAuthorizationFlow
-                                      underlyingError:nil
-                                          description:nil];
-    [self didFinishWithResponse:nil error:error];
-  }];
+  [_UICoordinator dismissAuthorizationAnimated:YES
+                                    completion:^{
+                                      NSError *error = [OIDErrorUtilities
+                                            errorWithCode:OIDErrorCodeUserCanceledAuthorizationFlow
+                                          underlyingError:nil
+                                              description:nil];
+                                      [self didFinishWithResponse:nil error:error];
+                                    }];
 }
 
 - (BOOL)shouldHandleURL:(NSURL *)URL {
@@ -153,23 +141,15 @@ NS_ASSUME_NONNULL_BEGIN
                             userInfo:userInfo];
   }
 
-  if (_safariVC) {
-    SFSafariViewController *safari = _safariVC;
-    _safariVC = nil;
-    [safari dismissViewControllerAnimated:YES completion:^{
-      [self didFinishWithResponse:response error:error];
-    }];
-  } else {
-    [self didFinishWithResponse:response error:error];
-  }
+  [_UICoordinator dismissAuthorizationAnimated:YES
+                                    completion:^{
+                                      [self didFinishWithResponse:response error:error];
+                                    }];
 
   return YES;
 }
 
-- (void)safariViewControllerDidFinish:(SFSafariViewController *)controller {
-  NSError *error = [OIDErrorUtilities errorWithCode:OIDErrorCodeProgramCanceledAuthorizationFlow
-                                    underlyingError:nil
-                                        description:nil];
+- (void)failAuthorizationFlowWithError:(NSError *)error {
   [self didFinishWithResponse:nil error:error];
 }
 
@@ -181,9 +161,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)didFinishWithResponse:(nullable OIDAuthorizationResponse *)response
                         error:(nullable NSError *)error {
   OIDAuthorizationCallback callback = _pendingauthorizationFlowCallback;
-  _safariVC = nil;
   _pendingauthorizationFlowCallback = nil;
-
+  _UICoordinator = nil;
   if (callback) {
     callback(response, error);
   }
@@ -264,13 +243,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (id<OIDAuthorizationFlowSession>)
     presentAuthorizationRequest:(OIDAuthorizationRequest *)request
-       presentingViewController:(UIViewController *)presentingViewController
+                  UICoordinator:(id<OIDAuthorizationUICoordinator>)UICoordinator
                        callback:(OIDAuthorizationCallback)callback {
-  OIDAuthorizationFlowSessionImplementation *flow =
+  OIDAuthorizationFlowSessionImplementation *flowSession =
       [[OIDAuthorizationFlowSessionImplementation alloc] initWithRequest:request];
-  [flow presentSafariViewControllerWithViewController:presentingViewController
-                                             callback:callback];
-  return flow;
+  [flowSession presentAuthorizationWithCoordinator:UICoordinator callback:callback];
+  return flowSession;
 }
 
 #pragma mark - Token Endpoint
