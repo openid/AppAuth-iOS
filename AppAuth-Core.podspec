@@ -6,7 +6,7 @@ Pod::Spec.new do |s|
 
   s.description  = <<-DESC
 
-AppAuth-Core for iOS and macOS is a client SDK for communicating with
+AppAuth-Core for iOS and macOS a client SDK for communicating with
 [OAuth 2.0](https://tools.ietf.org/html/rfc6749) and [OpenID Connect]
 (http://openid.net/specs/openid-connect-core-1_0.html) providers. It strives to
 directly map the requests and responses of those specifications, while following
