@@ -40,6 +40,9 @@
 		341742241C5D8317000EF209 /* UnitTestsInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 341742231C5D8317000EF209 /* UnitTestsInfo.plist */; };
 		3417422B1C5D8502000EF209 /* SafariServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3417422A1C5D8502000EF209 /* SafariServices.framework */; };
 		3417422D1C5D850C000EF209 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3417422C1C5D850C000EF209 /* Security.framework */; };
+		F68103BB1D2568D10053658E /* OIDAuthorizationUICoordinatorIOS.m in Sources */ = {isa = PBXBuildFile; fileRef = F68103B41D2568D10053658E /* OIDAuthorizationUICoordinatorIOS.m */; };
+		F68103BC1D2568D10053658E /* OIDAuthorizationService+IOS.m in Sources */ = {isa = PBXBuildFile; fileRef = F68103B71D2568D10053658E /* OIDAuthorizationService+IOS.m */; };
+		F68103BD1D2568D10053658E /* OIDAuthState+IOS.m in Sources */ = {isa = PBXBuildFile; fileRef = F68103B91D2568D10053658E /* OIDAuthState+IOS.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -128,6 +131,13 @@
 		341742231C5D8317000EF209 /* UnitTestsInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = UnitTestsInfo.plist; sourceTree = "<group>"; };
 		3417422A1C5D8502000EF209 /* SafariServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SafariServices.framework; path = System/Library/Frameworks/SafariServices.framework; sourceTree = SDKROOT; };
 		3417422C1C5D850C000EF209 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		F68103B41D2568D10053658E /* OIDAuthorizationUICoordinatorIOS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OIDAuthorizationUICoordinatorIOS.m; sourceTree = "<group>"; };
+		F68103B51D2568D10053658E /* OIDAuthorizationUICoordinatorIOS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OIDAuthorizationUICoordinatorIOS.h; sourceTree = "<group>"; };
+		F68103B61D2568D10053658E /* OIDAuthorizationUICoordinator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OIDAuthorizationUICoordinator.h; sourceTree = "<group>"; };
+		F68103B71D2568D10053658E /* OIDAuthorizationService+IOS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "OIDAuthorizationService+IOS.m"; sourceTree = "<group>"; };
+		F68103B81D2568D10053658E /* OIDAuthorizationService+IOS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "OIDAuthorizationService+IOS.h"; sourceTree = "<group>"; };
+		F68103B91D2568D10053658E /* OIDAuthState+IOS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "OIDAuthState+IOS.m"; sourceTree = "<group>"; };
+		F68103BA1D2568D10053658E /* OIDAuthState+IOS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "OIDAuthState+IOS.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -173,6 +183,13 @@
 		341741AE1C5D8243000EF209 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				F68103B41D2568D10053658E /* OIDAuthorizationUICoordinatorIOS.m */,
+				F68103B51D2568D10053658E /* OIDAuthorizationUICoordinatorIOS.h */,
+				F68103B61D2568D10053658E /* OIDAuthorizationUICoordinator.h */,
+				F68103B71D2568D10053658E /* OIDAuthorizationService+IOS.m */,
+				F68103B81D2568D10053658E /* OIDAuthorizationService+IOS.h */,
+				F68103B91D2568D10053658E /* OIDAuthState+IOS.m */,
+				F68103BA1D2568D10053658E /* OIDAuthState+IOS.h */,
 				341741AF1C5D8243000EF209 /* AppAuth.h */,
 				341741B41C5D8243000EF209 /* OIDAuthorizationRequest.h */,
 				341741B51C5D8243000EF209 /* OIDAuthorizationRequest.m */,
@@ -344,8 +361,10 @@
 				341741E01C5D8243000EF209 /* OIDErrorUtilities.m in Sources */,
 				341741EA1C5D8243000EF209 /* OIDTokenUtilities.m in Sources */,
 				341741E21C5D8243000EF209 /* OIDGrantTypes.m in Sources */,
+				F68103BC1D2568D10053658E /* OIDAuthorizationService+IOS.m in Sources */,
 				341741E81C5D8243000EF209 /* OIDTokenRequest.m in Sources */,
 				341741E91C5D8243000EF209 /* OIDTokenResponse.m in Sources */,
+				F68103BD1D2568D10053658E /* OIDAuthState+IOS.m in Sources */,
 				341741E51C5D8243000EF209 /* OIDScopeUtilities.m in Sources */,
 				341741DC1C5D8243000EF209 /* OIDAuthorizationResponse.m in Sources */,
 				341741E61C5D8243000EF209 /* OIDServiceConfiguration.m in Sources */,
@@ -354,6 +373,7 @@
 				341741EB1C5D8243000EF209 /* OIDURLQueryComponent.m in Sources */,
 				341741E11C5D8243000EF209 /* OIDFieldMapping.m in Sources */,
 				341741DF1C5D8243000EF209 /* OIDError.m in Sources */,
+				F68103BB1D2568D10053658E /* OIDAuthorizationUICoordinatorIOS.m in Sources */,
 				341741DB1C5D8243000EF209 /* OIDAuthorizationRequest.m in Sources */,
 				341741E31C5D8243000EF209 /* OIDResponseTypes.m in Sources */,
 				341741E41C5D8243000EF209 /* OIDScopes.m in Sources */,
