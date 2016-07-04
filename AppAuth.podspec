@@ -27,11 +27,11 @@ tasks like performing an action with fresh tokens.
   s.source_files = "Source/**/*.{h,m}"
   s.requires_arc = true
 
-  s.ios.exclude_files = "Source/**/*Mac.{h,m}"
+  s.ios.source_files = "Source/**/*IOS.{h,m}"
   s.ios.deployment_target = "7.0"
   s.ios.framework    = "SafariServices"
 
-  s.osx.exclude_files = "Source/**/*IOS.{h,m}"
+  s.osx.source_files = "Source/**/*Mac.{h,m}"
   s.osx.deployment_target = '10.8'
 
 end
