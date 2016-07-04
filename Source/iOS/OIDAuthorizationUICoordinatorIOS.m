@@ -63,11 +63,11 @@ NS_ASSUME_NONNULL_BEGIN
   }
   BOOL openedSafari = [[UIApplication sharedApplication] openURL:URL];
   if (!openedSafari) {
+    [self cleanUp];
     NSError *safariError = [OIDErrorUtilities errorWithCode:OIDErrorCodeSafariOpenError
                                             underlyingError:nil
                                                 description:@"Unable to open Safari."];
-    [_session failAuthorizationFlowWithError:safariError];
-    [self cleanUp];
+    [session failAuthorizationFlowWithError:safariError];
   }
   return openedSafari;
 }
@@ -77,13 +77,13 @@ NS_ASSUME_NONNULL_BEGIN
     // Ignore this call if there is no authorization flow in progress.
     return;
   }
-  if (_safariVC) {
-    SFSafariViewController *safari = _safariVC;
-    [safari dismissViewControllerAnimated:YES completion:completion];
+  SFSafariViewController *safariVC = _safariVC;
+  [self cleanUp];
+  if (safariVC) {
+    [safariVC dismissViewControllerAnimated:YES completion:completion];
   } else {
     if (completion) completion();
   }
-  [self cleanUp];
 }
 
 - (void)cleanUp {
@@ -103,11 +103,12 @@ NS_ASSUME_NONNULL_BEGIN
     // Ignore this call if there is no authorization flow in progress.
     return;
   }
+  id<OIDAuthorizationFlowSession> session = _session;
+  [self cleanUp];
   NSError *error = [OIDErrorUtilities errorWithCode:OIDErrorCodeProgramCanceledAuthorizationFlow
                                     underlyingError:nil
                                         description:nil];
-  [_session failAuthorizationFlowWithError:error];
-  [self cleanUp];
+  [session failAuthorizationFlowWithError:error];
 }
 
 @end
