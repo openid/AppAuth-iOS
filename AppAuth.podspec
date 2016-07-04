@@ -24,15 +24,14 @@ tasks like performing an action with fresh tokens.
 
   s.source       = { :git => "https://github.com/openid/AppAuth-iOS.git", :tag => s.version }
 
-  s.source_files = "Source/**/*.{h,m}"
-  s.exclude_files = "Source/**/*IOS.{h,m}", "Source/**/*Mac.{h,m}"
+  s.source_files = "Source/*.{h,m}"
   s.requires_arc = true
 
-  s.ios.source_files = "Source/**/*IOS.{h,m}"
+  s.ios.source_files = "Source/iOS/**/*.{h,m}"
   s.ios.deployment_target = "7.0"
   s.ios.framework    = "SafariServices"
 
-  s.osx.source_files = "Source/**/*Mac.{h,m}"
+  s.osx.source_files = "Source/macOS/**/*.{h,m}"
   s.osx.deployment_target = '10.8'
 
 end
