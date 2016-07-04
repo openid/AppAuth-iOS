@@ -25,6 +25,7 @@ tasks like performing an action with fresh tokens.
   s.source       = { :git => "https://github.com/openid/AppAuth-iOS.git", :tag => s.version }
 
   s.source_files = "Source/**/*.{h,m}"
+  s.exclude_files = "Source/**/*IOS.{h,m}", "Source/**/*Mac.{h,m}"
   s.requires_arc = true
 
   s.ios.source_files = "Source/**/*IOS.{h,m}"
