@@ -210,6 +210,7 @@ static NSString *const kTokenExchangeRequestException =
                                       authorizationCode:_authorizationCode
                                             redirectURL:_request.redirectURL
                                                clientID:_request.clientID
+                                           clientSecret:_request.clientSecret
                                                   scope:_scope
                                            refreshToken:nil
                                            codeVerifier:_request.codeVerifier

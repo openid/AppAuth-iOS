@@ -35,7 +35,11 @@
 #if TARGET_OS_IPHONE
 #import "OIDAuthState+IOS.h"
 #import "OIDAuthorizationService+IOS.h"
+#else
+#import "OIDAuthState+Mac.h"
+#import "OIDAuthorizationService+Mac.h"
 #endif
+
 
 /*! @mainpage AppAuth for iOS
 

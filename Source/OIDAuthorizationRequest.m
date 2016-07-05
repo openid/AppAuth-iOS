@@ -41,6 +41,11 @@ static NSString *const kResponseTypeKey = @"response_type";
  */
 static NSString *const kClientIDKey = @"client_id";
 
+/*! @var kClientSecretKey
+    @brief Key used to encode the @c clientSecret property for @c NSSecureCoding.
+ */
+static NSString *const kClientSecretKey = @"client_secret";
+
 /*! @var kScopeKey
     @brief Key used to encode the @c scope property for @c NSSecureCoding, and on the URL request.
  */
@@ -104,6 +109,7 @@ NSString *const OIDOAuthorizationRequestCodeChallengeMethodS256 = @"S256";
 
 - (instancetype)initWithConfiguration:(OIDServiceConfiguration *)configuration
                 clientId:(NSString *)clientID
+            clientSecret:(nullable NSString *)clientSecret
                    scope:(nullable NSString *)scope
              redirectURL:(NSURL *)redirectURL
             responseType:(NSString *)responseType
@@ -117,6 +123,7 @@ NSString *const OIDOAuthorizationRequestCodeChallengeMethodS256 = @"S256";
   if (self) {
     _configuration = [configuration copy];
     _clientID = [clientID copy];
+    _clientSecret = [clientSecret copy];
     _scope = [scope copy];
     _redirectURL = [redirectURL copy];
     _responseType = [responseType copy];
@@ -133,6 +140,7 @@ NSString *const OIDOAuthorizationRequestCodeChallengeMethodS256 = @"S256";
 
 - (instancetype)initWithConfiguration:(OIDServiceConfiguration *)configuration
                 clientId:(NSString *)clientID
+            clientSecret:(NSString *)clientSecret
                   scopes:(nullable NSArray<NSString *> *)scopes
              redirectURL:(NSURL *)redirectURL
             responseType:(NSString *)responseType
@@ -144,6 +152,7 @@ NSString *const OIDOAuthorizationRequestCodeChallengeMethodS256 = @"S256";
 
   return [self initWithConfiguration:configuration
                             clientId:clientID
+                        clientSecret:clientSecret
                                scope:[OIDScopeUtilities scopesWithArray:scopes]
                          redirectURL:redirectURL
                         responseType:responseType
@@ -151,6 +160,21 @@ NSString *const OIDOAuthorizationRequestCodeChallengeMethodS256 = @"S256";
                         codeVerifier:codeVerifier
                        codeChallenge:codeChallenge
                  codeChallengeMethod:OIDOAuthorizationRequestCodeChallengeMethodS256
+                additionalParameters:additionalParameters];
+}
+
+- (nullable instancetype)initWithConfiguration:(OIDServiceConfiguration *)configuration
+                clientId:(NSString *)clientID
+                  scopes:(nullable NSArray<NSString *> *)scopes
+             redirectURL:(NSURL *)redirectURL
+            responseType:(NSString *)responseType
+    additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters {
+  return [self initWithConfiguration:configuration
+                            clientId:clientID
+                        clientSecret:nil
+                              scopes:scopes
+                         redirectURL:redirectURL
+                        responseType:responseType
                 additionalParameters:additionalParameters];
 }
 
@@ -176,6 +200,7 @@ NSString *const OIDOAuthorizationRequestCodeChallengeMethodS256 = @"S256";
                              forKey:kConfigurationKey];
   NSString *responseType = [aDecoder decodeObjectOfClass:[NSString class] forKey:kResponseTypeKey];
   NSString *clientID = [aDecoder decodeObjectOfClass:[NSString class] forKey:kClientIDKey];
+  NSString *clientSecret = [aDecoder decodeObjectOfClass:[NSString class] forKey:kClientSecretKey];
   NSString *scope = [aDecoder decodeObjectOfClass:[NSString class] forKey:kScopeKey];
   NSURL *redirectURL = [aDecoder decodeObjectOfClass:[NSURL class] forKey:kRedirectURLKey];
   NSString *state = [aDecoder decodeObjectOfClass:[NSString class] forKey:kStateKey];
@@ -194,6 +219,7 @@ NSString *const OIDOAuthorizationRequestCodeChallengeMethodS256 = @"S256";
 
   self = [self initWithConfiguration:configuration
                             clientId:clientID
+                        clientSecret:clientSecret
                                scope:scope
                          redirectURL:redirectURL
                         responseType:responseType
@@ -209,6 +235,7 @@ NSString *const OIDOAuthorizationRequestCodeChallengeMethodS256 = @"S256";
   [aCoder encodeObject:_configuration forKey:kConfigurationKey];
   [aCoder encodeObject:_responseType forKey:kResponseTypeKey];
   [aCoder encodeObject:_clientID forKey:kClientIDKey];
+  [aCoder encodeObject:_clientSecret forKey:kClientSecretKey];
   [aCoder encodeObject:_scope forKey:kScopeKey];
   [aCoder encodeObject:_redirectURL forKey:kRedirectURLKey];
   [aCoder encodeObject:_state forKey:kStateKey];

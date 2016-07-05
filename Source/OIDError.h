@@ -121,6 +121,11 @@ typedef NS_ENUM(NSInteger, OIDErrorCode) {
           request in mobile Safari.
    */
   OIDErrorCodeSafariOpenError = -9,
+
+  /*! @brief @c NSWorkspace.openURL returned NO when attempting to open the authorization
+          request in the default browser.
+   */
+  OIDErrorCodeBrowserOpenError = -10,
 };
 
 /*! @brief Enum of all possible OAuth error codes as defined by RFC6749
