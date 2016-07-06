@@ -120,10 +120,25 @@ static const NSUInteger kExpiryTimeTolerance = 60;
     (OIDAuthorizationRequest *)authorizationRequest
     presentingViewController:(UIViewController *)presentingViewController
                     callback:(OIDAuthStateAuthorizationCallback)callback {
+    return [self authStateByPresentingAuthorizationRequest:authorizationRequest
+                           presentingViewController:presentingViewController
+                             modalPresentationStyle:UIModalPresentationFullScreen
+                               modalTransitionStyle:UIModalTransitionStyleCoverVertical
+                                           callback:callback];
+}
+
++ (id<OIDAuthorizationFlowSession>)authStateByPresentingAuthorizationRequest:
+    (OIDAuthorizationRequest *)authorizationRequest
+    presentingViewController:(UIViewController *)presentingViewController
+      modalPresentationStyle:(UIModalPresentationStyle)modalPresentationStyle
+        modalTransitionStyle:(UIModalTransitionStyle)modalTransitionStyle
+                    callback:(OIDAuthStateAuthorizationCallback)callback {
   // presents the authorization request
   id<OIDAuthorizationFlowSession> authFlowSession =
       [OIDAuthorizationService presentAuthorizationRequest:authorizationRequest
                                   presentingViewController:presentingViewController
+                                    modalPresentationStyle:modalPresentationStyle
+                                      modalTransitionStyle:modalTransitionStyle
           callback:^(OIDAuthorizationResponse *_Nullable authorizationResponse,
                      NSError *_Nullable error) {
     // inspects response and processes further if needed (e.g. authorization code exchange)
