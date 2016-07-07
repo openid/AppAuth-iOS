@@ -41,7 +41,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface OIDServiceConfiguration ()
 
-- (nullable instancetype)initWithAuthorizationEndpoint:(NSURL *)authorizationEndpoint
+- (instancetype)initWithAuthorizationEndpoint:(NSURL *)authorizationEndpoint
         tokenEndpoint:(NSURL *)tokenEndpoint
     discoveryDocument:(nullable OIDServiceDiscovery *)discoveryDocument
     NS_DESIGNATED_INITIALIZER;
@@ -50,10 +50,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation OIDServiceConfiguration
 
-- (nullable instancetype)init
+- (instancetype)init
     OID_UNAVAILABLE_USE_INITIALIZER(@selector(initWithAuthorizationEndpoint:tokenEndpoint:));
 
-- (nullable instancetype)initWithAuthorizationEndpoint:(NSURL *)authorizationEndpoint
+- (instancetype)initWithAuthorizationEndpoint:(NSURL *)authorizationEndpoint
         tokenEndpoint:(NSURL *)tokenEndpoint
     discoveryDocument:(nullable OIDServiceDiscovery *)discoveryDocument {
 
@@ -66,14 +66,14 @@ NS_ASSUME_NONNULL_BEGIN
   return self;
 }
 
-- (nullable instancetype)initWithAuthorizationEndpoint:(NSURL *)authorizationEndpoint
+- (instancetype)initWithAuthorizationEndpoint:(NSURL *)authorizationEndpoint
                                          tokenEndpoint:(NSURL *)tokenEndpoint {
   return [self initWithAuthorizationEndpoint:authorizationEndpoint
                                tokenEndpoint:tokenEndpoint
                            discoveryDocument:nil];
 }
 
-- (nullable instancetype)initWithDiscoveryDocument:(OIDServiceDiscovery *) discoveryDocument {
+- (instancetype)initWithDiscoveryDocument:(OIDServiceDiscovery *) discoveryDocument {
   return [self initWithAuthorizationEndpoint:discoveryDocument.authorizationEndpoint
                                tokenEndpoint:discoveryDocument.tokenEndpoint
                            discoveryDocument:discoveryDocument];
