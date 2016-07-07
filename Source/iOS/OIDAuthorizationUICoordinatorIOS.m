@@ -87,6 +87,8 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)cleanUp {
+  // The weak references to |_safariVC| and |_session| are set to nil to avoid accidentally using
+  // them while not in an authorization flow.
   _safariVC = nil;
   _session = nil;
   _authorizationFlowInProgress = NO;

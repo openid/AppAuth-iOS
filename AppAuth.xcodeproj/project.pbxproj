@@ -184,7 +184,6 @@
 			isa = PBXGroup;
 			children = (
 				F6F60FAF1D2BFEF000325CB3 /* iOS */,
-				F68103B61D2568D10053658E /* OIDAuthorizationUICoordinator.h */,
 				341741AF1C5D8243000EF209 /* AppAuth.h */,
 				341741B41C5D8243000EF209 /* OIDAuthorizationRequest.h */,
 				341741B51C5D8243000EF209 /* OIDAuthorizationRequest.m */,
@@ -192,6 +191,7 @@
 				341741B71C5D8243000EF209 /* OIDAuthorizationResponse.m */,
 				341741B81C5D8243000EF209 /* OIDAuthorizationService.h */,
 				341741B91C5D8243000EF209 /* OIDAuthorizationService.m */,
+				F68103B61D2568D10053658E /* OIDAuthorizationUICoordinator.h */,
 				341741BA1C5D8243000EF209 /* OIDAuthState.h */,
 				341741BB1C5D8243000EF209 /* OIDAuthState.m */,
 				341741BC1C5D8243000EF209 /* OIDAuthStateChangeDelegate.h */,
@@ -267,12 +267,12 @@
 		F6F60FAF1D2BFEF000325CB3 /* iOS */ = {
 			isa = PBXGroup;
 			children = (
-				F6F60FB01D2BFEFE00325CB3 /* OIDAuthState+IOS.m */,
-				F6F60FB11D2BFEFE00325CB3 /* OIDAuthorizationService+IOS.m */,
-				F6F60FB21D2BFEFE00325CB3 /* OIDAuthorizationUICoordinatorIOS.m */,
 				F6F60FB31D2BFEFE00325CB3 /* OIDAuthorizationService+IOS.h */,
-				F6F60FB41D2BFEFE00325CB3 /* OIDAuthorizationUICoordinatorIOS.h */,
+				F6F60FB11D2BFEFE00325CB3 /* OIDAuthorizationService+IOS.m */,
 				F6F60FB51D2BFEFE00325CB3 /* OIDAuthState+IOS.h */,
+				F6F60FB01D2BFEFE00325CB3 /* OIDAuthState+IOS.m */,
+				F6F60FB41D2BFEFE00325CB3 /* OIDAuthorizationUICoordinatorIOS.h */,
+				F6F60FB21D2BFEFE00325CB3 /* OIDAuthorizationUICoordinatorIOS.m */,
 			);
 			name = iOS;
 			sourceTree = "<group>";

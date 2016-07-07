@@ -34,10 +34,10 @@ NS_ASSUME_NONNULL_BEGIN
         receives a @c OIDAuthorizationFlowSession.cancel message, or after processing a
         @c OIDAuthorizationFlowSession.resumeAuthorizationFlowWithURL: message.
  */
-+ (id<OIDAuthorizationFlowSession>)presentAuthorizationRequest:(OIDAuthorizationRequest *)request
-                                      presentingViewController:
-                                          (UIViewController *)presentingViewController
-                                                      callback:(OIDAuthorizationCallback)callback;
++ (id<OIDAuthorizationFlowSession>)
+    presentAuthorizationRequest:(OIDAuthorizationRequest *)request
+       presentingViewController:(UIViewController *)presentingViewController
+                       callback:(OIDAuthorizationCallback)callback;
 @end
 
 NS_ASSUME_NONNULL_END
