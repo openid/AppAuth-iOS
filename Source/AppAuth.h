@@ -32,6 +32,11 @@
 #import "OIDTokenRequest.h"
 #import "OIDTokenResponse.h"
 
+#if TARGET_OS_IPHONE
+#import "OIDAuthState+IOS.h"
+#import "OIDAuthorizationService+IOS.h"
+#endif
+
 /*! @mainpage AppAuth for iOS
 
     @section introduction Introduction

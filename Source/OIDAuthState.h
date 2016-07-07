@@ -15,7 +15,7 @@
         See the License for the specific language governing permissions and
         limitations under the License.
  */
-#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
 
 @class OIDAuthorizationRequest;
 @class OIDAuthorizationResponse;
@@ -23,6 +23,7 @@
 @class OIDTokenResponse;
 @class OIDTokenRequest;
 @protocol OIDAuthorizationFlowSession;
+@protocol OIDAuthorizationUICoordinator;
 @protocol OIDAuthStateChangeDelegate;
 @protocol OIDAuthStateErrorDelegate;
 
@@ -89,7 +90,7 @@ typedef void (^OIDAuthStateAuthorizationCallback)(OIDAuthState *_Nullable authSt
         @c OIDAuthState.updateWithAuthorizationError: that invalidated this @c OIDAuthState.
         Authorization errors from @c OIDAuthState will always have a domain of
         @c ::OIDOAuthAuthorizationErrorDomain or @c ::OIDOAuthTokenErrorDomain. Note: that after
-        unarchiving the @c OIDAuthState object, the \NSError_userInfo property of this error will
+        unarchiving the @c OIDAuthState object, the @ NSError.userInfo property of this error will
         be nil.
  */
 @property(nonatomic, readonly, nullable) NSError *authorizationError;
@@ -120,21 +121,21 @@ typedef void (^OIDAuthStateAuthorizationCallback)(OIDAuthState *_Nullable authSt
  */
 @property(nonatomic, weak, nullable) id<OIDAuthStateErrorDelegate> errorDelegate;
 
-/*! @fn authStateByPresentingAuthorizationRequest:presentingViewController:callback:
+/*! @fn authStateByPresentingAuthorizationRequest:UICoordinator:callback:
     @brief Convenience method to create a @c OIDAuthState by presenting an authorization request
         and performing the authorization code exchange in the case of code flow requests.
     @param authorizationRequest The authorization request to present.
-    @param presentingViewController The view controller from which to present the
-        \SFSafariViewController.
+    @param UICoordinator Generic authorization UI coordinator that can present an authorization
+        request.
     @param callback The method called when the request has completed or failed.
     @return A @c OIDAuthorizationFlowSession instance which will terminate when it
         receives a @c OIDAuthorizationFlowSession.cancel message, or after processing a
         @c OIDAuthorizationFlowSession.resumeAuthorizationFlowWithURL: message.
  */
-+ (id<OIDAuthorizationFlowSession>)authStateByPresentingAuthorizationRequest:
-    (OIDAuthorizationRequest *)authorizationRequest
-    presentingViewController:(UIViewController *)presentingViewController
-                    callback:(OIDAuthStateAuthorizationCallback)callback;
++ (id<OIDAuthorizationFlowSession>)
+    authStateByPresentingAuthorizationRequest:(OIDAuthorizationRequest *)authorizationRequest
+                                UICoordinator:(id<OIDAuthorizationUICoordinator>)UICoordinator
+                                     callback:(OIDAuthStateAuthorizationCallback)callback;
 
 /*! @fn init
     @internal
@@ -191,9 +192,9 @@ typedef void (^OIDAuthStateAuthorizationCallback)(OIDAuthState *_Nullable authSt
         @c #errorDelegate will be called with the error.
         You may optionally use the convenience method
         OIDErrorUtilities.resourceServerAuthorizationErrorWithCode:errorResponse:underlyingError:
-        to create \NSError objects for use here.
+        to create @c NSError objects for use here.
         The latest error received is stored in @c #authorizationError. Note: that after unarchiving
-        this object, the \NSError_userInfo property of this error will be nil.
+        this object, the @c NSError.userInfo property of this error will be nil.
  */
 - (void)updateWithAuthorizationError:(NSError *)authorizationError;
 
