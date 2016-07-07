@@ -56,20 +56,20 @@ typedef void (^OIDServiceConfigurationCreated)
     @brief Unavailable. Please use @c initWithAuthorizationEndpoint:tokenEndpoint: or
         @c initWithDiscoveryDocument:.
  */
-- (nullable instancetype)init NS_UNAVAILABLE;
+- (instancetype)init NS_UNAVAILABLE;
 
 /*! @fn initWithAuthorizationEndpoint:tokenEndpoint:
     @param authorizationEndpoint The authorization endpoint URI.
     @param tokenEndpoint The token exchange and refresh endpoint URI.
  */
-- (nullable instancetype)initWithAuthorizationEndpoint:(NSURL *)authorizationEndpoint
+- (instancetype)initWithAuthorizationEndpoint:(NSURL *)authorizationEndpoint
                                          tokenEndpoint:(NSURL *)tokenEndpoint;
 
 /*! @fn initWithDiscoveryDocument:
     @param discoveryDocument The discovery document from which to extract the required OAuth
         configuration.
  */
-- (nullable instancetype)initWithDiscoveryDocument:(OIDServiceDiscovery *)discoveryDocument;
+- (instancetype)initWithDiscoveryDocument:(OIDServiceDiscovery *)discoveryDocument;
 
 @end
 
