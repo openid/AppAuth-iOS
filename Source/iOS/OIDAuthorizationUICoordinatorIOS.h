@@ -20,13 +20,38 @@
 
 #import "OIDAuthorizationUICoordinator.h"
 
+@class SFSafariViewController;
+
 NS_ASSUME_NONNULL_BEGIN
+
+/*! @protocol OIDSafariViewControllerFactory
+    @brief Allows library consumers to bootstrap an @c SFSafariViewController as they see fit.
+    @remarks Useful for customizing tint colors and presentation styles.
+ */
+@protocol OIDSafariViewControllerFactory
+
+/*! @fn safariViewControllerWithURL:
+    @brief Creates and returns a new @c SFSafariViewController.
+    @param URL The URL which the @c SFSafariViewController should load initially.
+ */
+- (SFSafariViewController *)safariViewControllerWithURL:(NSURL *)URL;
+
+@end
 
 /*! @class OIDAuthorizationUICoordinatorIOS
     @brief An iOS specific authorization UI Coordinator that uses a @c SFSafariViewController to
         present an authorization request.
  */
 @interface OIDAuthorizationUICoordinatorIOS : NSObject<OIDAuthorizationUICoordinator>
+
+/*! @fn setSafariViewControllerFactory:
+    @brief Allows library consumers to change the @c OIDSafariViewControllerFactory used to create
+        new instances of @c SFSafariViewController.
+    @remarks Useful for customizing tint colors and presentation styles.
+    @param factory The @c OIDSafariViewControllerFactory to use for creating new instances of
+        @c SFSafariViewController.
+ */
++ (void)setSafariViewControllerFactory:(id<OIDSafariViewControllerFactory>)factory;
 
 /*! @fn init
     @internal
