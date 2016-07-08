@@ -1,5 +1,5 @@
 /*! @file AppAuthExampleViewController.m
-    @brief AppAuth iOS SDK Example
+    @brief AppAuth macOS SDK Example
     @copyright
         Copyright 2015 Google Inc. All Rights Reserved.
     @copydetails

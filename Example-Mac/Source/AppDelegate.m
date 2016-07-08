@@ -1,5 +1,5 @@
 /*! @file AppDelegate.m
-    @brief AppAuth macOS Example
+    @brief AppAuth macOS SDK Example
     @copyright
         Copyright 2015 Google Inc. All Rights Reserved.
     @copydetails

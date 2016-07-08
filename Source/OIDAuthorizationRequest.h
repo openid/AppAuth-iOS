@@ -199,17 +199,18 @@ extern NSString *const OIDOAuthorizationRequestCodeChallengeMethodS256;
         challenge.
     @param additionalParameters The client's additional authorization parameters.
  */
-- (instancetype)initWithConfiguration:(OIDServiceConfiguration *)configuration
-                clientId:(NSString *)clientID
-            clientSecret:(nullable NSString *)clientSecret
-                   scope:(nullable NSString *)scope
-             redirectURL:(NSURL *)redirectURL
-            responseType:(NSString *)responseType
-                   state:(nullable NSString *)state
-            codeVerifier:(nullable NSString *)codeVerifier
-           codeChallenge:(nullable NSString *)codeChallenge
-     codeChallengeMethod:(nullable NSString *)codeChallengeMethod
-    additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters
+- (nullable instancetype)
+    initWithConfiguration:(OIDServiceConfiguration *)configuration
+                 clientId:(NSString *)clientID
+             clientSecret:(nullable NSString *)clientSecret
+                    scope:(nullable NSString *)scope
+              redirectURL:(NSURL *)redirectURL
+             responseType:(NSString *)responseType
+                    state:(nullable NSString *)state
+             codeVerifier:(nullable NSString *)codeVerifier
+            codeChallenge:(nullable NSString *)codeChallenge
+      codeChallengeMethod:(nullable NSString *)codeChallengeMethod
+     additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters
     NS_DESIGNATED_INITIALIZER;
 
 /*! @fn authorizationRequestURL
