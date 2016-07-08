@@ -18,6 +18,15 @@ type.
 
 Copy the client ID to the clipboard.
 
+### Configure the Example-Mac Xcode project
+
+1. In the Example-Mac folder, run the following command to install the required
+library pods.
+$ pod install
+
+2. Open the open Example-Mac.xcworkspace/:
+$ open Example-Mac.xcworkspace
+
 ### Configure the Example
 
 In `AppAuthExampleViewController.m` update `kClientID` and 'kClientSecret' with
