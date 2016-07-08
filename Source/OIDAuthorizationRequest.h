@@ -152,14 +152,15 @@ extern NSString *const OIDOAuthorizationRequestCodeChallengeMethodS256;
     @remarks This convenience initializer generates a state parameter and PKCE challenges
         automatically.
  */
-- (instancetype)initWithConfiguration:(OIDServiceConfiguration *)configuration
-                clientId:(NSString *)clientID
-                  scopes:(nullable NSArray<NSString *> *)scopes
-             redirectURL:(NSURL *)redirectURL
-            responseType:(NSString *)responseType
-    additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters;
+- (nullable instancetype)
+    initWithConfiguration:(OIDServiceConfiguration *)configuration
+                 clientId:(NSString *)clientID
+                   scopes:(nullable NSArray<NSString *> *)scopes
+              redirectURL:(NSURL *)redirectURL
+             responseType:(NSString *)responseType
+     additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters;
 
-/*! @fn initWithConfiguration:clientId:scopes:redirectURL:responseType:additionalParameters:
+/*! @fn initWithConfiguration:clientId:clientSecret:scopes:redirectURL:responseType:additionalParameters:
     @brief Creates an authorization request with opinionated defaults (a secure @c state, and
         PKCE with S256 as the @c code_challenge_method).
     @param configuration The service's configuration.

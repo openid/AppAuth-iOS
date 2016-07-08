@@ -14,7 +14,6 @@
 		F6016E991D2BD988003497D7 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = F6016E911D2BD988003497D7 /* MainMenu.xib */; };
 		F6016E9A1D2BD988003497D7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F6016E931D2BD988003497D7 /* main.m */; };
 		F6016E9C1D2BD9C0003497D7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F6016E9B1D2BD9C0003497D7 /* Assets.xcassets */; };
-		F6016E9E1D2BD9C7003497D7 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F6016E9D1D2BD9C7003497D7 /* Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -84,14 +83,14 @@
 			isa = PBXGroup;
 			children = (
 				F6016E9D1D2BD9C7003497D7 /* Info.plist */,
-				F6016E9B1D2BD9C0003497D7 /* Assets.xcassets */,
-				F6016E8B1D2BD988003497D7 /* AppDelegate.m */,
-				F6016E8D1D2BD988003497D7 /* AppAuthExampleViewController.m */,
 				F6016E8E1D2BD988003497D7 /* AppDelegate.h */,
+				F6016E8B1D2BD988003497D7 /* AppDelegate.m */,
+				F6016E941D2BD988003497D7 /* AppAuthExampleViewController.h */,
+				F6016E8D1D2BD988003497D7 /* AppAuthExampleViewController.m */,
 				F6016E8F1D2BD988003497D7 /* AppAuthExampleViewController.xib */,
 				F6016E911D2BD988003497D7 /* MainMenu.xib */,
+				F6016E9B1D2BD9C0003497D7 /* Assets.xcassets */,
 				F6016E931D2BD988003497D7 /* main.m */,
-				F6016E941D2BD988003497D7 /* AppAuthExampleViewController.h */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -156,7 +155,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F6016E9E1D2BD9C7003497D7 /* Info.plist in Resources */,
 				F6016E981D2BD988003497D7 /* AppAuthExampleViewController.xib in Resources */,
 				F6016E9C1D2BD9C0003497D7 /* Assets.xcassets in Resources */,
 				F6016E991D2BD988003497D7 /* MainMenu.xib in Resources */,

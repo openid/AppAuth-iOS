@@ -138,7 +138,8 @@ NSString *const OIDOAuthorizationRequestCodeChallengeMethodS256 = @"S256";
   return self;
 }
 
-- (instancetype)initWithConfiguration:(OIDServiceConfiguration *)configuration
+- (instancetype)
+   initWithConfiguration:(OIDServiceConfiguration *)configuration
                 clientId:(NSString *)clientID
             clientSecret:(NSString *)clientSecret
                   scopes:(nullable NSArray<NSString *> *)scopes
@@ -163,11 +164,12 @@ NSString *const OIDOAuthorizationRequestCodeChallengeMethodS256 = @"S256";
                 additionalParameters:additionalParameters];
 }
 
-- (nullable instancetype)initWithConfiguration:(OIDServiceConfiguration *)configuration
-                clientId:(NSString *)clientID
-                  scopes:(nullable NSArray<NSString *> *)scopes
-             redirectURL:(NSURL *)redirectURL
-            responseType:(NSString *)responseType
+- (instancetype)
+    initWithConfiguration:(OIDServiceConfiguration *)configuration
+                 clientId:(NSString *)clientID
+                   scopes:(nullable NSArray<NSString *> *)scopes
+              redirectURL:(NSURL *)redirectURL
+             responseType:(NSString *)responseType
     additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters {
   return [self initWithConfiguration:configuration
                             clientId:clientID

@@ -108,6 +108,16 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
                 </scrollView>
+                <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Xey-KN-kpQ">
+                    <rect key="frame" x="377" y="346" width="94" height="32"/>
+                    <buttonCell key="cell" type="push" title="Clear log" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Bwe-Pg-NVC">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="clearLog:" target="-2" id="NpO-8Y-WwK"/>
+                    </connections>
+                </button>
             </subviews>
             <point key="canvasLocation" x="727" y="670.5"/>
         </customView>

@@ -41,7 +41,7 @@
                        forEventClass:kInternetEventClass
                           andEventID:kAEGetURL];
 }
- 
+
 - (void)handleGetURLEvent:(NSAppleEventDescriptor *)event
            withReplyEvent:(NSAppleEventDescriptor *)replyEvent {
   NSString *URLString = [[event paramDescriptorForKeyword:keyDirectObject] stringValue];

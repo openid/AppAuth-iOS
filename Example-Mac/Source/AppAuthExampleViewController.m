@@ -66,7 +66,7 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
 
 - (void)viewDidLoad {
   [super viewDidLoad];
-  
+
 #if !defined(NS_BLOCK_ASSERTIONS)
 
   // NOTE:

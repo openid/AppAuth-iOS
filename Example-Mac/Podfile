@@ -1,0 +1,6 @@
+target 'Example-Mac' do
+  platform :osx, '10.10'
+
+  # Pods for AppAuth
+  pod 'AppAuth', :path => '../'
+end
