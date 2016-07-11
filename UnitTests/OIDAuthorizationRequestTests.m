@@ -33,6 +33,11 @@ static NSString *const kTestResponseType = @"ResponseType";
  */
 static NSString *const kTestClientID = @"ClientID";
 
+/*! @var kTestClientID
+    @brief Test value for the @c clientID property.
+ */
+static NSString *const kTestClientSecret = @"ClientSecret";
+
 /*! @var kTestScope
     @brief Test value for the @c scope property.
  */
@@ -155,6 +160,7 @@ static int const kCodeVerifierRecommendedLength = 43;
   OIDAuthorizationRequest *request =
       [[OIDAuthorizationRequest alloc] initWithConfiguration:configuration
                       clientId:kTestClientID
+                  clientSecret:kTestClientSecret
                         scope:[OIDScopeUtilities scopesWithArray:@[ kTestScope, kTestScopeA ]]
                    redirectURL:[NSURL URLWithString:kTestRedirectURL]
                   responseType:kTestResponseType
@@ -171,6 +177,7 @@ static int const kCodeVerifierRecommendedLength = 43;
   OIDAuthorizationRequest *request =
       [[OIDAuthorizationRequest alloc] initWithConfiguration:configuration
                       clientId:kTestClientID
+                  clientSecret:kTestClientSecret
                         scope:[OIDScopeUtilities scopesWithArray:@[ kTestScope, kTestScopeA ]]
                    redirectURL:[NSURL URLWithString:kTestRedirectURL]
                   responseType:OIDResponseTypeCode
@@ -185,7 +192,7 @@ static int const kCodeVerifierRecommendedLength = 43;
 /*! @fn testScopeInitializerWithManyScopes
     @brief Tests the initializer which takes an array of scopes.
  */
-- (void)testScopeInitializerWithManyScopes {
+- (void)testScopeInitializerWithManyScopesAndNoClientSecret {
   NSDictionary *additionalParameters =
       @{ kTestAdditionalParameterKey : kTestAdditionalParameterValue };
   OIDServiceConfiguration *configuration = [OIDServiceConfigurationTests testInstance];
@@ -200,6 +207,29 @@ static int const kCodeVerifierRecommendedLength = 43;
   XCTAssertEqualObjects(request.responseType, @"code");
   XCTAssertEqualObjects(request.scope, kTestScopesMerged);
   XCTAssertEqualObjects(request.clientID, kTestClientID);
+  XCTAssertEqualObjects(request.clientSecret, nil);
+  XCTAssertEqualObjects(request.redirectURL, [NSURL URLWithString:kTestRedirectURL]);
+  XCTAssertEqualObjects(request.additionalParameters[kTestAdditionalParameterKey],
+                        kTestAdditionalParameterValue);
+}
+
+- (void)testScopeInitializerWithManyScopesAndClientSecret {
+  NSDictionary *additionalParameters =
+      @{ kTestAdditionalParameterKey : kTestAdditionalParameterValue };
+  OIDServiceConfiguration *configuration = [OIDServiceConfigurationTests testInstance];
+  OIDAuthorizationRequest *request =
+      [[OIDAuthorizationRequest alloc] initWithConfiguration:configuration
+                      clientId:kTestClientID
+                  clientSecret:kTestClientSecret
+                        scopes:@[ kTestScope, kTestScopeA ]
+                   redirectURL:[NSURL URLWithString:kTestRedirectURL]
+                  responseType:OIDResponseTypeCode
+          additionalParameters:additionalParameters];
+
+  XCTAssertEqualObjects(request.responseType, @"code");
+  XCTAssertEqualObjects(request.scope, kTestScopesMerged);
+  XCTAssertEqualObjects(request.clientID, kTestClientID);
+  XCTAssertEqualObjects(request.clientSecret, kTestClientSecret);
   XCTAssertEqualObjects(request.redirectURL, [NSURL URLWithString:kTestRedirectURL]);
   XCTAssertEqualObjects(request.additionalParameters[kTestAdditionalParameterKey],
                         kTestAdditionalParameterValue);
@@ -215,6 +245,7 @@ static int const kCodeVerifierRecommendedLength = 43;
   XCTAssertEqualObjects(request.responseType, kTestResponseType);
   XCTAssertEqualObjects(request.scope, kTestScopesMerged);
   XCTAssertEqualObjects(request.clientID, kTestClientID);
+  XCTAssertEqualObjects(request.clientSecret, kTestClientSecret);
   XCTAssertEqualObjects(request.redirectURL, [NSURL URLWithString:kTestRedirectURL]);
   XCTAssertEqualObjects(request.state, kTestState);
   XCTAssertEqualObjects(request.codeVerifier, kTestCodeVerifier);
@@ -230,6 +261,7 @@ static int const kCodeVerifierRecommendedLength = 43;
   XCTAssertEqualObjects(requestCopy.responseType, request.responseType);
   XCTAssertEqualObjects(requestCopy.scope, request.scope);
   XCTAssertEqualObjects(requestCopy.clientID, request.clientID);
+  XCTAssertEqualObjects(requestCopy.clientSecret, request.clientSecret);
   XCTAssertEqualObjects(requestCopy.redirectURL, request.redirectURL);
   XCTAssertEqualObjects(requestCopy.state, request.state);
   XCTAssertEqualObjects(requestCopy.codeVerifier, request.codeVerifier);
@@ -249,6 +281,7 @@ static int const kCodeVerifierRecommendedLength = 43;
   XCTAssertEqualObjects(request.responseType, kTestResponseType);
   XCTAssertEqualObjects(request.scope, kTestScopesMerged);
   XCTAssertEqualObjects(request.clientID, kTestClientID);
+  XCTAssertEqualObjects(request.clientSecret, kTestClientSecret);
   XCTAssertEqualObjects(request.redirectURL, [NSURL URLWithString:kTestRedirectURL]);
   XCTAssertEqualObjects(request.state, kTestState);
   XCTAssertEqualObjects(request.codeVerifier, kTestCodeVerifier);
