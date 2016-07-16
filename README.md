@@ -1,6 +1,7 @@
 # AppAuth for iOS
 
 [![Build Status](https://www.bitrise.io/app/8e4dbca635a964dc.svg?token=8rT4oJnhjUuFWH-QvXuJzg&branch=master)](https://www.bitrise.io/app/8e4dbca635a964dc)
+[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 
 AppAuth for iOS is a client SDK for communicating with [OAuth 2.0]
 (https://tools.ietf.org/html/rfc6749) and [OpenID Connect]
@@ -59,8 +60,16 @@ simply add:
 
     pod 'AppAuth'
 
-To your `Podfile` and run `pod install`. Otherwise, add `AppAuth.xcodeproj`
-into your workspace.
+To your `Podfile` and run `pod install`. 
+
+If you use [Carthage](https://github.com/Carthage/Carthage),
+simply add:
+
+    github "openid/AppAuth-iOS"
+
+To your `Cartfile` and run `carthage update`. 
+
+Otherwise, add `AppAuth.xcodeproj` into your workspace.
 
 ## Auth Flow
 
