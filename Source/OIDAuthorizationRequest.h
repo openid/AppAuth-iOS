@@ -64,6 +64,17 @@ extern NSString *const OIDOAuthorizationRequestCodeChallengeMethodS256;
  */
 @property(nonatomic, readonly) NSString *clientID;
 
+/*! @property clientSecret
+    @brief The client secret.
+    @remarks client_secret
+    @discussion The client secret is used to prove that identity of the client when exchaning an
+        authorization code for an access token.
+        The client secret is not passed in the authorizationRequestURL. It is only used when
+        exchanging the authorization code for an access token.
+    @see https://tools.ietf.org/html/rfc6749#section-2.3.1
+ */
+@property(nonatomic, readonly, nullable) NSString *clientSecret;
+
 /*! @property scope
     @brief The value of the scope parameter is expressed as a list of space-delimited,
         case-sensitive strings.
@@ -141,12 +152,35 @@ extern NSString *const OIDOAuthorizationRequestCodeChallengeMethodS256;
     @remarks This convenience initializer generates a state parameter and PKCE challenges
         automatically.
  */
-- (instancetype)initWithConfiguration:(OIDServiceConfiguration *)configuration
-                clientId:(NSString *)clientID
-                  scopes:(nullable NSArray<NSString *> *)scopes
-             redirectURL:(NSURL *)redirectURL
-            responseType:(NSString *)responseType
-    additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters;
+- (instancetype)
+    initWithConfiguration:(OIDServiceConfiguration *)configuration
+                 clientId:(NSString *)clientID
+                   scopes:(nullable NSArray<NSString *> *)scopes
+              redirectURL:(NSURL *)redirectURL
+             responseType:(NSString *)responseType
+     additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters;
+
+/*! @fn initWithConfiguration:clientId:clientSecret:scopes:redirectURL:responseType:additionalParameters:
+    @brief Creates an authorization request with opinionated defaults (a secure @c state, and
+        PKCE with S256 as the @c code_challenge_method).
+    @param configuration The service's configuration.
+    @param clientID The client identifier.
+    @param clientSecret The client secret.
+    @param scopes An array of scopes to combine into a single scope string per the OAuth2 spec.
+    @param redirectURL The client's redirect URI.
+    @param responseType The expected response type.
+    @param additionalParameters The client's additional authorization parameters.
+    @remarks This convenience initializer generates a state parameter and PKCE challenges
+        automatically.
+ */
+- (instancetype)
+    initWithConfiguration:(OIDServiceConfiguration *)configuration
+                 clientId:(NSString *)clientID
+             clientSecret:(nullable NSString *)clientSecret
+                   scopes:(nullable NSArray<NSString *> *)scopes
+              redirectURL:(NSURL *)redirectURL
+             responseType:(NSString *)responseType
+     additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters;
 
 /*! @fn initWithConfiguration:clientId:scope:redirectURL:responseType:state:codeVerifier:codeChallenge:codeChallengeMethod:additionalParameters:
     @brief Designated initializer.
@@ -166,16 +200,18 @@ extern NSString *const OIDOAuthorizationRequestCodeChallengeMethodS256;
         challenge.
     @param additionalParameters The client's additional authorization parameters.
  */
-- (instancetype)initWithConfiguration:(OIDServiceConfiguration *)configuration
-                clientId:(NSString *)clientID
-                   scope:(nullable NSString *)scope
-             redirectURL:(NSURL *)redirectURL
-            responseType:(NSString *)responseType
-                   state:(nullable NSString *)state
-            codeVerifier:(nullable NSString *)codeVerifier
-           codeChallenge:(nullable NSString *)codeChallenge
-     codeChallengeMethod:(nullable NSString *)codeChallengeMethod
-    additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters
+- (instancetype)
+    initWithConfiguration:(OIDServiceConfiguration *)configuration
+                 clientId:(NSString *)clientID
+             clientSecret:(nullable NSString *)clientSecret
+                    scope:(nullable NSString *)scope
+              redirectURL:(NSURL *)redirectURL
+             responseType:(NSString *)responseType
+                    state:(nullable NSString *)state
+             codeVerifier:(nullable NSString *)codeVerifier
+            codeChallenge:(nullable NSString *)codeChallenge
+      codeChallengeMethod:(nullable NSString *)codeChallengeMethod
+     additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters
     NS_DESIGNATED_INITIALIZER;
 
 /*! @fn authorizationRequestURL

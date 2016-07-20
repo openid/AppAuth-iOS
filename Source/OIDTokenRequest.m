@@ -43,6 +43,11 @@ static NSString *const kAuthorizationCodeKey = @"code";
  */
 static NSString *const kClientIDKey = @"client_id";
 
+/*! @var kClientSecretKey
+    @brief Key used to encode the @c clientSecret property for @c NSSecureCoding
+ */
+static NSString *const kClientSecretKey = @"client_secret";
+
 /*! @var kRedirectURLKey
     @brief Key used to encode the @c redirectURL property for @c NSSecureCoding
  */
@@ -90,6 +95,7 @@ static NSString *const kAdditionalParametersKey = @"additionalParameters";
        authorizationCode:(nullable NSString *)code
              redirectURL:(NSURL *)redirectURL
                 clientID:(NSString *)clientID
+            clientSecret:(nullable NSString *)clientSecret
                   scopes:(nullable NSArray<NSString *> *)scopes
             refreshToken:(nullable NSString *)refreshToken
             codeVerifier:(nullable NSString *)codeVerifier
@@ -99,6 +105,7 @@ static NSString *const kAdditionalParametersKey = @"additionalParameters";
                    authorizationCode:code
                          redirectURL:redirectURL
                             clientID:clientID
+                        clientSecret:clientSecret
                                scope:[OIDScopeUtilities scopesWithArray:scopes]
                         refreshToken:refreshToken
                         codeVerifier:(NSString *)codeVerifier
@@ -110,6 +117,7 @@ static NSString *const kAdditionalParametersKey = @"additionalParameters";
        authorizationCode:(nullable NSString *)code
              redirectURL:(NSURL *)redirectURL
                 clientID:(NSString *)clientID
+            clientSecret:(nullable NSString *)clientSecret
                    scope:(nullable NSString *)scope
             refreshToken:(nullable NSString *)refreshToken
             codeVerifier:(nullable NSString *)codeVerifier
@@ -121,6 +129,7 @@ static NSString *const kAdditionalParametersKey = @"additionalParameters";
     _authorizationCode = [code copy];
     _redirectURL = [redirectURL copy];
     _clientID = [clientID copy];
+    _clientSecret = [clientSecret copy];
     _scope = [scope copy];
     _refreshToken = [refreshToken copy];
     _codeVerifier = [codeVerifier copy];
@@ -153,6 +162,7 @@ static NSString *const kAdditionalParametersKey = @"additionalParameters";
   NSString *grantType = [aDecoder decodeObjectOfClass:[NSString class] forKey:kGrantTypeKey];
   NSString *code = [aDecoder decodeObjectOfClass:[NSString class] forKey:kAuthorizationCodeKey];
   NSString *clientID = [aDecoder decodeObjectOfClass:[NSString class] forKey:kClientIDKey];
+  NSString *clientSecret = [aDecoder decodeObjectOfClass:[NSString class] forKey:kClientSecretKey];
   NSString *scope = [aDecoder decodeObjectOfClass:[NSString class] forKey:kScopeKey];
   NSString *refreshToken = [aDecoder decodeObjectOfClass:[NSString class] forKey:kRefreshTokenKey];
   NSString *codeVerifier = [aDecoder decodeObjectOfClass:[NSString class] forKey:kCodeVerifierKey];
@@ -169,6 +179,7 @@ static NSString *const kAdditionalParametersKey = @"additionalParameters";
                    authorizationCode:code
                          redirectURL:redirectURL
                             clientID:clientID
+                        clientSecret:clientSecret
                                scope:scope
                         refreshToken:refreshToken
                         codeVerifier:codeVerifier
@@ -181,6 +192,7 @@ static NSString *const kAdditionalParametersKey = @"additionalParameters";
   [aCoder encodeObject:_grantType forKey:kGrantTypeKey];
   [aCoder encodeObject:_authorizationCode forKey:kAuthorizationCodeKey];
   [aCoder encodeObject:_clientID forKey:kClientIDKey];
+  [aCoder encodeObject:_clientSecret forKey:kClientSecretKey];
   [aCoder encodeObject:_redirectURL forKey:kRedirectURLKey];
   [aCoder encodeObject:_scope forKey:kScopeKey];
   [aCoder encodeObject:_refreshToken forKey:kRefreshTokenKey];
@@ -230,6 +242,9 @@ static NSString *const kAdditionalParametersKey = @"additionalParameters";
   }
   if (_clientID) {
     [query addParameter:kClientIDKey value:_clientID];
+  }
+  if (_clientSecret && [_grantType isEqualToString:OIDGrantTypeAuthorizationCode]) {
+    [query addParameter:kClientSecretKey value:_clientSecret];
   }
   if (_redirectURL) {
     [query addParameter:kRedirectURLKey value:_redirectURL.absoluteString];

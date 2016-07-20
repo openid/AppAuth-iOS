@@ -35,7 +35,13 @@
 #if TARGET_OS_IPHONE
 #import "OIDAuthState+IOS.h"
 #import "OIDAuthorizationService+IOS.h"
+#elif TARGET_OS_MAC
+#import "OIDAuthState+Mac.h"
+#import "OIDAuthorizationService+Mac.h"
+#else
+#error "Platform Undefined; please specify TARGET_OS_MAC or TARGET_OS_IPHONE"
 #endif
+
 
 /*! @mainpage AppAuth for iOS
 

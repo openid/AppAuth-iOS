@@ -55,6 +55,7 @@ static NSString *const kTestAdditionalParameterValue = @"1";
                                    authorizationCode:authResponse.authorizationCode
                                          redirectURL:authResponse.request.redirectURL
                                             clientID:authResponse.request.clientID
+                                        clientSecret:authResponse.request.clientSecret
                                               scopes:scopesArray
                                         refreshToken:kRefreshTokenTestValue
                                         codeVerifier:authResponse.request.codeVerifier
@@ -74,6 +75,7 @@ static NSString *const kTestAdditionalParameterValue = @"1";
                                    authorizationCode:authResponse.authorizationCode
                                          redirectURL:authResponse.request.redirectURL
                                             clientID:authResponse.request.clientID
+                                        clientSecret:authResponse.request.clientSecret
                                               scopes:scopesArray
                                         refreshToken:kRefreshTokenTestValue
                                         codeVerifier:authResponse.request.codeVerifier
@@ -93,6 +95,7 @@ static NSString *const kTestAdditionalParameterValue = @"1";
                                    authorizationCode:authResponse.authorizationCode
                                          redirectURL:authResponse.request.redirectURL
                                             clientID:authResponse.request.clientID
+                                        clientSecret:authResponse.request.clientSecret
                                               scopes:scopesArray
                                         refreshToken:kRefreshTokenTestValue
                                         codeVerifier:authResponse.request.codeVerifier
@@ -114,6 +117,7 @@ static NSString *const kTestAdditionalParameterValue = @"1";
   XCTAssertEqualObjects(request.authorizationCode, authResponse.authorizationCode);
   XCTAssertEqualObjects(request.redirectURL, authResponse.request.redirectURL);
   XCTAssertEqualObjects(request.clientID, authResponse.request.clientID);
+  XCTAssertEqualObjects(request.clientSecret, authResponse.request.clientSecret);
   XCTAssertEqualObjects(request.scope, authResponse.request.scope);
   XCTAssertEqualObjects(request.refreshToken, kRefreshTokenTestValue);
   XCTAssertEqualObjects(request.codeVerifier, authResponse.request.codeVerifier);
@@ -132,6 +136,7 @@ static NSString *const kTestAdditionalParameterValue = @"1";
   XCTAssertEqualObjects(requestCopy.authorizationCode, request.authorizationCode);
   XCTAssertEqualObjects(requestCopy.redirectURL, request.redirectURL);
   XCTAssertEqualObjects(requestCopy.clientID, request.clientID);
+  XCTAssertEqualObjects(requestCopy.clientSecret, request.clientSecret);
   XCTAssertEqualObjects(requestCopy.scope, authResponse.request.scope);
   XCTAssertEqualObjects(requestCopy.refreshToken, kRefreshTokenTestValue);
   XCTAssertEqualObjects(requestCopy.codeVerifier, authResponse.request.codeVerifier);
@@ -154,6 +159,7 @@ static NSString *const kTestAdditionalParameterValue = @"1";
   XCTAssertEqualObjects(request.authorizationCode, authResponse.authorizationCode);
   XCTAssertEqualObjects(request.redirectURL, authResponse.request.redirectURL);
   XCTAssertEqualObjects(request.clientID, authResponse.request.clientID);
+  XCTAssertEqualObjects(request.clientSecret, authResponse.request.clientSecret);
   XCTAssertEqualObjects(request.scope, authResponse.request.scope);
   XCTAssertEqualObjects(request.refreshToken, kRefreshTokenTestValue);
   XCTAssertEqualObjects(request.codeVerifier, authResponse.request.codeVerifier);
@@ -175,6 +181,7 @@ static NSString *const kTestAdditionalParameterValue = @"1";
   XCTAssertEqualObjects(requestCopy.authorizationCode, request.authorizationCode);
   XCTAssertEqualObjects(requestCopy.redirectURL, request.redirectURL);
   XCTAssertEqualObjects(requestCopy.clientID, request.clientID);
+  XCTAssertEqualObjects(requestCopy.clientSecret, request.clientSecret);
   XCTAssertEqualObjects(requestCopy.scope, authResponse.request.scope);
   XCTAssertEqualObjects(requestCopy.refreshToken, kRefreshTokenTestValue);
   XCTAssertEqualObjects(requestCopy.codeVerifier, authResponse.request.codeVerifier);

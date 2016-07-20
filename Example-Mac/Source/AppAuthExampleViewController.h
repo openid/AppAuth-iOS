@@ -1,7 +1,7 @@
 /*! @file AppAuthExampleViewController.h
-    @brief AppAuth iOS SDK Example
+    @brief AppAuth macOS SDK Example
     @copyright
-        Copyright 2015 Google Inc. All Rights Reserved.
+        Copyright 2016 Google Inc. All Rights Reserved.
     @copydetails
         Licensed under the Apache License, Version 2.0 (the "License");
         you may not use this file except in compliance with the License.
@@ -15,8 +15,9 @@
         See the License for the specific language governing permissions and
         limitations under the License.
  */
-#import <UIKit/UIKit.h>
+#import <Cocoa/Cocoa.h>
 
+@class AppDelegate;
 @class OIDAuthState;
 @class OIDServiceConfiguration;
 
@@ -25,14 +26,19 @@ NS_ASSUME_NONNULL_BEGIN
 /*! @class AppAuthExampleViewController
     @brief The example application's view controller.
  */
-@interface AppAuthExampleViewController : UIViewController
+@interface AppAuthExampleViewController : NSViewController
 
-@property(nullable) IBOutlet UIButton *authAutoButton;
-@property(nullable) IBOutlet UIButton *authManual;
-@property(nullable) IBOutlet UIButton *codeExchangeButton;
-@property(nullable) IBOutlet UIButton *userinfoButton;
-@property(nullable) IBOutlet UIButton *clearAuthStateButton;
-@property(nullable) IBOutlet UITextView *logTextView;
+@property(nullable) IBOutlet NSButton *authAutoButton;
+@property(nullable) IBOutlet NSButton *authManual;
+@property(nullable) IBOutlet NSButton *codeExchangeButton;
+@property(nullable) IBOutlet NSButton *userinfoButton;
+@property(nullable) IBOutlet NSButton *clearAuthStateButton;
+@property(nullable) IBOutlet NSTextView *logTextView;
+
+/*! @property appDelegate
+    @brief The application delegate. This is used to store the current authorization flow.
+ */
+@property (nonatomic, weak, nullable) AppDelegate *appDelegate;
 
 /*! @property authState
     @brief The authorization state. This is the AppAuth object that you should keep around and

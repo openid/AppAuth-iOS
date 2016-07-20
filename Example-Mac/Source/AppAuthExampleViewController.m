@@ -1,7 +1,7 @@
 /*! @file AppAuthExampleViewController.m
-    @brief AppAuth iOS SDK Example
+    @brief AppAuth macOS SDK Example
     @copyright
-        Copyright 2015 Google Inc. All Rights Reserved.
+        Copyright 2016 Google Inc. All Rights Reserved.
     @copydetails
         Licensed under the Apache License, Version 2.0 (the "License");
         you may not use this file except in compliance with the License.
@@ -32,10 +32,15 @@ static NSString *const kIssuer = @"https://accounts.google.com";
     @brief The OAuth client ID.
     @discussion For Google, register your client at
         https://console.developers.google.com/apis/credentials?project=_
-        The client should be registered with the "iOS" type.
  */
-static NSString *const kClientID =
-    @"YOUR_CLIENT.apps.googleusercontent.com";
+static NSString *const kClientID = @"YOUR_CLIENT.apps.googleusercontent.com";
+
+/*! @var kClientSecret
+    @brief The OAuth client secret.
+    @discussion For Google, register your client at
+        https://console.developers.google.com/apis/credentials?project=_
+ */
+static NSString *const kClientSecret = @"YOUR_CLIENT_SECRET";
 
 /*! @var kRedirectURI
     @brief The OAuth redirect URI for the client @c kClientID.
@@ -64,19 +69,19 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
 
   // NOTE:
   //
-  // To run this sample, you need to register your own iOS client at
+  // To run this sample, you need to register your own Google API client at
   // https://console.developers.google.com/apis/credentials?project=_ and update three configuration
   // points in the sample: kClientID and kRedirectURI constants in AppAuthExampleViewController.m
   // and the URI scheme in Info.plist (URL Types -> Item 0 -> URL Schemes -> Item 0).
-  // Full instructions: https://github.com/openid/AppAuth-iOS/blob/master/Example/README.md
+  // Full instructions: https://github.com/openid/AppAuth-iOS/blob/master/Example-Mac/README.md
 
   NSAssert(![kClientID isEqualToString:@"YOUR_CLIENT.apps.googleusercontent.com"],
            @"Update kClientID with your own client ID. "
-            "Instructions: https://github.com/openid/AppAuth-iOS/blob/master/Example/README.md");
+            "Instructions: https://github.com/openid/AppAuth-iOS/blob/master/Example-Mac/README.md");
 
   NSAssert(![kRedirectURI isEqualToString:@"com.googleusercontent.apps.YOUR_CLIENT:/oauthredirect"],
            @"Update kRedirectURI with your own redirect URI. "
-            "Instructions: https://github.com/openid/AppAuth-iOS/blob/master/Example/README.md");
+            "Instructions: https://github.com/openid/AppAuth-iOS/blob/master/Example-Mac/README.md");
 
   // verifies that the custom URI scheme has been updated in the Info.plist
   NSArray __unused* urlTypes =
@@ -90,15 +95,13 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
   NSAssert(![urlScheme isEqualToString:@"com.googleusercontent.apps.YOUR_CLIENT"],
            @"Configure the URI scheme in Info.plist (URL Types -> Item 0 -> URL Schemes -> Item 0) "
             "with the scheme of your redirect URI. Full instructions: "
-            "https://github.com/openid/AppAuth-iOS/blob/master/Example/README.md");
+            "https://github.com/openid/AppAuth-iOS/blob/master/Example-Mac/README.md");
 
 #endif // !defined(NS_BLOCK_ASSERTIONS)
 
-  _logTextView.layer.borderColor = [UIColor colorWithWhite:0.8 alpha:1.0].CGColor;
+  _logTextView.layer.borderColor = [NSColor colorWithWhite:0.8 alpha:1.0].CGColor;
   _logTextView.layer.borderWidth = 1.0f;
-  _logTextView.alwaysBounceVertical = true;
   _logTextView.textContainer.lineBreakMode = NSLineBreakByCharWrapping;
-  _logTextView.text = @"";
 
   [self loadState];
   [self updateUI];
@@ -145,15 +148,11 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
                                 && !_authState.lastTokenResponse;
   // dynamically changes authorize button text depending on authorized state
   if (!_authState) {
-    [_authAutoButton setTitle:@"Authorize" forState:UIControlStateNormal];
-    [_authAutoButton setTitle:@"Authorize" forState:UIControlStateHighlighted];
-    [_authManual setTitle:@"Authorize (Manual)" forState:UIControlStateNormal];
-    [_authManual setTitle:@"Authorize (Manual)" forState:UIControlStateHighlighted];
+    _authAutoButton.title = @"Authorize";
+    _authManual.title = @"Authorize (Manual)";
   } else {
-    [_authAutoButton setTitle:@"Re-authorize" forState:UIControlStateNormal];
-    [_authAutoButton setTitle:@"Re-authorize" forState:UIControlStateHighlighted];
-    [_authManual setTitle:@"Re-authorize (Manual)" forState:UIControlStateNormal];
-    [_authManual setTitle:@"Re-authorize (Manual)" forState:UIControlStateHighlighted];
+    _authAutoButton.title = @"Re-authorize";
+    _authManual.title = @"Re-authorize (Manual)";
   }
 }
 
@@ -168,10 +167,6 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
 
 - (void)authState:(OIDAuthState *)state didEncounterAuthorizationError:(nonnull NSError *)error {
   [self logMessage:@"Received authorization error: %@", error];
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-  [super viewDidAppear:animated];
 }
 
 - (IBAction)authWithAutoCodeExchange:(nullable id)sender {
@@ -196,17 +191,14 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
     OIDAuthorizationRequest *request =
         [[OIDAuthorizationRequest alloc] initWithConfiguration:configuration
                                                       clientId:kClientID
+                                                  clientSecret:kClientSecret
                                                         scopes:@[OIDScopeOpenID, OIDScopeProfile]
                                                    redirectURL:redirectURI
                                                   responseType:OIDResponseTypeCode
                                           additionalParameters:nil];
     // performs authentication request
-    AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-    [self logMessage:@"Initiating authorization request with scope: %@", request.scope];
-
-    appDelegate.currentAuthorizationFlow =
+    self.appDelegate.currentAuthorizationFlow =
         [OIDAuthState authStateByPresentingAuthorizationRequest:request
-            presentingViewController:self
                             callback:^(OIDAuthState *_Nullable authState,
                                        NSError *_Nullable error) {
       if (authState) {
@@ -242,16 +234,15 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
     OIDAuthorizationRequest *request =
         [[OIDAuthorizationRequest alloc] initWithConfiguration:configuration
                                                       clientId:kClientID
+                                                  clientSecret:kClientSecret
                                                         scopes:@[OIDScopeOpenID, OIDScopeProfile]
                                                    redirectURL:redirectURI
                                                   responseType:OIDResponseTypeCode
                                           additionalParameters:nil];
     // performs authentication request
-    AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
     [self logMessage:@"Initiating authorization request %@", request];
-    appDelegate.currentAuthorizationFlow =
+    self.appDelegate.currentAuthorizationFlow =
         [OIDAuthorizationService presentAuthorizationRequest:request
-            presentingViewController:self
                             callback:^(OIDAuthorizationResponse *_Nullable authorizationResponse,
                                        NSError *_Nullable error) {
 
@@ -281,7 +272,6 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
   [OIDAuthorizationService performTokenRequest:tokenExchangeRequest
                                       callback:^(OIDTokenResponse *_Nullable tokenResponse,
                                                  NSError *_Nullable error) {
-
     if (!tokenResponse) {
       [self logMessage:@"Token exchange error: %@", [error localizedDescription]];
     } else {
@@ -297,7 +287,7 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
 }
 
 - (IBAction)clearLog:(nullable id)sender {
-  _logTextView.text = @"";
+  [_logTextView.textStorage setAttributedString:[[NSAttributedString alloc] initWithString:@""]];
 }
 
 - (IBAction)userinfo:(nullable id)sender {
@@ -408,11 +398,9 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
   NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
   dateFormatter.dateFormat = @"hh:mm:ss";
   NSString *dateString = [dateFormatter stringFromDate:[NSDate date]];
-  _logTextView.text = [NSString stringWithFormat:@"%@%@%@: %@",
-                                                 _logTextView.text,
-                                                 ([_logTextView.text length] > 0) ? @"\n" : @"",
-                                                 dateString,
-                                                 log];
+  NSString *logLine = [NSString stringWithFormat:@"\n%@: %@", dateString, log];
+  NSAttributedString* logLineAttr = [[NSAttributedString alloc] initWithString:logLine];
+  [[_logTextView textStorage] appendAttributedString:logLineAttr];
 }
 
 @end

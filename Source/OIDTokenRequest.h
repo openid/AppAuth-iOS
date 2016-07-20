@@ -71,6 +71,13 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property(nonatomic, readonly) NSString *clientID;
 
+/*! @property clientSecret
+    @brief The client secret.
+    @remarks client_secret
+    @see https://tools.ietf.org/html/rfc6749#section-2.3.1
+ */
+@property(nonatomic, readonly, nullable) NSString *clientSecret;
+
 /*! @property scope
     @brief The value of the scope parameter is expressed as a list of space-delimited,
         case-sensitive strings.
@@ -123,6 +130,7 @@ NS_ASSUME_NONNULL_BEGIN
        authorizationCode:(nullable NSString *)code
              redirectURL:(NSURL *)redirectURL
                 clientID:(NSString *)clientID
+            clientSecret:(nullable NSString *)clientSecret
                   scopes:(nullable NSArray<NSString *> *)scopes
             refreshToken:(nullable NSString *)refreshToken
             codeVerifier:(nullable NSString *)codeVerifier
@@ -147,6 +155,7 @@ NS_ASSUME_NONNULL_BEGIN
        authorizationCode:(nullable NSString *)code
              redirectURL:(NSURL *)redirectURL
                 clientID:(NSString *)clientID
+            clientSecret:(nullable NSString *)clientSecret
                    scope:(nullable NSString *)scope
             refreshToken:(nullable NSString *)refreshToken
             codeVerifier:(nullable NSString *)codeVerifier
