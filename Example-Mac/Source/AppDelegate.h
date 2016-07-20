@@ -18,6 +18,8 @@
 
 #import <Cocoa/Cocoa.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @protocol OIDAuthorizationFlowSession;
 
 /*! @class AppDelegate
@@ -33,3 +35,5 @@
 @property(nonatomic, strong, nullable) id<OIDAuthorizationFlowSession> currentAuthorizationFlow;
 
 @end
+
+NS_ASSUME_NONNULL_END

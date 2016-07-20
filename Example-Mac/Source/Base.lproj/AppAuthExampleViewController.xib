@@ -19,11 +19,11 @@
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customView id="c22-O7-iKe">
-            <rect key="frame" x="0.0" y="0.0" width="552" height="709"/>
+            <rect key="frame" x="0.0" y="0.0" width="611" height="709"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Mss-oI-oMy">
-                    <rect key="frame" x="61" y="629" width="138" height="32"/>
+                <button verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Mss-oI-oMy">
+                    <rect key="frame" x="65" y="629" width="138" height="32"/>
                     <buttonCell key="cell" type="push" title="Authorize (auto)" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="z0a-BU-rAC">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="system"/>
@@ -32,8 +32,8 @@
                         <action selector="authWithAutoCodeExchange:" target="-2" id="Ddj-4s-QIq"/>
                     </connections>
                 </button>
-                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="0s2-0W-UXR">
-                    <rect key="frame" x="57" y="570" width="155" height="32"/>
+                <button verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0s2-0W-UXR">
+                    <rect key="frame" x="65" y="570" width="155" height="32"/>
                     <buttonCell key="cell" type="push" title="Authorize (manual)" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="ASn-KU-cBH">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="system"/>
@@ -42,8 +42,8 @@
                         <action selector="authNoCodeExchange:" target="-2" id="ds6-mx-0Zw"/>
                     </connections>
                 </button>
-                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="f22-Zx-cOh">
-                    <rect key="frame" x="57" y="491" width="155" height="32"/>
+                <button verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="f22-Zx-cOh">
+                    <rect key="frame" x="65" y="492" width="155" height="32"/>
                     <buttonCell key="cell" type="push" title="API Call (User Info)" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="ogN-86-TEl">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="system"/>
@@ -52,8 +52,8 @@
                         <action selector="userinfo:" target="-2" id="bXX-9M-VMS"/>
                     </connections>
                 </button>
-                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="wAL-hz-Luv">
-                    <rect key="frame" x="65" y="401" width="139" height="32"/>
+                <button verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wAL-hz-Luv">
+                    <rect key="frame" x="65" y="400" width="139" height="32"/>
                     <buttonCell key="cell" type="push" title="Clear Auth State" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="M4e-Oa-Bsh">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="system"/>
@@ -80,20 +80,20 @@
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <scrollView horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I8b-cL-GM8">
-                    <rect key="frame" x="71" y="20" width="387" height="308"/>
+                <scrollView misplaced="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I8b-cL-GM8">
+                    <rect key="frame" x="75" y="20" width="461" height="308"/>
                     <clipView key="contentView" id="WlW-fb-gTh">
-                        <rect key="frame" x="1" y="1" width="370" height="306"/>
+                        <rect key="frame" x="1" y="1" width="444" height="306"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textView importsGraphics="NO" findStyle="panel" continuousSpellChecking="YES" allowsUndo="YES" usesRuler="YES" usesFontPanel="YES" verticallyResizable="YES" allowsNonContiguousLayout="YES" quoteSubstitution="YES" dashSubstitution="YES" spellingCorrection="YES" smartInsertDelete="YES" id="9uf-dN-qIX">
-                                <rect key="frame" x="0.0" y="0.0" width="370" height="306"/>
+                                <rect key="frame" x="0.0" y="0.0" width="444" height="306"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <size key="minSize" width="370" height="306"/>
+                                <size key="minSize" width="444" height="306"/>
                                 <size key="maxSize" width="463" height="10000000"/>
                                 <color key="insertionPointColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                <size key="minSize" width="370" height="306"/>
+                                <size key="minSize" width="444" height="306"/>
                                 <size key="maxSize" width="463" height="10000000"/>
                             </textView>
                         </subviews>
@@ -104,12 +104,12 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
                     <scroller key="verticalScroller" verticalHuggingPriority="750" horizontal="NO" id="D03-0I-zIY">
-                        <rect key="frame" x="371" y="1" width="15" height="306"/>
+                        <rect key="frame" x="445" y="1" width="15" height="306"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
                 </scrollView>
-                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Xey-KN-kpQ">
-                    <rect key="frame" x="377" y="346" width="94" height="32"/>
+                <button verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Xey-KN-kpQ">
+                    <rect key="frame" x="448" y="346" width="94" height="32"/>
                     <buttonCell key="cell" type="push" title="Clear log" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Bwe-Pg-NVC">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="system"/>
@@ -139,7 +139,7 @@
                 <constraint firstItem="I8b-cL-GM8" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" constant="71" id="tez-VW-e72"/>
                 <constraint firstItem="9CP-mT-oaL" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" constant="71" id="vdy-tP-Bdf"/>
             </constraints>
-            <point key="canvasLocation" x="727" y="670.5"/>
+            <point key="canvasLocation" x="756.5" y="670.5"/>
         </customView>
         <button verticalHuggingPriority="750" id="GKN-4c-kWN">
             <rect key="frame" x="0.0" y="0.0" width="82" height="32"/>

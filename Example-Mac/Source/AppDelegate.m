@@ -1,7 +1,7 @@
 /*! @file AppDelegate.m
     @brief AppAuth macOS SDK Example
     @copyright
-        Copyright 2015 Google Inc. All Rights Reserved.
+        Copyright 2016 Google Inc. All Rights Reserved.
     @copydetails
         Licensed under the Apache License, Version 2.0 (the "License");
         you may not use this file except in compliance with the License.
@@ -18,11 +18,14 @@
 
 #import "AppDelegate.h"
 
-#import "AppAuth.h"
+#import <AppAuth/AppAuth.h>
+
 #import "AppAuthExampleViewController.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface AppDelegate ()
-@property (weak) IBOutlet NSWindow *window;
+@property(nullable) IBOutlet NSWindow *window;
 @end
 
 @implementation AppDelegate
@@ -50,3 +53,5 @@
 }
 
 @end
+
+NS_ASSUME_NONNULL_END

@@ -1,7 +1,7 @@
 /*! @file AppAuthExampleViewController.m
     @brief AppAuth macOS SDK Example
     @copyright
-        Copyright 2015 Google Inc. All Rights Reserved.
+        Copyright 2016 Google Inc. All Rights Reserved.
     @copydetails
         Licensed under the Apache License, Version 2.0 (the "License");
         you may not use this file except in compliance with the License.
@@ -33,8 +33,7 @@ static NSString *const kIssuer = @"https://accounts.google.com";
     @discussion For Google, register your client at
         https://console.developers.google.com/apis/credentials?project=_
  */
-static NSString *const kClientID =
-    @"YOUR_CLIENT.apps.googleusercontent.com";
+static NSString *const kClientID = @"YOUR_CLIENT.apps.googleusercontent.com";
 
 /*! @var kClientSecret
     @brief The OAuth client secret.
@@ -46,7 +45,7 @@ static NSString *const kClientSecret = @"YOUR_CLIENT_SECRET";
 /*! @var kRedirectURI
     @brief The OAuth redirect URI for the client @c kClientID.
     @discussion With Google, the scheme of the redirect URI is the reverse DNS notation of the
-        client id. This scheme must be registered as a scheme in the project's Info
+        client ID. This scheme must be registered as a scheme in the project's Info
         property list ("CFBundleURLTypes" plist key). Any path component will work, we use
         'oauthredirect' here to help disambiguate from any other use of this scheme.
  */
@@ -59,7 +58,6 @@ static NSString *const kRedirectURI =
 static NSString *const kAppAuthExampleAuthStateKey = @"authState";
 
 @interface AppAuthExampleViewController () <OIDAuthStateChangeDelegate, OIDAuthStateErrorDelegate>
-- (void)setAuthState:(nullable OIDAuthState *)authState;
 @end
 
 @implementation AppAuthExampleViewController
@@ -78,7 +76,7 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
   // Full instructions: https://github.com/openid/AppAuth-iOS/blob/master/Example-Mac/README.md
 
   NSAssert(![kClientID isEqualToString:@"YOUR_CLIENT.apps.googleusercontent.com"],
-           @"Update kClientID with your own client id. "
+           @"Update kClientID with your own client ID. "
             "Instructions: https://github.com/openid/AppAuth-iOS/blob/master/Example-Mac/README.md");
 
   NSAssert(![kRedirectURI isEqualToString:@"com.googleusercontent.apps.YOUR_CLIENT:/oauthredirect"],
@@ -132,6 +130,9 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
 }
 
 - (void)setAuthState:(nullable OIDAuthState *)authState {
+  if (_authState == authState) {
+    return;
+  }
   _authState = authState;
   _authState.stateChangeDelegate = self;
   [self stateChanged];
@@ -142,9 +143,9 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
  */
 - (void)updateUI {
   _userinfoButton.enabled = [_authState isAuthorized];
-  _clearAuthStateButton.enabled = (_authState != nil);
-  _codeExchangeButton.enabled = (_authState.lastAuthorizationResponse.authorizationCode
-                                 && !_authState.lastTokenResponse);
+  _clearAuthStateButton.enabled = _authState != nil;
+  _codeExchangeButton.enabled = _authState.lastAuthorizationResponse.authorizationCode
+                                && !_authState.lastTokenResponse;
   // dynamically changes authorize button text depending on authorized state
   if (!_authState) {
     _authAutoButton.title = @"Authorize";
@@ -270,7 +271,7 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
 
   [OIDAuthorizationService performTokenRequest:tokenExchangeRequest
                                       callback:^(OIDTokenResponse *_Nullable tokenResponse,
-                                               NSError *_Nullable error) {
+                                                 NSError *_Nullable error) {
     if (!tokenResponse) {
       [self logMessage:@"Token exchange error: %@", [error localizedDescription]];
     } else {
@@ -309,7 +310,7 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
     }
 
     // log whether a token refresh occurred
-    if (currentAccessToken != accessToken) {
+    if (![currentAccessToken isEqual:accessToken]) {
       [self logMessage:@"Access token was refreshed automatically (%@ to %@)",
                          currentAccessToken,
                          accessToken];
@@ -335,16 +336,18 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
                                        NSURLResponse *_Nullable response,
                                        NSError *_Nullable error) {
       dispatch_async(dispatch_get_main_queue(), ^() {
-
+        if (error) {
+          [self logMessage:@"HTTP request failed %@", error];
+          return;
+        }
         if (![response isKindOfClass:[NSHTTPURLResponse class]]) {
-          [self logMessage:@"Non-HTTP response %@", error];
+          [self logMessage:@"Non-HTTP response"];
           return;
         }
 
         NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
-        NSError *jsonError;
         id jsonDictionaryOrArray =
-            [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];
+            [NSJSONSerialization JSONObjectWithData:data options:0 error:NULL];
 
         if (httpResponse.statusCode != 200) {
           // server replied with an error

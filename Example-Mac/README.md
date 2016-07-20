@@ -2,7 +2,7 @@
 
 ## Configuration
 
-The example doesn't work out of the box, you need to configure it your own
+The example doesn't work out of the box, you need to configure your own
 client ID.
 
 ### Creating a Google OAuth Client
@@ -30,7 +30,7 @@ $ open Example-Mac.xcworkspace
 ### Configure the Example
 
 In `AppAuthExampleViewController.m` update `kClientID` and 'kClientSecret' with
-your new client id and client secret.
+your new client ID and client secret.
 
 In the same file, update `kRedirectURI` with the *reverse DNS notation* form
 of the client ID. For example, if the client ID is
@@ -40,7 +40,7 @@ of the client ID. For example, if the client ID is
 
 Finally, open `Info.plist` and fully expand "URL types" (a.k.a.
 "CFBundleURLTypes") and replace `com.googleusercontent.apps.YOUR_CLIENT` with
-the reverse DNS notation form of your client id (not including the
+the reverse DNS notation form of your client ID (not including the
 `:/oauthredirect` path component).
 
 Once you have made those three changes, the sample should be ready to try with

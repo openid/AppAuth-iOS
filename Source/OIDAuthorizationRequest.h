@@ -67,8 +67,8 @@ extern NSString *const OIDOAuthorizationRequestCodeChallengeMethodS256;
 /*! @property clientSecret
     @brief The client secret.
     @remarks client_secret
-    @discussion The client secret is not needed on iOS, but is mandatory when exchanging the
-        authorization code for an access token on macOS.
+    @discussion The client secret is used to prove that identity of the client when exchaning an
+        authorization code for an access token.
         The client secret is not passed in the authorizationRequestURL. It is only used when
         exchanging the authorization code for an access token.
     @see https://tools.ietf.org/html/rfc6749#section-2.3.1
@@ -152,7 +152,7 @@ extern NSString *const OIDOAuthorizationRequestCodeChallengeMethodS256;
     @remarks This convenience initializer generates a state parameter and PKCE challenges
         automatically.
  */
-- (nullable instancetype)
+- (instancetype)
     initWithConfiguration:(OIDServiceConfiguration *)configuration
                  clientId:(NSString *)clientID
                    scopes:(nullable NSArray<NSString *> *)scopes
@@ -173,13 +173,14 @@ extern NSString *const OIDOAuthorizationRequestCodeChallengeMethodS256;
     @remarks This convenience initializer generates a state parameter and PKCE challenges
         automatically.
  */
-- (nullable instancetype)initWithConfiguration:(OIDServiceConfiguration *)configuration
-                clientId:(NSString *)clientID
-            clientSecret:(nullable NSString *)clientSecret
-                  scopes:(nullable NSArray<NSString *> *)scopes
-             redirectURL:(NSURL *)redirectURL
-            responseType:(NSString *)responseType
-    additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters;
+- (instancetype)
+    initWithConfiguration:(OIDServiceConfiguration *)configuration
+                 clientId:(NSString *)clientID
+             clientSecret:(nullable NSString *)clientSecret
+                   scopes:(nullable NSArray<NSString *> *)scopes
+              redirectURL:(NSURL *)redirectURL
+             responseType:(NSString *)responseType
+     additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters;
 
 /*! @fn initWithConfiguration:clientId:scope:redirectURL:responseType:state:codeVerifier:codeChallenge:codeChallengeMethod:additionalParameters:
     @brief Designated initializer.
@@ -199,7 +200,7 @@ extern NSString *const OIDOAuthorizationRequestCodeChallengeMethodS256;
         challenge.
     @param additionalParameters The client's additional authorization parameters.
  */
-- (nullable instancetype)
+- (instancetype)
     initWithConfiguration:(OIDServiceConfiguration *)configuration
                  clientId:(NSString *)clientID
              clientSecret:(nullable NSString *)clientSecret

@@ -27,18 +27,18 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @interface AppAuthExampleViewController : UIViewController
 
-@property IBOutlet UIButton *authAutoButton;
-@property IBOutlet UIButton *authManual;
-@property IBOutlet UIButton *codeExchangeButton;
-@property IBOutlet UIButton *userinfoButton;
-@property IBOutlet UIButton *clearAuthStateButton;
-@property IBOutlet UITextView *logTextView;
+@property(nullable) IBOutlet UIButton *authAutoButton;
+@property(nullable) IBOutlet UIButton *authManual;
+@property(nullable) IBOutlet UIButton *codeExchangeButton;
+@property(nullable) IBOutlet UIButton *userinfoButton;
+@property(nullable) IBOutlet UIButton *clearAuthStateButton;
+@property(nullable) IBOutlet UITextView *logTextView;
 
 /*! @property authState
     @brief The authorization state. This is the AppAuth object that you should keep around and
         serialize to disk.
  */
-@property(nonatomic, strong, readonly, nullable) OIDAuthState *authState;
+@property(nonatomic, readonly, nullable) OIDAuthState *authState;
 
 /*! @fn authWithAutoCodeExchange:
     @brief Authorization code flow using @c OIDAuthState automatic code exchanges.

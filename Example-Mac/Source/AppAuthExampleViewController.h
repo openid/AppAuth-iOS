@@ -1,7 +1,7 @@
 /*! @file AppAuthExampleViewController.h
     @brief AppAuth macOS SDK Example
     @copyright
-        Copyright 2015 Google Inc. All Rights Reserved.
+        Copyright 2016 Google Inc. All Rights Reserved.
     @copydetails
         Licensed under the Apache License, Version 2.0 (the "License");
         you may not use this file except in compliance with the License.
@@ -28,20 +28,23 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @interface AppAuthExampleViewController : NSViewController
 
-@property IBOutlet NSButton *authAutoButton;
-@property IBOutlet NSButton *authManual;
-@property IBOutlet NSButton *codeExchangeButton;
-@property IBOutlet NSButton *userinfoButton;
-@property IBOutlet NSButton *clearAuthStateButton;
-@property IBOutlet NSTextView *logTextView;
+@property(nullable) IBOutlet NSButton *authAutoButton;
+@property(nullable) IBOutlet NSButton *authManual;
+@property(nullable) IBOutlet NSButton *codeExchangeButton;
+@property(nullable) IBOutlet NSButton *userinfoButton;
+@property(nullable) IBOutlet NSButton *clearAuthStateButton;
+@property(nullable) IBOutlet NSTextView *logTextView;
 
-@property (nonatomic, weak) AppDelegate *appDelegate;
+/*! @property appDelegate
+    @brief The application delegate. This is used to store the current authorization flow.
+ */
+@property (nonatomic, weak, nullable) AppDelegate *appDelegate;
 
 /*! @property authState
     @brief The authorization state. This is the AppAuth object that you should keep around and
         serialize to disk.
  */
-@property(nonatomic, strong, readonly, nullable) OIDAuthState *authState;
+@property(nonatomic, readonly, nullable) OIDAuthState *authState;
 
 /*! @fn authWithAutoCodeExchange:
     @brief Authorization code flow using @c OIDAuthState automatic code exchanges.
