@@ -84,6 +84,7 @@ static NSString *const kAdditionalParametersKey = @"additionalParameters";
                       authorizationCode:
                             redirectURL:
                                clientID:
+                           clientSecret:
                                   scope:
                            refreshToken:
                            codeVerifier:
