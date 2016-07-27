@@ -301,8 +301,8 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
 
   [self logMessage:@"Performing userinfo request"];
 
-  [_authState withFreshTokensPerformAction:^(NSString *_Nonnull accessToken,
-                                             NSString *_Nonnull idToken,
+  [_authState withFreshTokensPerformAction:^(NSString *_Nullable accessToken,
+                                             NSString *_Nullable idToken,
                                              NSError *_Nullable error) {
     if (error) {
       [self logMessage:@"Error fetching fresh tokens: %@", [error localizedDescription]];
