@@ -183,7 +183,7 @@ static void TCPServerAcceptCallBack(CFSocketRef socket, CFSocketCallBackType typ
     addr4.sin_len = sizeof(addr4);
     addr4.sin_family = AF_INET;
     addr4.sin_port = htons(port);
-    addr4.sin_addr.s_addr = htonl(INADDR_ANY);
+    addr4.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
     NSData *address4 = [NSData dataWithBytes:&addr4 length:sizeof(addr4)];
 
     if (kCFSocketSuccess != CFSocketSetAddress(ipv4socket, (CFDataRef)address4)) {
@@ -209,7 +209,7 @@ static void TCPServerAcceptCallBack(CFSocketRef socket, CFSocketCallBackType typ
     addr6.sin6_len = sizeof(addr6);
     addr6.sin6_family = AF_INET6;
     addr6.sin6_port = htons(port);
-    memcpy(&(addr6.sin6_addr), &in6addr_any, sizeof(addr6.sin6_addr));
+    memcpy(&(addr6.sin6_addr), &in6addr_loopback, sizeof(addr6.sin6_addr));
     NSData *address6 = [NSData dataWithBytes:&addr6 length:sizeof(addr6)];
 
     if (kCFSocketSuccess != CFSocketSetAddress(ipv6socket, (CFDataRef)address6)) {
