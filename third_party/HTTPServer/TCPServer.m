@@ -254,12 +254,16 @@ static void TCPServerAcceptCallBack(CFSocketRef socket, CFSocketCallBackType typ
     [netService stop];
     [netService release];
     netService = nil;
-    CFSocketInvalidate(ipv4socket);
-    CFSocketInvalidate(ipv6socket);
-    CFRelease(ipv4socket);
-    CFRelease(ipv6socket);
-    ipv4socket = NULL;
-    ipv6socket = NULL;
+    if (ipv4socket) {
+      CFSocketInvalidate(ipv4socket);
+      CFRelease(ipv4socket);
+      ipv4socket = NULL;
+    }
+    if (ipv6socket) {
+      CFSocketInvalidate(ipv6socket);
+      CFRelease(ipv6socket);
+      ipv6socket = NULL;
+    }
     return YES;
 }
 
