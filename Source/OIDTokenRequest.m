@@ -244,7 +244,7 @@ static NSString *const kAdditionalParametersKey = @"additionalParameters";
   if (_clientID) {
     [query addParameter:kClientIDKey value:_clientID];
   }
-  if (_clientSecret && [_grantType isEqualToString:OIDGrantTypeAuthorizationCode]) {
+  if (_clientSecret) {
     [query addParameter:kClientSecretKey value:_clientSecret];
   }
   if (_redirectURL) {
