@@ -38,6 +38,7 @@
 #elif TARGET_OS_MAC
 #import "OIDAuthState+Mac.h"
 #import "OIDAuthorizationService+Mac.h"
+#import "OIDRedirectHTTPHandler.h"
 #else
 #error "Platform Undefined; please specify TARGET_OS_MAC or TARGET_OS_IPHONE"
 #endif
