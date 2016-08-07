@@ -32,14 +32,16 @@
 #import "OIDTokenRequest.h"
 #import "OIDTokenResponse.h"
 
-#if TARGET_OS_IPHONE
+#if TARGET_OS_TV
+#elif TARGET_OS_WATCH
+#elif TARGET_OS_IOS
 #import "OIDAuthState+IOS.h"
 #import "OIDAuthorizationService+IOS.h"
 #elif TARGET_OS_MAC
 #import "OIDAuthState+Mac.h"
 #import "OIDAuthorizationService+Mac.h"
 #else
-#error "Platform Undefined; please specify TARGET_OS_MAC or TARGET_OS_IPHONE"
+#error "Platform Undefined"
 #endif
 
 

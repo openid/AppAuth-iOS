@@ -1,8 +1,8 @@
 Pod::Spec.new do |s|
 
   s.name         = "AppAuth"
-  s.version      = "0.4.1"
-  s.summary      = "AppAuth for iOS is a client SDK for communicating with OAuth 2.0 and OpenID Connect providers."
+  s.version      = "0.4.2"
+  s.summary      = "AppAuth for iOS and macOS is a client SDK for communicating with OAuth 2.0 and OpenID Connect providers."
 
   s.description  = <<-DESC
 
@@ -22,16 +22,25 @@ tasks like performing an action with fresh tokens.
                      "Steven E Wright" => "stevewright@google.com",
                    }
 
+  # Note: While watchOS and tvOS are specified here, only iOS and macOS have
+  #       UI implementations of the authorization service. You can use the
+  #       classes of AppAuth with tokens on watchOS and tvOS, but currently the
+  #       library won't help you obtain authorization grants on those platforms.
+
+  s.platforms    = { :ios => "7.0", :osx => "10.8", :watchos => "2.0", :tvos => "9.0" }
+
   s.source       = { :git => "https://github.com/openid/AppAuth-iOS.git", :tag => s.version }
 
   s.source_files = "Source/*.{h,m}"
   s.requires_arc = true
 
-  s.ios.source_files = "Source/iOS/**/*.{h,m}"
+  # iOS
+  s.ios.source_files      = "Source/iOS/**/*.{h,m}"
   s.ios.deployment_target = "7.0"
-  s.ios.framework    = "SafariServices"
+  s.ios.framework         = "SafariServices"
 
-  s.osx.source_files = "Source/macOS/**/*.{h,m}"
+  # macOS
+  s.osx.source_files      = "Source/macOS/**/*.{h,m}"
   s.osx.deployment_target = '10.8'
 
 end
