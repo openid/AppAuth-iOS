@@ -291,7 +291,7 @@ static const NSUInteger kExpiryTimeTolerance = 60;
 #pragma mark - Getters
 
 - (BOOL)isAuthorized {
-  return !self.authorizationError && (self.accessToken || self.idToken);
+  return !self.authorizationError && (self.accessToken || self.idToken || self.refreshToken);
 }
 
 #pragma mark - Updating the state
