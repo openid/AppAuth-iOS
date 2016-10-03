@@ -408,6 +408,12 @@ static const NSUInteger kExpiryTimeTolerance = 60;
 }
 
 - (void)withFreshTokensPerformAction:(OIDAuthStateAction)action {
+  [self withFreshTokensPerformActionWithAdditionalParameters:nil action:action];
+}
+
+- (void)withFreshTokensPerformActionWithAdditionalParameters:
+    (NSDictionary<NSString *, NSString *> *)additionalParameters
+                                                     action:(OIDAuthStateAction)action {
   if (!_refreshToken) {
     [OIDErrorUtilities raiseException:kRefreshTokenRequestException];
   }
@@ -434,7 +440,8 @@ static const NSUInteger kExpiryTimeTolerance = 60;
     }
 
     // refresh the tokens
-    OIDTokenRequest *tokenRefreshRequest = [self tokenRefreshRequest];
+    OIDTokenRequest *tokenRefreshRequest =
+      [self tokenRefreshRequestWithAdditionalParameters:additionalParameters];
     [OIDAuthorizationService performTokenRequest:tokenRefreshRequest
                                         callback:^(OIDTokenResponse *_Nullable response,
                                                    NSError *_Nullable error) {
