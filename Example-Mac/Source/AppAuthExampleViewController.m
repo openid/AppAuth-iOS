@@ -20,30 +20,26 @@
 
 #import <QuartzCore/QuartzCore.h>
 
-#import "AppAuth.h"
+#import <AppAuth/AppAuth.h>
 #import "AppDelegate.h"
 
-/*! @var kIssuer
-    @brief The OIDC issuer from which the configuration will be discovered.
+/*! @brief The OIDC issuer from which the configuration will be discovered.
  */
 static NSString *const kIssuer = @"https://accounts.google.com";
 
-/*! @var kClientID
-    @brief The OAuth client ID.
+/*! @brief The OAuth client ID.
     @discussion For Google, register your client at
         https://console.developers.google.com/apis/credentials?project=_
  */
 static NSString *const kClientID = @"YOUR_CLIENT.apps.googleusercontent.com";
 
-/*! @var kClientSecret
-    @brief The OAuth client secret.
+/*! @brief The OAuth client secret.
     @discussion For Google, register your client at
         https://console.developers.google.com/apis/credentials?project=_
  */
 static NSString *const kClientSecret = @"YOUR_CLIENT_SECRET";
 
-/*! @var kRedirectURI
-    @brief The OAuth redirect URI for the client @c kClientID.
+/*! @brief The OAuth redirect URI for the client @c kClientID.
     @discussion With Google, the scheme of the redirect URI is the reverse DNS notation of the
         client ID. This scheme must be registered as a scheme in the project's Info
         property list ("CFBundleURLTypes" plist key). Any path component will work, we use
@@ -51,6 +47,14 @@ static NSString *const kClientSecret = @"YOUR_CLIENT_SECRET";
  */
 static NSString *const kRedirectURI =
     @"com.googleusercontent.apps.YOUR_CLIENT:/oauthredirect";
+
+/*! @brief Post-authorization redirect URI.
+    @discussion This is the URL that users will be redirected to after the OAuth flow is complete.
+        Generally you will point them at a nice page on your site that instructs them to return to
+        the app. It's best when that page is uncluttered and to the point.
+ */
+static NSString *const kSuccessURLString =
+    @"http://openid.github.io/AppAuth-iOS/redirect/";
 
 /*! @var kAppAuthExampleAuthStateKey
     @brief NSCoding key for the authState property.
@@ -60,7 +64,9 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
 @interface AppAuthExampleViewController () <OIDAuthStateChangeDelegate, OIDAuthStateErrorDelegate>
 @end
 
-@implementation AppAuthExampleViewController
+@implementation AppAuthExampleViewController {
+  OIDRedirectHTTPHandler *_redirectHTTPHandler;
+}
 
 - (void)viewDidLoad {
   [super viewDidLoad];
@@ -78,24 +84,6 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
   NSAssert(![kClientID isEqualToString:@"YOUR_CLIENT.apps.googleusercontent.com"],
            @"Update kClientID with your own client ID. "
             "Instructions: https://github.com/openid/AppAuth-iOS/blob/master/Example-Mac/README.md");
-
-  NSAssert(![kRedirectURI isEqualToString:@"com.googleusercontent.apps.YOUR_CLIENT:/oauthredirect"],
-           @"Update kRedirectURI with your own redirect URI. "
-            "Instructions: https://github.com/openid/AppAuth-iOS/blob/master/Example-Mac/README.md");
-
-  // verifies that the custom URI scheme has been updated in the Info.plist
-  NSArray __unused* urlTypes =
-      [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleURLTypes"];
-  NSAssert([urlTypes count] > 0, @"No custom URI scheme has been configured for the project.");
-  NSArray *urlSchemes =
-      [(NSDictionary *)[urlTypes objectAtIndex:0] objectForKey:@"CFBundleURLSchemes"];
-  NSAssert([urlSchemes count] > 0, @"No custom URI scheme has been configured for the project.");
-  NSString *urlScheme = [urlSchemes objectAtIndex:0];
-
-  NSAssert(![urlScheme isEqualToString:@"com.googleusercontent.apps.YOUR_CLIENT"],
-           @"Configure the URI scheme in Info.plist (URL Types -> Item 0 -> URL Schemes -> Item 0) "
-            "with the scheme of your redirect URI. Full instructions: "
-            "https://github.com/openid/AppAuth-iOS/blob/master/Example-Mac/README.md");
 
 #endif // !defined(NS_BLOCK_ASSERTIONS)
 
@@ -148,11 +136,13 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
                                 && !_authState.lastTokenResponse;
   // dynamically changes authorize button text depending on authorized state
   if (!_authState) {
-    _authAutoButton.title = @"Authorize";
-    _authManual.title = @"Authorize (Manual)";
+    _authAutoButton.title = @"Authorize (Custom URI Scheme Redirect)";
+    _authManual.title = @"Authorize (Custom URI Scheme Redirect, Manual)";
+    _authAutoHTTPButton.title = @"Authorize (HTTP Redirect)";
   } else {
-    _authAutoButton.title = @"Re-authorize";
-    _authManual.title = @"Re-authorize (Manual)";
+    _authAutoButton.title = @"Re-authorize (Custom URI Scheme Redirect)";
+    _authManual.title = @"Re-authorize (Custom URI Scheme, Manual)";
+    _authAutoHTTPButton.title = @"Re-authorize (HTTP Redirect)";
   }
 }
 
@@ -170,6 +160,41 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
 }
 
 - (IBAction)authWithAutoCodeExchange:(nullable id)sender {
+
+#if !defined(NS_BLOCK_ASSERTIONS)
+
+  // NOTE:
+  //
+  // To run this sample, you need to register your own Google API client at
+  // https://console.developers.google.com/apis/credentials?project=_ and update three configuration
+  // points in the sample: kClientID and kRedirectURI constants in AppAuthExampleViewController.m
+  // and the URI scheme in Info.plist (URL Types -> Item 0 -> URL Schemes -> Item 0).
+  // Full instructions: https://github.com/openid/AppAuth-iOS/blob/master/Example-Mac/README.md
+
+  NSAssert(![kClientID isEqualToString:@"YOUR_CLIENT.apps.googleusercontent.com"],
+           @"Update kClientID with your own client ID. "
+            "Instructions: https://github.com/openid/AppAuth-iOS/blob/master/Example-Mac/README.md");
+
+  NSAssert(![kRedirectURI isEqualToString:@"com.googleusercontent.apps.YOUR_CLIENT:/oauthredirect"],
+           @"Update kRedirectURI with your own redirect URI. "
+            "Instructions: https://github.com/openid/AppAuth-iOS/blob/master/Example-Mac/README.md");
+
+  // verifies that the custom URI scheme has been updated in the Info.plist
+  NSArray __unused* urlTypes =
+      [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleURLTypes"];
+  NSAssert([urlTypes count] > 0, @"No custom URI scheme has been configured for the project.");
+  NSArray *urlSchemes =
+      [(NSDictionary *)[urlTypes objectAtIndex:0] objectForKey:@"CFBundleURLSchemes"];
+  NSAssert([urlSchemes count] > 0, @"No custom URI scheme has been configured for the project.");
+  NSString *urlScheme = [urlSchemes objectAtIndex:0];
+
+  NSAssert(![urlScheme isEqualToString:@"com.googleusercontent.apps.YOUR_CLIENT"],
+           @"Configure the URI scheme in Info.plist (URL Types -> Item 0 -> URL Schemes -> Item 0) "
+            "with the scheme of your redirect URI. Full instructions: "
+            "https://github.com/openid/AppAuth-iOS/blob/master/Example-Mac/README.md");
+
+#endif // !defined(NS_BLOCK_ASSERTIONS)
+
   NSURL *issuer = [NSURL URLWithString:kIssuer];
   NSURL *redirectURI = [NSURL URLWithString:kRedirectURI];
 
@@ -213,6 +238,89 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
   }];
 }
 
+- (IBAction)authWithAutoCodeExchangeHTTP:(nullable id)sender {
+
+#if !defined(NS_BLOCK_ASSERTIONS)
+
+  // NOTE:
+  //
+  // To run this sample, you need to register your own Google API client at
+  // https://console.developers.google.com/apis/credentials?project=_ and update three configuration
+  // points in the sample: kClientID and kRedirectURI constants in AppAuthExampleViewController.m
+  // and the URI scheme in Info.plist (URL Types -> Item 0 -> URL Schemes -> Item 0).
+  // Full instructions: https://github.com/openid/AppAuth-iOS/blob/master/Example-Mac/README.md
+
+  NSAssert(![kClientSecret isEqualToString:@"YOUR_CLIENT_SECRET"],
+           @"Update kClientSecret with your own client ID secret. "
+            "Instructions: https://github.com/openid/AppAuth-iOS/blob/master/Example-Mac/README.md");
+
+#endif // !defined(NS_BLOCK_ASSERTIONS)
+
+  NSURL *issuer = [NSURL URLWithString:kIssuer];
+
+  [self logMessage:@"Starting HTTP loopback listener..."];
+
+  NSURL *successURL = [NSURL URLWithString:kSuccessURLString];
+
+  // Starts a loopback HTTP redirect listener to receive the code.  This needs to be started first,
+  // as the exact redurect URI (including port) must be passed in the authorization request.
+  _redirectHTTPHandler = [[OIDRedirectHTTPHandler alloc] initWithSuccessURL:successURL];
+  NSURL *redirectURI = [_redirectHTTPHandler startHTTPListener:nil];
+
+  [self logMessage:@"Listening on %@", redirectURI];
+
+  [self logMessage:@"Fetching configuration for issuer: %@", issuer];
+
+  // discovers endpoints
+  [OIDAuthorizationService discoverServiceConfigurationForIssuer:issuer
+      completion:^(OIDServiceConfiguration *_Nullable configuration, NSError *_Nullable error) {
+
+    if (!configuration) {
+      [self logMessage:@"Error retrieving discovery document: %@", [error localizedDescription]];
+      [self setAuthState:nil];
+      return;
+    }
+
+    [self logMessage:@"Got configuration: %@", configuration];
+
+    // builds authentication request
+    OIDAuthorizationRequest *request =
+        [[OIDAuthorizationRequest alloc] initWithConfiguration:configuration
+                                                      clientId:kClientID
+                                                  clientSecret:kClientSecret
+                                                        scopes:@[OIDScopeOpenID, OIDScopeProfile]
+                                                   redirectURL:redirectURI
+                                                  responseType:OIDResponseTypeCode
+                                          additionalParameters:nil];
+    // performs authentication request
+    _redirectHTTPHandler.currentAuthorizationFlow =
+        [OIDAuthState authStateByPresentingAuthorizationRequest:request
+                            callback:^(OIDAuthState *_Nullable authState,
+                                       NSError *_Nullable error) {
+
+      // Brings this app to the foreground.
+      [[NSRunningApplication currentApplication]
+          activateWithOptions:(NSApplicationActivateAllWindows |
+                               NSApplicationActivateIgnoringOtherApps)];
+
+      // The loopback HTTP listener is no longer needed, stops it.
+      [_redirectHTTPHandler stopHTTPListener];
+      _redirectHTTPHandler = nil;
+
+      if (authState) {
+        [self logMessage:@"Got authorization tokens. Access token: %@",
+                         authState.lastTokenResponse.accessToken];
+      } else {
+        [self logMessage:@"Authorization error: %@", error.localizedDescription];
+      }
+
+      [self setAuthState:authState];
+    }];
+  }];
+}
+
+
+
 - (IBAction)authNoCodeExchange:(nullable id)sender {
   NSURL *issuer = [NSURL URLWithString:kIssuer];
   NSURL *redirectURI = [NSURL URLWithString:kRedirectURI];
@@ -224,7 +332,7 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
       completion:^(OIDServiceConfiguration *_Nullable configuration, NSError *_Nullable error) {
 
     if (!configuration) {
-      [self logMessage:@"Error retrieving discovery document: %@", [error localizedDescription]];
+      [self logMessage:@"Error retrieving discovery document: %@", error.localizedDescription];
       return;
     }
 
