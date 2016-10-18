@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		622D29EC65BD3F0E38822AF1 /* libPods-Example-Mac.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 653C5E3C17C4D280AA39A08B /* libPods-Example-Mac.a */; };
+		EFEF6E9CC6F12EA4870987D5 /* libPods-Example-Mac.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FED92DEDC2639A35907A5D4D /* libPods-Example-Mac.a */; };
 		F6016E951D2BD988003497D7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F6016E8B1D2BD988003497D7 /* AppDelegate.m */; };
 		F6016E971D2BD988003497D7 /* AppAuthExampleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F6016E8D1D2BD988003497D7 /* AppAuthExampleViewController.m */; };
 		F6016E981D2BD988003497D7 /* AppAuthExampleViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F6016E8F1D2BD988003497D7 /* AppAuthExampleViewController.xib */; };
@@ -17,9 +17,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		653C5E3C17C4D280AA39A08B /* libPods-Example-Mac.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Example-Mac.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		A707A6A09FEE94A105421FD6 /* Pods-Example-Mac.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Example-Mac.release.xcconfig"; path = "Pods/Target Support Files/Pods-Example-Mac/Pods-Example-Mac.release.xcconfig"; sourceTree = "<group>"; };
-		C16FBAA1467EEE61F09B9C78 /* Pods-Example-Mac.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Example-Mac.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Example-Mac/Pods-Example-Mac.debug.xcconfig"; sourceTree = "<group>"; };
+		60553B3AB5BA3E1BB259E487 /* Pods-Example-Mac.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Example-Mac.release.xcconfig"; path = "Pods/Target Support Files/Pods-Example-Mac/Pods-Example-Mac.release.xcconfig"; sourceTree = "<group>"; };
+		7FF583C8F7036437BE8875B3 /* Pods-Example-Mac.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Example-Mac.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Example-Mac/Pods-Example-Mac.debug.xcconfig"; sourceTree = "<group>"; };
 		F6016E701D2AC11F003497D7 /* Example-Mac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Example-Mac.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6016E8B1D2BD988003497D7 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = Source/AppDelegate.m; sourceTree = "<group>"; };
 		F6016E8D1D2BD988003497D7 /* AppAuthExampleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppAuthExampleViewController.m; path = Source/AppAuthExampleViewController.m; sourceTree = "<group>"; };
@@ -30,6 +29,7 @@
 		F6016E941D2BD988003497D7 /* AppAuthExampleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppAuthExampleViewController.h; path = Source/AppAuthExampleViewController.h; sourceTree = "<group>"; };
 		F6016E9B1D2BD9C0003497D7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = Source/Assets.xcassets; sourceTree = "<group>"; };
 		F6016E9D1D2BD9C7003497D7 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Source/Info.plist; sourceTree = "<group>"; };
+		FED92DEDC2639A35907A5D4D /* libPods-Example-Mac.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Example-Mac.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -37,28 +37,28 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				622D29EC65BD3F0E38822AF1 /* libPods-Example-Mac.a in Frameworks */,
+				EFEF6E9CC6F12EA4870987D5 /* libPods-Example-Mac.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		405789D7DCF3C985E2E5D070 /* Frameworks */ = {
+		186006823FF563B11A81B036 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				653C5E3C17C4D280AA39A08B /* libPods-Example-Mac.a */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		8ADFA8B34C1A7009C6F624AF /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				C16FBAA1467EEE61F09B9C78 /* Pods-Example-Mac.debug.xcconfig */,
-				A707A6A09FEE94A105421FD6 /* Pods-Example-Mac.release.xcconfig */,
+				7FF583C8F7036437BE8875B3 /* Pods-Example-Mac.debug.xcconfig */,
+				60553B3AB5BA3E1BB259E487 /* Pods-Example-Mac.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		27454E5D219A9EBB94F74197 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				FED92DEDC2639A35907A5D4D /* libPods-Example-Mac.a */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		F6016E671D2AC11E003497D7 = {
@@ -66,8 +66,8 @@
 			children = (
 				F6016E8A1D2BD973003497D7 /* Source */,
 				F6016E711D2AC11F003497D7 /* Products */,
-				8ADFA8B34C1A7009C6F624AF /* Pods */,
-				405789D7DCF3C985E2E5D070 /* Frameworks */,
+				186006823FF563B11A81B036 /* Pods */,
+				27454E5D219A9EBB94F74197 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -327,7 +327,7 @@
 		};
 		F6016E821D2AC11F003497D7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C16FBAA1467EEE61F09B9C78 /* Pods-Example-Mac.debug.xcconfig */;
+			baseConfigurationReference = 7FF583C8F7036437BE8875B3 /* Pods-Example-Mac.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -340,7 +340,7 @@
 		};
 		F6016E831D2AC11F003497D7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A707A6A09FEE94A105421FD6 /* Pods-Example-Mac.release.xcconfig */;
+			baseConfigurationReference = 60553B3AB5BA3E1BB259E487 /* Pods-Example-Mac.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COMBINE_HIDPI_IMAGES = YES;
