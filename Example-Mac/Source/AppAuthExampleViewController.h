@@ -23,62 +23,61 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/*! @class AppAuthExampleViewController
-    @brief The example application's view controller.
+/*! @brief The example application's view controller.
  */
 @interface AppAuthExampleViewController : NSViewController
 
 @property(nullable) IBOutlet NSButton *authAutoButton;
 @property(nullable) IBOutlet NSButton *authManual;
+@property(nullable) IBOutlet NSButton *authAutoHTTPButton;
 @property(nullable) IBOutlet NSButton *codeExchangeButton;
 @property(nullable) IBOutlet NSButton *userinfoButton;
 @property(nullable) IBOutlet NSButton *clearAuthStateButton;
 @property(nullable) IBOutlet NSTextView *logTextView;
 
-/*! @property appDelegate
-    @brief The application delegate. This is used to store the current authorization flow.
+/*! @brief The application delegate. This is used to store the current authorization flow.
  */
 @property (nonatomic, weak, nullable) AppDelegate *appDelegate;
 
-/*! @property authState
-    @brief The authorization state. This is the AppAuth object that you should keep around and
+/*! @brief The authorization state. This is the AppAuth object that you should keep around and
         serialize to disk.
  */
 @property(nonatomic, readonly, nullable) OIDAuthState *authState;
 
-/*! @fn authWithAutoCodeExchange:
-    @brief Authorization code flow using @c OIDAuthState automatic code exchanges.
+/*! @brief Authorization code flow using @c OIDAuthState automatic code exchanges and a custom URI
+        scheme-based redirect.
     @param sender IBAction sender.
  */
 - (IBAction)authWithAutoCodeExchange:(nullable id)sender;
 
-/*! @fn authNoCodeExchange:
-    @brief Authorization code flow without a the code exchange (need to call @c codeExchange:
-        manually)
+/*! @brief Authorization code flow using a manual code exchanges and a custom URI scheme-based
+        redirect.
     @param sender IBAction sender.
  */
 - (IBAction)authNoCodeExchange:(nullable id)sender;
 
-/*! @fn codeExchange:
-    @brief Performs the authorization code exchange at the token endpoint.
+/*! @brief Authorization code flow using @c OIDAuthState automatic code exchanges and a
+        loopback HTTP-based redirect.
+    @param sender IBAction sender.
+ */
+- (IBAction)authWithAutoCodeExchangeHTTP:(nullable id)sender;
+
+/*! @brief Performs the authorization code exchange at the token endpoint.
     @param sender IBAction sender.
  */
 - (IBAction)codeExchange:(nullable id)sender;
 
-/*! @fn userinfo:
-    @brief Performs a Userinfo API call using @c OIDAuthState.withFreshTokensPerformAction.
+/*! @brief Performs a Userinfo API call using @c OIDAuthState.withFreshTokensPerformAction.
     @param sender IBAction sender.
  */
 - (IBAction)userinfo:(nullable id)sender;
 
-/*! @fn clearAuthState:
-    @brief Nils the @c OIDAuthState object.
+/*! @brief Nils the @c OIDAuthState object.
     @param sender IBAction sender.
  */
 - (IBAction)clearAuthState:(nullable id)sender;
 
-/*! @fn clearLog:
-    @brief Clears the UI log.
+/*! @brief Clears the UI log.
     @param sender IBAction sender.
  */
 - (IBAction)clearLog:(nullable id)sender;
