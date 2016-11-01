@@ -24,12 +24,10 @@
 @implementation HTTPServer
 
 - (id)init {
+    self = [super init];
     connClass = [HTTPConnection self];
+    connections = [[NSMutableArray alloc] init];
     return self;
-}
-
-- (void)dealloc {
-    [super dealloc];
 }
 
 - (Class)connectionClass {
@@ -46,26 +44,24 @@
 
 - (void)setDocumentRoot:(NSURL *)value {
     if (docRoot != value) {
-        [docRoot release];
         docRoot = [value copy];
     }
+}
+
+// Removes the connection from the list of active connections.
+- (void)removeConnection:(HTTPConnection *)connection {
+    [connections removeObject:connection];
 }
 
 // Converts the TCPServer delegate notification into the HTTPServer delegate method.
 - (void)handleNewConnectionFromAddress:(NSData *)addr inputStream:(NSInputStream *)istr outputStream:(NSOutputStream *)ostr {
     HTTPConnection *connection = [[connClass alloc] initWithPeerAddress:addr inputStream:istr outputStream:ostr forServer:self];
+    // Adds connection to the active connection list to retain it.
+    [connections addObject:connection];
     [connection setDelegate:[self delegate]];
     if ([self delegate] && [[self delegate] respondsToSelector:@selector(HTTPServer:didMakeNewConnection:)]) {
         [[self delegate] HTTPServer:self didMakeNewConnection:connection];
     }
-    // The connection at this point is turned loose to exist on its
-    // own, and not released or autoreleased.  Alternatively, the
-    // HTTPServer could keep a list of connections, and HTTPConnection
-    // would have to tell the server to delete one at invalidation
-    // time.  This would perhaps be more correct and ensure no
-    // spurious leaks get reported by the tools, but HTTPServer
-    // has nothing further it wants to do with the HTTPConnections,
-    // and would just be "owning" the connections for form.
 }
 
 @end
@@ -74,15 +70,14 @@
 @implementation HTTPConnection
 
 - (id)init {
-    [self dealloc];
     return nil;
 }
 
 - (id)initWithPeerAddress:(NSData *)addr inputStream:(NSInputStream *)istr outputStream:(NSOutputStream *)ostr forServer:(HTTPServer *)serv {
     peerAddress = [addr copy];
     server = serv;
-    istream = [istr retain];
-    ostream = [ostr retain];
+    istream = istr;
+    ostream = ostr;
     [istream setDelegate:self];
     [ostream setDelegate:self];
     [istream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:(id)kCFRunLoopCommonModes];
@@ -95,8 +90,6 @@
 
 - (void)dealloc {
     [self invalidate];
-    [peerAddress release];
-    [super dealloc];
 }
 
 - (id)delegate {
@@ -133,22 +126,14 @@
 - (void)invalidate {
     if (isValid) {
         isValid = NO;
+        [server removeConnection:self];
         [istream close];
         [ostream close];
-        [istream release];
-        [ostream release];
         istream = nil;
         ostream = nil;
-        [ibuffer release];
-        [obuffer release];
         ibuffer = nil;
         obuffer = nil;
-        [requests release];
         requests = nil;
-        [self release];
-        // This last line removes the implicit retain the HTTPConnection
-        // has on itself, given by the HTTPServer when it abandoned the
-        // new connection.
     }
 }
 
@@ -168,16 +153,16 @@
     // header, then the request is the remainder of the stream bytes.
 
     if (CFHTTPMessageIsHeaderComplete(working)) {
-        NSString *contentLengthValue = [(NSString *)CFHTTPMessageCopyHeaderFieldValue(working, (CFStringRef)@"Content-Length") autorelease];
-
+        NSString *contentLengthValue = (__bridge_transfer NSString *)CFHTTPMessageCopyHeaderFieldValue(working, (CFStringRef)@"Content-Length");
+        
         unsigned contentLength = contentLengthValue ? [contentLengthValue intValue] : 0;
-        NSData *body = [(NSData *)CFHTTPMessageCopyBody(working) autorelease];
+        NSData *body = (__bridge_transfer NSData *)CFHTTPMessageCopyBody(working);
         unsigned bodyLength = [body length];
         if (contentLength <= bodyLength) {
             NSData *newBody = [NSData dataWithBytes:[body bytes] length:contentLength];
             [ibuffer setLength:0];
             [ibuffer appendBytes:([body bytes] + contentLength) length:(bodyLength - contentLength)];
-            CFHTTPMessageSetBody(working, (CFDataRef)newBody);
+            CFHTTPMessageSetBody(working, (__bridge CFDataRef)newBody);
         } else {
             CFRelease(working);
             return NO;
@@ -238,7 +223,7 @@
 
     if (!firstResponseDone) {
         firstResponseDone = YES;
-        NSData *serialized = [(NSData *)CFHTTPMessageCopySerializedMessage(cfresp) autorelease];
+        NSData *serialized = (__bridge_transfer NSData *)CFHTTPMessageCopySerializedMessage(cfresp);
         unsigned olen = [serialized length];
         if (0 < olen) {
             int writ = [ostream write:[serialized bytes] maxLength:olen];
@@ -330,15 +315,15 @@
 - (void)performDefaultRequestHandling:(HTTPServerRequest *)mess {
     CFHTTPMessageRef request = [mess request];
 
-    NSString *vers = [(id)CFHTTPMessageCopyVersion(request) autorelease];
+    NSString *vers = (__bridge_transfer id)CFHTTPMessageCopyVersion(request);
     if (!vers || ![vers isEqual:(id)kCFHTTPVersion1_1]) {
-        CFHTTPMessageRef response = CFHTTPMessageCreateResponse(kCFAllocatorDefault, 505, NULL, (CFStringRef)vers); // Version Not Supported
+        CFHTTPMessageRef response = CFHTTPMessageCreateResponse(kCFAllocatorDefault, 505, NULL, (__bridge CFStringRef)vers); // Version Not Supported
         [mess setResponse:response];
         CFRelease(response);
         return;
     }
 
-    NSString *method = [(id)CFHTTPMessageCopyRequestMethod(request) autorelease];
+    NSString *method = (__bridge_transfer id)CFHTTPMessageCopyRequestMethod(request);
     if (!method) {
         CFHTTPMessageRef response = CFHTTPMessageCreateResponse(kCFAllocatorDefault, 400, NULL, kCFHTTPVersion1_1); // Bad Request
         [mess setResponse:response];
@@ -347,7 +332,7 @@
     }
 
     if ([method isEqual:@"GET"] || [method isEqual:@"HEAD"]) {
-        NSURL *uri = [(NSURL *)CFHTTPMessageCopyRequestURL(request) autorelease];
+        NSURL *uri = (__bridge_transfer NSURL *)CFHTTPMessageCopyRequestURL(request);
         NSURL *url = [NSURL URLWithString:[uri path] relativeToURL:[server documentRoot]];
         NSData *data = [NSData dataWithContentsOfURL:url];
 
@@ -359,9 +344,9 @@
         }
 
         CFHTTPMessageRef response = CFHTTPMessageCreateResponse(kCFAllocatorDefault, 200, NULL, kCFHTTPVersion1_1); // OK
-        CFHTTPMessageSetHeaderFieldValue(response, (CFStringRef)@"Content-Length", (CFStringRef)[NSString stringWithFormat:@"%d", [data length]]);
+        CFHTTPMessageSetHeaderFieldValue(response, (CFStringRef)@"Content-Length", (__bridge CFStringRef)[NSString stringWithFormat:@"%d", [data length]]);
         if ([method isEqual:@"GET"]) {
-            CFHTTPMessageSetBody(response, (CFDataRef)data);
+            CFHTTPMessageSetBody(response, (__bridge CFDataRef)data);
         }
         [mess setResponse:response];
         CFRelease(response);
@@ -379,7 +364,6 @@
 @implementation HTTPServerRequest
 
 - (id)init {
-    [self dealloc];
     return nil;
 }
 
@@ -392,8 +376,6 @@
 - (void)dealloc {
     if (request) CFRelease(request);
     if (response) CFRelease(response);
-    [responseStream release];
-    [super dealloc];
 }
 
 - (HTTPConnection *)connection {
@@ -425,8 +407,7 @@
 
 - (void)setResponseBodyStream:(NSInputStream *)value {
     if (value != responseStream) {
-        [responseStream release];
-        responseStream = [value retain];
+        responseStream = value;
     }
 }
 
@@ -442,10 +423,6 @@ NSString * const TCPServerErrorDomain = @"TCPServerErrorDomain";
 
 - (void)dealloc {
     [self stop];
-    [domain release];
-    [name release];
-    [type release];
-    [super dealloc];
 }
 
 - (id)delegate {
@@ -462,7 +439,6 @@ NSString * const TCPServerErrorDomain = @"TCPServerErrorDomain";
 
 - (void)setDomain:(NSString *)value {
     if (domain != value) {
-        [domain release];
         domain = [value copy];
     }
 }
@@ -473,7 +449,6 @@ NSString * const TCPServerErrorDomain = @"TCPServerErrorDomain";
 
 - (void)setName:(NSString *)value {
     if (name != value) {
-        [name release];
         name = [value copy];
     }
 }
@@ -484,7 +459,6 @@ NSString * const TCPServerErrorDomain = @"TCPServerErrorDomain";
 
 - (void)setType:(NSString *)value {
     if (type != value) {
-        [type release];
         type = [value copy];
     }
 }
@@ -508,7 +482,7 @@ NSString * const TCPServerErrorDomain = @"TCPServerErrorDomain";
 // We gather some data here, and convert the function call to a method
 // invocation on TCPServer.
 static void TCPServerAcceptCallBack(CFSocketRef socket, CFSocketCallBackType type, CFDataRef address, const void *data, void *info) {
-    TCPServer *server = (TCPServer *)info;
+    TCPServer *server = (__bridge TCPServer *)info;
     if (kCFSocketAcceptCallBack == type) {
         // for an AcceptCallBack, the data parameter is a pointer to a CFSocketNativeHandle
         CFSocketNativeHandle nativeSocketHandle = *(CFSocketNativeHandle *)data;
@@ -524,7 +498,7 @@ static void TCPServerAcceptCallBack(CFSocketRef socket, CFSocketCallBackType typ
         if (readStream && writeStream) {
             CFReadStreamSetProperty(readStream, kCFStreamPropertyShouldCloseNativeSocket, kCFBooleanTrue);
             CFWriteStreamSetProperty(writeStream, kCFStreamPropertyShouldCloseNativeSocket, kCFBooleanTrue);
-            [server handleNewConnectionFromAddress:peer inputStream:(NSInputStream *)readStream outputStream:(NSOutputStream *)writeStream];
+            [server handleNewConnectionFromAddress:peer inputStream:(__bridge NSInputStream *)readStream outputStream:(__bridge NSOutputStream *)writeStream];
         } else {
             // on any failure, need to destroy the CFSocketNativeHandle
             // since we are not going to use it any more
@@ -536,7 +510,7 @@ static void TCPServerAcceptCallBack(CFSocketRef socket, CFSocketCallBackType typ
 }
 
 - (BOOL)start:(NSError **)error {
-    CFSocketContext socketCtxt = {0, self, NULL, NULL, NULL};
+    CFSocketContext socketCtxt = {0, (__bridge void *)(self), NULL, NULL, NULL};
     ipv4socket = CFSocketCreate(kCFAllocatorDefault, PF_INET, SOCK_STREAM, IPPROTO_TCP, kCFSocketAcceptCallBack, (CFSocketCallBack)&TCPServerAcceptCallBack, &socketCtxt);
     ipv6socket = CFSocketCreate(kCFAllocatorDefault, PF_INET6, SOCK_STREAM, IPPROTO_TCP, kCFSocketAcceptCallBack, (CFSocketCallBack)&TCPServerAcceptCallBack, &socketCtxt);
 
@@ -574,7 +548,7 @@ static void TCPServerAcceptCallBack(CFSocketRef socket, CFSocketCallBackType typ
     if (0 == port) {
         // now that the binding was successful, we get the port number
         // -- we will need it for the v6 endpoint and for the NSNetService
-        NSData *addr = [(NSData *)CFSocketCopyAddress(ipv4socket) autorelease];
+        NSData *addr = (__bridge_transfer NSData *)CFSocketCopyAddress(ipv4socket);
         memcpy(&addr4, [addr bytes], [addr length]);
         port = ntohs(addr4.sin_port);
     }
@@ -628,7 +602,6 @@ static void TCPServerAcceptCallBack(CFSocketRef socket, CFSocketCallBackType typ
 
 - (BOOL)stop {
     [netService stop];
-    [netService release];
     netService = nil;
     if (ipv4socket) {
       CFSocketInvalidate(ipv4socket);

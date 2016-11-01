@@ -35,7 +35,7 @@ typedef enum {
 
 @interface TCPServer : NSObject {
 @private
-    id delegate;
+    __weak id delegate;
     NSString *domain;
     NSString *name;
     NSString *type;
@@ -83,6 +83,8 @@ typedef enum {
 @private
     Class connClass;
     NSURL *docRoot;
+    // Currently active connections spawned from the HTTPServer.
+    NSMutableArray<HTTPConnection *> *connections;
 }
 
 - (Class)connectionClass;
@@ -107,9 +109,9 @@ typedef enum {
 // This class represents each incoming client connection.
 @interface HTTPConnection : NSObject {
 @private
-    id delegate;
+    __weak id delegate;
     NSData *peerAddress;
-    HTTPServer *server;
+    __weak HTTPServer *server;
     NSMutableArray *requests;
     NSInputStream *istream;
     NSOutputStream *ostream;
