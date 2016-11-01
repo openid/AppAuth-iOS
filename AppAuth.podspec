@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "AppAuth"
-  s.version      = "0.4.2"
+  s.version      = "0.5.0"
   s.summary      = "AppAuth for iOS and macOS is a client SDK for communicating with OAuth 2.0 and OpenID Connect providers."
 
   s.description  = <<-DESC
@@ -40,7 +40,12 @@ tasks like performing an action with fresh tokens.
   s.ios.framework         = "SafariServices"
 
   # macOS
-  s.osx.source_files      = "Source/macOS/**/*.{h,m}"
+  s.osx.source_files = "Source/macOS/*.{h,m}"
   s.osx.deployment_target = '10.8'
 
+  s.subspec 'no-arc' do |sp|
+    sp.source_files = ""
+    sp.osx.source_files = "Source/macOS/LoopbackHTTPServer/*.{h,m}"
+    sp.requires_arc = false
+  end
 end

@@ -7,6 +7,31 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		340DAE571D5821A100EC285B /* OIDAuthorizationService+Mac.m in Sources */ = {isa = PBXBuildFile; fileRef = 340DAE261D581FE700EC285B /* OIDAuthorizationService+Mac.m */; };
+		340DAE581D5821A100EC285B /* OIDAuthorizationUICoordinatorMac.m in Sources */ = {isa = PBXBuildFile; fileRef = 340DAE281D581FE700EC285B /* OIDAuthorizationUICoordinatorMac.m */; };
+		340DAE591D5821A100EC285B /* OIDAuthState+Mac.m in Sources */ = {isa = PBXBuildFile; fileRef = 340DAE2A1D581FE700EC285B /* OIDAuthState+Mac.m */; };
+		340DAE5A1D5821AB00EC285B /* OIDAuthorizationRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741B51C5D8243000EF209 /* OIDAuthorizationRequest.m */; };
+		340DAE5B1D5821AB00EC285B /* OIDAuthorizationResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741B71C5D8243000EF209 /* OIDAuthorizationResponse.m */; };
+		340DAE5C1D5821AB00EC285B /* OIDAuthorizationService.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741B91C5D8243000EF209 /* OIDAuthorizationService.m */; };
+		340DAE5D1D5821AB00EC285B /* OIDAuthState.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741BB1C5D8243000EF209 /* OIDAuthState.m */; };
+		340DAE5E1D5821AB00EC285B /* OIDError.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741C01C5D8243000EF209 /* OIDError.m */; };
+		340DAE5F1D5821AB00EC285B /* OIDErrorUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741C21C5D8243000EF209 /* OIDErrorUtilities.m */; };
+		340DAE601D5821AB00EC285B /* OIDFieldMapping.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741C41C5D8243000EF209 /* OIDFieldMapping.m */; };
+		340DAE611D5821AB00EC285B /* OIDGrantTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741C61C5D8243000EF209 /* OIDGrantTypes.m */; };
+		340DAE621D5821AB00EC285B /* OIDResponseTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741C81C5D8243000EF209 /* OIDResponseTypes.m */; };
+		340DAE631D5821AB00EC285B /* OIDScopes.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741CA1C5D8243000EF209 /* OIDScopes.m */; };
+		340DAE641D5821AB00EC285B /* OIDScopeUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741CC1C5D8243000EF209 /* OIDScopeUtilities.m */; };
+		340DAE651D5821AB00EC285B /* OIDServiceConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741CE1C5D8243000EF209 /* OIDServiceConfiguration.m */; };
+		340DAE661D5821AB00EC285B /* OIDServiceDiscovery.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741D01C5D8243000EF209 /* OIDServiceDiscovery.m */; };
+		340DAE671D5821AB00EC285B /* OIDTokenRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741D21C5D8243000EF209 /* OIDTokenRequest.m */; };
+		340DAE681D5821AB00EC285B /* OIDTokenResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741D41C5D8243000EF209 /* OIDTokenResponse.m */; };
+		340DAE691D5821AB00EC285B /* OIDTokenUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741D61C5D8243000EF209 /* OIDTokenUtilities.m */; };
+		340DAE6A1D5821AB00EC285B /* OIDURLQueryComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741D81C5D8243000EF209 /* OIDURLQueryComponent.m */; };
+		340DAE741D58223A00EC285B /* AppAuth.h in Headers */ = {isa = PBXBuildFile; fileRef = 341741AF1C5D8243000EF209 /* AppAuth.h */; };
+		340DAEBC1D582AF100EC285B /* OIDRedirectHTTPHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 340DAEBA1D582AF100EC285B /* OIDRedirectHTTPHandler.m */; };
+		340DAECB1D582DE100EC285B /* OIDAuthorizationService+IOS.m in Sources */ = {isa = PBXBuildFile; fileRef = F6F60FB11D2BFEFE00325CB3 /* OIDAuthorizationService+IOS.m */; };
+		340DAECC1D582DE100EC285B /* OIDAuthState+IOS.m in Sources */ = {isa = PBXBuildFile; fileRef = F6F60FB01D2BFEFE00325CB3 /* OIDAuthState+IOS.m */; };
+		340DAECD1D582DE100EC285B /* OIDAuthorizationUICoordinatorIOS.m in Sources */ = {isa = PBXBuildFile; fileRef = F6F60FB21D2BFEFE00325CB3 /* OIDAuthorizationUICoordinatorIOS.m */; };
 		341741DB1C5D8243000EF209 /* OIDAuthorizationRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741B51C5D8243000EF209 /* OIDAuthorizationRequest.m */; };
 		341741DC1C5D8243000EF209 /* OIDAuthorizationResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741B71C5D8243000EF209 /* OIDAuthorizationResponse.m */; };
 		341741DD1C5D8243000EF209 /* OIDAuthorizationService.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741B91C5D8243000EF209 /* OIDAuthorizationService.m */; };
@@ -40,9 +65,8 @@
 		341742241C5D8317000EF209 /* UnitTestsInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 341742231C5D8317000EF209 /* UnitTestsInfo.plist */; };
 		3417422B1C5D8502000EF209 /* SafariServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3417422A1C5D8502000EF209 /* SafariServices.framework */; };
 		3417422D1C5D850C000EF209 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3417422C1C5D850C000EF209 /* Security.framework */; };
-		F6F60FB61D2BFEFE00325CB3 /* OIDAuthState+IOS.m in Sources */ = {isa = PBXBuildFile; fileRef = F6F60FB01D2BFEFE00325CB3 /* OIDAuthState+IOS.m */; };
-		F6F60FB71D2BFEFE00325CB3 /* OIDAuthorizationService+IOS.m in Sources */ = {isa = PBXBuildFile; fileRef = F6F60FB11D2BFEFE00325CB3 /* OIDAuthorizationService+IOS.m */; };
-		F6F60FB81D2BFEFE00325CB3 /* OIDAuthorizationUICoordinatorIOS.m in Sources */ = {isa = PBXBuildFile; fileRef = F6F60FB21D2BFEFE00325CB3 /* OIDAuthorizationUICoordinatorIOS.m */; };
+		34FEA6AE1DB6E083005C9212 /* OIDLoopbackHTTPServer.h in Headers */ = {isa = PBXBuildFile; fileRef = 34FEA6AC1DB6E083005C9212 /* OIDLoopbackHTTPServer.h */; };
+		34FEA6AF1DB6E083005C9212 /* OIDLoopbackHTTPServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 34FEA6AD1DB6E083005C9212 /* OIDLoopbackHTTPServer.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -68,6 +92,15 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		340DAE251D581FE700EC285B /* OIDAuthorizationService+Mac.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "OIDAuthorizationService+Mac.h"; sourceTree = "<group>"; };
+		340DAE261D581FE700EC285B /* OIDAuthorizationService+Mac.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "OIDAuthorizationService+Mac.m"; sourceTree = "<group>"; };
+		340DAE271D581FE700EC285B /* OIDAuthorizationUICoordinatorMac.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OIDAuthorizationUICoordinatorMac.h; sourceTree = "<group>"; };
+		340DAE281D581FE700EC285B /* OIDAuthorizationUICoordinatorMac.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OIDAuthorizationUICoordinatorMac.m; sourceTree = "<group>"; };
+		340DAE291D581FE700EC285B /* OIDAuthState+Mac.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "OIDAuthState+Mac.h"; sourceTree = "<group>"; };
+		340DAE2A1D581FE700EC285B /* OIDAuthState+Mac.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "OIDAuthState+Mac.m"; sourceTree = "<group>"; };
+		340DAE4E1D58216A00EC285B /* libAppAuth-macOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libAppAuth-macOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		340DAEB91D582AF100EC285B /* OIDRedirectHTTPHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OIDRedirectHTTPHandler.h; sourceTree = "<group>"; };
+		340DAEBA1D582AF100EC285B /* OIDRedirectHTTPHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OIDRedirectHTTPHandler.m; sourceTree = "<group>"; };
 		340E737C1C5D819B0076B1F6 /* libAppAuth.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libAppAuth.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		341741AF1C5D8243000EF209 /* AppAuth.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppAuth.h; sourceTree = "<group>"; };
 		341741B41C5D8243000EF209 /* OIDAuthorizationRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OIDAuthorizationRequest.h; sourceTree = "<group>"; };
@@ -131,6 +164,8 @@
 		341742231C5D8317000EF209 /* UnitTestsInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = UnitTestsInfo.plist; sourceTree = "<group>"; };
 		3417422A1C5D8502000EF209 /* SafariServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SafariServices.framework; path = System/Library/Frameworks/SafariServices.framework; sourceTree = SDKROOT; };
 		3417422C1C5D850C000EF209 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		34FEA6AC1DB6E083005C9212 /* OIDLoopbackHTTPServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OIDLoopbackHTTPServer.h; sourceTree = "<group>"; };
+		34FEA6AD1DB6E083005C9212 /* OIDLoopbackHTTPServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OIDLoopbackHTTPServer.m; sourceTree = "<group>"; };
 		F68103B61D2568D10053658E /* OIDAuthorizationUICoordinator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OIDAuthorizationUICoordinator.h; sourceTree = "<group>"; };
 		F6F60FB01D2BFEFE00325CB3 /* OIDAuthState+IOS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "OIDAuthState+IOS.m"; path = "iOS/OIDAuthState+IOS.m"; sourceTree = "<group>"; };
 		F6F60FB11D2BFEFE00325CB3 /* OIDAuthorizationService+IOS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "OIDAuthorizationService+IOS.m"; path = "iOS/OIDAuthorizationService+IOS.m"; sourceTree = "<group>"; };
@@ -141,6 +176,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		340DAE4B1D58216A00EC285B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		340E73791C5D819B0076B1F6 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -161,6 +203,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		340DAE241D581FE700EC285B /* macOS */ = {
+			isa = PBXGroup;
+			children = (
+				34FEA6AB1DB6E083005C9212 /* LoopbackHTTPServer */,
+				340DAEB91D582AF100EC285B /* OIDRedirectHTTPHandler.h */,
+				340DAEBA1D582AF100EC285B /* OIDRedirectHTTPHandler.m */,
+				340DAE251D581FE700EC285B /* OIDAuthorizationService+Mac.h */,
+				340DAE261D581FE700EC285B /* OIDAuthorizationService+Mac.m */,
+				340DAE271D581FE700EC285B /* OIDAuthorizationUICoordinatorMac.h */,
+				340DAE281D581FE700EC285B /* OIDAuthorizationUICoordinatorMac.m */,
+				340DAE291D581FE700EC285B /* OIDAuthState+Mac.h */,
+				340DAE2A1D581FE700EC285B /* OIDAuthState+Mac.m */,
+			);
+			path = macOS;
+			sourceTree = "<group>";
+		};
 		340E73731C5D819B0076B1F6 = {
 			isa = PBXGroup;
 			children = (
@@ -176,6 +234,7 @@
 			children = (
 				340E737C1C5D819B0076B1F6 /* libAppAuth.a */,
 				341741F01C5D8283000EF209 /* AppAuthTests.xctest */,
+				340DAE4E1D58216A00EC285B /* libAppAuth-macOS.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -183,6 +242,7 @@
 		341741AE1C5D8243000EF209 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				340DAE241D581FE700EC285B /* macOS */,
 				F6F60FAF1D2BFEF000325CB3 /* iOS */,
 				341741AF1C5D8243000EF209 /* AppAuth.h */,
 				341741B41C5D8243000EF209 /* OIDAuthorizationRequest.h */,
@@ -264,6 +324,15 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		34FEA6AB1DB6E083005C9212 /* LoopbackHTTPServer */ = {
+			isa = PBXGroup;
+			children = (
+				34FEA6AC1DB6E083005C9212 /* OIDLoopbackHTTPServer.h */,
+				34FEA6AD1DB6E083005C9212 /* OIDLoopbackHTTPServer.m */,
+			);
+			path = LoopbackHTTPServer;
+			sourceTree = "<group>";
+		};
 		F6F60FAF1D2BFEF000325CB3 /* iOS */ = {
 			isa = PBXGroup;
 			children = (
@@ -279,7 +348,36 @@
 		};
 /* End PBXGroup section */
 
+/* Begin PBXHeadersBuildPhase section */
+		340DAE4C1D58216A00EC285B /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				340DAE741D58223A00EC285B /* AppAuth.h in Headers */,
+				34FEA6AE1DB6E083005C9212 /* OIDLoopbackHTTPServer.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
 /* Begin PBXNativeTarget section */
+		340DAE4D1D58216A00EC285B /* AppAuth-macOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 340DAE541D58216A00EC285B /* Build configuration list for PBXNativeTarget "AppAuth-macOS" */;
+			buildPhases = (
+				340DAE4A1D58216A00EC285B /* Sources */,
+				340DAE4B1D58216A00EC285B /* Frameworks */,
+				340DAE4C1D58216A00EC285B /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "AppAuth-macOS";
+			productName = "AppAuth-macOS";
+			productReference = 340DAE4E1D58216A00EC285B /* libAppAuth-macOS.a */;
+			productType = "com.apple.product-type.library.static";
+		};
 		340E737B1C5D819B0076B1F6 /* AppAuth */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 340E73851C5D819B0076B1F6 /* Build configuration list for PBXNativeTarget "AppAuth" */;
@@ -324,6 +422,9 @@
 				LastUpgradeCheck = 0720;
 				ORGANIZATIONNAME = "Google Inc";
 				TargetAttributes = {
+					340DAE4D1D58216A00EC285B = {
+						CreatedOnToolsVersion = 7.3.1;
+					};
 					340E737B1C5D819B0076B1F6 = {
 						CreatedOnToolsVersion = 7.2;
 					};
@@ -346,6 +447,7 @@
 			targets = (
 				340E737B1C5D819B0076B1F6 /* AppAuth */,
 				341741EF1C5D8283000EF209 /* AppAuthTests */,
+				340DAE4D1D58216A00EC285B /* AppAuth-macOS */,
 			);
 		};
 /* End PBXProject section */
@@ -362,6 +464,35 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		340DAE4A1D58216A00EC285B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				34FEA6AF1DB6E083005C9212 /* OIDLoopbackHTTPServer.m in Sources */,
+				340DAEBC1D582AF100EC285B /* OIDRedirectHTTPHandler.m in Sources */,
+				340DAE631D5821AB00EC285B /* OIDScopes.m in Sources */,
+				340DAE5D1D5821AB00EC285B /* OIDAuthState.m in Sources */,
+				340DAE5B1D5821AB00EC285B /* OIDAuthorizationResponse.m in Sources */,
+				340DAE571D5821A100EC285B /* OIDAuthorizationService+Mac.m in Sources */,
+				340DAE5E1D5821AB00EC285B /* OIDError.m in Sources */,
+				340DAE661D5821AB00EC285B /* OIDServiceDiscovery.m in Sources */,
+				340DAE5C1D5821AB00EC285B /* OIDAuthorizationService.m in Sources */,
+				340DAE641D5821AB00EC285B /* OIDScopeUtilities.m in Sources */,
+				340DAE581D5821A100EC285B /* OIDAuthorizationUICoordinatorMac.m in Sources */,
+				340DAE5A1D5821AB00EC285B /* OIDAuthorizationRequest.m in Sources */,
+				340DAE671D5821AB00EC285B /* OIDTokenRequest.m in Sources */,
+				340DAE681D5821AB00EC285B /* OIDTokenResponse.m in Sources */,
+				340DAE651D5821AB00EC285B /* OIDServiceConfiguration.m in Sources */,
+				340DAE591D5821A100EC285B /* OIDAuthState+Mac.m in Sources */,
+				340DAE691D5821AB00EC285B /* OIDTokenUtilities.m in Sources */,
+				340DAE601D5821AB00EC285B /* OIDFieldMapping.m in Sources */,
+				340DAE621D5821AB00EC285B /* OIDResponseTypes.m in Sources */,
+				340DAE6A1D5821AB00EC285B /* OIDURLQueryComponent.m in Sources */,
+				340DAE5F1D5821AB00EC285B /* OIDErrorUtilities.m in Sources */,
+				340DAE611D5821AB00EC285B /* OIDGrantTypes.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		340E73781C5D819B0076B1F6 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -369,20 +500,20 @@
 				341741E01C5D8243000EF209 /* OIDErrorUtilities.m in Sources */,
 				341741EA1C5D8243000EF209 /* OIDTokenUtilities.m in Sources */,
 				341741E21C5D8243000EF209 /* OIDGrantTypes.m in Sources */,
-				F6F60FB71D2BFEFE00325CB3 /* OIDAuthorizationService+IOS.m in Sources */,
 				341741E81C5D8243000EF209 /* OIDTokenRequest.m in Sources */,
+				340DAECC1D582DE100EC285B /* OIDAuthState+IOS.m in Sources */,
 				341741E91C5D8243000EF209 /* OIDTokenResponse.m in Sources */,
 				341741E51C5D8243000EF209 /* OIDScopeUtilities.m in Sources */,
 				341741DC1C5D8243000EF209 /* OIDAuthorizationResponse.m in Sources */,
 				341741E61C5D8243000EF209 /* OIDServiceConfiguration.m in Sources */,
 				341741DE1C5D8243000EF209 /* OIDAuthState.m in Sources */,
 				341741DD1C5D8243000EF209 /* OIDAuthorizationService.m in Sources */,
-				F6F60FB81D2BFEFE00325CB3 /* OIDAuthorizationUICoordinatorIOS.m in Sources */,
-				F6F60FB61D2BFEFE00325CB3 /* OIDAuthState+IOS.m in Sources */,
+				340DAECD1D582DE100EC285B /* OIDAuthorizationUICoordinatorIOS.m in Sources */,
 				341741EB1C5D8243000EF209 /* OIDURLQueryComponent.m in Sources */,
 				341741E11C5D8243000EF209 /* OIDFieldMapping.m in Sources */,
 				341741DF1C5D8243000EF209 /* OIDError.m in Sources */,
 				341741DB1C5D8243000EF209 /* OIDAuthorizationRequest.m in Sources */,
+				340DAECB1D582DE100EC285B /* OIDAuthorizationService+IOS.m in Sources */,
 				341741E31C5D8243000EF209 /* OIDResponseTypes.m in Sources */,
 				341741E41C5D8243000EF209 /* OIDScopes.m in Sources */,
 				341741E71C5D8243000EF209 /* OIDServiceDiscovery.m in Sources */,
@@ -419,6 +550,30 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		340DAE551D58216A00EC285B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CODE_SIGN_IDENTITY = "-";
+				EXECUTABLE_PREFIX = lib;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		340DAE561D58216A00EC285B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CODE_SIGN_IDENTITY = "-";
+				EXECUTABLE_PREFIX = lib;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
 		340E73831C5D819B0076B1F6 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -542,6 +697,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		340DAE541D58216A00EC285B /* Build configuration list for PBXNativeTarget "AppAuth-macOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				340DAE551D58216A00EC285B /* Debug */,
+				340DAE561D58216A00EC285B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		340E73771C5D819B0076B1F6 /* Build configuration list for PBXProject "AppAuth" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
