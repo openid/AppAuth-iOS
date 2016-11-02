@@ -83,7 +83,8 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
 
   NSAssert(![kClientID isEqualToString:@"YOUR_CLIENT.apps.googleusercontent.com"],
            @"Update kClientID with your own client ID. "
-            "Instructions: https://github.com/openid/AppAuth-iOS/blob/master/Example-Mac/README.md");
+            "Instructions: "
+            "https://github.com/openid/AppAuth-iOS/blob/master/Example-Mac/README.md");
 
 #endif // !defined(NS_BLOCK_ASSERTIONS)
 
@@ -173,11 +174,13 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
 
   NSAssert(![kClientID isEqualToString:@"YOUR_CLIENT.apps.googleusercontent.com"],
            @"Update kClientID with your own client ID. "
-            "Instructions: https://github.com/openid/AppAuth-iOS/blob/master/Example-Mac/README.md");
+            "Instructions: "
+            "https://github.com/openid/AppAuth-iOS/blob/master/Example-Mac/README.md");
 
   NSAssert(![kRedirectURI isEqualToString:@"com.googleusercontent.apps.YOUR_CLIENT:/oauthredirect"],
            @"Update kRedirectURI with your own redirect URI. "
-            "Instructions: https://github.com/openid/AppAuth-iOS/blob/master/Example-Mac/README.md");
+            "Instructions: "
+            "https://github.com/openid/AppAuth-iOS/blob/master/Example-Mac/README.md");
 
   // verifies that the custom URI scheme has been updated in the Info.plist
   NSArray __unused* urlTypes =
@@ -252,7 +255,8 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
 
   NSAssert(![kClientSecret isEqualToString:@"YOUR_CLIENT_SECRET"],
            @"Update kClientSecret with your own client ID secret. "
-            "Instructions: https://github.com/openid/AppAuth-iOS/blob/master/Example-Mac/README.md");
+            "Instructions: "
+            "https://github.com/openid/AppAuth-iOS/blob/master/Example-Mac/README.md");
 
 #endif // !defined(NS_BLOCK_ASSERTIONS)
 
