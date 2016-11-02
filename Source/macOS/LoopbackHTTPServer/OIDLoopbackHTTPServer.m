@@ -109,7 +109,7 @@
 }
 
 - (HTTPServerRequest *)nextRequest {
-    unsigned idx, cnt = requests ? [requests count] : 0;
+    NSUInteger idx, cnt = requests ? [requests count] : 0;
     for (idx = 0; idx < cnt; idx++) {
         id obj = [requests objectAtIndex:idx];
         if ([obj response] == nil) {
@@ -157,7 +157,7 @@
         
         unsigned contentLength = contentLengthValue ? [contentLengthValue intValue] : 0;
         NSData *body = (__bridge_transfer NSData *)CFHTTPMessageCopyBody(working);
-        unsigned bodyLength = [body length];
+        NSUInteger bodyLength = [body length];
         if (contentLength <= bodyLength) {
             NSData *newBody = [NSData dataWithBytes:[body bytes] length:contentLength];
             [ibuffer setLength:0];
@@ -199,9 +199,9 @@
         return;
     }
 
-    unsigned olen = [obuffer length];
+    NSUInteger olen = [obuffer length];
     if (0 < olen) {
-        int writ = [ostream write:[obuffer bytes] maxLength:olen];
+        NSInteger writ = [ostream write:[obuffer bytes] maxLength:olen];
         // buffer any unwritten bytes for later writing
         if (writ < olen) {
             memmove([obuffer mutableBytes], [obuffer mutableBytes] + writ, olen - writ);
@@ -211,7 +211,7 @@
         [obuffer setLength:0];
     }
 
-    unsigned cnt = requests ? [requests count] : 0;
+    NSUInteger cnt = requests ? [requests count] : 0;
     HTTPServerRequest *req = (0 < cnt) ? [requests objectAtIndex:0] : nil;
 
     CFHTTPMessageRef cfresp = req ? [req response] : NULL;
@@ -224,9 +224,9 @@
     if (!firstResponseDone) {
         firstResponseDone = YES;
         NSData *serialized = (__bridge_transfer NSData *)CFHTTPMessageCopySerializedMessage(cfresp);
-        unsigned olen = [serialized length];
+        NSUInteger olen = [serialized length];
         if (0 < olen) {
-            int writ = [ostream write:[serialized bytes] maxLength:olen];
+            NSInteger writ = [ostream write:[serialized bytes] maxLength:olen];
             if (writ < olen) {
                 // buffer any unwritten bytes for later writing
                 [obuffer setLength:(olen - writ)];
@@ -243,7 +243,7 @@
         }
         // read some bytes from the stream into our local buffer
         [obuffer setLength:16 * 1024];
-        int read = [respStream read:[obuffer mutableBytes] maxLength:[obuffer length]];
+        NSInteger read = [respStream read:[obuffer mutableBytes] maxLength:[obuffer length]];
         [obuffer setLength:read];
     }
 
@@ -264,7 +264,7 @@
 
     olen = [obuffer length];
     if (0 < olen) {
-        int writ = [ostream write:[obuffer bytes] maxLength:olen];
+        NSInteger writ = [ostream write:[obuffer bytes] maxLength:olen];
         // buffer any unwritten bytes for later writing
         if (writ < olen) {
             memmove([obuffer mutableBytes], [obuffer mutableBytes] + writ, olen - writ);
@@ -278,9 +278,9 @@
     case NSStreamEventHasBytesAvailable:;
         uint8_t buf[16 * 1024];
         uint8_t *buffer = NULL;
-        unsigned int len = 0;
+        NSUInteger len = 0;
         if (![istream getBuffer:&buffer length:&len]) {
-            int amount = [istream read:buf maxLength:sizeof(buf)];
+            NSInteger amount = [istream read:buf maxLength:sizeof(buf)];
             buffer = buf;
             len = amount;
         }
@@ -344,7 +344,7 @@
         }
 
         CFHTTPMessageRef response = CFHTTPMessageCreateResponse(kCFAllocatorDefault, 200, NULL, kCFHTTPVersion1_1); // OK
-        CFHTTPMessageSetHeaderFieldValue(response, (CFStringRef)@"Content-Length", (__bridge CFStringRef)[NSString stringWithFormat:@"%d", [data length]]);
+        CFHTTPMessageSetHeaderFieldValue(response, (CFStringRef)@"Content-Length", (__bridge CFStringRef)[NSString stringWithFormat:@"%lu", (unsigned long) [data length]]);
         if ([method isEqual:@"GET"]) {
             CFHTTPMessageSetBody(response, (__bridge CFDataRef)data);
         }
@@ -473,7 +473,7 @@ NSString * const TCPServerErrorDomain = @"TCPServerErrorDomain";
 
 - (void)handleNewConnectionFromAddress:(NSData *)addr inputStream:(NSInputStream *)istr outputStream:(NSOutputStream *)ostr {
     // if the delegate implements the delegate method, call it
-    if (delegate && [delegate respondsToSelector:@selector(TCPServer:didReceiveConnectionFrom:inputStream:outputStream:)]) {
+    if (delegate && [(NSObject*)delegate respondsToSelector:@selector(TCPServer:didReceiveConnectionFromAddress:inputStream:outputStream:)]) {
         [delegate TCPServer:self didReceiveConnectionFromAddress:addr inputStream:istr outputStream:ostr];
     }
 }

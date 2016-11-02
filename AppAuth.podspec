@@ -31,6 +31,11 @@ tasks like performing an action with fresh tokens.
 
   s.source       = { :git => "https://github.com/openid/AppAuth-iOS.git", :tag => s.version }
 
+  s.pod_target_xcconfig = {
+    # Treat warnings as errors.
+    'GCC_TREAT_WARNINGS_AS_ERRORS' => 'YES',
+  }
+
   s.source_files = "Source/*.{h,m}"
   s.requires_arc = true
 
