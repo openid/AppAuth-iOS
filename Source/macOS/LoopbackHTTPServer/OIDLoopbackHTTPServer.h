@@ -23,7 +23,7 @@
 #import <Foundation/Foundation.h>
 #import <CoreServices/CoreServices.h>
 
-@class HTTPConnection, HTTPServerRequest;
+@class HTTPConnection, HTTPServerRequest, TCPServer;
 
 extern NSString * const TCPServerErrorDomain;
 
@@ -33,9 +33,18 @@ typedef enum {
     kTCPServerNoSocketsAvailable = 3,
 } TCPServerErrorCode;
 
+@protocol TCPServerDelegate <NSObject>
+
+- (void)TCPServer:(TCPServer *)server
+    didReceiveConnectionFromAddress:(NSData *)addr
+                        inputStream:(NSInputStream *)istr
+                       outputStream:(NSOutputStream *)ostr;
+
+@end
+
 @interface TCPServer : NSObject {
 @private
-    __weak id delegate;
+    __weak id<TCPServerDelegate> delegate;
     NSString *domain;
     NSString *name;
     NSString *type;
@@ -70,15 +79,6 @@ typedef enum {
 
 @end
 
-@interface TCPServer (TCPServerDelegateMethods)
-// if the delegate implements this method, it is called when a new 
-// connection comes in; a subclass may, of course, change that behavior
-- (void)TCPServer:(TCPServer *)server
-    didReceiveConnectionFromAddress:(NSData *)addr
-                        inputStream:(NSInputStream *)istr
-                       outputStream:(NSOutputStream *)ostr;
-@end
-
 @interface HTTPServer : TCPServer {
 @private
     Class connClass;
@@ -107,7 +107,7 @@ typedef enum {
 
 
 // This class represents each incoming client connection.
-@interface HTTPConnection : NSObject {
+@interface HTTPConnection : NSObject <NSStreamDelegate> {
 @private
     __weak id delegate;
     NSData *peerAddress;
