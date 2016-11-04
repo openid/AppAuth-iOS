@@ -22,6 +22,30 @@
 #import "OIDErrorUtilities.h"
 #import "OIDLoopbackHTTPServer.h"
 
+/*! @brief Page that is returned following a completed authorization. Show your own page instead by
+        supplying a URL in @c initWithSuccessURL that the user will be redirected to.
+ */
+static NSString *const kHTMLAuthorizationComplete =
+    @"<html><body>Authorization complete.<br> Return to the app.</body></html>";
+
+/*! @brief Error warning that the @c currentAuthorizationFlow is not set on this object (likely a
+        developer error, unless the user stumbled upon the loopback server before the authorization
+        had started completely).
+    @description An object conforming to @c OIDAuthorizationFlowSession is returned when the 
+        authorization is presented with
+        @c OIDAuthorizationService::presentAuthorizationRequest:callback:. It should be set to
+        @c currentAuthorization when using a loopback redirect.
+ */
+static NSString *const kHTMLErrorMissingCurrentAuthorizationFlow =
+    @"<html><body>AppAuth Error: No <code>currentAuthorizationFlow</code> is set on the "
+     "<code>OIDRedirectHTTPHandler</code>. Cannot process redirect.</body></html>";
+
+/*! @brief Error warning that the URL does not represent a valid redirect. This should be rare, may
+        happen if the user stumbles upon the loopback server randomly.
+ */
+static NSString *const kHTMLErrorRedirectNotValid =
+    @"<html><body>AppAuth Error: Not a valid redirect.</body></html>";
+
 @implementation OIDRedirectHTTPHandler {
   HTTPServer *_httpServ;
   NSURL *_successURL;
@@ -93,13 +117,17 @@
   }
 
   // Responds to browser request.
-  NSString *bodyText = @"<html><body>Authorization complete.<br> Return to the app.</body></html>";
+  NSString *bodyText = kHTMLAuthorizationComplete;
   NSInteger httpResponseCode = (_successURL) ? 302 : 200;
-  // Returns an error page in the unlikely event the user lands on the loopback server on a URL
-  // other than the expected authorization response.
+  // Returns an error page if a URL other than the expected redirect is requested.
   if (!handled) {
-    bodyText = @"<html><body>Error.</body></html>";
-    httpResponseCode = 400;
+    if (_currentAuthorizationFlow) {
+      bodyText = kHTMLErrorRedirectNotValid;
+      httpResponseCode = 404;
+    } else {
+      bodyText = kHTMLErrorMissingCurrentAuthorizationFlow;
+      httpResponseCode = 400;
+    }
   }
   NSData *data = [bodyText dataUsingEncoding:NSUTF8StringEncoding];
 
