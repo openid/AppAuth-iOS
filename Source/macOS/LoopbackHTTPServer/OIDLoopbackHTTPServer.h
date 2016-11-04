@@ -92,9 +92,6 @@ typedef enum {
 // a new connection comes in; by default, this is HTTPConnection
 - (void)setConnectionClass:(Class)value;
 
-- (NSURL *)documentRoot;
-- (void)setDocumentRoot:(NSURL *)value;
-
 @end
 
 @interface HTTPServer (HTTPServerDelegateMethods)

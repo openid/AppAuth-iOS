@@ -38,16 +38,6 @@
     connClass = value;
 }
 
-- (NSURL *)documentRoot {
-    return docRoot;
-}
-
-- (void)setDocumentRoot:(NSURL *)value {
-    if (docRoot != value) {
-        docRoot = [value copy];
-    }
-}
-
 // Removes the connection from the list of active connections.
 - (void)removeConnection:(HTTPConnection *)connection {
     [connections removeObject:connection];
@@ -323,37 +313,8 @@
         return;
     }
 
-    NSString *method = (__bridge_transfer id)CFHTTPMessageCopyRequestMethod(request);
-    if (!method) {
-        CFHTTPMessageRef response = CFHTTPMessageCreateResponse(kCFAllocatorDefault, 400, NULL, kCFHTTPVersion1_1); // Bad Request
-        [mess setResponse:response];
-        CFRelease(response);
-        return;
-    }
-
-    if ([method isEqual:@"GET"] || [method isEqual:@"HEAD"]) {
-        NSURL *uri = (__bridge_transfer NSURL *)CFHTTPMessageCopyRequestURL(request);
-        NSURL *url = [NSURL URLWithString:[uri path] relativeToURL:[server documentRoot]];
-        NSData *data = [NSData dataWithContentsOfURL:url];
-
-        if (!data) {
-            CFHTTPMessageRef response = CFHTTPMessageCreateResponse(kCFAllocatorDefault, 404, NULL, kCFHTTPVersion1_1); // Not Found
-            [mess setResponse:response];
-            CFRelease(response);
-            return;
-        }
-
-        CFHTTPMessageRef response = CFHTTPMessageCreateResponse(kCFAllocatorDefault, 200, NULL, kCFHTTPVersion1_1); // OK
-        CFHTTPMessageSetHeaderFieldValue(response, (CFStringRef)@"Content-Length", (__bridge CFStringRef)[NSString stringWithFormat:@"%lu", (unsigned long) [data length]]);
-        if ([method isEqual:@"GET"]) {
-            CFHTTPMessageSetBody(response, (__bridge CFDataRef)data);
-        }
-        [mess setResponse:response];
-        CFRelease(response);
-        return;
-    }
-
-    CFHTTPMessageRef response = CFHTTPMessageCreateResponse(kCFAllocatorDefault, 405, NULL, kCFHTTPVersion1_1); // Method Not Allowed
+    // 500s all requests when no delegate set to handle them.
+    CFHTTPMessageRef response = CFHTTPMessageCreateResponse(kCFAllocatorDefault, 500, NULL, kCFHTTPVersion1_1); // Bad Request
     [mess setResponse:response];
     CFRelease(response);
 }
