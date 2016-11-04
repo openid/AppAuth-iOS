@@ -297,33 +297,27 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
                                                   responseType:OIDResponseTypeCode
                                           additionalParameters:nil];
     // performs authentication request
+    __weak __typeof(self) weakSelf = self;
     _redirectHTTPHandler.currentAuthorizationFlow =
         [OIDAuthState authStateByPresentingAuthorizationRequest:request
                             callback:^(OIDAuthState *_Nullable authState,
                                        NSError *_Nullable error) {
-
       // Brings this app to the foreground.
       [[NSRunningApplication currentApplication]
           activateWithOptions:(NSApplicationActivateAllWindows |
                                NSApplicationActivateIgnoringOtherApps)];
 
-      // The loopback HTTP listener is no longer needed, stops it.
-      [_redirectHTTPHandler stopHTTPListener];
-      _redirectHTTPHandler = nil;
-
+      // Processes the authorization response.
       if (authState) {
-        [self logMessage:@"Got authorization tokens. Access token: %@",
+        [weakSelf logMessage:@"Got authorization tokens. Access token: %@",
                          authState.lastTokenResponse.accessToken];
       } else {
-        [self logMessage:@"Authorization error: %@", error.localizedDescription];
+        [weakSelf logMessage:@"Authorization error: %@", error.localizedDescription];
       }
-
-      [self setAuthState:authState];
+      [weakSelf setAuthState:authState];
     }];
   }];
 }
-
-
 
 - (IBAction)authNoCodeExchange:(nullable id)sender {
   NSURL *issuer = [NSURL URLWithString:kIssuer];

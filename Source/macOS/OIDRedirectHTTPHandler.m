@@ -18,8 +18,9 @@
 
 #import "OIDRedirectHTTPHandler.h"
 
-#import "OIDLoopbackHTTPServer.h"
 #import "OIDAuthorizationService.h"
+#import "OIDErrorUtilities.h"
+#import "OIDLoopbackHTTPServer.h"
 
 @implementation OIDRedirectHTTPHandler {
   HTTPServer *_httpServ;
@@ -39,6 +40,9 @@
 }
 
 - (NSURL *)startHTTPListener:(NSError **)returnError {
+  // Cancels any pending requests.
+  [self cancelHTTPListener];
+
   // Starts a HTTP server on the loopback interface.
   // By not specifying a port, a random available one will be assigned.
   _httpServ = [[HTTPServer alloc] init];
@@ -55,6 +59,22 @@
   }
 }
 
+- (void)cancelHTTPListener {
+  [self stopHTTPListener];
+
+  // Cancels the pending authorization flow (if any) with error.
+  NSError *cancelledError =
+      [OIDErrorUtilities errorWithCode:OIDErrorCodeProgramCanceledAuthorizationFlow
+                       underlyingError:nil
+                           description:@"The HTTP listener was cancelled programmatically."];
+  [_currentAuthorizationFlow failAuthorizationFlowWithError:cancelledError];
+  _currentAuthorizationFlow = nil;
+}
+
+/*! @brief Stops listening on the loopback interface without modifying the state of the
+        @c currentAuthorizationFlow. Should be called when the authorization flow completes or is
+        cancelled.
+ */
 - (void)stopHTTPListener {
   _httpServ.delegate = nil;
   [_httpServ stop];
@@ -64,15 +84,20 @@
 - (void)HTTPConnection:(HTTPConnection *)conn didReceiveRequest:(HTTPServerRequest *)mess {
   // Sends URL to AppAuth.
   CFURLRef url = CFHTTPMessageCopyRequestURL(mess.request);
-  BOOL success = [_currentAuthorizationFlow resumeAuthorizationFlowWithURL:(__bridge NSURL *)url];
+  BOOL handled = [_currentAuthorizationFlow resumeAuthorizationFlowWithURL:(__bridge NSURL *)url];
+
+  // Stops listening to further requests after the first valid authorization response.
+  if (handled) {
+    _currentAuthorizationFlow = nil;
+    [self stopHTTPListener];
+  }
 
   // Responds to browser request.
-  NSString *bodyText;
-  NSInteger httpResponseCode;
-  if (success) {
-    bodyText = @"<html><body>Return to the app.</body></html>";
-    httpResponseCode = (_successURL) ? 302 : 200;
-  } else {
+  NSString *bodyText = @"<html><body>Authorization complete.<br> Return to the app.</body></html>";
+  NSInteger httpResponseCode = (_successURL) ? 302 : 200;
+  // Returns an error page in the unlikely event the user lands on the loopback server on a URL
+  // other than the expected authorization response.
+  if (!handled) {
     bodyText = @"<html><body>Error.</body></html>";
     httpResponseCode = 400;
   }
@@ -82,7 +107,7 @@
                                                           httpResponseCode,
                                                           NULL,
                                                           kCFHTTPVersion1_1);
-  if (success && _successURL) {
+  if (httpResponseCode == 302) {
     CFHTTPMessageSetHeaderFieldValue(response,
                                      (__bridge CFStringRef)@"Location",
                                      (__bridge CFStringRef)_successURL.absoluteString);
@@ -98,7 +123,7 @@
 }
 
 - (void)dealloc {
-  [self stopHTTPListener];
+  [self cancelHTTPListener];
 }
 
 @end
