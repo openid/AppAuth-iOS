@@ -18,8 +18,33 @@
 
 #import "OIDRedirectHTTPHandler.h"
 
-#import "OIDLoopbackHTTPServer.h"
 #import "OIDAuthorizationService.h"
+#import "OIDErrorUtilities.h"
+#import "OIDLoopbackHTTPServer.h"
+
+/*! @brief Page that is returned following a completed authorization. Show your own page instead by
+        supplying a URL in @c initWithSuccessURL that the user will be redirected to.
+ */
+static NSString *const kHTMLAuthorizationComplete =
+    @"<html><body>Authorization complete.<br> Return to the app.</body></html>";
+
+/*! @brief Error warning that the @c currentAuthorizationFlow is not set on this object (likely a
+        developer error, unless the user stumbled upon the loopback server before the authorization
+        had started completely).
+    @description An object conforming to @c OIDAuthorizationFlowSession is returned when the 
+        authorization is presented with
+        @c OIDAuthorizationService::presentAuthorizationRequest:callback:. It should be set to
+        @c currentAuthorization when using a loopback redirect.
+ */
+static NSString *const kHTMLErrorMissingCurrentAuthorizationFlow =
+    @"<html><body>AppAuth Error: No <code>currentAuthorizationFlow</code> is set on the "
+     "<code>OIDRedirectHTTPHandler</code>. Cannot process redirect.</body></html>";
+
+/*! @brief Error warning that the URL does not represent a valid redirect. This should be rare, may
+        happen if the user stumbles upon the loopback server randomly.
+ */
+static NSString *const kHTMLErrorRedirectNotValid =
+    @"<html><body>AppAuth Error: Not a valid redirect.</body></html>";
 
 @implementation OIDRedirectHTTPHandler {
   HTTPServer *_httpServ;
@@ -39,6 +64,9 @@
 }
 
 - (NSURL *)startHTTPListener:(NSError **)returnError {
+  // Cancels any pending requests.
+  [self cancelHTTPListener];
+
   // Starts a HTTP server on the loopback interface.
   // By not specifying a port, a random available one will be assigned.
   _httpServ = [[HTTPServer alloc] init];
@@ -55,6 +83,22 @@
   }
 }
 
+- (void)cancelHTTPListener {
+  [self stopHTTPListener];
+
+  // Cancels the pending authorization flow (if any) with error.
+  NSError *cancelledError =
+      [OIDErrorUtilities errorWithCode:OIDErrorCodeProgramCanceledAuthorizationFlow
+                       underlyingError:nil
+                           description:@"The HTTP listener was cancelled programmatically."];
+  [_currentAuthorizationFlow failAuthorizationFlowWithError:cancelledError];
+  _currentAuthorizationFlow = nil;
+}
+
+/*! @brief Stops listening on the loopback interface without modifying the state of the
+        @c currentAuthorizationFlow. Should be called when the authorization flow completes or is
+        cancelled.
+ */
 - (void)stopHTTPListener {
   _httpServ.delegate = nil;
   [_httpServ stop];
@@ -64,17 +108,26 @@
 - (void)HTTPConnection:(HTTPConnection *)conn didReceiveRequest:(HTTPServerRequest *)mess {
   // Sends URL to AppAuth.
   CFURLRef url = CFHTTPMessageCopyRequestURL(mess.request);
-  BOOL success = [_currentAuthorizationFlow resumeAuthorizationFlowWithURL:(__bridge NSURL *)url];
+  BOOL handled = [_currentAuthorizationFlow resumeAuthorizationFlowWithURL:(__bridge NSURL *)url];
+
+  // Stops listening to further requests after the first valid authorization response.
+  if (handled) {
+    _currentAuthorizationFlow = nil;
+    [self stopHTTPListener];
+  }
 
   // Responds to browser request.
-  NSString *bodyText;
-  NSInteger httpResponseCode;
-  if (success) {
-    bodyText = @"<html><body>Return to the app.</body></html>";
-    httpResponseCode = (_successURL) ? 302 : 200;
-  } else {
-    bodyText = @"<html><body>Error.</body></html>";
-    httpResponseCode = 400;
+  NSString *bodyText = kHTMLAuthorizationComplete;
+  NSInteger httpResponseCode = (_successURL) ? 302 : 200;
+  // Returns an error page if a URL other than the expected redirect is requested.
+  if (!handled) {
+    if (_currentAuthorizationFlow) {
+      bodyText = kHTMLErrorRedirectNotValid;
+      httpResponseCode = 404;
+    } else {
+      bodyText = kHTMLErrorMissingCurrentAuthorizationFlow;
+      httpResponseCode = 400;
+    }
   }
   NSData *data = [bodyText dataUsingEncoding:NSUTF8StringEncoding];
 
@@ -82,7 +135,7 @@
                                                           httpResponseCode,
                                                           NULL,
                                                           kCFHTTPVersion1_1);
-  if (success && _successURL) {
+  if (httpResponseCode == 302) {
     CFHTTPMessageSetHeaderFieldValue(response,
                                      (__bridge CFStringRef)@"Location",
                                      (__bridge CFStringRef)_successURL.absoluteString);
@@ -98,7 +151,7 @@
 }
 
 - (void)dealloc {
-  [self stopHTTPListener];
+  [self cancelHTTPListener];
 }
 
 @end

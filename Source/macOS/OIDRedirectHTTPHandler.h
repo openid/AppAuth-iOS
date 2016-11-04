@@ -22,7 +22,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol OIDAuthorizationFlowSession;
 
-
 /*! @brief Start a HTTP server on the loopback interface (e.g. 127.0.0.1) to receive OAuth
         authorization result redirects.
  */
@@ -46,15 +45,25 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithSuccessURL:(nullable NSURL *)successURL;
 
 /*! @brief Starts listening on the loopback interface on a random available port, and returns a URL
-        with the base address.
-    @param error The error if an error occurred.
+        with the base address. Use the returned redirect URI to build an @c OIDAuthorizationRequest,
+        and once you initiate the request, set the resulting @c OIDAuthorizationFlowSession to
+        @c currentAuthorizationFlow so the response can be handled.
+    @param error The error if an error occurred while starting the local HTTP server.
     @return The URL containing the address of the server with the randomly assigned available port.
+    @discussion Each instance of @c OIDRedirectHTTPHandler can only listen for a single
+        authorization response. Calling this more than once will result in the previous listener
+        being cancelled (equivalent of @c cancelHTTPListener being called).
  */
 - (NSURL *)startHTTPListener:(NSError **)error;
 
-/*! @brief Stops listening the loopback interface.
+/*! @brief Stops listening the loopback interface and sends an cancellation error (in the domain
+        ::OIDGeneralErrorDomain, with the code ::OIDErrorCodeProgramCanceledAuthorizationFlow) to
+        the @c currentAuthorizationFlow.  Has no effect if called when no requests are pending.
+    @discussion The HTTP listener is stopped automatically on receiving a valid authorization
+        response (regardless of whether the authorization succeeded or not), this method should not
+        be called except when abandoning the authorization request.
  */
-- (void)stopHTTPListener;
+- (void)cancelHTTPListener;
 
 @end
 
