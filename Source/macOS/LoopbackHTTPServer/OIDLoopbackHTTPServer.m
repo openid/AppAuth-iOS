@@ -117,6 +117,8 @@
     if (isValid) {
         isValid = NO;
         [server removeConnection:self];
+        [istream setDelegate:nil];
+        [ostream setDelegate:nil];
         [istream close];
         [ostream close];
         istream = nil;
@@ -167,7 +169,13 @@
     }
     [requests addObject:request];
     if (delegate && [delegate respondsToSelector:@selector(HTTPConnection:didReceiveRequest:)]) {
-        [delegate HTTPConnection:self didReceiveRequest:request];
+        // Schedules the delegate to be executed later on the main thread. Cannot call the delegate
+        // directly as this method is called in a loop in order to process multiple messages, and
+        // the delegate may choose to stop and dealloc the listener – so we need queue the messages
+        // and process them separately.
+        dispatch_async(dispatch_get_main_queue(), ^() {
+          [delegate HTTPConnection:self didReceiveRequest:request];
+        });
     } else {
         [self performDefaultRequestHandling:request];
     }
