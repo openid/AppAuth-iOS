@@ -38,16 +38,6 @@
     connClass = value;
 }
 
-- (NSURL *)documentRoot {
-    return docRoot;
-}
-
-- (void)setDocumentRoot:(NSURL *)value {
-    if (docRoot != value) {
-        docRoot = [value copy];
-    }
-}
-
 // Removes the connection from the list of active connections.
 - (void)removeConnection:(HTTPConnection *)connection {
     [connections removeObject:connection];
@@ -127,6 +117,8 @@
     if (isValid) {
         isValid = NO;
         [server removeConnection:self];
+        [istream setDelegate:nil];
+        [ostream setDelegate:nil];
         [istream close];
         [ostream close];
         istream = nil;
@@ -177,7 +169,13 @@
     }
     [requests addObject:request];
     if (delegate && [delegate respondsToSelector:@selector(HTTPConnection:didReceiveRequest:)]) {
-        [delegate HTTPConnection:self didReceiveRequest:request];
+        // Schedules the delegate to be executed later on the main thread. Cannot call the delegate
+        // directly as this method is called in a loop in order to process multiple messages, and
+        // the delegate may choose to stop and dealloc the listener – so we need queue the messages
+        // and process them separately.
+        dispatch_async(dispatch_get_main_queue(), ^() {
+          [delegate HTTPConnection:self didReceiveRequest:request];
+        });
     } else {
         [self performDefaultRequestHandling:request];
     }
@@ -323,37 +321,8 @@
         return;
     }
 
-    NSString *method = (__bridge_transfer id)CFHTTPMessageCopyRequestMethod(request);
-    if (!method) {
-        CFHTTPMessageRef response = CFHTTPMessageCreateResponse(kCFAllocatorDefault, 400, NULL, kCFHTTPVersion1_1); // Bad Request
-        [mess setResponse:response];
-        CFRelease(response);
-        return;
-    }
-
-    if ([method isEqual:@"GET"] || [method isEqual:@"HEAD"]) {
-        NSURL *uri = (__bridge_transfer NSURL *)CFHTTPMessageCopyRequestURL(request);
-        NSURL *url = [NSURL URLWithString:[uri path] relativeToURL:[server documentRoot]];
-        NSData *data = [NSData dataWithContentsOfURL:url];
-
-        if (!data) {
-            CFHTTPMessageRef response = CFHTTPMessageCreateResponse(kCFAllocatorDefault, 404, NULL, kCFHTTPVersion1_1); // Not Found
-            [mess setResponse:response];
-            CFRelease(response);
-            return;
-        }
-
-        CFHTTPMessageRef response = CFHTTPMessageCreateResponse(kCFAllocatorDefault, 200, NULL, kCFHTTPVersion1_1); // OK
-        CFHTTPMessageSetHeaderFieldValue(response, (CFStringRef)@"Content-Length", (__bridge CFStringRef)[NSString stringWithFormat:@"%lu", (unsigned long) [data length]]);
-        if ([method isEqual:@"GET"]) {
-            CFHTTPMessageSetBody(response, (__bridge CFDataRef)data);
-        }
-        [mess setResponse:response];
-        CFRelease(response);
-        return;
-    }
-
-    CFHTTPMessageRef response = CFHTTPMessageCreateResponse(kCFAllocatorDefault, 405, NULL, kCFHTTPVersion1_1); // Method Not Allowed
+    // 500s all requests when no delegate set to handle them.
+    CFHTTPMessageRef response = CFHTTPMessageCreateResponse(kCFAllocatorDefault, 500, NULL, kCFHTTPVersion1_1); // Bad Request
     [mess setResponse:response];
     CFRelease(response);
 }
