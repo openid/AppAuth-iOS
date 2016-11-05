@@ -58,7 +58,7 @@ typedef void (^OIDAuthStateAuthorizationCallback)(OIDAuthState *_Nullable authSt
 /*! @property refreshToken
     @brief The most recent refresh token received from the server.
     @discussion Rather than using this property directly, you should call
-        @c OIDAuthState.withFreshTokensPerformAction:.
+        @c OIDAuthState.performActionWithFreshTokens:.
     @remarks refresh_token
     @see https://tools.ietf.org/html/rfc6749#section-5.1
  */
@@ -198,13 +198,13 @@ typedef void (^OIDAuthStateAuthorizationCallback)(OIDAuthState *_Nullable authSt
  */
 - (void)updateWithAuthorizationError:(NSError *)authorizationError;
 
-/*! @fn withFreshTokensPerformAction:
+/*! @fn performActionWithFreshTokens:
     @brief Calls the block with a valid access token (refreshing it first, if needed), or if a
         refresh was needed and failed, with the error that caused it to fail.
     @param action The block to execute with a fresh token. This block will be executed on the main
         thread.
  */
-- (void)withFreshTokensPerformAction:(OIDAuthStateAction)action;
+- (void)performActionWithFreshTokens:(OIDAuthStateAction)action;
 
 /*! @fn performActionWithFreshTokens:additionalRefreshParameters:
     @brief Calls the block with a valid access token (refreshing it first, if needed), or if a
@@ -219,7 +219,7 @@ typedef void (^OIDAuthStateAuthorizationCallback)(OIDAuthState *_Nullable authSt
     (nullable NSDictionary<NSString *, NSString *> *)additionalParameters;
 
 /*! @fn setNeedsTokenRefresh
-    @brief Forces a token refresh the next time @c OIDAuthState.withFreshTokensPerformAction: is
+    @brief Forces a token refresh the next time @c OIDAuthState.performActionWithFreshTokens: is
         called, even if the current tokens are considered valid.
  */
 - (void)setNeedsTokenRefresh;
@@ -229,7 +229,7 @@ typedef void (^OIDAuthStateAuthorizationCallback)(OIDAuthState *_Nullable authSt
     @return A @c OIDTokenRequest suitable for using a refresh token to obtain a new access token.
     @discussion After performing the refresh, call @c OIDAuthState.updateWithTokenResponse:error:
         to update the authorization state based on the response. Rather than doing the token refresh
-        yourself, you should use @c OIDAuthState.withFreshTokensPerformAction:.
+        yourself, you should use @c OIDAuthState.performActionWithFreshTokens:.
     @see https://tools.ietf.org/html/rfc6749#section-1.5
  */
 - (nullable OIDTokenRequest *)tokenRefreshRequest;
@@ -240,11 +240,22 @@ typedef void (^OIDAuthStateAuthorizationCallback)(OIDAuthState *_Nullable authSt
     @return A @c OIDTokenRequest suitable for using a refresh token to obtain a new access token.
     @discussion After performing the refresh, call @c OIDAuthState.updateWithTokenResponse:error:
         to update the authorization state based on the response. Rather than doing the token refresh
-        yourself, you should use @c OIDAuthState.withFreshTokensPerformAction:.
+        yourself, you should use @c OIDAuthState.performActionWithFreshTokens:.
     @see https://tools.ietf.org/html/rfc6749#section-1.5
  */
 - (nullable OIDTokenRequest *)tokenRefreshRequestWithAdditionalParameters:
     (nullable NSDictionary<NSString *, NSString *> *)additionalParameters;
+
+/*! @fn withFreshTokensPerformAction:
+    @brief Deprecated, use @c OIDAuthState.performActionWithFreshTokens:.
+    @discussion Calls the block with a valid access token (refreshing it first, if needed), or if a
+        refresh was needed and failed, with the error that caused it to fail.
+    @param action The block to execute with a fresh token. This block will be executed on the main
+        thread.
+    @deprecated Use @c OIDAuthState.performActionWithFreshTokens: which is equivalent.
+ */
+- (void)withFreshTokensPerformAction:(OIDAuthStateAction)action
+    __deprecated_msg("Use OIDAuthState.performActionWithFreshTokens:");
 
 @end
 

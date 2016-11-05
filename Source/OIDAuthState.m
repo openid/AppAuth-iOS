@@ -407,7 +407,7 @@ static const NSUInteger kExpiryTimeTolerance = 60;
   _needsTokenRefresh = YES;
 }
 
-- (void)withFreshTokensPerformAction:(OIDAuthStateAction)action {
+- (void)performActionWithFreshTokens:(OIDAuthStateAction)action {
   [self performActionWithFreshTokens:action additionalRefreshParameters:nil];
 }
 
@@ -472,6 +472,12 @@ static const NSUInteger kExpiryTimeTolerance = 60;
       });
     }];
   }
+}
+
+#pragma mark - Deprecated
+
+- (void)withFreshTokensPerformAction:(OIDAuthStateAction)action {
+  [self performActionWithFreshTokens:action additionalRefreshParameters:nil];
 }
 
 #pragma mark -
