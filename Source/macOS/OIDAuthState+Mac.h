@@ -20,6 +20,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/*! @brief macOS specific convenience methods for @c OIDAuthState.
+ */
 @interface OIDAuthState (Mac)
 
 /*! @fn authStateByPresentingAuthorizationRequest:callback:

@@ -20,6 +20,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/*! @brief Provides macOS specific authorization request handling.
+ */
 @interface OIDAuthorizationService (Mac)
 
 /*! @fn presentAuthorizationRequest:callback:

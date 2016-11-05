@@ -22,6 +22,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/*! @brief iOS specific convenience methods for @c OIDAuthState.
+ */
 @interface OIDAuthState (IOS)
 
 /*! @fn authStateByPresentingAuthorizationRequest:presentingViewController:callback:

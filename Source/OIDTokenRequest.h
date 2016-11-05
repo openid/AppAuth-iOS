@@ -113,7 +113,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (nullable instancetype)init NS_UNAVAILABLE;
 
-/*! @fn initWithConfiguration:grantType:authorizationCode:redirectURL:clientID:scopes:refreshToken:codeVerifier:additionalParameters:
+/*! @fn initWithConfiguration:grantType:authorizationCode:redirectURL:clientID:clientSecret:scopes:refreshToken:codeVerifier:additionalParameters:
     @param configuration The service's configuration.
     @param grantType the type of token being sent to the token endpoint, i.e. "authorization_code"
         for the authorization code exchange, or "refresh_token" for an access token refresh request.
@@ -136,7 +136,7 @@ NS_ASSUME_NONNULL_BEGIN
             codeVerifier:(nullable NSString *)codeVerifier
     additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters;
 
-/*! @fn initWithConfiguration:grantType:authorizationCode:redirectURL:clientID:scope:refreshToken:codeVerifier:additionalParameters:
+/*! @fn initWithConfiguration:grantType:authorizationCode:redirectURL:clientID:clientSecret:scope:refreshToken:codeVerifier:additionalParameters:
     @brief Designated initializer.
     @param configuration The service's configuration.
     @param grantType the type of token being sent to the token endpoint, i.e. "authorization_code"

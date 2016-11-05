@@ -182,7 +182,7 @@ extern NSString *const OIDOAuthorizationRequestCodeChallengeMethodS256;
              responseType:(NSString *)responseType
      additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters;
 
-/*! @fn initWithConfiguration:clientId:scope:redirectURL:responseType:state:codeVerifier:codeChallenge:codeChallengeMethod:additionalParameters:
+/*! @fn initWithConfiguration:clientId:clientSecret:scope:redirectURL:responseType:state:codeVerifier:codeChallenge:codeChallengeMethod:additionalParameters:
     @brief Designated initializer.
     @param configuration The service's configuration.
     @param clientID The client identifier.
