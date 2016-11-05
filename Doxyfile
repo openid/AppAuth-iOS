@@ -38,12 +38,12 @@ INHERIT_DOCS           = YES
 SEPARATE_MEMBER_PAGES  = NO
 TAB_SIZE               = 4
 # Alias external references. ref: http://stackoverflow.com/a/24076896/72176
-ALIASES                += SFSafariViewController="<code><a href=\"https://developer.apple.com/library/ios/documentation/SafariServices/Reference/SFSafariViewController_Ref/index.html\">SFSafariViewController</a></code>"
-ALIASES                += NSURLSession="<code><a href=\"https://developer.apple.com/library/ios/documentation/Foundation/Reference/NSURLSession_class/\">NSURLSession</a></code>"
-ALIASES                += NSError_userInfo="<code><a href=\"https://developer.apple.com/library/mac/documentation/Cocoa/Reference/Foundation/Classes/NSError_Class/#//apple_ref/occ/instp/NSError/userInfo\">NSError.userInfo</a></code>"
-ALIASES                += NSError_code="<code><a href=\"https://developer.apple.com/library/mac/documentation/Cocoa/Reference/Foundation/Classes/NSError_Class/#//apple_ref/occ/instp/NSError/code\">NSError.code</a></code>"
-ALIASES                += NSError="<code><a href=\"https://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/Classes/NSError_Class/\">NSError</a></code>"
-ALIASES                += NSHTTPURLResponse="<code><a href=\"https://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/Classes/NSHTTPURLResponse_Class/\">NSHTTPURLResponse</a></code>"
+ALIASES                += SFSafariViewController="<code><a href=\"https://developer.apple.com/reference/safariservices/sfsafariviewcontroller\">SFSafariViewController</a></code>"
+ALIASES                += NSURLSession="<code><a href=\"https://developer.apple.com/reference/foundation/urlsession\">NSURLSession</a></code>"
+ALIASES                += NSError_userInfo="<code><a href=\"https://developer.apple.com/reference/foundation/nserror/1411580-userinfo\">NSError.userInfo</a></code>"
+ALIASES                += NSError_code="<code><a href=\"https://developer.apple.com/reference/foundation/nserror/1409165-code\">NSError.code</a></code>"
+ALIASES                += NSError="<code><a href=\"https://developer.apple.com/reference/foundation/nserror\">NSError</a></code>"
+ALIASES                += NSHTTPURLResponse="<code><a href=\"https://developer.apple.com/reference/foundation/httpurlresponse\">NSHTTPURLResponse</a></code>"
 TCL_SUBST              = 
 OPTIMIZE_OUTPUT_FOR_C  = NO
 OPTIMIZE_OUTPUT_JAVA   = NO
@@ -163,11 +163,17 @@ FILE_PATTERNS          = *.c \
                          *.qsf \
                          *.as \
                          *.js
-RECURSIVE              = NO
+RECURSIVE              = YES
 EXCLUDE                = 
 EXCLUDE_SYMLINKS       = NO
-EXCLUDE_PATTERNS       = *.m # exclude .m files
-EXCLUDE_SYMBOLS        = *() # exclude private categories
+# Excludes .m files
+EXCLUDE_PATTERNS       = *.m
+# Excludes private classes
+EXCLUDE_PATTERNS       += */LoopbackHTTPServer/*
+EXCLUDE_PATTERNS       += */OIDURLQueryComponent.h
+EXCLUDE_PATTERNS       += */OIDFieldMapping.h
+# Excludes private categories
+EXCLUDE_SYMBOLS        = *() 
 EXAMPLE_PATH           = 
 EXAMPLE_PATTERNS       = *
 EXAMPLE_RECURSIVE      = NO

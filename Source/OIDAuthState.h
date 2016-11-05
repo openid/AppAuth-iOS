@@ -90,7 +90,7 @@ typedef void (^OIDAuthStateAuthorizationCallback)(OIDAuthState *_Nullable authSt
         @c OIDAuthState.updateWithAuthorizationError: that invalidated this @c OIDAuthState.
         Authorization errors from @c OIDAuthState will always have a domain of
         @c ::OIDOAuthAuthorizationErrorDomain or @c ::OIDOAuthTokenErrorDomain. Note: that after
-        unarchiving the @c OIDAuthState object, the @ NSError.userInfo property of this error will
+        unarchiving the @c OIDAuthState object, the \NSError_userInfo property of this error will
         be nil.
  */
 @property(nonatomic, readonly, nullable) NSError *authorizationError;
@@ -192,9 +192,9 @@ typedef void (^OIDAuthStateAuthorizationCallback)(OIDAuthState *_Nullable authSt
         @c #errorDelegate will be called with the error.
         You may optionally use the convenience method
         OIDErrorUtilities.resourceServerAuthorizationErrorWithCode:errorResponse:underlyingError:
-        to create @c NSError objects for use here.
+        to create \NSError objects for use here.
         The latest error received is stored in @c #authorizationError. Note: that after unarchiving
-        this object, the @c NSError.userInfo property of this error will be nil.
+        this object, the \NSError_userInfo property of this error will be nil.
  */
 - (void)updateWithAuthorizationError:(NSError *)authorizationError;
 

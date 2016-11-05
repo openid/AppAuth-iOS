@@ -63,8 +63,8 @@ typedef void (^OIDTokenCallback)(OIDTokenResponse *_Nullable tokenResponse,
 typedef NSDictionary<NSString *, NSString *> *_Nullable OIDTokenEndpointParameters;
 
 /*! @class OIDAuthorizationService
-    @brief Performs various OAuth and OpenID Connect related RPCs via @c SFSafariViewController or
-        @c NSURLSession.
+    @brief Performs various OAuth and OpenID Connect related calls via the user agent or
+        \NSURLSession.
  */
 @interface OIDAuthorizationService : NSObject
 
@@ -145,11 +145,12 @@ typedef NSDictionary<NSString *, NSString *> *_Nullable OIDTokenEndpointParamete
 - (void)cancel;
 
 /*! @brief Clients should call this method with the result of the authorization code flow if it
-        becomes available. Causes the @c SFSafariViewController created by the
-        @c OIDAuthorizationService::presentAuthorizationRequest:presentingViewController:callback:
-        method to be dismissed, the pending request's completion block is invoked, and this method
-        returns.
+        becomes available.
     @param URL The redirect URL invoked by the authorization server.
+    @discussion When the URL represented a valid authorization response, implementations
+        should clean up any left-over UI state from the authorization, for example by
+        closing the \SFSafariViewController or looback HTTP listener if those were used.
+        The completion block of the pending authorization request should then be invoked.
     @remarks Has no effect if called more than once, or after a @c cancel message was received.
     @return YES if the passed URL matches the expected redirect URL and was consumed, NO otherwise.
  */
