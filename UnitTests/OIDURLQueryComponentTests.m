@@ -38,21 +38,35 @@ static NSString *const kTestParameterValue = @"ParameterValue";
 /*! @var kTestParameterValue2
     @brief A different testing parameter value.
  */
-static NSString *const kTestParameterValue2 = @"Parameter Va=l&ue2";
-static NSString *const kTestParameterValue2Encoded = @"Parameter%20Va%3Dl%26ue2";
+static NSString *const kTestParameterValue2 = @"Param+eter Va=l&u#e2";
+static NSString *const kTestParameterValue2Encoded = @"Para+meter%20Va%3Dl%26u%23e2";
 
 /*! @var kTestSimpleParameterStringEncoded
     @brief The result of generating a parameter string from:
         @@{ kTestParameterName : kTestParameterValue, kTestParameterName2 : kTestParameterValue2 }
  */
 static NSString *const kTestSimpleParameterStringEncoded =
-    @"ParameterName=ParameterValue&ParameterName2=Parameter%20Va%3Dl%26ue2";
+    @"ParameterName=ParameterValue&ParameterName2=Param%2Beter%20Va%3Dl%26u%23e2";
 
 /*! @var kTestSimpleParameterStringEncodedRev
     @brief Same as @c kTestSimpleParameterStringEncoded but with the parameter order reversed.
  */
 static NSString *const kTestSimpleParameterStringEncodedRev =
-    @"ParameterName2=Parameter%20Va%3Dl%26ue2&ParameterName=ParameterValue";
+    @"ParameterName2=Param%2Beter%20Va%3Dl%26u%23e2&ParameterName=ParameterValue";
+
+/*! @brief Encoding test string representing the unencoded example from RFC6749 Appendix B.
+    @see https://tools.ietf.org/html/rfc6749#appendix-B
+ */
+static NSString *const kEncodingTestUnencoded =
+    @" %&+£€";
+
+/*! @brief Encoding test string representing the encoded example from RFC6749 Appendix B, but with
+        the U+0020 (SPACE) character also percentage encoded.
+    @see https://tools.ietf.org/html/rfc6749#appendix-B
+ */
+static NSString *const kEncodingTestEncoded =
+    @"%20%25%26%2B%C2%A3%E2%82%AC";
+
 
 /*! @var kTestURLRoot
     @brief A URL string to use for testing.
@@ -80,6 +94,25 @@ static NSString *const kTestURLRoot = @"https://www.example.com/";
   XCTAssertEqual(values.count, 2);
   XCTAssertEqualObjects(values.firstObject, kTestParameterValue);
   XCTAssertEqualObjects(values[1], kTestParameterValue2);
+}
+
+/* @brief Tests the application/x-www-form-urlencoded encoding.
+    @see https://tools.ietf.org/html/rfc6749#appendix-B
+ */
+- (void)testURLEncodedParameters {
+  NSURL *baseURL = [NSURL URLWithString:kTestURLRoot];
+  OIDURLQueryComponent *query = [[OIDURLQueryComponent alloc] initWithURL:baseURL];
+  [query addParameter:kTestParameterName value:kEncodingTestUnencoded];
+
+  // Tests the URLEncodedParameters method
+  NSString *encodedParams = [query URLEncodedParameters];
+  NSString *expected = [NSString stringWithFormat:@"%@=%@", kTestParameterName, kEncodingTestEncoded];
+  XCTAssertEqualObjects(encodedParams, expected);
+
+  // Tests that params are correctly encoded when using URLByReplacingQueryInURL
+  NSURL *url = [query URLByReplacingQueryInURL:baseURL];
+  NSString* expectedURL = [NSString stringWithFormat:@"%@?%@", kTestURLRoot, expected];
+  XCTAssertEqualObjects([url absoluteString], expectedURL);
 }
 
 - (void)testAddingThreeParameters {
