@@ -1,8 +1,8 @@
-# AppAuth for iOS
+# AppAuth for iOS and macOS
 
 [![Build Status](https://www.bitrise.io/app/8e4dbca635a964dc.svg?token=8rT4oJnhjUuFWH-QvXuJzg&branch=master)](https://www.bitrise.io/app/8e4dbca635a964dc)
 
-AppAuth for iOS is a client SDK for communicating with [OAuth 2.0]
+AppAuth for iOS and macOS is a client SDK for communicating with [OAuth 2.0]
 (https://tools.ietf.org/html/rfc6749) and [OpenID Connect]
 (http://openid.net/specs/openid-connect-core-1_0.html) providers. It strives to
 directly map the requests and responses of those specifications, while following
@@ -12,8 +12,9 @@ tasks like performing an action with fresh tokens.
 
 It follows the best practices set out in [OAuth 2.0 for Native Apps]
 (https://tools.ietf.org/html/draft-ietf-oauth-native-apps)
-including using `SFSafariViewController` for the auth request. For this reason,
-`UIWebView` is explicitly *not* supported due to usability and security reasons.
+including using `SFSafariViewController` on iOS for the auth request. For this
+reason, `UIWebView` is explicitly *not* supported due to usability and security
+reasons.
 
 It also supports the [PKCE](https://tools.ietf.org/html/rfc7636) extension to
 OAuth which was created to secure authorization codes in public clients when
@@ -23,7 +24,9 @@ in all protocol requests and responses.
 
 ## Specification
 
-### Supported iOS Versions
+### iOS
+
+#### Supported Versions
 
 AppAuth supports iOS 7 and above.
 
@@ -31,14 +34,31 @@ iOS 9+ uses the in-app browser tab pattern
 (via `SFSafariViewController`), and falls back to the system browser (mobile
 Safari) on earlier versions.
 
-### Authorization Server Support
+#### Authorization Server Requirements
 
 Both Custom URI Schemes (all supported versions of iOS) and Universal Links
 (iOS 9+) can be used with the library.
 
 In general, AppAuth can work with any Authorization Server (AS) that supports
-[native apps](https://tools.ietf.org/html/draft-ietf-oauth-native-apps-00),
+[native apps](https://tools.ietf.org/html/draft-ietf-oauth-native-apps),
 either through custom URI scheme redirects, or universal links.
+AS's that assume all clients are web-based or require clients to maintain
+confidentiality of the client secrets may not work well.
+
+### macOS
+
+#### Supported Versions
+
+AppAuth supports macOS (OS X) 10.8 and above.
+
+#### Authorization Server Requirements
+
+AppAuth for macOS supports both custom schemes, a loopback HTTP redirects
+via a small embedded server.
+
+In general, AppAuth can work with any Authorization Server (AS) that supports
+[native apps](https://tools.ietf.org/html/draft-ietf-oauth-native-apps),
+either through custom URI scheme, or loopback HTTP redirects.
 AS's that assume all clients are web-based or require clients to maintain
 confidentiality of the client secrets may not work well.
 
@@ -111,7 +131,7 @@ NSURL *issuer = [NSURL URLWithString:@"https://accounts.google.com"];
 }];
 ```
 
-### Authorizing
+### Authorizing – iOS
 
 First you need to have a property in your AppDelegate to hold the session, in
 order to continue the authorization flow from the redirect.
@@ -166,7 +186,7 @@ appDelegate.currentAuthorizationFlow =
 }];
 ```
 
-### Handling the Redirect
+*Handling the Redirect*
 
 The authorization response URL is returned to the app via the iOS openURL
 app delegate method, so you need to pipe this through to the current
@@ -189,15 +209,91 @@ authorization session (created in the previous session).
 }
 ```
 
+### Authorizing – MacOS
+
+On macOS, the most popular way to get the authorization response redirect is to
+start a local HTTP server on the loopback interface (limited to incoming
+requests from the user's machine only). When the authorization is complete, the
+user is redirected to that local server, and the authorization response can be
+processed by the app. AppAuth takes care of managing the local HTTP server
+lifecycle for you.
+
+> #### :bulb: Alternative: Custom URI Schemes
+> Custom URI schemes are also supported on macOS, but some browsers display
+> an interstitial which reduces the usability. For an example on using custom
+> URI schemes with macOS, See `Example-Mac`.
+
+To receive the authorization response using a local HTTP server, first you need
+to have an instance variable in your main class to retain the HTTP redirect
+handler.
+
+```objc
+OIDRedirectHTTPHandler *_redirectHTTPHandler;
+```
+
+Then, as the port used by the local HTTP server varies, you need to start it
+before building the authorization request in order to get the exact redirect
+URI to use.
+
+```objc
+static NSString *const kSuccessURLString =
+    @"http://openid.github.io/AppAuth-iOS/redirect/";
+NSURL *successURL = [NSURL URLWithString:kSuccessURLString];
+
+// Starts a loopback HTTP redirect listener to receive the code.  This needs to be started first,
+// as the exact redirect URI (including port) must be passed in the authorization request.
+_redirectHTTPHandler = [[OIDRedirectHTTPHandler alloc] initWithSuccessURL:successURL];
+NSURL *redirectURI = [_redirectHTTPHandler startHTTPListener:nil];
+```
+
+Then, initiate the authorization request. By using the 
+`authStateByPresentingAuthorizationRequest` convenience method, the token
+exchange will be performed automatically, and everything will be protected with
+PKCE (if the server supports it). By assigning the return value to the
+`OIDRedirectHTTPHandler`'s `currentAuthorizationFlow`, the authorization will
+continue automatically once the user makes their choice.
+
+```objc
+// builds authentication request
+OIDAuthorizationRequest *request =
+    [[OIDAuthorizationRequest alloc] initWithConfiguration:configuration
+                                                  clientId:kClientID
+                                              clientSecret:kClientSecret
+                                                    scopes:@[ OIDScopeOpenID ]
+                                               redirectURL:redirectURI
+                                              responseType:OIDResponseTypeCode
+                                      additionalParameters:nil];
+// performs authentication request
+__weak __typeof(self) weakSelf = self;
+_redirectHTTPHandler.currentAuthorizationFlow =
+    [OIDAuthState authStateByPresentingAuthorizationRequest:request
+                        callback:^(OIDAuthState *_Nullable authState,
+                                   NSError *_Nullable error) {
+  // Brings this app to the foreground.
+  [[NSRunningApplication currentApplication]
+      activateWithOptions:(NSApplicationActivateAllWindows |
+                           NSApplicationActivateIgnoringOtherApps)];
+
+  // Processes the authorization response.
+  if (authState) {
+    NSLog(@"Got authorization tokens. Access token: %@",
+          authState.lastTokenResponse.accessToken);
+  } else {
+    NSLog(@"Authorization error: %@", error.localizedDescription);
+  }
+  [weakSelf setAuthState:authState];
+}];
+```
+
 ### Making API Calls
 
 AppAuth gives you the raw token information, if you need it. However we
 recommend that users of the `OIDAuthState` convenience wrapper use the provided
-`withFreshTokensPerformAction:` method to perform their API calls to avoid
+`performActionWithFreshTokens:` method to perform their API calls to avoid
 needing to worry about token freshness.
 
 ```objc
-[_authState withFreshTokensPerformAction:^(NSString *_Nonnull accessToken,
+[_authState performActionWithFreshTokens:^(NSString *_Nonnull accessToken,
                                            NSString *_Nonnull idToken,
                                            NSError *_Nullable error) {
   if (error) {
@@ -214,14 +310,18 @@ needing to worry about token freshness.
 Browse the [API documentation]
 (http://openid.github.io/AppAuth-iOS/docs/latest/annotated.html).
 
-## Included Sample
+## Included Samples
 
-You can try out sample included in the source distribution by opening
+You can try out the iOS sample included in the source distribution by opening
 `Example/Example.xcworkspace`. You can easily convert the Example
 workspace to a Pod workspace by deleting the `AppAuth` project, and
-[configuring the pod](#setup).
+[configuring the pod](#setup). You can also
+[try out the sample via CocoaPods](#try). Be sure to follow the instructions in
+[Example/README.md](Example/README.md) to configure your own OAuth client ID
+for use with the example.
 
-You can also [try out the sample via CocoaPods](#try).
-
-Be sure to follow the instructions in [Example/README.md](Example/README.md)
-to configure your own OAuth client ID for use with the example.
+You can try out the macOS sample included in the source distribution by
+executing `pod install` in the `Example-Mac` folder, then opening 
+`Example-Mac.xcworkspace`. Be sure to follow the instructions in
+[Example-Mac/README.md](Example-Mac/README.md) to configure your own OAuth
+client ID for use with the example.

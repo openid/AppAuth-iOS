@@ -29,7 +29,7 @@ $ open Example-Mac.xcworkspace
 
 ### Configure the Example
 
-In `AppAuthExampleViewController.m` update `kClientID` and 'kClientSecret' with
+In `AppAuthExampleViewController.m` update `kClientID` and `kClientSecret` with
 your new client ID and client secret.
 
 In the same file, update `kRedirectURI` with the *reverse DNS notation* form
