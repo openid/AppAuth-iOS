@@ -412,7 +412,8 @@ static const NSUInteger kExpiryTimeTolerance = 60;
 }
 
 - (void)performActionWithFreshTokens:(OIDAuthStateAction)action
-         additionalRefreshParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters {
+         additionalRefreshParameters:
+    (nullable NSDictionary<NSString *, NSString *> *)additionalParameters {
   if (!_refreshToken) {
     [OIDErrorUtilities raiseException:kRefreshTokenRequestException];
   }
