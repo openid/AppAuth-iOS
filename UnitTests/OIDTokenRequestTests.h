@@ -22,23 +22,19 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/*! @class OIDTokenRequestTests
-    @brief Unit tests for @c OIDTokenRequest.
+/*! @brief Unit tests for @c OIDTokenRequest.
  */
 @interface OIDTokenRequestTests : XCTestCase
 
-/*! @fn testInstance
-    @brief Creates a new @c OIDTokenRequest for testing.
+/*! @brief Creates a new @c OIDTokenRequest for testing.
  */
 + (OIDTokenRequest *)testInstance;
 
-/*! @fn testInstanceCodeExchange
-    @brief Creates a new @c OIDTokenRequest for testing the code exchange.
+/*! @brief Creates a new @c OIDTokenRequest for testing the code exchange.
  */
 + (OIDTokenRequest *)testInstanceCodeExchange;
 
-/*! @fn testInstanceRefresh
-    @brief Creates a new @c OIDTokenRequest for testing the token refresh.
+/*! @brief Creates a new @c OIDTokenRequest for testing the token refresh.
  */
 + (OIDTokenRequest *)testInstanceRefresh;
 

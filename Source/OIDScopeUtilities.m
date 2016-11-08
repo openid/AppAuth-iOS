@@ -20,8 +20,7 @@
 
 @implementation OIDScopeUtilities
 
-/*! @fn disallowedScopeCharacters
-    @brief A character set with the characters NOT allowed in a scope name.
+/*! @brief A character set with the characters NOT allowed in a scope name.
     @see https://tools.ietf.org/html/rfc6749#section-3.3
  */
 + (NSCharacterSet *)disallowedScopeCharacters {

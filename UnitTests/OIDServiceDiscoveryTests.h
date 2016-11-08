@@ -18,19 +18,16 @@
 
 #import <XCTest/XCTest.h>
 
-/*! @class OIDServiceDiscoveryTests
-    @brief Unit tests for @c OIDServiceDiscovery.
+/*! @brief Unit tests for @c OIDServiceDiscovery.
  */
 @interface OIDServiceDiscoveryTests : XCTestCase
 
-/*! @fn minimumServiceDiscoveryDictionary
-    @brief Returns a dictionary containing the REQUIRED fields for an OpenID Connect 1.0 Service
+/*! @brief Returns a dictionary containing the REQUIRED fields for an OpenID Connect 1.0 Service
         Discovery document. Used as a convenience for testing.
  */
 + (NSDictionary *)minimumServiceDiscoveryDictionary;
 
-/*! @fn completeServiceDiscoveryDictionary
-    @brief A fully populated dictionary containing ALL fields for an OpenID Connect 1.0 Service
+/*! @brief A fully populated dictionary containing ALL fields for an OpenID Connect 1.0 Service
         Discovery document. User as a convenience for testing.
  */
 + (NSDictionary *)completeServiceDiscoveryDictionary;

@@ -18,34 +18,29 @@
 
 #import <Foundation/Foundation.h>
 
-/*! @var OIDScopeOpenID
-    @brief Scope that indicates this request is an OpenID Connect request.
+/*! @brief Scope that indicates this request is an OpenID Connect request.
     @see http://openid.net/specs/openid-connect-core-1_0.html#AuthRequestValidation
  */
 extern NSString *const OIDScopeOpenID;
 
-/*! @var OIDScopeProfile
-    @brief This scope value requests access to the End-User's default profile Claims, which are:
+/*! @brief This scope value requests access to the End-User's default profile Claims, which are:
         name, family_name, given_name, middle_name, nickname, preferred_username, profile, picture,
         website, gender, birthdate, zoneinfo, locale, and updated_at.
     @see http://openid.net/specs/openid-connect-core-1_0.html#ScopeClaims
  */
 extern NSString *const OIDScopeProfile;
 
-/*! @var OIDScopeEmail
-    @brief This scope value requests access to the email and email_verified Claims.
+/*! @brief This scope value requests access to the email and email_verified Claims.
     @see http://openid.net/specs/openid-connect-core-1_0.html#ScopeClaims
  */
 extern NSString *const OIDScopeEmail;
 
-/*! @var OIDScopeAddress
-    @brief This scope value requests access to the address Claim.
+/*! @brief This scope value requests access to the address Claim.
     @see http://openid.net/specs/openid-connect-core-1_0.html#ScopeClaims
  */
 extern NSString *const OIDScopeAddress;
 
-/*! @var OIDScopePhone
-    @brief This scope value requests access to the phone_number and phone_number_verified Claims.
+/*! @brief This scope value requests access to the phone_number and phone_number_verified Claims.
     @see http://openid.net/specs/openid-connect-core-1_0.html#ScopeClaims
  */
 extern NSString *const OIDScopePhone;

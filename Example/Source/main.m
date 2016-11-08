@@ -20,8 +20,7 @@
 
 #import "AppDelegate.h"
 
-/*! @fn main
-    @brief Application main entry point.
+/*! @brief Application main entry point.
     @return Exit code.
  */
 int main(int argc, char *argv[]) {

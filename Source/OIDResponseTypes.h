@@ -18,17 +18,14 @@
 
 #import <Foundation/Foundation.h>
 
-/*! @var OIDResponseTypeCode
-    @brief A constant for the standard OAuth2 Response Type of 'code'.
+/*! @brief A constant for the standard OAuth2 Response Type of 'code'.
  */
 extern NSString *const OIDResponseTypeCode;
 
-/*! @var OIDResponseTypeToken
-    @brief A constant for the standard OAuth2 Response Type of 'token'.
+/*! @brief A constant for the standard OAuth2 Response Type of 'token'.
  */
 extern NSString *const OIDResponseTypeToken;
 
-/*! @var OIDResponseTypeIDToken
-    @brief A constant for the standard OAuth2 Response Type of 'id_token'.
+/*! @brief A constant for the standard OAuth2 Response Type of 'id_token'.
  */
 extern NSString *const OIDResponseTypeIDToken;

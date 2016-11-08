@@ -110,8 +110,7 @@ static NSString *const kOPTosURIKey = @"op_tos_uri";
 
 #pragma mark -
 
-/*! @fn dictionaryHasRequiredFields:error:
-    @brief Checks to see if the specified dictionary contains the required fields.
+/*! @brief Checks to see if the specified dictionary contains the required fields.
     @discussion This test is not meant to provide semantic analysis of the document (eg. fields
         where the value @c none is not an allowed option would not cause this method to fail if
         their value was @c none.) We are just testing to make sure we can meet the nullability

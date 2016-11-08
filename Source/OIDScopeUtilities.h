@@ -20,27 +20,23 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/*! @class OIDScopeUtilities
-    @brief Provides convenience methods for dealing with scope strings.
+/*! @brief Provides convenience methods for dealing with scope strings.
  */
 @interface OIDScopeUtilities : NSObject
 
-/*! @fn init
-    @internal
+/*! @internal
     @brief Unavailable. This class should not be initialized.
  */
 - (instancetype)init NS_UNAVAILABLE;
 
-/*! @fn scopesWithArray:
-    @brief Converts an array of scope strings to a single scope string per the OAuth 2 spec.
+/*! @brief Converts an array of scope strings to a single scope string per the OAuth 2 spec.
     @param scopes An array of scope strings.
     @return A space-delimited string of scopes.
     @see https://tools.ietf.org/html/rfc6749#section-3.3
  */
 + (NSString *)scopesWithArray:(NSArray<NSString *> *)scopes;
 
-/*! @fn scopesArrayWithString:
-    @brief Converts an OAuth 2 spec-compliant scope string to an array of scopes.
+/*! @brief Converts an OAuth 2 spec-compliant scope string to an array of scopes.
     @param scopes An OAuth 2 spec-compliant scope string.
     @return An array of scope strings.
     @see https://tools.ietf.org/html/rfc6749#section-3.3

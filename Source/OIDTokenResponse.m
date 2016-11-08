@@ -22,54 +22,45 @@
 #import "OIDFieldMapping.h"
 #import "OIDTokenRequest.h"
 
-/*! @var kRequestKey
-    @brief Key used to encode the @c request property for @c NSSecureCoding
+/*! @brief Key used to encode the @c request property for @c NSSecureCoding
  */
 static NSString *const kRequestKey = @"request";
 
-/*! @var kAccessTokenKey
-    @brief The key for the @c accessToken property in the incoming parameters and for
+/*! @brief The key for the @c accessToken property in the incoming parameters and for
         @c NSSecureCoding.
  */
 static NSString *const kAccessTokenKey = @"access_token";
 
-/*! @var kExpiresInKey
-    @brief The key for the @c accessTokenExpirationDate property in the incoming parameters and for
+/*! @brief The key for the @c accessTokenExpirationDate property in the incoming parameters and for
         @c NSSecureCoding.
  */
 static NSString *const kExpiresInKey = @"expires_in";
 
-/*! @var kTokenTypeKey
-    @brief The key for the @c tokenType property in the incoming parameters and for
+/*! @brief The key for the @c tokenType property in the incoming parameters and for
         @c NSSecureCoding.
  */
 static NSString *const kTokenTypeKey = @"token_type";
 
-/*! @var kIDTokenKey
-    @brief The key for the @c idToken property in the incoming parameters and for @c NSSecureCoding.
+/*! @brief The key for the @c idToken property in the incoming parameters and for @c NSSecureCoding.
  */
 static NSString *const kIDTokenKey = @"id_token";
 
-/*! @var kRefreshTokenKey
-    @brief The key for the @c refreshToken property in the incoming parameters and for
+/*! @brief The key for the @c refreshToken property in the incoming parameters and for
         @c NSSecureCoding.
  */
 static NSString *const kRefreshTokenKey = @"refresh_token";
 
-/*! @var kScopeKey
-    @brief The key for the @c scope property in the incoming parameters and for @c NSSecureCoding.
+/*! @brief The key for the @c scope property in the incoming parameters and for @c NSSecureCoding.
  */
 static NSString *const kScopeKey = @"scope";
 
-/*! @var kAdditionalParametersKey
-    @brief Key used to encode the @c additionalParameters property for @c NSSecureCoding
+/*! @brief Key used to encode the @c additionalParameters property for @c NSSecureCoding
  */
 static NSString *const kAdditionalParametersKey = @"additionalParameters";
 
 @implementation OIDTokenResponse
 
-/*! @fn fieldMap
-    @brief Returns a mapping of incoming parameters to instance variables.
+/*! @brief Returns a mapping of incoming parameters to instance variables.
     @return A mapping of incoming parameters to instance variables.
  */
 + (NSDictionary<NSString *, OIDFieldMapping *> *)fieldMap {

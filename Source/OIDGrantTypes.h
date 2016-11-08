@@ -18,26 +18,22 @@
 
 #import <Foundation/Foundation.h>
 
-/*! @var OIDGrantTypeAuthorizationCode
-    @brief For exchanging an authorization code for an access token.
+/*! @brief For exchanging an authorization code for an access token.
     @see https://tools.ietf.org/html/rfc6749#section-4.1.3
  */
 extern NSString *const OIDGrantTypeAuthorizationCode;
 
-/*! @var OIDGrantTypeRefreshToken
-    @brief For refreshing an access token with a refresh token.
+/*! @brief For refreshing an access token with a refresh token.
     @see https://tools.ietf.org/html/rfc6749#section-6
  */
 extern NSString *const OIDGrantTypeRefreshToken;
 
-/*! @var OIDGrantTypePassword
-    @brief For obtaining an access token with a username and password.
+/*! @brief For obtaining an access token with a username and password.
     @see https://tools.ietf.org/html/rfc6749#section-4.3.2
  */
 extern NSString *const OIDGrantTypePassword;
 
-/*! @var OIDGrantTypeClientCredentials
-    @brief For obtaining an access token from the token endpoint using client credentials.
+/*! @brief For obtaining an access token from the token endpoint using client credentials.
     @see https://tools.ietf.org/html/rfc6749#section-3.2.1
     @see https://tools.ietf.org/html/rfc6749#section-4.4.2
  */

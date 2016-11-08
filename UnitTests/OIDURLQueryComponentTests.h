@@ -20,31 +20,26 @@
 
 @interface OIDURLQueryComponentTests : XCTestCase
 
-/*! @fn testAddingParameter
-    @brief Test adding a single string parameter to a query.
+/*! @brief Test adding a single string parameter to a query.
     @remarks The query should have a single string value for the specified key.
  */
 - (void)testAddingParameter;
 
-/*! @fn testAddingTwoParameters
-    @brief Test adding two string parameters with the same key to a query.
+/*! @brief Test adding two string parameters with the same key to a query.
     @remarks The query should have an array with both values for the specified key.
  */
 - (void)testAddingTwoParameters;
 
-/*! @fn testAddingThreeParameters
-    @brief Test adding three string parameters with the same key to a dictionary.
+/*! @brief Test adding three string parameters with the same key to a dictionary.
     @remarks The dictionary should have an array with all three values for the specified key.
  */
 - (void)testAddingThreeParameters;
 
-/*! @fn testBuildingParameterStringWithSimpleParameters
-    @brief Test building a simple query string with two parameters, both strings.
+/*! @brief Test building a simple query string with two parameters, both strings.
  */
 - (void)testBuildingParameterStringWithSimpleParameters;
 
-/*! @fn testParsingQueryString
-    @brief Test parsing a simple query string with two string parameters.
+/*! @brief Test parsing a simple query string with two string parameters.
  */
 - (void)testParsingQueryString;
 

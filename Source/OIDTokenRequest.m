@@ -23,54 +23,44 @@
 #import "OIDServiceConfiguration.h"
 #import "OIDURLQueryComponent.h"
 
-/*! @var kConfigurationKey
-    @brief The key for the @c configuration property for @c NSSecureCoding
+/*! @brief The key for the @c configuration property for @c NSSecureCoding
  */
 static NSString *const kConfigurationKey = @"configuration";
 
-/*! @var kGrantTypeKey
-    @brief Key used to encode the @c grantType property for @c NSSecureCoding
+/*! @brief Key used to encode the @c grantType property for @c NSSecureCoding
  */
 static NSString *const kGrantTypeKey = @"grant_type";
 
-/*! @var kAuthorizationCodeKey
-    @brief The key for the @c authorizationCode property for @c NSSecureCoding.
+/*! @brief The key for the @c authorizationCode property for @c NSSecureCoding.
  */
 static NSString *const kAuthorizationCodeKey = @"code";
 
-/*! @var kClientIDKey
-    @brief Key used to encode the @c clientID property for @c NSSecureCoding
+/*! @brief Key used to encode the @c clientID property for @c NSSecureCoding
  */
 static NSString *const kClientIDKey = @"client_id";
 
-/*! @var kClientSecretKey
-    @brief Key used to encode the @c clientSecret property for @c NSSecureCoding
+/*! @brief Key used to encode the @c clientSecret property for @c NSSecureCoding
  */
 static NSString *const kClientSecretKey = @"client_secret";
 
-/*! @var kRedirectURLKey
-    @brief Key used to encode the @c redirectURL property for @c NSSecureCoding
+/*! @brief Key used to encode the @c redirectURL property for @c NSSecureCoding
  */
 static NSString *const kRedirectURLKey = @"redirect_uri";
 
-/*! @var kScopeKey
-    @brief Key used to encode the @c scopes property for @c NSSecureCoding
+/*! @brief Key used to encode the @c scopes property for @c NSSecureCoding
  */
 static NSString *const kScopeKey = @"scope";
 
-/*! @var kRefreshTokenKey
-    @brief Key used to encode the @c refreshToken property for @c NSSecureCoding
+/*! @brief Key used to encode the @c refreshToken property for @c NSSecureCoding
  */
 static NSString *const kRefreshTokenKey = @"refresh_token";
 
-/*! @var kCodeVerifierKey
-    @brief Key used to encode the @c codeVerifier property for @c NSSecureCoding and to build the
+/*! @brief Key used to encode the @c codeVerifier property for @c NSSecureCoding and to build the
         request URL.
  */
 static NSString *const kCodeVerifierKey = @"code_verifier";
 
-/*! @var kAdditionalParametersKey
-    @brief Key used to encode the @c additionalParameters property for
+/*! @brief Key used to encode the @c additionalParameters property for
         @c NSSecureCoding
  */
 static NSString *const kAdditionalParametersKey = @"additionalParameters";
@@ -216,8 +206,7 @@ static NSString *const kAdditionalParametersKey = @"additionalParameters";
 
 #pragma mark -
 
-/*! @fn tokenRequestURL
-    @brief Constructs the request URI.
+/*! @brief Constructs the request URI.
     @return A URL representing the token request.
     @see https://tools.ietf.org/html/rfc6749#section-4.1.3
  */
@@ -225,8 +214,7 @@ static NSString *const kAdditionalParametersKey = @"additionalParameters";
   return _configuration.tokenEndpoint;
 }
 
-/*! @fn tokenRequestBody
-    @brief Constructs the request body data by combining the request parameters using the
+/*! @brief Constructs the request body data by combining the request parameters using the
         "application/x-www-form-urlencoded" format.
     @return The data to pass to the token request URL.
     @see https://tools.ietf.org/html/rfc6749#section-4.1.3

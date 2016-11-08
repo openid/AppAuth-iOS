@@ -24,8 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 extern NSString *const OIDGeneralErrorDomain;
 
-/*! @var OIDOAuthAuthorizationErrorDomain
-    @brief The error domain for OAuth specific errors on the authorization endpoint.
+/*! @brief The error domain for OAuth specific errors on the authorization endpoint.
     @discussion This error domain is used when the server responds to an authorization request
         with an explicit OAuth error, as defined by RFC6749 Section 4.1.2.1. If the authorization
         response is invalid and not explicitly an error response, another error domain will be used.
@@ -36,8 +35,7 @@ extern NSString *const OIDGeneralErrorDomain;
  */
 extern NSString *const OIDOAuthAuthorizationErrorDomain;
 
-/*! @var OIDOAuthTokenErrorDomain
-    @brief The error domain for OAuth specific errors on the token endpoint.
+/*! @brief The error domain for OAuth specific errors on the token endpoint.
     @discussion This error domain is used when the server responds with HTTP 400 and an OAuth error,
         as defined RFC6749 Section 5.2. If an HTTP 400 response does not parse as an OAuth error
         (i.e. no 'error' field is present or the JSON is invalid), another error domain will be
@@ -50,37 +48,31 @@ extern NSString *const OIDOAuthAuthorizationErrorDomain;
  */
 extern NSString *const OIDOAuthTokenErrorDomain;
 
-/*! @var OIDResourceServerAuthorizationErrorDomain
-    @brief The error domain for authorization errors encountered out of band on the resource server.
+/*! @brief The error domain for authorization errors encountered out of band on the resource server.
  */
 extern NSString *const OIDResourceServerAuthorizationErrorDomain;
 
-/*! @var OIDHTTPErrorDomain
-    @brief An error domain representing received HTTP errors.
+/*! @brief An error domain representing received HTTP errors.
  */
 extern NSString *const OIDHTTPErrorDomain;
 
-/*! @var OIDOAuthErrorResponseErrorKey
-    @brief An error key for the original OAuth error response (if any).
+/*! @brief An error key for the original OAuth error response (if any).
  */
 extern NSString *const OIDOAuthErrorResponseErrorKey;
 
-/*! @var kOAuthErrorResponseErrorField
-    @brief The key of the 'error' response field in a RFC6749 Section 5.2 response.
+/*! @brief The key of the 'error' response field in a RFC6749 Section 5.2 response.
     @remark error
     @see https://tools.ietf.org/html/rfc6749#section-5.2
  */
 extern NSString *const OIDOAuthErrorFieldError;
 
-/*! @var kOAuthErrorResponseErrorDescriptionField
-    @brief The key of the 'error_description' response field in a RFC6749 Section 5.2 response.
+/*! @brief The key of the 'error_description' response field in a RFC6749 Section 5.2 response.
     @remark error_description
     @see https://tools.ietf.org/html/rfc6749#section-5.2
  */
 extern NSString *const OIDOAuthErrorFieldErrorDescription;
 
-/*! @var kOAuthErrorResponseErrorURIField
-    @brief The key of the 'error_uri' response field in a RFC6749 Section 5.2 response.
+/*! @brief The key of the 'error_uri' response field in a RFC6749 Section 5.2 response.
     @remark error_uri
     @see https://tools.ietf.org/html/rfc6749#section-5.2
  */
@@ -313,8 +305,7 @@ typedef NS_ENUM(NSInteger, OIDErrorCodeOAuthToken) {
 };
 
 
-/*! @var OIDOAuthExceptionInvalidAuthorizationFlow
-    @brief The exception text for the exception which occurs when a
+/*! @brief The exception text for the exception which occurs when a
         @c OIDAuthorizationFlowSession receives a message after it has already completed.
  */
 extern NSString *const OIDOAuthExceptionInvalidAuthorizationFlow;

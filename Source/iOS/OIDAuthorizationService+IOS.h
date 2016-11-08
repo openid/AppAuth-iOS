@@ -26,8 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @interface OIDAuthorizationService (IOS)
 
-/*! @fn presentAuthorizationRequest:presentingViewController:callback:
-    @brief Perform an authorization flow using \SFSafariViewController.
+/*! @brief Perform an authorization flow using \SFSafariViewController.
     @param request The authorization request.
     @param presentingViewController The view controller from which to present the
         \SFSafariViewController.

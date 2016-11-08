@@ -183,8 +183,7 @@ static NSString *const kDiscoveryDocumentNullField =
       "ail_verified\",\"exp\",\"family_name\",\"given_name\",\"iat\",\"iss\",\"locale\",\"name\",\""
       "picture\",\"sub\"]}";
 
-/*! @fn testURLs
-    @brief Tests that URLs are handled properly when converted from the dictionary's string
+/*! @brief Tests that URLs are handled properly when converted from the dictionary's string
         representation.
  */
 - (void)testURLs {
@@ -206,8 +205,7 @@ static NSString *const kDiscoveryDocumentNullField =
   XCTAssertEqualObjects(discovery.OPPolicyURI, testPolicyURL);
 }
 
-/*! @fn testErrorWhenBadFormat
-    @brief Tests that we get an error when the document is not valid JSON.
+/*! @brief Tests that we get an error when the document is not valid JSON.
  */
 - (void)testErrorWhenBadFormat {
   NSError *error;
@@ -219,8 +217,7 @@ static NSString *const kDiscoveryDocumentNullField =
   XCTAssertEqual(error.code, OIDErrorCodeJSONDeserializationError);
 }
 
-/*! @fn testErrorWhenMissingFields
-    @brief Tests that we get an error when the required fields aren't in the source dictionary.
+/*! @brief Tests that we get an error when the required fields aren't in the source dictionary.
  */
 - (void)testErrorWhenMissingFields {
   NSError *error;
@@ -233,8 +230,7 @@ static NSString *const kDiscoveryDocumentNullField =
   XCTAssertEqual(error.code, OIDErrorCodeInvalidDiscoveryDocument);
 }
 
-/*! @fn testErrorWhenMissingFields
-    @brief Tests that we get an error when the required fields aren't in the source dictionary.
+/*! @brief Tests that we get an error when the required fields aren't in the source dictionary.
  */
 - (void)testErrorWhenMissingFieldsJSON {
   NSError *error;
@@ -247,8 +243,7 @@ static NSString *const kDiscoveryDocumentNullField =
   XCTAssertEqual(error.code, OIDErrorCodeInvalidDiscoveryDocument);
 }
 
-/*! @fn testNoErrorWhenNoMissingFields
-    @brief Tests that we do not get an error, and we do get an instance of
+/*! @brief Tests that we do not get an error, and we do get an instance of
         @c OIDServiceDiscovery when the required fields are in the source dictionary.
  */
 - (void)testNoErrorWhenNoMissingFields {
@@ -264,8 +259,7 @@ static NSString *const kDiscoveryDocumentNullField =
                       "service discovery instance, so we should not have gotten an error.");
 }
 
-/*! @fn pendingTestErrorWhenMalformedFields
-    @brief Tests that we get an error when the required fields are present but invalid.
+/*! @brief Tests that we get an error when the required fields are present but invalid.
  */
 // TODO: this test is failing
 - (void)pendingTestErrorWhenMalformedFields {
@@ -286,8 +280,7 @@ static NSString *const kDiscoveryDocumentNullField =
   XCTAssertEqual(error.code, OIDErrorCodeInvalidDiscoveryDocument);
 }
 
-/*! @fn testErrorWhenJSONNullField
-    @brief Tests that we get an error when null is passed in through JSON.
+/*! @brief Tests that we get an error when null is passed in through JSON.
  */
 // TODO: this test is failing
 - (void)pendingTestErrorWhenJSONNullField {
@@ -301,8 +294,7 @@ static NSString *const kDiscoveryDocumentNullField =
   XCTAssertEqual(error.code, OIDErrorCodeInvalidDiscoveryDocument);
 }
 
-/*! @fn testJSONStringDecoding
-    @brief Tests that the JSON String version results in a valid object.
+/*! @brief Tests that the JSON String version results in a valid object.
  */
 - (void)testJSONStringDecoding {
   NSError *error;
@@ -315,8 +307,7 @@ static NSString *const kDiscoveryDocumentNullField =
                         [[self class] googleDiscoveryAuthorizationEndpoint]);
 }
 
-/*! @fn testJSONDataDecoding
-    @brief Tests that the JSON NSData version results in a valid object.
+/*! @brief Tests that the JSON NSData version results in a valid object.
  */
 - (void)testJSONDataDecoding {
   NSError *error;
@@ -330,8 +321,7 @@ static NSString *const kDiscoveryDocumentNullField =
                         [[self class] googleDiscoveryAuthorizationEndpoint]);
 }
 
-/*! @fn testJSONEqualsDictionary
-    @brief Tests that initialising with the dictionary initialiser and the JSON initialiser result
+/*! @brief Tests that initialising with the dictionary initialiser and the JSON initialiser result
         in equal objects.
  */
 // TODO: this test is failing
@@ -359,8 +349,7 @@ static NSString *const kDiscoveryDocumentNullField =
 }
 
 
-/*! @fn testRequestURIParameterSupportedDefaultToYes
-    @brief Tests that requestURIParameterSupported returns YES (the default) when not specified in
+/*! @brief Tests that requestURIParameterSupported returns YES (the default) when not specified in
         the source dictionary.
  */
 - (void)testRequestURIParameterSupportedDefaultToYes {
@@ -373,8 +362,7 @@ static NSString *const kDiscoveryDocumentNullField =
             @"When not specified, |requestURIParameterSupported| should return YES.");
 }
 
-/*! @fn testSecureCoding
-    @brief Tests the NSSecureCoding by round-tripping an instance through the coding process and
+/*! @brief Tests the NSSecureCoding by round-tripping an instance through the coding process and
         checking to make sure the source and destination instances have equivalent dictionaries.
  */
 - (void)testSecureCoding {
@@ -389,8 +377,7 @@ static NSString *const kDiscoveryDocumentNullField =
   XCTAssertEqualObjects(discovery.discoveryDictionary, unarchived.discoveryDictionary);
 }
 
-/*! @fn testCopying
-    @brief Tests the NSCopying implementation by round-tripping an instance through the copying
+/*! @brief Tests the NSCopying implementation by round-tripping an instance through the copying
         process and checking to make sure the source and destination instances have equivalent
         dictionaries.
  */

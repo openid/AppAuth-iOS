@@ -22,24 +22,20 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/*! @class OIDTokenResponseTests
-    @brief Unit tests for @c OIDAuthorizationResponse.
+/*! @brief Unit tests for @c OIDAuthorizationResponse.
  */
 @interface OIDTokenResponseTests : XCTestCase
 
-/*! @fn testInstance
-    @brief Creates a new @c OIDTokenResponse for testing.
+/*! @brief Creates a new @c OIDTokenResponse for testing.
  */
 + (OIDTokenResponse *)testInstance;
 
-/*! @fn testInstanceCodeExchange
-    @brief Creates a new @c OIDTokenRequest for testing the code exchange.
+/*! @brief Creates a new @c OIDTokenRequest for testing the code exchange.
     @see https://tools.ietf.org/html/rfc6749#section-4.1.4
  */
 + (OIDTokenResponse *)testInstanceCodeExchange;
 
-/*! @fn testInstanceRefresh
-    @brief Creates a new @c OIDTokenRequest for testing the token refresh.
+/*! @brief Creates a new @c OIDTokenRequest for testing the token refresh.
     @see https://tools.ietf.org/html/rfc6749#section-5.1
  */
 + (OIDTokenResponse *)testInstanceRefresh;

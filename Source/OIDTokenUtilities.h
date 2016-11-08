@@ -20,19 +20,16 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/*! @class OIDTokenUtilities
-    @brief Provides data encoding/decoding methods, random string generators, etc.
+/*! @brief Provides data encoding/decoding methods, random string generators, etc.
  */
 @interface OIDTokenUtilities : NSObject
 
-/*! @fn init
-    @internal
+/*! @internal
     @brief Unavailable. This class should not be initialized.
  */
 - (instancetype)init NS_UNAVAILABLE;
 
-/*! @fn encodeBase64urlNoPadding:
-    @brief Base64url-nopadding encodes the given data.
+/*! @brief Base64url-nopadding encodes the given data.
     @param data The input data.
     @return The base64url encoded data as a NSString.
     @discussion Base64url-nopadding is used in several identity specs such as PKCE and
@@ -40,16 +37,14 @@ NS_ASSUME_NONNULL_BEGIN
  */
 + (NSString *)encodeBase64urlNoPadding:(NSData *)data;
 
-/*! @fn randomURLSafeStringWithSize:
-    @brief Generates a URL-safe string of random data.
+/*! @brief Generates a URL-safe string of random data.
     @param size The number of random bytes to encode. NB. the length of the output string will be
         greater than the number of random bytes, due to the URL-safe encoding.
     @return Random data encoded with base64url.
  */
 + (nullable NSString *)randomURLSafeStringWithSize:(NSUInteger)size;
 
-/*! @fn sha265:
-    @brief SHA256 hashes the input string.
+/*! @brief SHA256 hashes the input string.
     @param inputString The input string.
     @return The SHA256 data.
  */

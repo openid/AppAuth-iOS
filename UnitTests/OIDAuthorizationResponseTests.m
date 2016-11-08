@@ -23,53 +23,43 @@
 #import "Source/OIDAuthorizationResponse.h"
 #import "Source/OIDGrantTypes.h"
 
-/*! @var kTestAuthorizationCode
-    @brief Test value for the @c authorizationCode property.
+/*! @brief Test value for the @c authorizationCode property.
  */
 static NSString *const kTestAuthorizationCode = @"Code";
 
-/*! @var kTestAuthorizationCodeVerifier
-    @brief Test value for the @c authorizationCodeVerifier property.
+/*! @brief Test value for the @c authorizationCodeVerifier property.
  */
 static NSString *const kTestAuthorizationCodeVerifier = @"Verifier";
 
-/*! @var kTestAdditionalParameterKey
-    @brief Test key for the @c additionalParameters property.
+/*! @brief Test key for the @c additionalParameters property.
  */
 static NSString *const kTestAdditionalParameterKey = @"A";
 
-/*! @var kTestAdditionalParameterValue
-    @brief Test value for the @c additionalParameters property.
+/*! @brief Test value for the @c additionalParameters property.
  */
 static NSString *const kTestAdditionalParameterValue = @"1";
 
-/*! @var kTestState
-    @brief Test value for the @c state property.
+/*! @brief Test value for the @c state property.
  */
 static NSString *const kTestState = @"State";
 
-/*! @var kTestAccessToken
-    @brief Test value for the @c accessToken property.
+/*! @brief Test value for the @c accessToken property.
  */
 static NSString *const kTestAccessToken = @"Access Token";
 
-/*! @var kTestExpirationSeconds
-    @brief Test value for the @c accessTokenExpirationDate property.
+/*! @brief Test value for the @c accessTokenExpirationDate property.
  */
 static long long const kTestExpirationSeconds = 60;
 
-/*! @var kTestIDToken
-    @brief Test value for the @c idToken property.
+/*! @brief Test value for the @c idToken property.
  */
 static NSString *const kTestIDToken = @"ID Token";
 
-/*! @var kTestTokenType
-    @brief Test value for the @c tokenType property.
+/*! @brief Test value for the @c tokenType property.
  */
 static NSString *const kTestTokenType = @"Token Type";
 
-/*! @var kTestScope
-    @brief Test value for the @c scopes property.
+/*! @brief Test value for the @c scopes property.
  */
 static NSString *const kTestScope = @"Scope";
 
@@ -105,8 +95,7 @@ static NSString *const kTestScope = @"Scope";
   return response;
 }
 
-/*! @fn testCopying
-    @brief Tests the @c NSCopying implementation by round-tripping an instance through the copying
+/*! @brief Tests the @c NSCopying implementation by round-tripping an instance through the copying
         process and checking to make sure the source and destination instances are equivalent.
  */
 - (void)testCopying {
@@ -140,8 +129,7 @@ static NSString *const kTestScope = @"Scope";
                         response.additionalParameters);
 }
 
-/*! @fn testSecureCoding
-    @brief Tests the @c NSSecureCoding by round-tripping an instance through the coding process and
+/*! @brief Tests the @c NSSecureCoding by round-tripping an instance through the coding process and
         checking to make sure the source and destination instances are equivalent.
  */
 - (void)testSecureCoding {

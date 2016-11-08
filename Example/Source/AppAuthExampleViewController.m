@@ -23,13 +23,11 @@
 #import "AppAuth.h"
 #import "AppDelegate.h"
 
-/*! @var kIssuer
-    @brief The OIDC issuer from which the configuration will be discovered.
+/*! @brief The OIDC issuer from which the configuration will be discovered.
  */
 static NSString *const kIssuer = @"https://accounts.google.com";
 
-/*! @var kClientID
-    @brief The OAuth client ID.
+/*! @brief The OAuth client ID.
     @discussion For Google, register your client at
         https://console.developers.google.com/apis/credentials?project=_
         The client should be registered with the "iOS" type.
@@ -37,8 +35,7 @@ static NSString *const kIssuer = @"https://accounts.google.com";
 static NSString *const kClientID =
     @"YOUR_CLIENT.apps.googleusercontent.com";
 
-/*! @var kRedirectURI
-    @brief The OAuth redirect URI for the client @c kClientID.
+/*! @brief The OAuth redirect URI for the client @c kClientID.
     @discussion With Google, the scheme of the redirect URI is the reverse DNS notation of the
         client ID. This scheme must be registered as a scheme in the project's Info
         property list ("CFBundleURLTypes" plist key). Any path component will work, we use
@@ -47,8 +44,7 @@ static NSString *const kClientID =
 static NSString *const kRedirectURI =
     @"com.googleusercontent.apps.YOUR_CLIENT:/oauthredirect";
 
-/*! @var kAppAuthExampleAuthStateKey
-    @brief NSCoding key for the authState property.
+/*! @brief NSCoding key for the authState property.
  */
 static NSString *const kAppAuthExampleAuthStateKey = @"authState";
 
@@ -104,8 +100,7 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
   [self updateUI];
 }
 
-/*! @fn saveState
-    @brief Saves the @c OIDAuthState to @c NSUSerDefaults.
+/*! @brief Saves the @c OIDAuthState to @c NSUSerDefaults.
  */
 - (void)saveState {
   // for production usage consider using the OS Keychain instead
@@ -115,8 +110,7 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
   [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
-/*! @fn loadState
-    @brief Loads the @c OIDAuthState from @c NSUSerDefaults.
+/*! @brief Loads the @c OIDAuthState from @c NSUSerDefaults.
  */
 - (void)loadState {
   // loads OIDAuthState from NSUSerDefaults
@@ -135,8 +129,7 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
   [self stateChanged];
 }
 
-/*! @fn updateUI
-    @brief Refreshes UI, typically called after the auth state changed.
+/*! @brief Refreshes UI, typically called after the auth state changed.
  */
 - (void)updateUI {
   _userinfoButton.enabled = [_authState isAuthorized];
@@ -390,8 +383,7 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
   }];
 }
 
-/*! @fn logMessage
-    @brief Logs a message to stdout and the textfield.
+/*! @brief Logs a message to stdout and the textfield.
     @param format The format string and arguments.
  */
 - (void)logMessage:(NSString *)format, ... NS_FORMAT_FUNCTION(1,2) {

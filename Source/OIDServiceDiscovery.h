@@ -20,19 +20,16 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/*! @class OIDServiceDiscovery
-    @brief Represents an OpenID Connect 1.0 Discovery Document
+/*! @brief Represents an OpenID Connect 1.0 Discovery Document
     @see https://openid.net/specs/openid-connect-discovery-1_0.html#ProviderMetadata
  */
 @interface OIDServiceDiscovery : NSObject <NSCopying, NSSecureCoding>
 
-/*! @property discoveryDictionary
-    @brief The decoded OpenID Connect 1.0 Discovery Document as a dictionary.
+/*! @brief The decoded OpenID Connect 1.0 Discovery Document as a dictionary.
  */
 @property(nonatomic, readonly) NSDictionary<NSString *, id> *discoveryDictionary;
 
-/*! @property issuer
-    @brief REQUIRED. URL using the @c https scheme with no query or fragment component that the OP
+/*! @brief REQUIRED. URL using the @c https scheme with no query or fragment component that the OP
         asserts as its Issuer Identifier. If Issuer discovery is supported, this value MUST be
         identical to the issuer value returned by WebFinger. This also MUST be identical to the
         @c iss Claim value in ID Tokens issued from this Issuer.
@@ -41,31 +38,27 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property(nonatomic, readonly) NSURL *issuer;
 
-/*! @property authorizationEndpoint
-    @brief REQUIRED. URL of the OP's OAuth 2.0 Authorization Endpoint.
+/*! @brief REQUIRED. URL of the OP's OAuth 2.0 Authorization Endpoint.
     @remarks authorization_endpoint
     @seealso http://openid.net/specs/openid-connect-core-1_0.html#AuthorizationEndpoint
  */
 @property(nonatomic, readonly) NSURL *authorizationEndpoint;
 
-/*! @property tokenEndpoint
-    @brief URL of the OP's OAuth 2.0 Token Endpoint. This is REQUIRED unless only the Implicit Flow
+/*! @brief URL of the OP's OAuth 2.0 Token Endpoint. This is REQUIRED unless only the Implicit Flow
         is used.
     @remarks token_endpoint
     @seealso http://openid.net/specs/openid-connect-core-1_0.html#TokenEndpoint
  */
 @property(nonatomic, readonly) NSURL *tokenEndpoint;
 
-/*! @property userinfoEndpoint
-    @brief RECOMMENDED. URL of the OP's UserInfo Endpoint. This URL MUST use the https scheme and
+/*! @brief RECOMMENDED. URL of the OP's UserInfo Endpoint. This URL MUST use the https scheme and
         MAY contain port, path, and query parameter components.
     @remarks userinfo_endpoint
     @seealso http://openid.net/specs/openid-connect-core-1_0.html#UserInfo
  */
 @property(nonatomic, readonly, nullable) NSURL *userinfoEndpoint;
 
-/*! @property jwksURL
-    @brief REQUIRED. URL of the OP's JSON Web Key Set document. This contains the signing key(s) the
+/*! @brief REQUIRED. URL of the OP's JSON Web Key Set document. This contains the signing key(s) the
         RP uses to validate signatures from the OP. The JWK Set MAY also contain the Server's
         encryption key(s), which are used by RPs to encrypt requests to the Server. When both
         signing and encryption keys are made available, a use (Key Use) parameter value is REQUIRED
@@ -79,15 +72,13 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property(nonatomic, readonly) NSURL *jwksURL;
 
-/*! @property registrationEndpoint
-    @brief RECOMMENDED. URL of the OP's Dynamic Client Registration Endpoint.
+/*! @brief RECOMMENDED. URL of the OP's Dynamic Client Registration Endpoint.
     @remarks registration_endpoint
     @seealso http://openid.net/specs/openid-connect-registration-1_0.html
  */
 @property(nonatomic, readonly, nullable) NSURL *registrationEndpoint;
 
-/*! @property scopesSupported
-    @brief RECOMMENDED. JSON array containing a list of the OAuth 2.0 [RFC6749] scope values that
+/*! @brief RECOMMENDED. JSON array containing a list of the OAuth 2.0 [RFC6749] scope values that
         this server supports. The server MUST support the openid scope value. Servers MAY choose not
         to advertise some supported scope values even when this parameter is used, although those
         defined in [OpenID.Core] SHOULD be listed, if supported.
@@ -96,16 +87,14 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property(nonatomic, readonly, nullable) NSArray<NSString *> *scopesSupported;
 
-/*! @property responseTypesSupported
-    @brief REQUIRED. JSON array containing a list of the OAuth 2.0 @c response_type values that this
+/*! @brief REQUIRED. JSON array containing a list of the OAuth 2.0 @c response_type values that this
         OP supports. Dynamic OpenID Providers MUST support the @c code, @c id_token, and the token
         @c id_token Response Type values.
     @remarks response_types_supported
  */
 @property(nonatomic, readonly) NSArray<NSString *> *responseTypesSupported;
 
-/*! @property responseModesSupported
-    @brief OPTIONAL. JSON array containing a list of the OAuth 2.0 @c response_mode values that this
+/*! @brief OPTIONAL. JSON array containing a list of the OAuth 2.0 @c response_mode values that this
         OP supports, as specified in OAuth 2.0 Multiple Response Type Encoding Practices. If
         omitted, the default for Dynamic OpenID Providers is @c ["query", "fragment"].
     @remarks response_modes_supported
@@ -113,8 +102,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property(nonatomic, readonly, nullable) NSArray<NSString *> *responseModesSupported;
 
-/*! @property grantTypesSupported
-    @brief OPTIONAL. JSON array containing a list of the OAuth 2.0 Grant Type values that this OP
+/*! @brief OPTIONAL. JSON array containing a list of the OAuth 2.0 Grant Type values that this OP
         supports. Dynamic OpenID Providers MUST support the @c authorization_code and @c implicit
         Grant Type values and MAY support other Grant Types. If omitted, the default value is
         @c ["authorization_code", "implicit"].
@@ -122,22 +110,19 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property(nonatomic, readonly, nullable) NSArray<NSString *> *grantTypesSupported;
 
-/*! @property acrValuesSupported
-    @brief OPTIONAL. JSON array containing a list of the Authentication Context Class References
+/*! @brief OPTIONAL. JSON array containing a list of the Authentication Context Class References
         that this OP supports.
     @remarks acr_values_supported
  */
 @property(nonatomic, readonly, nullable) NSArray<NSString *> *acrValuesSupported;
 
-/*! @property subjectTypesSupported
-    @brief REQUIRED. JSON array containing a list of the Subject Identifier types that this OP
+/*! @brief REQUIRED. JSON array containing a list of the Subject Identifier types that this OP
         supports. Valid types include @c pairwise and @c public.
     @remarks subject_types_supported
  */
 @property(nonatomic, readonly) NSArray<NSString *> *subjectTypesSupported;
 
-/*! @property IDTokenSigningAlgorithmValuesSupported
-    @brief REQUIRED. JSON array containing a list of the JWS signing algorithms (@c alg values)
+/*! @brief REQUIRED. JSON array containing a list of the JWS signing algorithms (@c alg values)
         supported by the OP for the ID Token to encode the Claims in a JWT. The algorithm @c RS256
         MUST be included. The value @c none MAY be supported, but MUST NOT be used unless the
         Response Type used returns no ID Token from the Authorization Endpoint (such as when using
@@ -147,8 +132,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property(nonatomic, readonly) NSArray<NSString *> *IDTokenSigningAlgorithmValuesSupported;
 
-/*! @property IDTokenEncryptionAlgorithmValuesSupported
-    @brief OPTIONAL. JSON array containing a list of the JWE encryption algorithms (@c alg values)
+/*! @brief OPTIONAL. JSON array containing a list of the JWE encryption algorithms (@c alg values)
         supported by the OP for the ID Token to encode the Claims in a JWT.
     @remarks id_token_encryption_alg_values_supported
     @seealso https://tools.ietf.org/html/rfc7519
@@ -156,8 +140,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic, readonly, nullable)
     NSArray<NSString *> *IDTokenEncryptionAlgorithmValuesSupported;
 
-/*! @property IDTokenEncryptionEncodingValuesSupported
-    @brief OPTIONAL. JSON array containing a list of the JWE encryption algorithms (@c enc values)
+/*! @brief OPTIONAL. JSON array containing a list of the JWE encryption algorithms (@c enc values)
         supported by the OP for the ID Token to encode the Claims in a JWT.
     @remarks id_token_encryption_enc_values_supported
     @seealso https://tools.ietf.org/html/rfc7519
@@ -165,8 +148,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic, readonly, nullable)
     NSArray<NSString *> *IDTokenEncryptionEncodingValuesSupported;
 
-/*! @property userinfoSigningAlgorithmValuesSupported
-    @brief OPTIONAL. JSON array containing a list of the JWS signing algorithms (@c alg values)
+/*! @brief OPTIONAL. JSON array containing a list of the JWS signing algorithms (@c alg values)
         supported by the UserInfo Endpoint to encode the Claims in a JWT. The value none MAY be
         included.
     @remarks userinfo_signing_alg_values_supported
@@ -177,20 +159,17 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic, readonly, nullable)
     NSArray<NSString *> *userinfoSigningAlgorithmValuesSupported;
 
-/*! @property userinfoEncryptionAlgorithmValuesSupported
-    @brief OPTIONAL. JSON array containing a list of the JWE encryption algorithms (alg values)
+/*! @brief OPTIONAL. JSON array containing a list of the JWE encryption algorithms (alg values)
         supported by the UserInfo Endpoint to encode the Claims in a JWT.
     @remarks userinfo_encryption_alg_values_supported
     @seealso https://tools.ietf.org/html/rfc7516
     @seealso https://tools.ietf.org/html/rfc7518
     @seealso https://tools.ietf.org/html/rfc7519
-
  */
 @property(nonatomic, readonly, nullable)
     NSArray<NSString *> *userinfoEncryptionAlgorithmValuesSupported;
 
-/*! @property userinfoEncryptionEncodingValuesSupported
-    @brief OPTIONAL. JSON array containing a list of the JWE encryption algorithms (@c enc values)
+/*! @brief OPTIONAL. JSON array containing a list of the JWE encryption algorithms (@c enc values)
         supported by the UserInfo Endpoint to encode the Claims in a JWT.
     @remarks userinfo_encryption_enc_values_supported
     @seealso https://tools.ietf.org/html/rfc7519
@@ -198,8 +177,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic, readonly, nullable)
     NSArray<NSString *> *userinfoEncryptionEncodingValuesSupported;
 
-/*! @property requestObjectSigningAlgorithmValuesSupported
-    @brief OPTIONAL. JSON array containing a list of the JWS signing algorithms (@c alg values)
+/*! @brief OPTIONAL. JSON array containing a list of the JWS signing algorithms (@c alg values)
         supported by the OP for Request Objects, which are described in Section 6.1 of OpenID
         Connect Core 1.0. These algorithms are used both when the Request Object is passed by value
         (using the request parameter) and when it is passed by reference (using the @c request_uri
@@ -210,8 +188,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic, readonly, nullable)
     NSArray<NSString *> *requestObjectSigningAlgorithmValuesSupported;
 
-/*! @property requestObjectEncryptionAlgorithmValuesSupported
-    @brief OPTIONAL. JSON array containing a list of the JWE encryption algorithms (@c alg values)
+/*! @brief OPTIONAL. JSON array containing a list of the JWE encryption algorithms (@c alg values)
         supported by the OP for Request Objects. These algorithms are used both when the Request
         Object is passed by value and when it is passed by reference.
     @remarks request_object_encryption_alg_values_supported
@@ -219,8 +196,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic, readonly, nullable)
     NSArray<NSString *> *requestObjectEncryptionAlgorithmValuesSupported;
 
-/*! @property requestObjectEncryptionEncodingValuesSupported
-    @brief OPTIONAL. JSON array containing a list of the JWE encryption algorithms (@c enc values)
+/*! @brief OPTIONAL. JSON array containing a list of the JWE encryption algorithms (@c enc values)
         supported by the OP for Request Objects. These algorithms are used both when the Request
         Object is passed by value and when it is passed by reference.
     @remarks request_object_encryption_enc_values_supported
@@ -228,8 +204,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic, readonly, nullable)
     NSArray<NSString *> *requestObjectEncryptionEncodingValuesSupported;
 
-/*! @property tokenEndpointAuthMethodsSupported
-    @brief OPTIONAL. JSON array containing a list of Client Authentication methods supported by this
+/*! @brief OPTIONAL. JSON array containing a list of Client Authentication methods supported by this
         Token Endpoint. The options are @c client_secret_post, @c client_secret_basic,
         @c client_secret_jwt, and @c private_key_jwt, as described in Section 9 of OpenID Connect
         Core 1.0. Other authentication methods MAY be defined by extensions. If omitted, the default
@@ -241,8 +216,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property(nonatomic, readonly, nullable) NSArray<NSString *> *tokenEndpointAuthMethodsSupported;
 
-/*! @property tokenEndpointAuthSigningAlgorithmValuesSupported
-    @brief OPTIONAL. JSON array containing a list of the JWS signing algorithms (@c alg values)
+/*! @brief OPTIONAL. JSON array containing a list of the JWS signing algorithms (@c alg values)
         supported by the Token Endpoint for the signature on the JWT used to authenticate the Client
         at the Token Endpoint for the @c private_key_jwt and @c client_secret_jwt authentication
         methods. Servers SHOULD support @c RS256. The value @c none MUST NOT be used.
@@ -252,16 +226,14 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic, readonly, nullable)
     NSArray<NSString *> *tokenEndpointAuthSigningAlgorithmValuesSupported;
 
-/*! @property displayValuesSupported
-    @brief OPTIONAL. JSON array containing a list of the @c display parameter values that the OpenID
+/*! @brief OPTIONAL. JSON array containing a list of the @c display parameter values that the OpenID
         Provider supports. These values are described in Section 3.1.2.1 of OpenID Connect Core 1.0.
     @remarks display_values_supported
     @seealso http://openid.net/specs/openid-connect-core-1_0.html
  */
 @property(nonatomic, readonly, nullable) NSArray<NSString *> *displayValuesSupported;
 
-/*! @property claimTypesSupported
-    @brief OPTIONAL. JSON array containing a list of the Claim Types that the OpenID Provider
+/*! @brief OPTIONAL. JSON array containing a list of the Claim Types that the OpenID Provider
         supports. These Claim Types are described in Section 5.6 of OpenID Connect Core 1.0. Values
         defined by this specification are @c normal, @c aggregated, and @c distributed. If omitted,
         the implementation supports only @c normal Claims.
@@ -270,16 +242,14 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property(nonatomic, readonly, nullable) NSArray<NSString *> *claimTypesSupported;
 
-/*! @property claimsSupported
-    @brief RECOMMENDED. JSON array containing a list of the Claim Names of the Claims that the
+/*! @brief RECOMMENDED. JSON array containing a list of the Claim Names of the Claims that the
         OpenID Provider MAY be able to supply values for. Note that for privacy or other reasons,
         this might not be an exhaustive list.
     @remarks claims_supported
  */
 @property(nonatomic, readonly, nullable) NSArray<NSString *> *claimsSupported;
 
-/*! @property serviceDocumentation
-    @brief OPTIONAL. URL of a page containing human-readable information that developers might want
+/*! @brief OPTIONAL. URL of a page containing human-readable information that developers might want
         or need to know when using the OpenID Provider. In particular, if the OpenID Provider does
         not support Dynamic Client Registration, then information on how to register Clients needs
         to be provided in this documentation.
@@ -287,8 +257,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property(nonatomic, readonly, nullable) NSURL *serviceDocumentation;
 
-/*! @property claimsLocalesSupported
-    @brief OPTIONAL. Languages and scripts supported for values in Claims being returned,
+/*! @brief OPTIONAL. Languages and scripts supported for values in Claims being returned,
         represented as a JSON array of BCP47 language tag values. Not all languages and scripts are
         necessarily supported for all Claim values.
     @remarks claims_locales_supported
@@ -296,45 +265,39 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property(nonatomic, readonly, nullable) NSArray<NSString *> *claimsLocalesSupported;
 
-/*! @property UILocalesSupported
-    @brief OPTIONAL. Languages and scripts supported for the user interface, represented as a JSON
+/*! @brief OPTIONAL. Languages and scripts supported for the user interface, represented as a JSON
         array of BCP47 language tag values.
     @remarks ui_locales_supported
     @seealso http://tools.ietf.org/html/rfc5646
  */
 @property(nonatomic, readonly, nullable) NSArray<NSString *> *UILocalesSupported;
 
-/*! @property claimsParameterSupported
-    @brief OPTIONAL. Boolean value specifying whether the OP supports use of the claims parameter,
+/*! @brief OPTIONAL. Boolean value specifying whether the OP supports use of the claims parameter,
         with @c true indicating support. If omitted, the default value is @c false.
     @remarks claims_parameter_supported
  */
 @property(nonatomic, readonly) BOOL claimsParameterSupported;
 
-/*! @property requestParameterSupported
-    @brief OPTIONAL. Boolean value specifying whether the OP supports use of the request parameter,
+/*! @brief OPTIONAL. Boolean value specifying whether the OP supports use of the request parameter,
         with @c true indicating support. If omitted, the default value is @c false.
     @remarks request_parameter_supported
  */
 @property(nonatomic, readonly) BOOL requestParameterSupported;
 
-/*! @property requestURIParameterSupported
-    @brief OPTIONAL. Boolean value specifying whether the OP supports use of the @c request_uri
+/*! @brief OPTIONAL. Boolean value specifying whether the OP supports use of the @c request_uri
         parameter, with true indicating support. If omitted, the default value is @c true.
     @remarks request_uri_parameter_supported
  */
 @property(nonatomic, readonly) BOOL requestURIParameterSupported;
 
-/*! @property requireRequestURIRegistration
-    @brief OPTIONAL. Boolean value specifying whether the OP requires any @c request_uri values used
+/*! @brief OPTIONAL. Boolean value specifying whether the OP requires any @c request_uri values used
         to be pre-registered using the @c request_uris registration parameter. Pre-registration is
         REQUIRED when the value is @c true. If omitted, the default value is @c false.
     @remarks require_request_uri_registration
  */
 @property(nonatomic, readonly) BOOL requireRequestURIRegistration;
 
-/*! @property OPPolicyURI
-    @brief OPTIONAL. URL that the OpenID Provider provides to the person registering the Client to
+/*! @brief OPTIONAL. URL that the OpenID Provider provides to the person registering the Client to
         read about the OP's requirements on how the Relying Party can use the data provided by the
         OP. The registration process SHOULD display this URL to the person registering the Client if
         it is given.
@@ -342,23 +305,20 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property(nonatomic, readonly, nullable) NSURL *OPPolicyURI;
 
-/*! @property OPTosURI
-    @brief OPTIONAL. URL that the OpenID Provider provides to the person registering the Client to
+/*! @brief OPTIONAL. URL that the OpenID Provider provides to the person registering the Client to
         read about OpenID Provider's terms of service. The registration process SHOULD display this
         URL to the person registering the Client if it is given.
     @remarks op_tos_uri
  */
 @property(nonatomic, readonly, nullable) NSURL *OPTosURI;
 
-/*! @fn init
-    @internal
+/*! @internal
     @brief Unavailable. Please use @c initWithDictionary:error:, @c initWithJSON:error, or the
         @c serviceDiscoveryWithURL:callback: factory method.
  */
 - (nullable instancetype)init NS_UNAVAILABLE;
 
-/*! @fn initWithJSON:error:
-    @brief Decodes a OpenID Connect Discovery 1.0 JSON document.
+/*! @brief Decodes a OpenID Connect Discovery 1.0 JSON document.
     @param serviceDiscoveryJSON An OpenID Connect Service Discovery document.
     @param error If a required field is missing from the dictionary, an error with domain
         @c ::OIDGeneralErrorDomain and code @c ::OIDErrorCodeInvalidDiscoveryDocument will be
@@ -367,8 +327,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (nullable instancetype)initWithJSON:(NSString *)serviceDiscoveryJSON
                                 error:(NSError **_Nullable)error;
 
-/*! @fn initWithJSONData:error:
-    @brief Decodes a OpenID Connect Discovery 1.0 JSON document.
+/*! @brief Decodes a OpenID Connect Discovery 1.0 JSON document.
     @param serviceDiscoveryJSONData An OpenID Connect Service Discovery document.
     @param error If a required field is missing from the dictionary, an error with domain
         @c ::OIDGeneralErrorDomain and code @c ::OIDErrorCodeInvalidDiscoveryDocument will be
@@ -377,8 +336,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (nullable instancetype)initWithJSONData:(NSData *)serviceDiscoveryJSONData
                                     error:(NSError **_Nullable)error;
 
-/*! @fn initWithDictionary:error:
-    @brief Designated initializer. The dictionary keys should match the keys defined in the OpenID
+/*! @brief Designated initializer. The dictionary keys should match the keys defined in the OpenID
         Connect Discovery 1.0 standard for OpenID Provider Metadata.
     @param serviceDiscoveryDictionary A dictionary representing an OpenID Connect Service Discovery
         document.

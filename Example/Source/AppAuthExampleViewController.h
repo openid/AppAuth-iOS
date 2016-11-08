@@ -22,8 +22,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/*! @class AppAuthExampleViewController
-    @brief The example application's view controller.
+/*! @brief The example application's view controller.
  */
 @interface AppAuthExampleViewController : UIViewController
 
@@ -34,45 +33,38 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nullable) IBOutlet UIButton *clearAuthStateButton;
 @property(nullable) IBOutlet UITextView *logTextView;
 
-/*! @property authState
-    @brief The authorization state. This is the AppAuth object that you should keep around and
+/*! @brief The authorization state. This is the AppAuth object that you should keep around and
         serialize to disk.
  */
 @property(nonatomic, readonly, nullable) OIDAuthState *authState;
 
-/*! @fn authWithAutoCodeExchange:
-    @brief Authorization code flow using @c OIDAuthState automatic code exchanges.
+/*! @brief Authorization code flow using @c OIDAuthState automatic code exchanges.
     @param sender IBAction sender.
  */
 - (IBAction)authWithAutoCodeExchange:(nullable id)sender;
 
-/*! @fn authNoCodeExchange:
-    @brief Authorization code flow without a the code exchange (need to call @c codeExchange:
+/*! @brief Authorization code flow without a the code exchange (need to call @c codeExchange:
         manually)
     @param sender IBAction sender.
  */
 - (IBAction)authNoCodeExchange:(nullable id)sender;
 
-/*! @fn codeExchange:
-    @brief Performs the authorization code exchange at the token endpoint.
+/*! @brief Performs the authorization code exchange at the token endpoint.
     @param sender IBAction sender.
  */
 - (IBAction)codeExchange:(nullable id)sender;
 
-/*! @fn userinfo:
-    @brief Performs a Userinfo API call using @c OIDAuthState.performActionWithFreshTokens.
+/*! @brief Performs a Userinfo API call using @c OIDAuthState.performActionWithFreshTokens.
     @param sender IBAction sender.
  */
 - (IBAction)userinfo:(nullable id)sender;
 
-/*! @fn clearAuthState:
-    @brief Nils the @c OIDAuthState object.
+/*! @brief Nils the @c OIDAuthState object.
     @param sender IBAction sender.
  */
 - (IBAction)clearAuthState:(nullable id)sender;
 
-/*! @fn clearLog:
-    @brief Clears the UI log.
+/*! @brief Clears the UI log.
     @param sender IBAction sender.
  */
 - (IBAction)clearLog:(nullable id)sender;

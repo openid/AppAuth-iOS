@@ -26,8 +26,7 @@
 #import "Source/OIDServiceConfiguration.h"
 #import "Source/OIDServiceDiscovery.h"
 
-/*! @typedef DataTaskWithURLCompletionHandler
-    @brief The callback signature for @c NSURLSession 's @c dataTaskWithURL:completionHandler:
+/*! @brief The callback signature for @c NSURLSession 's @c dataTaskWithURL:completionHandler:
         method, which we swizzle in @c testFetcher to fake the network response with an OpenID
         Connect Discovery document.
  */
@@ -35,54 +34,45 @@ typedef void(^DataTaskWithURLCompletionHandler)(NSData *_Nullable data,
                                                 NSURLResponse *_Nullable response,
                                                 NSError *_Nullable error);
 
-/*! @typedef DataTaskWithURLCompletionImplementation
-    @brief The function signature for a @c dataTaskWithURL:completionHandler: implementation. Used
+/*! @brief The function signature for a @c dataTaskWithURL:completionHandler: implementation. Used
         in @c testFetcher for implementing a swizzled version of @c NSURLSession 's
         @c dataTaskWithURL:completionHandler:
  */
 typedef NSURLSessionDataTask *(^DataTaskWithURLCompletionImplementation)
     (id _self, NSURL *url, DataTaskWithURLCompletionHandler completionHandler);
 
-/*! @typedef TeardownTask
-    @brief A block to be called during teardown.
+/*! @brief A block to be called during teardown.
  */
 typedef void(^TeardownTask)();
 
-/*! @var kInitializerTestAuthEndpoint
-    @brief Test value for the @c authorizationEndpoint property.
+/*! @brief Test value for the @c authorizationEndpoint property.
  */
 static NSString *const kInitializerTestAuthEndpoint = @"https://www.example.com/auth";
 
-/*! @var kInitializerTestTokenEndpoint
-    @brief Test value for the @c tokenEndpoint property.
+/*! @brief Test value for the @c tokenEndpoint property.
  */
 static NSString *const kInitializerTestTokenEndpoint = @"https://www.example.com/token";
 
-/*! @var kInitializerTestDiscoveryEndpoint
-    @brief Test URL for OpenID Connect Discovery document. Not actually retrieved.
+/*! @brief Test URL for OpenID Connect Discovery document. Not actually retrieved.
  */
 static NSString *const kInitializerTestDiscoveryEndpoint = @"https://www.example.com/discovery";
 
-/*! @var kIssuerTestIssuer
-    @brief Test issuer for OpenID Connect discovery
+/*! @brief Test issuer for OpenID Connect discovery
  */
 static NSString *const kIssuerTestIssuer = @"https://accounts.google.com/";
 
-/*! @var kIssuerTestIssuer2
-    @brief Test issuer without a slash for OpenID Connect discovery
+/*! @brief Test issuer without a slash for OpenID Connect discovery
  */
 static NSString *const kIssuerTestIssuer2 = @"https://accounts.google.com";
 
-/*! @var kIssuerTestExpectedFullDiscoveryURL
-    @brief Test complete valid discovery URL
+/*! @brief Test complete valid discovery URL
  */
 static NSString *const kIssuerTestExpectedFullDiscoveryURL =
     @"https://accounts.google.com/.well-known/openid-configuration";
 
 
 @implementation OIDServiceConfigurationTests {
-  /*! @var _teardownTasks
-      @brief A list of tasks to perform during tearDown.
+  /*! @brief A list of tasks to perform during tearDown.
    */
   NSMutableArray<TeardownTask> *_teardownTasks;
 }
@@ -108,8 +98,7 @@ static NSString *const kIssuerTestExpectedFullDiscoveryURL =
   _teardownTasks = nil;
 }
 
-/*! @fn replaceMethod:withBlock:
-    @brief Replaces the given method with a block for testing, undoing the change during tearDown.
+/*! @brief Replaces the given method with a block for testing, undoing the change during tearDown.
     @param method The method to replace.
     @param block The new implementation of the method to be used.
  */
@@ -124,8 +113,7 @@ static NSString *const kIssuerTestExpectedFullDiscoveryURL =
   }];
 }
 
-/*! @fn replaceInstanceMethodForClass:selector:withBlock:
-    @brief Replaces the given instance method with a block for testing, reversing the change during
+/*! @brief Replaces the given instance method with a block for testing, reversing the change during
         tearDown.
     @param class The class whose method will be replaced.
     @param selector The selector of the class method that will be replaced.
@@ -136,8 +124,7 @@ static NSString *const kIssuerTestExpectedFullDiscoveryURL =
   [self replaceMethod:method withBlock:block];
 }
 
-/*! @fn replaceClassMethodForClass:selector:withBlock:
-    @brief Replaces the given class method with a block for testing, reversing the change during
+/*! @brief Replaces the given class method with a block for testing, reversing the change during
         tearDown.
     @param class The class whose method will be replaced.
     @param selector The selector of the class method that will be replaced.
@@ -148,8 +135,7 @@ static NSString *const kIssuerTestExpectedFullDiscoveryURL =
   [self replaceMethod:method withBlock:block];
 }
 
-/*! @fn testInitializer
-    @brief Tests the designated initializer.
+/*! @brief Tests the designated initializer.
  */
 - (void)testInitializer {
   OIDServiceConfiguration *configuration = [[self class] testInstance];
@@ -195,8 +181,7 @@ static NSString *const kIssuerTestExpectedFullDiscoveryURL =
   [self waitForExpectationsWithTimeout:2 handler:nil];
 }
 
-/*! @fn testFetcher
-    @brief Tests the OpenID Connect Discovery Document fetching and initialization.
+/*! @brief Tests the OpenID Connect Discovery Document fetching and initialization.
  */
 - (void)testFetcher {
   DataTaskWithURLCompletionImplementation successfulResponse =
@@ -246,8 +231,7 @@ static NSString *const kIssuerTestExpectedFullDiscoveryURL =
   [self waitForExpectationsWithTimeout:2 handler:nil];
 }
 
-/*! @fn testFetcherWithNetworkError
-    @brief Tests the OpenID Connect Discovery Document fetching and initialization in the face of
+/*! @brief Tests the OpenID Connect Discovery Document fetching and initialization in the face of
         a network error.
  */
 - (void)testFetcherWithNetworkError {
@@ -278,8 +262,7 @@ static NSString *const kIssuerTestExpectedFullDiscoveryURL =
   [self waitForExpectationsWithTimeout:2 handler:nil];
 }
 
-/*! @fn testFetcherWithErrorCode
-    @brief Tests the OpenID Connect Discovery Document fetching and initialization in the face of
+/*! @brief Tests the OpenID Connect Discovery Document fetching and initialization in the face of
         a non-2xx HTTP status code. Should return an error.
  */
 - (void)testFetcherWithErrorCode {
@@ -320,8 +303,7 @@ static NSString *const kIssuerTestExpectedFullDiscoveryURL =
   [self waitForExpectationsWithTimeout:2 handler:nil];
 }
 
-/*! @fn testFetcherWithBadJSON
-    @brief Tests the OpenID Connect Discovery Document fetching and initialization in the face of
+/*! @brief Tests the OpenID Connect Discovery Document fetching and initialization in the face of
         bad JSON input.
  */
 - (void)testFetcherWithBadJSON {
@@ -357,8 +339,7 @@ static NSString *const kIssuerTestExpectedFullDiscoveryURL =
   [self waitForExpectationsWithTimeout:2 handler:nil];
 }
 
-/*! @fn testSecureCoding
-    @brief Tests the @c NSSecureCoding by round-tripping an instance through the coding process and
+/*! @brief Tests the @c NSSecureCoding by round-tripping an instance through the coding process and
         checking to make sure the source and destination instances have equivalent dictionaries.
  */
 - (void)testSecureCoding {
@@ -370,8 +351,7 @@ static NSString *const kIssuerTestExpectedFullDiscoveryURL =
   XCTAssertEqualObjects(configuration.tokenEndpoint, unarchived.tokenEndpoint);
 }
 
-/*! @fn testCopying
-    @brief Tests the @c NSCopying implementation by round-tripping an instance through the copying
+/*! @brief Tests the @c NSCopying implementation by round-tripping an instance through the copying
         process and checking to make sure the source and destination instances have equivalent
         dictionaries.
  */
