@@ -20,8 +20,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/*! @class OIDAuthorizationUICoordinatorMac
-    @brief An Mac specific authorization UI Coordinator that uses the default browser to
+/*! @brief An Mac specific authorization UI Coordinator that uses the default browser to
         present an authorization request.
  */
 @interface OIDAuthorizationUICoordinatorMac : NSObject <OIDAuthorizationUICoordinator>

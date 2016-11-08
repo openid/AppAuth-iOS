@@ -38,7 +38,7 @@ NS_ASSUME_NONNULL_BEGIN
         that authorization.  @c OIDAuthState will call this method automatically if it encounters
         an OAuth error (that is, an HTTP 400 response with a valid OAuth error response) during
         authorization or token refresh (such as performed automatically when using
-        @c OIDAuthState.withFreshTokensPerformAction:). You can signal authorization errors with
+        @c OIDAuthState.performActionWithFreshTokens:). You can signal authorization errors with
         @c OIDAuthState.updateWithAuthorizationError:.
     @see https://tools.ietf.org/html/rfc6749#section-5.2
  */
@@ -52,7 +52,7 @@ NS_ASSUME_NONNULL_BEGIN
     @discussion This is a soft error, typically network related. The @c OIDAuthState is likely
         still valid, and should not be discarded. Retry the request using an incremental backoff
         strategy. This is only called when using the @c OIDAuthState convenience methods such as
-        @c OIDAuthState.withFreshTokensPerformAction:. If you are refreshing the tokens yourself
+        @c OIDAuthState.performActionWithFreshTokens:. If you are refreshing the tokens yourself
         outside of @c OIDAuthState class, it will never be called.
  */
 - (void)authState:(OIDAuthState *)state didEncounterTransientError:(NSError *)error;

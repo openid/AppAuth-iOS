@@ -22,78 +22,64 @@
 #import "Source/OIDTokenRequest.h"
 #import "Source/OIDTokenResponse.h"
 
-/*! @var kAccessTokenKey
-    @brief The key for the @c accessToken property in the incoming parameters and for
+/*! @brief The key for the @c accessToken property in the incoming parameters and for
         @c NSSecureCoding.
  */
 static NSString *const kAccessTokenKey = @"access_token";
 
-/*! @var kAccessTokenTestValue
-    @brief The test value for the @c accessToken property.
+/*! @brief The test value for the @c accessToken property.
  */
 static NSString *const kAccessTokenTestValue = @"2YotnFZFEjr1zCsicMWpAA";
 
-/*! @var kExpiresInKey
-    @brief The key for the @c accessTokenExpirationDate property in the incoming parameters and for
+/*! @brief The key for the @c accessTokenExpirationDate property in the incoming parameters and for
         @c NSSecureCoding.
  */
 static NSString *const kExpiresInKey = @"expires_in";
 
-/*! @var kExpiresInTestValue
-    @brief The test value for the @c accessTokenExpirationDate property.
+/*! @brief The test value for the @c accessTokenExpirationDate property.
  */
 static long long const kExpiresInTestValue = 60;
 
-/*! @var kTokenTypeKey
-    @brief The key for the @c tokenType property in the incoming parameters and for
+/*! @brief The key for the @c tokenType property in the incoming parameters and for
         @c NSSecureCoding.
  */
 static NSString *const kTokenTypeKey = @"token_type";
 
-/*! @var kTokenTypeTestValue
-    @brief The test value for the @c tokenType property.
+/*! @brief The test value for the @c tokenType property.
  */
 static NSString *const kTokenTypeTestValue = @"example";
 
-/*! @var kIDTokenKey
-    @brief The key for the @c idToken property in the incoming parameters and for @c NSSecureCoding.
+/*! @brief The key for the @c idToken property in the incoming parameters and for @c NSSecureCoding.
  */
 static NSString *const kIDTokenKey = @"id_token";
 
-/*! @var kIDTokenTestValue
-    @brief The test value for the @c idToken property.
+/*! @brief The test value for the @c idToken property.
  */
 static NSString *const kIDTokenTestValue = @"id_token";
 
-/*! @var kRefreshTokenKey
-    @brief The key for the @c refreshToken property in the incoming parameters and for
+/*! @brief The key for the @c refreshToken property in the incoming parameters and for
         @c NSSecureCoding.
  */
 static NSString *const kRefreshTokenKey = @"refresh_token";
 
-/*! @var kRefreshTokenTestValue
-    @brief The test value for the @c refreshToken property.
+/*! @brief The test value for the @c refreshToken property.
  */
 static NSString *const kRefreshTokenTestValue = @"tGzv3JOkF0XG5Qx2TlKWIA";
 
-/*! @var kScopesKey
-    @brief The key for the @c scopes property in the incoming parameters and for
+/*! @brief The key for the @c scopes property in the incoming parameters and for
         @c NSSecureCoding.
  */
 static NSString *const kScopesKey = @"scope";
 
-/*! @var kScopesTestValue
-    @brief The test value for the @c scopes property.
+/*! @brief The test value for the @c scopes property.
  */
 static NSString *const kScopesTestValue = @"openid profile";
 
-/*! @var kTestAdditionalParameterKey
-    @brief Test key for the @c additionalParameters property.
+/*! @brief Test key for the @c additionalParameters property.
  */
 static NSString *const kTestAdditionalParameterKey = @"example_parameter";
 
-/*! @var kTestAdditionalParameterValue
-    @brief Test value for the @c additionalParameters property.
+/*! @brief Test value for the @c additionalParameters property.
  */
 static NSString *const kTestAdditionalParameterValue = @"example_value";
 
@@ -142,8 +128,7 @@ static NSString *const kTestAdditionalParameterValue = @"example_value";
   return response;
 }
 
-/*! @fn testCopying
-    @brief Tests the @c NSCopying implementation by round-tripping an instance through the copying
+/*! @brief Tests the @c NSCopying implementation by round-tripping an instance through the copying
         process and checking to make sure the source and destination instances are equivalent.
  */
 - (void)testCopying {
@@ -175,8 +160,7 @@ static NSString *const kTestAdditionalParameterValue = @"example_value";
                         kTestAdditionalParameterValue);
 }
 
-/*! @fn testSecureCoding
-    @brief Tests the @c NSSecureCoding by round-tripping an instance through the coding process and
+/*! @brief Tests the @c NSSecureCoding by round-tripping an instance through the coding process and
         checking to make sure the source and destination instances are equivalent.
  */
 - (void)testSecureCoding {

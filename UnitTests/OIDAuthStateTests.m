@@ -29,19 +29,16 @@
 @end
 
 @implementation OIDAuthStateTests {
-  /*! @var didChangeStateExpectation
-      @brief An expectation for tests waiting on OIDAuthStateChangeDelegate.didChangeState:.
+  /*! @brief An expectation for tests waiting on OIDAuthStateChangeDelegate.didChangeState:.
    */
   XCTestExpectation *_didChangeStateExpectation;
 
-  /*! @var didEncounterAuthorizationErrorExpectation
-      @brief An expectation for tests waiting on
+  /*! @brief An expectation for tests waiting on
           OIDAuthStateErrorDelegate.didEncounterAuthorizationError:.
    */
   XCTestExpectation *_didEncounterAuthorizationErrorExpectation;
 
-  /*! @var didEncounterTransientErrorExpectation
-      @brief An expectation for tests waiting on
+  /*! @brief An expectation for tests waiting on
           OIDAuthStateErrorDelegate.didEncounterTransientError:.
    */
   XCTestExpectation *_didEncounterTransientErrorExpectation;
@@ -57,8 +54,7 @@
   return authstate;
 }
 
-/*! @fn OAuthAuthorizationError
-    @brief NSError for an invalid_request on the authorization endpoint.
+/*! @brief NSError for an invalid_request on the authorization endpoint.
  */
 + (NSError *)OAuthAuthorizationError {
   NSError *oauthError =
@@ -68,8 +64,7 @@
   return oauthError;
 }
 
-/*! @fn OAuthTokenInvalidGrantErrorWithUnderlyingError:
-    @param underlyingError The underlying error, or nil.
+/*! @param underlyingError The underlying error, or nil.
     @brief NSError for an invalid_grant error on the token endpoint.
  */
 + (NSError *)OAuthTokenInvalidGrantErrorWithUnderlyingError:(NSError *)underlyingError {
@@ -80,8 +75,7 @@
   return oauthError;
 }
 
-/*! @fn OAuthTokenInvalidClientError
-    @brief NSError for an invalid_client error on the token endpoint.
+/*! @brief NSError for an invalid_client error on the token endpoint.
  */
 + (NSError *)OAuthTokenInvalidClientError {
   NSError *oauthError =
@@ -119,8 +113,7 @@
 
 #pragma mark Tests
 
-/*! @fn testErrorState
-    @brief Tests that the isAuthorized state is correctly reflected when updated with an error.
+/*! @brief Tests that the isAuthorized state is correctly reflected when updated with an error.
  */
 - (void)testErrorState {
   OIDAuthState *authstate = [[self class] testInstance];
@@ -138,8 +131,7 @@
   XCTAssert([authstate authorizationError]);
 }
 
-/*! @fn testStateChangeDelegates
-    @brief Tests that the didChangeState delegate is called.
+/*! @brief Tests that the didChangeState delegate is called.
  */
 - (void)testStateChangeDelegates {
   _didChangeStateExpectation = [self expectationWithDescription:
@@ -154,8 +146,7 @@
   [self waitForExpectationsWithTimeout:2 handler:nil];
 }
 
-/*! @fn testErrorDelegates
-    @brief Tests that the isAuthorized state is correctly reflected when updated with an error.
+/*! @brief Tests that the isAuthorized state is correctly reflected when updated with an error.
  */
 - (void)testErrorDelegates {
   OIDAuthState *authstate = [[self class] testInstance];
@@ -183,8 +174,7 @@
   _didEncounterAuthorizationErrorExpectation = nil;
 }
 
-/*! @fn testNonCompliantNSCodingNSErrors
-    @brief Tests archiving OIDAuthState after sending it an NSError object that isn't NSCoding
+/*! @brief Tests archiving OIDAuthState after sending it an NSError object that isn't NSCoding
         compliant.
  */
 - (void)testNonCompliantNSCodingNSErrors {
@@ -198,8 +188,7 @@
   XCTAssertNoThrow([NSKeyedArchiver archivedDataWithRootObject:authstate]);
 }
 
-/*! @fn testUpdateWithAuthorizationResponseSuccess
-    @brief Tests @c OIDAuthState.updateWithAuthorizationResponse:error: with a success response.
+/*! @brief Tests @c OIDAuthState.updateWithAuthorizationResponse:error: with a success response.
  */
 - (void)testUpdateWithAuthorizationResponseSuccess {
   OIDAuthState *authState = [[self class] testInstance];
@@ -210,8 +199,7 @@
   XCTAssertNil(authState.authorizationError);
 }
 
-/*! @fn testUpdateWithAuthorizationResponseOAuthError
-    @brief Tests @c OIDAuthState.updateWithAuthorizationResponse:error: with an authorization
+/*! @brief Tests @c OIDAuthState.updateWithAuthorizationResponse:error: with an authorization
         error.
  */
 - (void)testUpdateWithAuthorizationResponseOAuthError {
@@ -221,8 +209,7 @@
   XCTAssertNotNil(authState.authorizationError);
 }
 
-/*! @fn testUpdateWithAuthorizationResponseTransientError
-    @brief Tests @c OIDAuthState.updateWithAuthorizationResponse:error: with a transient
+/*! @brief Tests @c OIDAuthState.updateWithAuthorizationResponse:error: with a transient
         (non-OAuth) error.
  */
 - (void)testUpdateWithAuthorizationResponseTransientError {
@@ -232,8 +219,7 @@
   XCTAssertNil(authState.authorizationError);
 }
 
-/*! @fn testUpdateWithAuthorizationResponseBothSuccessAndError
-    @brief Tests @c OIDAuthState.updateWithAuthorizationResponse:error: with both a success
+/*! @brief Tests @c OIDAuthState.updateWithAuthorizationResponse:error: with both a success
         response and an authorization error.
  */
 - (void)testUpdateWithAuthorizationResponseBothSuccessAndError {
@@ -245,8 +231,7 @@
   XCTAssertNotNil(authState.authorizationError);
 }
 
-/*! @fn testUpdateWithTokenResponseSuccess
-    @brief Tests @c OIDAuthState.updateWithTokenResponse:error: with a success response.
+/*! @brief Tests @c OIDAuthState.updateWithTokenResponse:error: with a success response.
  */
 - (void)testUpdateWithTokenResponseSuccess {
   OIDAuthState *authState = [[self class] testInstance];
@@ -258,8 +243,7 @@
   XCTAssertNil(authState.authorizationError);
 }
 
-/*! @fn testUpdateWithTokenResponseOAuthError
-    @brief Tests @c OIDAuthState.updateWithTokenResponse:error: with an authorization error.
+/*! @brief Tests @c OIDAuthState.updateWithTokenResponse:error: with an authorization error.
  */
 - (void)testUpdateWithTokenResponseOAuthError {
   OIDAuthState *authState = [[self class] testInstance];
@@ -269,8 +253,7 @@
   XCTAssertNotNil(authState.authorizationError);
 }
 
-/*! @fn testUpdateWithTokenResponseTransientError
-    @brief Tests @c OIDAuthState.updateWithTokenResponse:error: with a transient (non-OAuth) error.
+/*! @brief Tests @c OIDAuthState.updateWithTokenResponse:error: with a transient (non-OAuth) error.
  */
 - (void)testUpdateWithTokenResponseTransientError {
   OIDAuthState *authState = [[self class] testInstance];
@@ -282,8 +265,7 @@
   XCTAssertNil(authState.authorizationError);
 }
 
-/*! @fn testUpdateWithTokenResponseBothSuccessAndError
-    @brief Tests @c OIDAuthState.updateWithTokenResponse:error: with both a success response
+/*! @brief Tests @c OIDAuthState.updateWithTokenResponse:error: with both a success response
         and an authorization error.
  */
 - (void)testUpdateWithTokenResponseBothSuccessAndError {
@@ -295,8 +277,7 @@
   XCTAssertNotNil(authState.authorizationError);
 }
 
-/*! @fn testCodeFlowLifecycle
-    @brief Full lifecycle test of the code flow from code exchange, refresh, error and re-auth.
+/*! @brief Full lifecycle test of the code flow from code exchange, refresh, error and re-auth.
  */
 - (void)testCodeFlowLifecycle {
   OIDAuthorizationResponse *authorizationResponse =

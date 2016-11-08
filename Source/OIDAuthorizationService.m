@@ -29,8 +29,7 @@
 #import "OIDTokenResponse.h"
 #import "OIDURLQueryComponent.h"
 
-/*! @var kOpenIDConfigurationWellKnownPath
-    @brief Path appended to an OpenID Connect issuer for discovery
+/*! @brief Path appended to an OpenID Connect issuer for discovery
     @see https://openid.net/specs/openid-connect-discovery-1_0.html#ProviderConfig
  */
 static NSString *const kOpenIDConfigurationWellKnownPath = @".well-known/openid-configuration";
@@ -153,8 +152,7 @@ NS_ASSUME_NONNULL_BEGIN
   [self didFinishWithResponse:nil error:error];
 }
 
-/*! @fn didFinishWithResponse:error:
-    @brief Invokes the pending callback and performs cleanup.
+/*! @brief Invokes the pending callback and performs cleanup.
     @param response The authorization response, if any to return to the callback.
     @param error The error, if any, to return to the callback.
  */

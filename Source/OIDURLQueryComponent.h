@@ -22,64 +22,54 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/*! @var gOIDURLQueryComponentForceIOS7Handling
-    @brief If set to YES, will force the iOS 7-only code for @c OIDURLQueryComponent to be used,
+/*! @brief If set to YES, will force the iOS 7-only code for @c OIDURLQueryComponent to be used,
         even on non-iOS 7 devices and simulators. Useful for testing the iOS 7 code paths on the
         simulator. Defaults to NO.
  */
 extern BOOL gOIDURLQueryComponentForceIOS7Handling;
 
-/*! @class OIDURLQueryComponent
-    @brief A utility class for creating and parsing URL query components.
+/*! @brief A utility class for creating and parsing URL query components.
  */
 @interface OIDURLQueryComponent : NSObject
 
-/*! @property parameters
-    @brief The parameter names in the query.
+/*! @brief The parameter names in the query.
  */
 @property(nonatomic, readonly) NSArray<NSString *> *parameters;
 
-/*! @property dictionaryValue
-    @brief The parameters represented as a dictionary.
+/*! @brief The parameters represented as a dictionary.
     @remarks All values are @c NSString except for parameters which contain multiple values, in
         which case the value is an @c NSArray<NSString *> *.
  */
 @property(nonatomic, readonly) NSDictionary<NSString *, NSObject<NSCopying> *> *dictionaryValue;
 
-/*! @fn initWithURL:
-    @brief Creates an @c OIDURLQueryComponent by parsing the query string in a URL.
+/*! @brief Creates an @c OIDURLQueryComponent by parsing the query string in a URL.
     @param URL The URL from which to extract a query component.
  */
 - (nullable instancetype)initWithURL:(NSURL *)URL;
 
-/*! @fn valuesForParameter:
-    @brief The value (or values) for a named parameter in the query.
+/*! @brief The value (or values) for a named parameter in the query.
     @param parameter The parameter name. Case sensitive.
     @return The value (or values) for a named parameter in the query.
  */
 - (NSArray<NSString *> *)valuesForParameter:(NSString *)parameter;
 
-/*! @fn addParameter:value:
-    @brief Adds a parameter value to the query.
+/*! @brief Adds a parameter value to the query.
     @param parameter The name of the parameter. Case sensitive.
     @param value The value to add.
  */
 - (void)addParameter:(NSString *)parameter value:(NSString *)value;
 
-/*! @fn addParameters:
-    @brief Adds multiple parameters with associated values to the query.
+/*! @brief Adds multiple parameters with associated values to the query.
     @param parameters The parameter name value pairs to add to the query.
  */
 - (void)addParameters:(NSDictionary<NSString *, NSString *> *)parameters;
 
-/*! @fn URLByReplacingQueryInURL:
-    @param URL The URL to add the query component to.
+/*! @param URL The URL to add the query component to.
     @return The original URL with the query component replaced by the parameters from this query.
  */
 - (NSURL *)URLByReplacingQueryInURL:(NSURL *)URL;
 
-/*! @fn URLEncodedParameters
-    @brief Builds an x-www-form-urlencoded string representing the parameters.
+/*! @brief Builds an x-www-form-urlencoded string representing the parameters.
     @return The x-www-form-urlencoded string representing the parameters.
  */
 - (NSString *)URLEncodedParameters;

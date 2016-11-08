@@ -407,7 +407,7 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
 
   [self logMessage:@"Performing userinfo request"];
 
-  [_authState withFreshTokensPerformAction:^(NSString *_Nullable accessToken,
+  [_authState performActionWithFreshTokens:^(NSString *_Nullable accessToken,
                                              NSString *_Nullable idToken,
                                              NSError *_Nullable error) {
     if (error) {

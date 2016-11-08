@@ -26,18 +26,15 @@
 #import "Source/OIDServiceConfiguration.h"
 #import "Source/OIDTokenRequest.h"
 
-/*! @var kRefreshTokenTestValue
-    @brief Test value for the @c refreshToken property.
+/*! @brief Test value for the @c refreshToken property.
  */
 static NSString *const kRefreshTokenTestValue = @"refresh_token";
 
-/*! @var kTestAdditionalParameterKey
-    @brief Test key for the @c additionalParameters property.
+/*! @brief Test key for the @c additionalParameters property.
  */
 static NSString *const kTestAdditionalParameterKey = @"A";
 
-/*! @var kTestAdditionalParameterValue
-    @brief Test value for the @c additionalParameters property.
+/*! @brief Test value for the @c additionalParameters property.
  */
 static NSString *const kTestAdditionalParameterValue = @"1";
 
@@ -103,8 +100,7 @@ static NSString *const kTestAdditionalParameterValue = @"1";
   return request;
 }
 
-/*! @fn testCopying
-    @brief Tests the @c NSCopying implementation by round-tripping an instance through the copying
+/*! @brief Tests the @c NSCopying implementation by round-tripping an instance through the copying
         process and checking to make sure the source and destination instances are equivalent.
  */
 - (void)testCopying {
@@ -145,8 +141,7 @@ static NSString *const kTestAdditionalParameterValue = @"1";
                         kTestAdditionalParameterValue);
 }
 
-/*! @fn testSecureCoding
-    @brief Tests the @c NSSecureCoding by round-tripping an instance through the coding process and
+/*! @brief Tests the @c NSSecureCoding by round-tripping an instance through the coding process and
         checking to make sure the source and destination instances are equivalent.
  */
 - (void)testSecureCoding {

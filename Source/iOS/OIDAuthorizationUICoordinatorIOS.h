@@ -22,22 +22,19 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/*! @class OIDAuthorizationUICoordinatorIOS
-    @brief An iOS specific authorization UI Coordinator that uses a @c SFSafariViewController to
+/*! @brief An iOS specific authorization UI Coordinator that uses a \SFSafariViewController to
         present an authorization request.
  */
 @interface OIDAuthorizationUICoordinatorIOS : NSObject<OIDAuthorizationUICoordinator>
 
-/*! @fn init
-    @internal
+/*! @internal
     @brief Unavailable. Please use @c initWithPresentingViewController:
  */
 - (nullable instancetype)init NS_UNAVAILABLE;
 
-/*! @fn initWithPresentingViewController:
-    @brief The designated initializer.
+/*! @brief The designated initializer.
     @param presentingViewController The view controller from which to present the
-        @c SFSafariViewController.
+        \SFSafariViewController.
  */
 - (nullable instancetype)initWithPresentingViewController:(UIViewController *)parentViewController
     NS_DESIGNATED_INITIALIZER;

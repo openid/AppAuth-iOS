@@ -25,13 +25,11 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/*! @class OIDAuthStateTests
-    @brief Unit tests for @c OIDAuthState.
+/*! @brief Unit tests for @c OIDAuthState.
  */
 @interface OIDAuthStateTests : XCTestCase
 
-/*! @fn testInstance
-    @brief Creates a new @c OIDAuthState for testing.
+/*! @brief Creates a new @c OIDAuthState for testing.
  */
 + (OIDAuthState *)testInstance;
 

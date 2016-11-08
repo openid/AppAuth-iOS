@@ -29,8 +29,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @protocol OIDAuthorizationUICoordinator<NSObject>
 
-/*! @fn presentAuthorizationWithURL:session:
-    @brief Presents the authorization UI for the given URL.
+/*! @brief Presents the authorization UI for the given URL.
     @param URL The URL that should be used when presenting the authorization UI.
     @param session The @c OIDAuthorizationFlowSession instance that initiates presenting the
         authorization UI. Concrete implementations of a @c OIDAuthorizationUICoordinator may call
@@ -40,8 +39,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (BOOL)presentAuthorizationWithURL:(NSURL *)URL session:(id<OIDAuthorizationFlowSession>)session;
 
-/*! @fn dismissAuthorizationAnimated:completion:
-    @brief Dimisses the authorization UI and calls completion when the dismiss operation ends.
+/*! @brief Dimisses the authorization UI and calls completion when the dismiss operation ends.
     @param animated Wheter or not the dismiss operation should be animated.
     @remarks Has no effect if no authorization UI is presented.
     @param completion The block to be called when the dismiss operations ends

@@ -27,22 +27,19 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/*! @class OIDTokenRequest
-    @brief Represents a token request.
+/*! @brief Represents a token request.
     @see https://tools.ietf.org/html/rfc6749#section-3.2
     @see https://tools.ietf.org/html/rfc6749#section-4.1.3
  */
 @interface OIDTokenRequest : NSObject <NSCopying, NSSecureCoding>
 
-/*! @property configuration
-    @brief The service's configuration.
+/*! @brief The service's configuration.
     @remarks This configuration specifies how to connect to a particular OAuth provider.
         Configurations may be created manually, or via an OpenID Connect Discovery Document.
  */
 @property(nonatomic, readonly) OIDServiceConfiguration *configuration;
 
-/*! @property grantType
-    @brief The type of token being sent to the token endpoint, i.e. "authorization_code" for the
+/*! @brief The type of token being sent to the token endpoint, i.e. "authorization_code" for the
         authorization code exchange, or "refresh_token" for an access token refresh request.
     @remarks grant_type
     @see https://tools.ietf.org/html/rfc6749#section-4.1.3
@@ -50,71 +47,61 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property(nonatomic, readonly) NSString *grantType;
 
-/*! @property authorizationCode
-    @brief The authorization code received from the authorization server.
+/*! @brief The authorization code received from the authorization server.
     @remarks code
     @see https://tools.ietf.org/html/rfc6749#section-4.1.3
  */
 @property(nonatomic, readonly, nullable) NSString *authorizationCode;
 
-/*! @property redirectURL
-    @brief The client's redirect URI.
+/*! @brief The client's redirect URI.
     @remarks redirect_uri
     @see https://tools.ietf.org/html/rfc6749#section-4.1.3
  */
 @property(nonatomic, readonly) NSURL *redirectURL;
 
-/*! @property clientID
-    @brief The client identifier.
+/*! @brief The client identifier.
     @remarks client_id
     @see https://tools.ietf.org/html/rfc6749#section-4.1.3
  */
 @property(nonatomic, readonly) NSString *clientID;
 
-/*! @property clientSecret
-    @brief The client secret.
+/*! @brief The client secret.
     @remarks client_secret
     @see https://tools.ietf.org/html/rfc6749#section-2.3.1
  */
 @property(nonatomic, readonly, nullable) NSString *clientSecret;
 
-/*! @property scope
-    @brief The value of the scope parameter is expressed as a list of space-delimited,
+/*! @brief The value of the scope parameter is expressed as a list of space-delimited,
         case-sensitive strings.
     @remarks scope
     @see https://tools.ietf.org/html/rfc6749#section-3.3
  */
 @property(nonatomic, readonly, nullable) NSString *scope;
 
-/*! @property refreshToken
-    @brief The refresh token, which can be used to obtain new access tokens using the same
+/*! @brief The refresh token, which can be used to obtain new access tokens using the same
         authorization grant.
     @remarks refresh_token
     @see https://tools.ietf.org/html/rfc6749#section-5.1
  */
 @property(nonatomic, readonly, nullable) NSString *refreshToken;
 
-/*! @property codeVerifier
-    @brief The PKCE code verifier used to redeem the authorization code.
+/*! @brief The PKCE code verifier used to redeem the authorization code.
     @remarks code_verifier
     @see https://tools.ietf.org/html/rfc7636#section-4.3
  */
 @property(nonatomic, readonly, nullable) NSString *codeVerifier;
 
-/*! @property additionalParameters
-    @brief The client's additional token request parameters.
+/*! @brief The client's additional token request parameters.
  */
 @property(nonatomic, readonly, nullable) NSDictionary<NSString *, NSString *> *additionalParameters;
 
-/*! @fn init
-    @internal
+/*! @internal
     @brief Unavailable. Please use
         initWithConfiguration:grantType:code:redirectURL:clientID:additionalParameters:.
  */
 - (nullable instancetype)init NS_UNAVAILABLE;
 
-/*! @fn initWithConfiguration:grantType:authorizationCode:redirectURL:clientID:scopes:refreshToken:codeVerifier:additionalParameters:
-    @param configuration The service's configuration.
+/*! @param configuration The service's configuration.
     @param grantType the type of token being sent to the token endpoint, i.e. "authorization_code"
         for the authorization code exchange, or "refresh_token" for an access token refresh request.
         @see OIDGrantTypes.h
@@ -136,8 +123,7 @@ NS_ASSUME_NONNULL_BEGIN
             codeVerifier:(nullable NSString *)codeVerifier
     additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters;
 
-/*! @fn initWithConfiguration:grantType:authorizationCode:redirectURL:clientID:scope:refreshToken:codeVerifier:additionalParameters:
-    @brief Designated initializer.
+/*! @brief Designated initializer.
     @param configuration The service's configuration.
     @param grantType the type of token being sent to the token endpoint, i.e. "authorization_code"
         for the authorization code exchange, or "refresh_token" for an access token refresh request.
@@ -162,8 +148,7 @@ NS_ASSUME_NONNULL_BEGIN
     additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters
     NS_DESIGNATED_INITIALIZER;
 
-/*! @fn URLRequest
-    @brief Constructs an @c NSURLRequest representing the token request.
+/*! @brief Constructs an @c NSURLRequest representing the token request.
     @return An @c NSURLRequest representing the token request.
  */
 - (NSURLRequest *)URLRequest;

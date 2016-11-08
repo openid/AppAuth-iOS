@@ -24,72 +24,59 @@
 #import "OIDTokenUtilities.h"
 #import "OIDURLQueryComponent.h"
 
-/*! @var kConfigurationKey
-    @brief The key for the @c configuration property for @c NSSecureCoding
+/*! @brief The key for the @c configuration property for @c NSSecureCoding
  */
 static NSString *const kConfigurationKey = @"configuration";
 
-/*! @var kResponseTypeKey
-    @brief Key used to encode the @c responseType property for @c NSSecureCoding, and on the URL
+/*! @brief Key used to encode the @c responseType property for @c NSSecureCoding, and on the URL
         request.
  */
 static NSString *const kResponseTypeKey = @"response_type";
 
-/*! @var kClientIDKey
-    @brief Key used to encode the @c clientID property for @c NSSecureCoding, and on the URL
+/*! @brief Key used to encode the @c clientID property for @c NSSecureCoding, and on the URL
         request.
  */
 static NSString *const kClientIDKey = @"client_id";
 
-/*! @var kClientSecretKey
-    @brief Key used to encode the @c clientSecret property for @c NSSecureCoding.
+/*! @brief Key used to encode the @c clientSecret property for @c NSSecureCoding.
  */
 static NSString *const kClientSecretKey = @"client_secret";
 
-/*! @var kScopeKey
-    @brief Key used to encode the @c scope property for @c NSSecureCoding, and on the URL request.
+/*! @brief Key used to encode the @c scope property for @c NSSecureCoding, and on the URL request.
  */
 static NSString *const kScopeKey = @"scope";
 
-/*! @var kRedirectURLKey
-    @brief Key used to encode the @c redirectURL property for @c NSSecureCoding, and on the URL
+/*! @brief Key used to encode the @c redirectURL property for @c NSSecureCoding, and on the URL
         request.
  */
 static NSString *const kRedirectURLKey = @"redirect_uri";
 
-/*! @var kStateKey
-    @brief Key used to encode the @c state property for @c NSSecureCoding, and on the URL request.
+/*! @brief Key used to encode the @c state property for @c NSSecureCoding, and on the URL request.
  */
 static NSString *const kStateKey = @"state";
 
-/*! @var kCodeVerifierKey
-    @brief Key used to encode the @c codeVerifier property for @c NSSecureCoding.
+/*! @brief Key used to encode the @c codeVerifier property for @c NSSecureCoding.
  */
 static NSString *const kCodeVerifierKey = @"code_verifier";
 
-/*! @var kCodeChallengeKey
-    @brief Key used to send the @c codeChallenge on the URL request.
+/*! @brief Key used to send the @c codeChallenge on the URL request.
  */
 static NSString *const kCodeChallengeKey = @"code_challenge";
 
-/*! @var kCodeChallengeMethodKey
-    @brief Key used to send the @c codeChallengeMethod on the URL request.
+/*! @brief Key used to send the @c codeChallengeMethod on the URL request.
  */
 static NSString *const kCodeChallengeMethodKey = @"code_challenge_method";
 
-/*! @var kAdditionalParametersKey
-    @brief Key used to encode the @c additionalParameters property for
+/*! @brief Key used to encode the @c additionalParameters property for
         @c NSSecureCoding
  */
 static NSString *const kAdditionalParametersKey = @"additionalParameters";
 
-/*! @var kStateSizeBytes
-    @brief Number of random bytes generated for the @ state.
+/*! @brief Number of random bytes generated for the @ state.
  */
 static NSUInteger const kStateSizeBytes = 32;
 
-/*! @var kCodeVerifierBytes
-    @brief Number of random bytes generated for the @ codeVerifier.
+/*! @brief Number of random bytes generated for the @ codeVerifier.
  */
 static NSUInteger const kCodeVerifierBytes = 32;
 

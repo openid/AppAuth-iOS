@@ -22,18 +22,15 @@
 #import "OIDErrorUtilities.h"
 #import "OIDServiceDiscovery.h"
 
-/*! @var kAuthorizationEndpointKey
-    @brief The key for the @c authorizationEndpoint property.
+/*! @brief The key for the @c authorizationEndpoint property.
  */
 static NSString *const kAuthorizationEndpointKey = @"authorizationEndpoint";
 
-/*! @var kTokenEndpointKey
-    @brief The key for the @c tokenEndpoint property.
+/*! @brief The key for the @c tokenEndpoint property.
  */
 static NSString *const kTokenEndpointKey = @"tokenEndpoint";
 
-/*! @var kDiscoveryDocumentKey
-    @brief The key for the @c discoveryDocument property.
+/*! @brief The key for the @c discoveryDocument property.
  */
 static NSString *const kDiscoveryDocumentKey = @"discoveryDocument";
 

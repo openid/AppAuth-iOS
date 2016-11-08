@@ -20,16 +20,14 @@
 
 BOOL gOIDURLQueryComponentForceIOS7Handling = NO;
 
-/*! @var kQueryStringParamAdditionalDisallowedCharacters
-    @brief String representing the set of characters that are valid for the URL query
+/*! @brief String representing the set of characters that are valid for the URL query
         (per @ NSCharacterSet.URLQueryAllowedCharacterSet), but are disallowed in URL query
         parameters and values.
  */
 static NSString *const kQueryStringParamAdditionalDisallowedCharacters = @"=&+";
 
 @implementation OIDURLQueryComponent {
-  /*! @var _parameters
-      @brief A dictionary of parameter names and values representing the contents of the query.
+  /*! @brief A dictionary of parameter names and values representing the contents of the query.
    */
   NSMutableDictionary<NSString *, NSMutableArray<NSString *> *> *_parameters;
 }
@@ -110,8 +108,7 @@ static NSString *const kQueryStringParamAdditionalDisallowedCharacters = @"=&+";
   }
 }
 
-/*! @fn queryItems
-    @brief Builds a query items array that can be set to @c NSURLComponents.queryItems
+/*! @brief Builds a query items array that can be set to @c NSURLComponents.queryItems
     @discussion The parameter names and values are NOT URL encoded.
     @return An array of unencoded @c NSURLQueryItem objects.
  */
@@ -127,8 +124,7 @@ static NSString *const kQueryStringParamAdditionalDisallowedCharacters = @"=&+";
   return queryParameters;
 }
 
-/*! @fn queryString
-    @brief Builds a query string that can be set to @c NSURLComponents.percentEncodedQuery
+/*! @brief Builds a query string that can be set to @c NSURLComponents.percentEncodedQuery
     @discussion This string is percent encoded, and shouldn't be used with
         @c NSURLComponents.query.
     @return An percentage encoded query string.

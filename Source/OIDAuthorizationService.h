@@ -29,8 +29,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/*! @typedef OIDDiscoveryCallback
-    @brief Represents the type of block used as a callback for creating a service configuration from
+/*! @brief Represents the type of block used as a callback for creating a service configuration from
         a remote OpenID Connect Discovery document.
     @param configuration The service configuration, if available.
     @param error The error if an error occurred.
@@ -38,8 +37,7 @@ NS_ASSUME_NONNULL_BEGIN
 typedef void (^OIDDiscoveryCallback)(OIDServiceConfiguration *_Nullable configuration,
                                      NSError *_Nullable error);
 
-/*! @typedef OIDAuthorizationCallback
-    @brief Represents the type of block used as a callback for various methods of
+/*! @brief Represents the type of block used as a callback for various methods of
         @c OIDAuthorizationService.
     @param authorizationResponse The authorization response, if available.
     @param error The error if an error occurred.
@@ -47,8 +45,7 @@ typedef void (^OIDDiscoveryCallback)(OIDServiceConfiguration *_Nullable configur
 typedef void (^OIDAuthorizationCallback)(OIDAuthorizationResponse *_Nullable authorizationResponse,
                                          NSError *_Nullable error);
 
-/*! @typedef OIDTokenCallback
-    @brief Represents the type of block used as a callback for various methods of
+/*! @brief Represents the type of block used as a callback for various methods of
         @c OIDAuthorizationService.
     @param tokenResponse The token response, if available.
     @param error The error if an error occurred.
@@ -56,20 +53,17 @@ typedef void (^OIDAuthorizationCallback)(OIDAuthorizationResponse *_Nullable aut
 typedef void (^OIDTokenCallback)(OIDTokenResponse *_Nullable tokenResponse,
                                  NSError *_Nullable error);
 
-/*! @typedef OIDTokenEndpointParameters
-    @brief Represents the type of dictionary used to specify additional querystring parameters
+/*! @brief Represents the type of dictionary used to specify additional querystring parameters
         when making authorization or token endpoint requests.
  */
 typedef NSDictionary<NSString *, NSString *> *_Nullable OIDTokenEndpointParameters;
 
-/*! @class OIDAuthorizationService
-    @brief Performs various OAuth and OpenID Connect related RPCs via @c SFSafariViewController or
-        @c NSURLSession.
+/*! @brief Performs various OAuth and OpenID Connect related calls via the user agent or
+        \NSURLSession.
  */
 @interface OIDAuthorizationService : NSObject
 
-/*! @property configuration
-    @brief The service's configuration.
+/*! @brief The service's configuration.
     @remarks Each authorization service is initialized with a configuration. This configuration
         specifies how to connect to a particular OAuth provider. Clients should use separate
         authorization service instances for each provider they wish to integrate with.
@@ -77,14 +71,12 @@ typedef NSDictionary<NSString *, NSString *> *_Nullable OIDTokenEndpointParamete
  */
 @property(nonatomic, readonly) OIDServiceConfiguration *configuration;
 
-/*! @fn init
-    @internal
+/*! @internal
     @brief Unavailable. This class should not be initialized.
  */
 - (nullable instancetype)init NS_UNAVAILABLE;
 
-/*! @fn discoverServiceConfigurationForIssuer:completion:
-    @brief Convenience method for creating an authorization service configuration from an OpenID
+/*! @brief Convenience method for creating an authorization service configuration from an OpenID
         Connect compliant issuer URL.
     @param issuerURL The service provider's OpenID Connect issuer.
     @param completion A block which will be invoked when the authorization service configuration has
@@ -95,8 +87,7 @@ typedef NSDictionary<NSString *, NSString *> *_Nullable OIDTokenEndpointParamete
                                    completion:(OIDDiscoveryCallback)completion;
 
 
-/*! @fn discoverServiceConfigurationForDiscoveryURL:completion:
-    @brief Convenience method for creating an authorization service configuration from an OpenID
+/*! @brief Convenience method for creating an authorization service configuration from an OpenID
         Connect compliant identity provider's discovery document.
     @param discoveryURL The URL of the service provider's OpenID Connect discovery document.
     @param completion A block which will be invoked when the authorization service configuration has
@@ -106,8 +97,7 @@ typedef NSDictionary<NSString *, NSString *> *_Nullable OIDTokenEndpointParamete
 + (void)discoverServiceConfigurationForDiscoveryURL:(NSURL *)discoveryURL
                                          completion:(OIDDiscoveryCallback)completion;
 
-/*! @fn presentAuthorizationRequest:UICoordinator:callback:
-    @brief Perform an authorization flow using a generic flow shim.
+/*! @brief Perform an authorization flow using a generic flow shim.
     @param request The authorization request.
     @param UICoordinator Generic authorization UI coordinator that can present an authorization
         request.
@@ -121,8 +111,7 @@ typedef NSDictionary<NSString *, NSString *> *_Nullable OIDTokenEndpointParamete
                   UICoordinator:(id<OIDAuthorizationUICoordinator>)UICoordinator
                        callback:(OIDAuthorizationCallback)callback;
 
-/*! @fn performTokenRequest:callback:
-    @brief Performs a token request.
+/*! @brief Performs a token request.
     @param request The token request.
     @param callback The method called when the request has completed or failed.
  */
@@ -130,8 +119,7 @@ typedef NSDictionary<NSString *, NSString *> *_Nullable OIDTokenEndpointParamete
 
 @end
 
-/*! @protocol OIDAuthorizationFlowSession
-    @brief Represents an in-flight authorization flow session.
+/*! @brief Represents an in-flight authorization flow session.
  */
 @protocol OIDAuthorizationFlowSession <NSObject>
 
@@ -145,11 +133,12 @@ typedef NSDictionary<NSString *, NSString *> *_Nullable OIDTokenEndpointParamete
 - (void)cancel;
 
 /*! @brief Clients should call this method with the result of the authorization code flow if it
-        becomes available. Causes the @c SFSafariViewController created by the
-        @c OIDAuthorizationService::presentAuthorizationRequest:presentingViewController:callback:
-        method to be dismissed, the pending request's completion block is invoked, and this method
-        returns.
+        becomes available.
     @param URL The redirect URL invoked by the authorization server.
+    @discussion When the URL represented a valid authorization response, implementations
+        should clean up any left-over UI state from the authorization, for example by
+        closing the \SFSafariViewController or looback HTTP listener if those were used.
+        The completion block of the pending authorization request should then be invoked.
     @remarks Has no effect if called more than once, or after a @c cancel message was received.
     @return YES if the passed URL matches the expected redirect URL and was consumed, NO otherwise.
  */

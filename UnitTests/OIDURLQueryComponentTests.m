@@ -20,36 +20,30 @@
 
 #import "Source/OIDURLQueryComponent.h"
 
-/*! @var kTestParameterName
-    @brief A testing parameter name.
+/*! @brief A testing parameter name.
  */
 static NSString *const kTestParameterName = @"ParameterName";
 
-/*! @var kTestParameterName2
-    @brief A different testing parameter name.
+/*! @brief A different testing parameter name.
  */
 static NSString *const kTestParameterName2 = @"ParameterName2";
 
-/*! @var kTestParameterValue
-    @brief A testing parameter value.
+/*! @brief A testing parameter value.
  */
 static NSString *const kTestParameterValue = @"ParameterValue";
 
-/*! @var kTestParameterValue2
-    @brief A different testing parameter value.
+/*! @brief A different testing parameter value.
  */
 static NSString *const kTestParameterValue2 = @"Param+eter Va=l&u#e2";
 static NSString *const kTestParameterValue2Encoded = @"Para+meter%20Va%3Dl%26u%23e2";
 
-/*! @var kTestSimpleParameterStringEncoded
-    @brief The result of generating a parameter string from:
+/*! @brief The result of generating a parameter string from:
         @@{ kTestParameterName : kTestParameterValue, kTestParameterName2 : kTestParameterValue2 }
  */
 static NSString *const kTestSimpleParameterStringEncoded =
     @"ParameterName=ParameterValue&ParameterName2=Param%2Beter%20Va%3Dl%26u%23e2";
 
-/*! @var kTestSimpleParameterStringEncodedRev
-    @brief Same as @c kTestSimpleParameterStringEncoded but with the parameter order reversed.
+/*! @brief Same as @c kTestSimpleParameterStringEncoded but with the parameter order reversed.
  */
 static NSString *const kTestSimpleParameterStringEncodedRev =
     @"ParameterName2=Param%2Beter%20Va%3Dl%26u%23e2&ParameterName=ParameterValue";
@@ -68,8 +62,7 @@ static NSString *const kEncodingTestEncoded =
     @"%20%25%26%2B%C2%A3%E2%82%AC";
 
 
-/*! @var kTestURLRoot
-    @brief A URL string to use for testing.
+/*! @brief A URL string to use for testing.
  */
 static NSString *const kTestURLRoot = @"https://www.example.com/";
 

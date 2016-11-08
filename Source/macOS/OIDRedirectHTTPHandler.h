@@ -22,8 +22,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol OIDAuthorizationFlowSession;
 
-/*! @brief Start a HTTP server on the loopback interface (e.g. 127.0.0.1) to receive OAuth
-        authorization result redirects.
+/*! @brief Start a HTTP server on the loopback interface (i.e. @c 127.0.0.1) to receive OAuth
+        authorization response redirects on macOS.
  */
 @interface OIDRedirectHTTPHandler : NSObject
 

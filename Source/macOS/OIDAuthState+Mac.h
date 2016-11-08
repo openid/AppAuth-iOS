@@ -20,10 +20,11 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/*! @brief macOS specific convenience methods for @c OIDAuthState.
+ */
 @interface OIDAuthState (Mac)
 
-/*! @fn authStateByPresentingAuthorizationRequest:callback:
-    @brief Convenience method to create a @c OIDAuthState by presenting an authorization request
+/*! @brief Convenience method to create a @c OIDAuthState by presenting an authorization request
         and performing the authorization code exchange in the case of code flow requests.
     @param authorizationRequest The authorization request to present.
     @param callback The method called when the request has completed or failed.

@@ -23,123 +23,100 @@
 #import "Source/OIDScopeUtilities.h"
 #import "Source/OIDServiceConfiguration.h"
 
-/*! @var kTestResponseType
-    @brief Test value for the @c responseType property.
+/*! @brief Test value for the @c responseType property.
  */
 static NSString *const kTestResponseType = @"ResponseType";
 
-/*! @var kTestClientID
-    @brief Test value for the @c clientID property.
+/*! @brief Test value for the @c clientID property.
  */
 static NSString *const kTestClientID = @"ClientID";
 
-/*! @var kTestClientID
-    @brief Test value for the @c clientID property.
+/*! @brief Test value for the @c clientID property.
  */
 static NSString *const kTestClientSecret = @"ClientSecret";
 
-/*! @var kTestScope
-    @brief Test value for the @c scope property.
+/*! @brief Test value for the @c scope property.
  */
 static NSString *const kTestScope = @"Scope";
 
-/*! @var kTestScopeA
-    @brief Test value for the @c scope property.
+/*! @brief Test value for the @c scope property.
  */
 static NSString *const kTestScopeA = @"ScopeA";
 
-/*! @var kTestScopesMerged
-    @brief Test value for the @c scope property.
+/*! @brief Test value for the @c scope property.
  */
 static NSString *const kTestScopesMerged = @"Scope ScopeA";
 
-/*! @var kTestRedirectURL
-    @brief Test value for the @c redirectURL property.
+/*! @brief Test value for the @c redirectURL property.
  */
 static NSString *const kTestRedirectURL = @"http://www.google.com/";
 
-/*! @var kTestAdditionalParameterKey
-    @brief Test key for the @c additionalParameters property.
+/*! @brief Test key for the @c additionalParameters property.
  */
 static NSString *const kTestAdditionalParameterKey = @"A";
 
-/*! @var kTestAdditionalParameterValue
-    @brief Test value for the @c additionalParameters property.
+/*! @brief Test value for the @c additionalParameters property.
  */
 static NSString *const kTestAdditionalParameterValue = @"1";
 
-/*! @var kTestState
-    @brief Test value for the @c state property.
+/*! @brief Test value for the @c state property.
  */
 static NSString *const kTestState = @"State";
 
-/*! @var kTestCodeVerifier
-    @brief Test value for the @c codeVerifier property.
+/*! @brief Test value for the @c codeVerifier property.
  */
 static NSString *const kTestCodeVerifier = @"code verifier";
 
-/*! @var kTestInvalidScope1
-    @brief This test scope contains a character which is one character below the allowed character
+/*! @brief This test scope contains a character which is one character below the allowed character
         range.
  */
 static NSString *const kTestInvalidScope1 = @"\x20";
 
-/*! @var kTestInvalidScope2
-    @brief This test scope contains the double-quote character, which is one of two characters not
+/*! @brief This test scope contains the double-quote character, which is one of two characters not
         allowed from the general allowed characters range.
  */
 static NSString *const kTestInvalidScope2 = @"\x22";
 
-/*! @var kTestInvalidScope3
-    @brief This test scope contains the second of two characters which is not allowed in the general
+/*! @brief This test scope contains the second of two characters which is not allowed in the general
         allowed characters range (the forward slash "\").
  */
 static NSString *const kTestInvalidScope3 = @"\x5C";
 
-/*! @var kTestInvalidScope4
-    @brief This test scope contains the character immediately after the allowed character range.
+/*! @brief This test scope contains the character immediately after the allowed character range.
  */
 static NSString *const kTestInvalidScope4 = @"\x7F";
 
-/*! @var kTestValidScope1
-    @brief This test scope contains a valid character from the allowed character range.
+/*! @brief This test scope contains a valid character from the allowed character range.
  */
 static NSString *const kTestValidScope1 = @"\x21";
 
-/*! @var kTestValidScope2
-    @brief This test scope contains a valid character from the allowed character range.
+/*! @brief This test scope contains a valid character from the allowed character range.
  */
 static NSString *const kTestValidScope2 = @"\x23";
 
-/*! @var kTestValidScope3
-    @brief This test scope contains a valid character from the allowed character range.
+/*! @brief This test scope contains a valid character from the allowed character range.
  */
 static NSString *const kTestValidScope3 = @"\x5B";
 
-/*! @var kTestValidScope4
-    @brief This test scope contains a valid character from the allowed character range.
+/*! @brief This test scope contains a valid character from the allowed character range.
  */
 static NSString *const kTestValidScope4 = @"\x5D";
 
-/*! @var kTestValidScope5
-    @brief This test scope contains a valid character from the allowed character range.
+/*! @brief This test scope contains a valid character from the allowed character range.
  */
 static NSString *const kTestValidScope5 = @"\x7E";
 
-/*! @var kCodeVerifierMinLength
-    @brief The minimum length of the codeVerifier per the PKCE spec.
+/*! @brief The minimum length of the codeVerifier per the PKCE spec.
     @see https://tools.ietf.org/html/rfc7636#section-4.1
  */
 static int const kCodeVerifierMinLength = 43;
 
-/*! @var kCodeVerifierMaxLength
-    @brief The maximum length of the codeVerifier per the PKCE spec.
+/*! @brief The maximum length of the codeVerifier per the PKCE spec.
     @see https://tools.ietf.org/html/rfc7636#section-4.1
  */
 static int const kCodeVerifierMaxLength = 128;
 
-/*! @var kCodeVerifierRecommendedLength
-    @brief The RECOMMENDED length of the codeVerifier per the PKCE spec.
+/*! @brief The RECOMMENDED length of the codeVerifier per the PKCE spec.
     @see https://tools.ietf.org/html/rfc7636#section-4.1
  */
 static int const kCodeVerifierRecommendedLength = 43;
@@ -189,8 +166,7 @@ static int const kCodeVerifierRecommendedLength = 43;
   return request;
 }
 
-/*! @fn testScopeInitializerWithManyScopes
-    @brief Tests the initializer which takes an array of scopes.
+/*! @brief Tests the initializer which takes an array of scopes.
  */
 - (void)testScopeInitializerWithManyScopesAndNoClientSecret {
   NSDictionary *additionalParameters =
@@ -235,8 +211,7 @@ static int const kCodeVerifierRecommendedLength = 43;
                         kTestAdditionalParameterValue);
 }
 
-/*! @fn testCopying
-    @brief Tests the @c NSCopying implementation by round-tripping an instance through the copying
+/*! @brief Tests the @c NSCopying implementation by round-tripping an instance through the copying
         process and checking to make sure the source and destination instances are equivalent.
  */
 - (void)testCopying {
@@ -271,8 +246,7 @@ static int const kCodeVerifierRecommendedLength = 43;
                         request.additionalParameters);
 }
 
-/*! @fn testSecureCoding
-    @brief Tests the @c NSSecureCoding by round-tripping an instance through the coding process and
+/*! @brief Tests the @c NSSecureCoding by round-tripping an instance through the coding process and
         checking to make sure the source and destination instances are equivalent.
  */
 - (void)testSecureCoding {
@@ -313,8 +287,7 @@ static int const kCodeVerifierRecommendedLength = 43;
                         kTestAdditionalParameterValue);
 }
 
-/*! @fn testDisallowedCharactersInScopes
-    @brief Tests the scope string logic to make sure the disallowed characters are properly
+/*! @brief Tests the scope string logic to make sure the disallowed characters are properly
         enforced.
  */
 - (void)testDisallowedCharactersInScopes {
@@ -384,8 +357,7 @@ static int const kCodeVerifierRecommendedLength = 43;
                                                 responseType:OIDResponseTypeCode
                                         additionalParameters:nil]);
 }
-/*! @fn legalPKCECharacters
-    @brief Returns a character set with all legal PKCE characters for the codeVerifier.
+/*! @brief Returns a character set with all legal PKCE characters for the codeVerifier.
     @return Character set representing all legal codeVerifier characters.
     @see https://tools.ietf.org/html/rfc7636#section-4.1
  */
@@ -399,8 +371,7 @@ static int const kCodeVerifierRecommendedLength = 43;
   return legalChars;
 }
 
-/*! @fn testPKCEVerifierCompliance
-    @brief Tests generated PKCE codeVerifiers for strict spec compliance.
+/*! @brief Tests generated PKCE codeVerifiers for strict spec compliance.
     @see https://tools.ietf.org/html/rfc7636#section-4.1
  */
 - (void)testPKCEVerifierCompliance {
@@ -421,8 +392,7 @@ static int const kCodeVerifierRecommendedLength = 43;
   }
 }
 
-/*! @fn testPKCEVerifierRecommendations
-    @brief Tests generated PKCE codeVerifiers for adherence to spec RECOMMENDED requirements.
+/*! @brief Tests generated PKCE codeVerifiers for adherence to spec RECOMMENDED requirements.
     @see https://tools.ietf.org/html/rfc7636#section-4.1
  */
 - (void)testPKCEVerifierRecommendations {

@@ -22,10 +22,11 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/*! @brief iOS specific convenience methods for @c OIDAuthState.
+ */
 @interface OIDAuthState (IOS)
 
-/*! @fn authStateByPresentingAuthorizationRequest:presentingViewController:callback:
-    @brief Convenience method to create a @c OIDAuthState by presenting an authorization request
+/*! @brief Convenience method to create a @c OIDAuthState by presenting an authorization request
         and performing the authorization code exchange in the case of code flow requests.
     @param authorizationRequest The authorization request to present.
     @param presentingViewController The view controller from which to present the

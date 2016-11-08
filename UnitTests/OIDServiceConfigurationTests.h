@@ -22,13 +22,11 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/*! @class OIDServiceConfigurationTests
-    @brief Unit tests for @c OIDServiceConfiguration.
+/*! @brief Unit tests for @c OIDServiceConfiguration.
  */
 @interface OIDServiceConfigurationTests : XCTestCase
 
-/*! @fn testInstance
-    @brief Creates a new @c OIDServiceConfiguration for testing.
+/*! @brief Creates a new @c OIDServiceConfiguration for testing.
  */
 + (OIDServiceConfiguration *)testInstance;
 

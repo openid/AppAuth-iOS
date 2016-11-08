@@ -22,13 +22,14 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/*! @brief Provides iOS specific authorization request handling.
+ */
 @interface OIDAuthorizationService (IOS)
 
-/*! @fn presentAuthorizationRequest:presentingViewController:callback:
-    @brief Perform an authorization flow using @c SFSafariViewController.
+/*! @brief Perform an authorization flow using \SFSafariViewController.
     @param request The authorization request.
     @param presentingViewController The view controller from which to present the
-        @c SFSafariViewController.
+        \SFSafariViewController.
     @param callback The method called when the request has completed or failed.
     @return A @c OIDAuthorizationFlowSession instance which will terminate when it
         receives a @c OIDAuthorizationFlowSession.cancel message, or after processing a

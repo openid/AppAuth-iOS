@@ -20,8 +20,7 @@
 
 #import "Source/OIDScopes.h"
 
-/*! @class OIDScopesTests
-    @brief Unit tests for constants in @c OIDScopes.m.
+/*! @brief Unit tests for constants in @c OIDScopes.m.
     @remarks Arguably not worth tests for this file, but adding them for consistency, and so that
         any future enhancements have a place to add tests if need be.
  */

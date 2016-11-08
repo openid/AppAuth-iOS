@@ -22,18 +22,15 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/*! @class OIDAuthorizationRequestTests
-    @brief Unit tests for @c OIDAuthorizationRequest.
+/*! @brief Unit tests for @c OIDAuthorizationRequest.
  */
 @interface OIDAuthorizationRequestTests : XCTestCase
 
-/*! @fn testInstance
-    @brief Creates a new @c OIDAuthorizationRequest for testing.
+/*! @brief Creates a new @c OIDAuthorizationRequest for testing.
  */
 + (OIDAuthorizationRequest *)testInstance;
 
-/*! @fn testInstanceCodeFlow
-    @brief Creates a new @c OIDAuthorizationRequest testing a code flow request.
+/*! @brief Creates a new @c OIDAuthorizationRequest testing a code flow request.
  */
 + (OIDAuthorizationRequest *)testInstanceCodeFlow;
 

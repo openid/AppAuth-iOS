@@ -20,10 +20,11 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/*! @brief Provides macOS specific authorization request handling.
+ */
 @interface OIDAuthorizationService (Mac)
 
-/*! @fn presentAuthorizationRequest:callback:
-    @brief Perform an authorization flow using the default browser.
+/*! @brief Perform an authorization flow using the default browser.
     @param request The authorization request.
     @param callback The method called when the request has completed or failed.
     @return A @c OIDAuthorizationFlowSession instance which will terminate when it
