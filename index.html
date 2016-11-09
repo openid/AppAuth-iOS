@@ -6,7 +6,6 @@
     <title>AppAuth for iOS by openid</title>
 
     <link rel="stylesheet" href="stylesheets/styles.css">
-    <link rel="stylesheet" href="stylesheets/styles-override.css">
     <link rel="stylesheet" href="stylesheets/github-light.css">
     <meta name="viewport" content="width=device-width">
     <!--[if lt IE 9]>
@@ -21,8 +20,6 @@
 
         <p class="view"><a href="https://github.com/openid/AppAuth-iOS">View the Project on GitHub <small>openid/AppAuth-iOS</small></a></p>
 
-        <p class="view"><a href="https://openid.github.io/AppAuth-iOS/docs/latest/annotated.html">Browse the API documentation</a></p>
-
 
         <ul>
           <li><a href="https://github.com/openid/AppAuth-iOS/zipball/master">Download <strong>ZIP File</strong></a></li>
@@ -31,15 +28,21 @@
         </ul>
       </header>
       <section>
-        <p>AppAuth for iOS is a client SDK for communicating with <a href="https://tools.ietf.org/html/rfc6749">OAuth 2.0</a> and <a href="http://openid.net/specs/openid-connect-core-1_0.html">OpenID Connect</a> providers. It strives to
+        <h1>
+<a id="appauth-for-ios-and-macos" class="anchor" href="#appauth-for-ios-and-macos" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>AppAuth for iOS and macOS</h1>
+
+<p><a href="https://www.bitrise.io/app/8e4dbca635a964dc"><img src="https://www.bitrise.io/app/8e4dbca635a964dc.svg?token=8rT4oJnhjUuFWH-QvXuJzg&amp;branch=master" alt="Build Status"></a></p>
+
+<p>AppAuth for iOS and macOS is a client SDK for communicating with <a href="https://tools.ietf.org/html/rfc6749">OAuth 2.0</a> and <a href="http://openid.net/specs/openid-connect-core-1_0.html">OpenID Connect</a> providers. It strives to
 directly map the requests and responses of those specifications, while following
 the idiomatic style of the implementation language. In addition to mapping the
 raw protocol flows, convenience methods are available to assist with common
 tasks like performing an action with fresh tokens.</p>
 
 <p>It follows the best practices set out in <a href="https://tools.ietf.org/html/draft-ietf-oauth-native-apps">OAuth 2.0 for Native Apps</a>
-including using <code>SFSafariViewController</code> for the auth request. For this reason,
-<code>UIWebView</code> is explicitly <em>not</em> supported due to usability and security reasons.</p>
+including using <code>SFSafariViewController</code> on iOS for the auth request. For this
+reason, <code>UIWebView</code> is explicitly <em>not</em> supported due to usability and security
+reasons.</p>
 
 <p>It also supports the <a href="https://tools.ietf.org/html/rfc7636">PKCE</a> extension to
 OAuth which was created to secure authorization codes in public clients when
@@ -51,7 +54,10 @@ in all protocol requests and responses.</p>
 <a id="specification" class="anchor" href="#specification" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Specification</h2>
 
 <h3>
-<a id="supported-ios-versions" class="anchor" href="#supported-ios-versions" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Supported iOS Versions</h3>
+<a id="ios" class="anchor" href="#ios" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>iOS</h3>
+
+<h4>
+<a id="supported-versions" class="anchor" href="#supported-versions" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Supported Versions</h4>
 
 <p>AppAuth supports iOS 7 and above.</p>
 
@@ -59,15 +65,35 @@ in all protocol requests and responses.</p>
 (via <code>SFSafariViewController</code>), and falls back to the system browser (mobile
 Safari) on earlier versions.</p>
 
-<h3>
-<a id="authorization-server-support" class="anchor" href="#authorization-server-support" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Authorization Server Support</h3>
+<h4>
+<a id="authorization-server-requirements" class="anchor" href="#authorization-server-requirements" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Authorization Server Requirements</h4>
 
 <p>Both Custom URI Schemes (all supported versions of iOS) and Universal Links
 (iOS 9+) can be used with the library.</p>
 
 <p>In general, AppAuth can work with any Authorization Server (AS) that supports
-<a href="https://tools.ietf.org/html/draft-ietf-oauth-native-apps-00">native apps</a>,
+<a href="https://tools.ietf.org/html/draft-ietf-oauth-native-apps">native apps</a>,
 either through custom URI scheme redirects, or universal links.
+AS's that assume all clients are web-based or require clients to maintain
+confidentiality of the client secrets may not work well.</p>
+
+<h3>
+<a id="macos" class="anchor" href="#macos" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>macOS</h3>
+
+<h4>
+<a id="supported-versions-1" class="anchor" href="#supported-versions-1" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Supported Versions</h4>
+
+<p>AppAuth supports macOS (OS X) 10.8 and above.</p>
+
+<h4>
+<a id="authorization-server-requirements-1" class="anchor" href="#authorization-server-requirements-1" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Authorization Server Requirements</h4>
+
+<p>AppAuth for macOS supports both custom schemes, a loopback HTTP redirects
+via a small embedded server.</p>
+
+<p>In general, AppAuth can work with any Authorization Server (AS) that supports
+<a href="https://tools.ietf.org/html/draft-ietf-oauth-native-apps">native apps</a>,
+either through custom URI scheme, or loopback HTTP redirects.
 AS's that assume all clients are web-based or require clients to maintain
 confidentiality of the client secrets may not work well.</p>
 
@@ -143,7 +169,7 @@ OIDServiceConfiguration *configuration =
 }];</pre></div>
 
 <h3>
-<a id="authorizing" class="anchor" href="#authorizing" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Authorizing</h3>
+<a id="authorizing-ios" class="anchor" href="#authorizing-ios" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Authorizing – iOS</h3>
 
 <p>First you need to have a property in your AppDelegate to hold the session, in
 order to continue the authorization flow from the redirect.</p>
@@ -192,16 +218,15 @@ appDelegate.currentAuthorizationFlow =
   }
 }];</pre></div>
 
-<h3>
-<a id="handling-the-redirect" class="anchor" href="#handling-the-redirect" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Handling the Redirect</h3>
+<p><em>Handling the Redirect</em></p>
 
 <p>The authorization response URL is returned to the app via the iOS openURL
 app delegate method, so you need to pipe this through to the current
 authorization session (created in the previous session).</p>
 
-<div class="highlight highlight-source-objc"><pre>- (<span class="pl-k">BOOL</span>)application:(UIApplication *)app
+<div class="highlight highlight-source-objc"><pre>- (<span class="pl-c1">BOOL</span>)application:(UIApplication *)app
             openURL:(<span class="pl-c1">NSURL</span> *)url
-            options:(<span class="pl-c1">NSDictionary</span>&lt;<span class="pl-c1">NSString</span> *, <span class="pl-k">id</span>&gt; *)options {
+            options:(<span class="pl-c1">NSDictionary</span>&lt;<span class="pl-c1">NSString</span> *, <span class="pl-c1">id</span>&gt; *)options {
   <span class="pl-c">// Sends the URL to the current authorization flow (if any) which will</span>
   <span class="pl-c">// process it if it relates to an authorization response.</span>
   <span class="pl-k">if</span> ([_currentAuthorizationFlow <span class="pl-c1">resumeAuthorizationFlowWithURL:</span>url]) {
@@ -215,14 +240,89 @@ authorization session (created in the previous session).</p>
 }</pre></div>
 
 <h3>
+<a id="authorizing-macos" class="anchor" href="#authorizing-macos" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Authorizing – MacOS</h3>
+
+<p>On macOS, the most popular way to get the authorization response redirect is to
+start a local HTTP server on the loopback interface (limited to incoming
+requests from the user's machine only). When the authorization is complete, the
+user is redirected to that local server, and the authorization response can be
+processed by the app. AppAuth takes care of managing the local HTTP server
+lifecycle for you.</p>
+
+<blockquote>
+<h4>
+<a id="bulb-alternative-custom-uri-schemes" class="anchor" href="#bulb-alternative-custom-uri-schemes" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a><g-emoji alias="bulb" fallback-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f4a1.png" ios-version="6.0">💡</g-emoji> Alternative: Custom URI Schemes</h4>
+
+<p>Custom URI schemes are also supported on macOS, but some browsers display
+an interstitial which reduces the usability. For an example on using custom
+URI schemes with macOS, See <code>Example-Mac</code>.</p>
+</blockquote>
+
+<p>To receive the authorization response using a local HTTP server, first you need
+to have an instance variable in your main class to retain the HTTP redirect
+handler.</p>
+
+<div class="highlight highlight-source-objc"><pre>OIDRedirectHTTPHandler *_redirectHTTPHandler;</pre></div>
+
+<p>Then, as the port used by the local HTTP server varies, you need to start it
+before building the authorization request in order to get the exact redirect
+URI to use.</p>
+
+<div class="highlight highlight-source-objc"><pre><span class="pl-k">static</span> <span class="pl-c1">NSString</span> *<span class="pl-k">const</span> <span class="pl-c1">kSuccessURLString</span> =
+    <span class="pl-s"><span class="pl-pds">@"</span>http://openid.github.io/AppAuth-iOS/redirect/<span class="pl-pds">"</span></span>;
+<span class="pl-c1">NSURL</span> *successURL = [<span class="pl-c1">NSURL</span> <span class="pl-c1">URLWithString:</span><span class="pl-c1">kSuccessURLString</span>];
+
+<span class="pl-c">// Starts a loopback HTTP redirect listener to receive the code.  This needs to be started first,</span>
+<span class="pl-c">// as the exact redirect URI (including port) must be passed in the authorization request.</span>
+_redirectHTTPHandler = [[OIDRedirectHTTPHandler <span class="pl-c1">alloc</span>] <span class="pl-c1">initWithSuccessURL:</span>successURL];
+<span class="pl-c1">NSURL</span> *redirectURI = [_redirectHTTPHandler <span class="pl-c1">startHTTPListener:</span><span class="pl-c1">nil</span>];</pre></div>
+
+<p>Then, initiate the authorization request. By using the 
+<code>authStateByPresentingAuthorizationRequest</code> convenience method, the token
+exchange will be performed automatically, and everything will be protected with
+PKCE (if the server supports it). By assigning the return value to the
+<code>OIDRedirectHTTPHandler</code>'s <code>currentAuthorizationFlow</code>, the authorization will
+continue automatically once the user makes their choice.</p>
+
+<div class="highlight highlight-source-objc"><pre><span class="pl-c">// builds authentication request</span>
+OIDAuthorizationRequest *request =
+    [[OIDAuthorizationRequest <span class="pl-c1">alloc</span>] <span class="pl-c1">initWithConfiguration:</span>configuration
+                                                  <span class="pl-c1">clientId:</span><span class="pl-c1">kClientID</span>
+                                              <span class="pl-c1">clientSecret:</span><span class="pl-c1">kClientSecret</span>
+                                                    <span class="pl-c1">scopes:</span>@[ OIDScopeOpenID ]
+                                               <span class="pl-c1">redirectURL:</span>redirectURI
+                                              <span class="pl-c1">responseType:</span>OIDResponseTypeCode
+                                      <span class="pl-c1">additionalParameters:</span><span class="pl-c1">nil</span>];
+<span class="pl-c">// performs authentication request</span>
+__weak <span class="pl-en">__typeof</span>(self) weakSelf = self;
+_redirectHTTPHandler.currentAuthorizationFlow =
+    [OIDAuthState <span class="pl-c1">authStateByPresentingAuthorizationRequest:</span>request
+                        <span class="pl-c1">callback:</span>^(OIDAuthState *_Nullable authState,
+                                   <span class="pl-c1">NSError</span> *_Nullable error) {
+  <span class="pl-c">// Brings this app to the foreground.</span>
+  [[<span class="pl-c1">NSRunningApplication</span> <span class="pl-c1">currentApplication</span>]
+      <span class="pl-c1">activateWithOptions:</span>(NSApplicationActivateAllWindows |
+                           NSApplicationActivateIgnoringOtherApps)];
+
+  <span class="pl-c">// Processes the authorization response.</span>
+  <span class="pl-k">if</span> (authState) {
+    <span class="pl-c1">NSLog</span>(<span class="pl-s"><span class="pl-pds">@"</span>Got authorization tokens. Access token: <span class="pl-c1">%@</span><span class="pl-pds">"</span></span>,
+          authState.<span class="pl-smi">lastTokenResponse</span>.<span class="pl-smi">accessToken</span>);
+  } <span class="pl-k">else</span> {
+    <span class="pl-c1">NSLog</span>(<span class="pl-s"><span class="pl-pds">@"</span>Authorization error: <span class="pl-c1">%@</span><span class="pl-pds">"</span></span>, error.<span class="pl-smi">localizedDescription</span>);
+  }
+  [weakSelf <span class="pl-c1">setAuthState:</span>authState];
+}];</pre></div>
+
+<h3>
 <a id="making-api-calls" class="anchor" href="#making-api-calls" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Making API Calls</h3>
 
 <p>AppAuth gives you the raw token information, if you need it. However we
 recommend that users of the <code>OIDAuthState</code> convenience wrapper use the provided
-<code>withFreshTokensPerformAction:</code> method to perform their API calls to avoid
+<code>performActionWithFreshTokens:</code> method to perform their API calls to avoid
 needing to worry about token freshness.</p>
 
-<div class="highlight highlight-source-objc"><pre>[_authState <span class="pl-c1">withFreshTokensPerformAction:</span>^(<span class="pl-c1">NSString</span> *_Nonnull accessToken,
+<div class="highlight highlight-source-objc"><pre>[_authState <span class="pl-c1">performActionWithFreshTokens:</span>^(<span class="pl-c1">NSString</span> *_Nonnull accessToken,
                                            <span class="pl-c1">NSString</span> *_Nonnull idToken,
                                            <span class="pl-c1">NSError</span> *_Nullable error) {
   <span class="pl-k">if</span> (error) {
@@ -239,17 +339,21 @@ needing to worry about token freshness.</p>
 <p>Browse the <a href="http://openid.github.io/AppAuth-iOS/docs/latest/annotated.html">API documentation</a>.</p>
 
 <h2>
-<a id="included-sample" class="anchor" href="#included-sample" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Included Sample</h2>
+<a id="included-samples" class="anchor" href="#included-samples" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Included Samples</h2>
 
-<p>You can try out sample included in the source distribution by opening
+<p>You can try out the iOS sample included in the source distribution by opening
 <code>Example/Example.xcworkspace</code>. You can easily convert the Example
 workspace to a Pod workspace by deleting the <code>AppAuth</code> project, and
-<a href="#setup">configuring the pod</a>.</p>
+<a href="#setup">configuring the pod</a>. You can also
+<a href="#try">try out the sample via CocoaPods</a>. Be sure to follow the instructions in
+<a href="Example/README.md">Example/README.md</a> to configure your own OAuth client ID
+for use with the example.</p>
 
-<p>You can also <a href="#try">try out the sample via CocoaPods</a>.</p>
-
-<p>Be sure to follow the instructions in <a href="Example/README.md">Example/README.md</a>
-to configure your own OAuth client ID for use with the example.</p>
+<p>You can try out the macOS sample included in the source distribution by
+executing <code>pod install</code> in the <code>Example-Mac</code> folder, then opening 
+<code>Example-Mac.xcworkspace</code>. Be sure to follow the instructions in
+<a href="Example-Mac/README.md">Example-Mac/README.md</a> to configure your own OAuth
+client ID for use with the example.</p>
       </section>
       <footer>
         <p>This project is maintained by <a href="https://github.com/openid">openid</a></p>
