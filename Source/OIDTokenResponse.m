@@ -73,13 +73,7 @@ static NSString *const kAdditionalParametersKey = @"additionalParameters";
     fieldMap[kExpiresInKey] =
         [[OIDFieldMapping alloc] initWithName:@"_accessTokenExpirationDate"
                                          type:[NSDate class]
-                                   conversion:^id _Nullable(NSObject *_Nullable value) {
-          if (![value isKindOfClass:[NSNumber class]]) {
-            return value;
-          }
-          NSNumber *valueAsNumber = (NSNumber *)value;
-          return [NSDate dateWithTimeIntervalSinceNow:[valueAsNumber longLongValue]];
-        }];
+                                   conversion:[OIDFieldMapping dateSinceNowConversion]];
     fieldMap[kTokenTypeKey] =
         [[OIDFieldMapping alloc] initWithName:@"_tokenType" type:[NSString class]];
     fieldMap[kIDTokenKey] =

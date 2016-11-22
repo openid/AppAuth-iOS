@@ -111,6 +111,16 @@ typedef _Nullable id(^OIDFieldMappingConversionFunction)(NSObject *_Nullable val
  */
 + (OIDFieldMappingConversionFunction)URLConversion;
 
+/*! @brief Returns a function for converting an @c NSNumber number of seconds from now to an
+        @c NSDate.
+ */
++ (OIDFieldMappingConversionFunction)dateSinceNowConversion;
+
+/*! @brief Returns a function for converting an @c NSNumber representing a unix time stamp to an
+        @c NSDate.
+ */
++ (OIDFieldMappingConversionFunction)dateEpochConversion;
+
 @end
 
 NS_ASSUME_NONNULL_END
