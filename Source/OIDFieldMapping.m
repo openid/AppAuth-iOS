@@ -109,4 +109,24 @@
   };
 }
 
++ (OIDFieldMappingConversionFunction)dateSinceNowConversion {
+  return ^id _Nullable(NSObject *_Nullable value) {
+    if (![value isKindOfClass:[NSNumber class]]) {
+      return value;
+    }
+    NSNumber *valueAsNumber = (NSNumber *)value;
+    return [NSDate dateWithTimeIntervalSinceNow:[valueAsNumber longLongValue]];
+  };
+}
+
++ (OIDFieldMappingConversionFunction)dateEpochConversion {
+  return ^id _Nullable(NSObject *_Nullable value) {
+    if (![value isKindOfClass:[NSNumber class]]) {
+      return value;
+    }
+    NSNumber *valueAsNumber = (NSNumber *) value;
+    return [NSDate dateWithTimeIntervalSince1970:[valueAsNumber longLongValue]];
+  };
+}
+
 @end

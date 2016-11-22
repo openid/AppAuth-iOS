@@ -26,6 +26,8 @@
 #import "OIDError.h"
 #import "OIDErrorUtilities.h"
 #import "OIDGrantTypes.h"
+#import "OIDRegistrationRequest.h"
+#import "OIDRegistrationResponse.h"
 #import "OIDResponseTypes.h"
 #import "OIDScopes.h"
 #import "OIDScopeUtilities.h"
