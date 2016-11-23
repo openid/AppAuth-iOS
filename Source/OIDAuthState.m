@@ -398,64 +398,73 @@ static const NSUInteger kExpiryTimeTolerance = 60;
 - (void)performActionWithFreshTokens:(OIDAuthStateAction)action
          additionalRefreshParameters:
     (nullable NSDictionary<NSString *, NSString *> *)additionalParameters {
-  if (!_refreshToken) {
-    [OIDErrorUtilities raiseException:kRefreshTokenRequestException];
-  }
-
-  if ([self.accessTokenExpirationDate timeIntervalSinceNow] > kExpiryTimeTolerance
-      && !_needsTokenRefresh) {
+  if ([self isTokenFresh]) {
     // access token is valid within tolerance levels, perform action
     dispatch_async(dispatch_get_main_queue(), ^() {
       action(self.accessToken, self.idToken, nil);
     });
-  } else {
-    // else, first refresh the token, then perform action
-    _needsTokenRefresh = NO;
-    NSAssert(_pendingActionsSyncObject, @"_pendingActionsSyncObject cannot be nil");
-    @synchronized(_pendingActionsSyncObject) {
-      // if a token is already in the process of being refreshed, adds to pending actions
-      if (_pendingActions) {
-        [_pendingActions addObject:action];
-        return;
-      }
+    return;
+  }
 
-      // creates a list of pending actions, starting with this one
-      _pendingActions = [NSMutableArray arrayWithObject:action];
+  if (!_refreshToken) {
+    // no refresh token available and token has expired
+    NSError *tokenRefreshError = [
+      OIDErrorUtilities errorWithCode:OIDErrorCodeTokenRefreshError
+                      underlyingError:nil
+                          description:@"Unable to refresh expired token without a refresh token."];
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        action(nil, nil, tokenRefreshError);
+    });
+    return;
+  }
+
+  // access token is expired, first refresh the token, then perform action
+  NSAssert(_pendingActionsSyncObject, @"_pendingActionsSyncObject cannot be nil");
+  @synchronized(_pendingActionsSyncObject) {
+    // if a token is already in the process of being refreshed, adds to pending actions
+    if (_pendingActions) {
+      [_pendingActions addObject:action];
+      return;
     }
 
-    // refresh the tokens
-    OIDTokenRequest *tokenRefreshRequest =
-        [self tokenRefreshRequestWithAdditionalParameters:additionalParameters];
-    [OIDAuthorizationService performTokenRequest:tokenRefreshRequest
-                                        callback:^(OIDTokenResponse *_Nullable response,
-                                                   NSError *_Nullable error) {
-      dispatch_async(dispatch_get_main_queue(), ^() {
-        // update OIDAuthState based on response
-        if (response) {
-          [self updateWithTokenResponse:response error:nil];
+    // creates a list of pending actions, starting with this one
+    _pendingActions = [NSMutableArray arrayWithObject:action];
+  }
+
+  // refresh the tokens
+  OIDTokenRequest *tokenRefreshRequest =
+      [self tokenRefreshRequestWithAdditionalParameters:additionalParameters];
+  [OIDAuthorizationService performTokenRequest:tokenRefreshRequest
+                                      callback:^(OIDTokenResponse *_Nullable response,
+                                                 NSError *_Nullable error) {
+    dispatch_async(dispatch_get_main_queue(), ^() {
+      // update OIDAuthState based on response
+      if (response) {
+        _needsTokenRefresh = NO;
+        [self updateWithTokenResponse:response error:nil];
+      } else {
+        if (error.domain == OIDOAuthTokenErrorDomain) {
+          _needsTokenRefresh = NO;
+          [self updateWithAuthorizationError:error];
         } else {
-          if (error.domain == OIDOAuthTokenErrorDomain) {
-            [self updateWithAuthorizationError:error];
-          } else {
-            if ([_errorDelegate respondsToSelector:
-                @selector(authState:didEncounterTransientError:)]) {
-              [_errorDelegate authState:self didEncounterTransientError:error];
-            }
+          if ([_errorDelegate respondsToSelector:
+              @selector(authState:didEncounterTransientError:)]) {
+            [_errorDelegate authState:self didEncounterTransientError:error];
           }
         }
+      }
 
-        // nil the pending queue and process everything that was queued up
-        NSArray *actionsToProcess;
-        @synchronized(_pendingActionsSyncObject) {
-          actionsToProcess = _pendingActions;
-          _pendingActions = nil;
-        }
-        for (OIDAuthStateAction actionToProcess in actionsToProcess) {
-          actionToProcess(self.accessToken, self.idToken, error);
-        }
-      });
-    }];
-  }
+      // nil the pending queue and process everything that was queued up
+      NSArray *actionsToProcess;
+      @synchronized(_pendingActionsSyncObject) {
+        actionsToProcess = _pendingActions;
+        _pendingActions = nil;
+      }
+      for (OIDAuthStateAction actionToProcess in actionsToProcess) {
+        actionToProcess(self.accessToken, self.idToken, error);
+      }
+    });
+  }];
 }
 
 #pragma mark - Deprecated
@@ -465,6 +474,25 @@ static const NSUInteger kExpiryTimeTolerance = 60;
 }
 
 #pragma mark -
+
+/*! @fn isTokenFresh
+    @brief Determines whether a token refresh request must be made to refresh the tokens.
+ */
+- (BOOL)isTokenFresh {
+  if (_needsTokenRefresh) {
+    // forced refresh
+    return NO;
+  }
+
+  if (!self.accessTokenExpirationDate) {
+    // if there is no expiration time but we have an access token, it is assumed to never expire
+    return !!self.accessToken;
+  }
+
+  // has the token expired?
+  BOOL tokenFresh = [self.accessTokenExpirationDate timeIntervalSinceNow] > kExpiryTimeTolerance;
+  return tokenFresh;
+}
 
 @end
 

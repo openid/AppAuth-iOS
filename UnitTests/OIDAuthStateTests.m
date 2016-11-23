@@ -24,6 +24,12 @@
 #import "Source/OIDAuthorizationResponse.h"
 #import "Source/OIDErrorUtilities.h"
 #import "Source/OIDTokenResponse.h"
+#import "OIDTokenRequestTests.h"
+
+@interface OIDAuthState (Testing)
+  // expose private method for simple testing
+- (BOOL)isTokenFresh;
+@end
 
 @interface OIDAuthStateTests () <OIDAuthStateChangeDelegate, OIDAuthStateErrorDelegate>
 @end
@@ -348,6 +354,58 @@
   XCTAssertEqualObjects(authStateCopy.authorizationError.domain,
                         authState.authorizationError.domain);
   XCTAssertEqual(authStateCopy.authorizationError.code, authState.authorizationError.code);
+}
+
+- (void)testIsTokenFreshWithFreshToken {
+  OIDAuthorizationResponse *authorizationResponse =
+      [OIDAuthorizationResponseTests testInstanceCodeFlow];
+  OIDTokenRequest *tokenRequest = [OIDTokenRequestTests testInstance];
+  OIDTokenResponse *tokenResponse =
+      [[OIDTokenResponse alloc] initWithRequest:tokenRequest
+                                     parameters:@{@"access_token": @"abc123",
+                                                  @"expires_in": @(3600)
+                                                 }];
+
+  OIDAuthState *authState =
+      [[OIDAuthState alloc] initWithAuthorizationResponse:authorizationResponse
+                                            tokenResponse:tokenResponse];
+  XCTAssertEqual([authState isTokenFresh], YES);
+}
+
+- (void)testIsTokenFreshWithExpiredToken {
+  OIDAuthorizationResponse *authorizationResponse =
+          [OIDAuthorizationResponseTests testInstanceCodeFlow];
+  OIDTokenRequest *tokenRequest = [OIDTokenRequestTests testInstance];
+  OIDTokenResponse *tokenResponse =
+          [[OIDTokenResponse alloc] initWithRequest:tokenRequest
+                                         parameters:@{@"access_token": @"abc123",
+                                                      @"expires_in": @(0)
+                                                     }];
+
+  OIDAuthState *authState =
+      [[OIDAuthState alloc] initWithAuthorizationResponse:authorizationResponse
+                                            tokenResponse:tokenResponse];
+  XCTAssertEqual([authState isTokenFresh], NO);
+}
+
+- (void)testIsTokenFreshRespectsTokenRefreshOverride {
+  OIDAuthState *authState = [[self class] testInstance];
+  [authState setNeedsTokenRefresh];
+  XCTAssertEqual([authState isTokenFresh], NO);
+}
+
+- (void)testIsTokenFreshHandlesTokenWithoutExpirationTime {
+  OIDAuthorizationResponse *authorizationResponse =
+      [OIDAuthorizationResponseTests testInstanceCodeFlow];
+  OIDTokenRequest *tokenRequest = [OIDTokenRequestTests testInstance];
+  OIDTokenResponse *tokenResponse =
+      [[OIDTokenResponse alloc] initWithRequest:tokenRequest
+                                     parameters:@{ @"access_token": @"abc123" }];
+
+  OIDAuthState *authState =
+      [[OIDAuthState alloc] initWithAuthorizationResponse:authorizationResponse
+                                            tokenResponse:tokenResponse];
+  XCTAssertEqual([authState isTokenFresh], YES);
 }
 
 @end
