@@ -34,6 +34,10 @@
  */
 static NSString *const kOpenIDConfigurationWellKnownPath = @".well-known/openid-configuration";
 
+/*! @brief The state authorization parameter.
+ */
+static NSString *const kStateParameter = @"state";
+
 NS_ASSUME_NONNULL_BEGIN
 
 @interface OIDAuthorizationFlowSessionImplementation : NSObject<OIDAuthorizationFlowSession>
@@ -119,14 +123,8 @@ NS_ASSUME_NONNULL_BEGIN
                                     underlyingError:nil];
   }
 
-  // no errors, must be a valid OAuth 2.0 response
-  if (!error) {
-    response = [[OIDAuthorizationResponse alloc] initWithRequest:_request
-                                                      parameters:query.dictionaryValue];
-  }
-
   // verifies that the state in the response matches the state in the request, or both are nil
-  if (!OIDIsEqualIncludingNil(_request.state, response.state)) {
+  if (!OIDIsEqualIncludingNil(_request.state, query.dictionaryValue[kStateParameter])) {
     NSMutableDictionary *userInfo = [query.dictionaryValue mutableCopy];
     userInfo[NSLocalizedFailureReasonErrorKey] =
         [NSString stringWithFormat:@"State mismatch, expecting %@ but got %@ in authorization "
@@ -138,6 +136,12 @@ NS_ASSUME_NONNULL_BEGIN
     error = [NSError errorWithDomain:OIDOAuthAuthorizationErrorDomain
                                 code:OIDErrorCodeOAuthAuthorizationClientError
                             userInfo:userInfo];
+  }
+
+  // no error, should be a valid OAuth 2.0 response
+  if (!error) {
+    response = [[OIDAuthorizationResponse alloc] initWithRequest:_request
+                                                      parameters:query.dictionaryValue];
   }
 
   [_UICoordinator dismissAuthorizationAnimated:YES
