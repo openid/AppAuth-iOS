@@ -407,7 +407,7 @@ static const NSUInteger kExpiryTimeTolerance = 60;
   }
 
   if (!_refreshToken) {
-    // no refresh token available and token have expired
+    // no refresh token available and token has expired
     NSError *tokenRefreshError = [
       OIDErrorUtilities errorWithCode:OIDErrorCodeTokenRefreshError
                       underlyingError:nil
@@ -419,7 +419,6 @@ static const NSUInteger kExpiryTimeTolerance = 60;
   }
 
   // access token is expired, first refresh the token, then perform action
-  _needsTokenRefresh = NO;
   NSAssert(_pendingActionsSyncObject, @"_pendingActionsSyncObject cannot be nil");
   @synchronized(_pendingActionsSyncObject) {
     // if a token is already in the process of being refreshed, adds to pending actions
@@ -441,9 +440,11 @@ static const NSUInteger kExpiryTimeTolerance = 60;
     dispatch_async(dispatch_get_main_queue(), ^() {
       // update OIDAuthState based on response
       if (response) {
+        _needsTokenRefresh = NO;
         [self updateWithTokenResponse:response error:nil];
       } else {
         if (error.domain == OIDOAuthTokenErrorDomain) {
+          _needsTokenRefresh = NO;
           [self updateWithAuthorizationError:error];
         } else {
           if ([_errorDelegate respondsToSelector:
@@ -484,14 +485,13 @@ static const NSUInteger kExpiryTimeTolerance = 60;
   }
 
   if (!self.accessTokenExpirationDate) {
-    // if there is no expiration time but we have an access token, it is assumed
-    // to never expire
+    // if there is no expiration time but we have an access token, it is assumed to never expire
     return !!self.accessToken;
   }
 
-  // has the token expired
-  BOOL tokenExpired = [self.accessTokenExpirationDate timeIntervalSinceNow] > kExpiryTimeTolerance;
-  return tokenExpired;
+  // has the token expired?
+  BOOL tokenFresh = [self.accessTokenExpirationDate timeIntervalSinceNow] > kExpiryTimeTolerance;
+  return tokenFresh;
 }
 
 @end
