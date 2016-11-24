@@ -112,7 +112,7 @@ typedef enum {
     __weak id delegate;
     NSData *peerAddress;
     __weak HTTPServer *server;
-    NSMutableArray *requests;
+    NSMutableArray<HTTPServerRequest *> *requests;
     NSInputStream *istream;
     NSOutputStream *ostream;
     NSMutableData *ibuffer;

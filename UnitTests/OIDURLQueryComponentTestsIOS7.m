@@ -20,6 +20,11 @@
 
 #import "Source/OIDURLQueryComponent.h"
 
+// Ignore warnings about "Use of GNU statement expression extension" which is raised by our use of
+// the XCTAssert___ macros.
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wgnu"
+
 @interface OIDURLQueryComponentTestsIOS7 : OIDURLQueryComponentTests
 @end
 
@@ -36,3 +41,5 @@
 }
 
 @end
+
+#pragma GCC diagnostic pop

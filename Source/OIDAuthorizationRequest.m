@@ -116,7 +116,7 @@ NSString *const OIDOAuthorizationRequestCodeChallengeMethodS256 = @"S256";
                             redirectURL:
                            responseType:
                    additionalParameters:)
-    );
+    )
 
 - (instancetype)initWithConfiguration:(OIDServiceConfiguration *)configuration
                 clientId:(NSString *)clientID
@@ -308,7 +308,7 @@ NSString *const OIDOAuthorizationRequestCodeChallengeMethodS256 = @"S256";
 - (NSString *)description {
   return [NSString stringWithFormat:@"<%@: %p, request: %@>",
                                     NSStringFromClass([self class]),
-                                    self,
+                                    (void *)self,
                                     self.authorizationRequestURL];
 }
 
