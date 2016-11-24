@@ -25,6 +25,17 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/** @brief The global/shared Safari view controller factory. Responsible for creating all new
+        instances of @c SFSafariViewController.
+ */
+static id<OIDSafariViewControllerFactory> __nullable gSafariViewControllerFactory;
+
+/** @brief The default @c OIDSafariViewControllerFactory which creates new instances of
+        @c SFSafariViewController using known best practices.
+ */
+@interface OIDDefaultSafariViewControllerFactory : NSObject<OIDSafariViewControllerFactory>
+@end
+
 @interface OIDAuthorizationUICoordinatorIOS ()<SFSafariViewControllerDelegate>
 @end
 
@@ -34,6 +45,21 @@ NS_ASSUME_NONNULL_BEGIN
   BOOL _authorizationFlowInProgress;
   __weak id<OIDAuthorizationFlowSession> _session;
   __weak SFSafariViewController *_safariVC;
+}
+
+/** @brief Obtains the current @c OIDSafariViewControllerFactory; creating a new default instance if
+        required.
+ */
++ (id<OIDSafariViewControllerFactory>)safariViewControllerFactory {
+  if (!gSafariViewControllerFactory) {
+    gSafariViewControllerFactory = [[OIDDefaultSafariViewControllerFactory alloc] init];
+  }
+  return gSafariViewControllerFactory;
+}
+
++ (void)setSafariViewControllerFactory:(id<OIDSafariViewControllerFactory>)factory {
+  NSAssert(factory, @"Parameter: |factory| must be non-nil.");
+  gSafariViewControllerFactory = factory;
 }
 
 - (nullable instancetype)initWithPresentingViewController:
@@ -55,7 +81,7 @@ NS_ASSUME_NONNULL_BEGIN
   _session = session;
   if ([SFSafariViewController class]) {
     SFSafariViewController *safariVC =
-        [[SFSafariViewController alloc] initWithURL:URL entersReaderIfAvailable:NO];
+        [[[self class] safariViewControllerFactory] safariViewControllerWithURL:URL];
     safariVC.delegate = self;
     _safariVC = safariVC;
     [_presentingViewController presentViewController:safariVC animated:YES completion:nil];
@@ -111,6 +137,16 @@ NS_ASSUME_NONNULL_BEGIN
                                     underlyingError:nil
                                         description:nil];
   [session failAuthorizationFlowWithError:error];
+}
+
+@end
+
+@implementation OIDDefaultSafariViewControllerFactory
+
+- (SFSafariViewController *)safariViewControllerWithURL:(NSURL *)URL {
+  SFSafariViewController *safariViewController =
+      [[SFSafariViewController alloc] initWithURL:URL entersReaderIfAvailable:NO];
+  return safariViewController;
 }
 
 @end
