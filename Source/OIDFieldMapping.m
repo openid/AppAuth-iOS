@@ -23,7 +23,7 @@
 @implementation OIDFieldMapping
 
 - (nullable instancetype)init
-    OID_UNAVAILABLE_USE_INITIALIZER(@selector(initWithName:type:conversion:));
+    OID_UNAVAILABLE_USE_INITIALIZER(@selector(initWithName:type:conversion:))
 
 - (nullable instancetype)initWithName:(NSString *)name
                                  type:(Class)type {

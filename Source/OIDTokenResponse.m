@@ -95,7 +95,7 @@ static NSString *const kAdditionalParametersKey = @"additionalParameters";
 #pragma mark - Initializers
 
 - (nullable instancetype)init
-    OID_UNAVAILABLE_USE_INITIALIZER(@selector(initWithRequest:parameters:));
+    OID_UNAVAILABLE_USE_INITIALIZER(@selector(initWithRequest:parameters:))
 
 - (nullable instancetype)initWithRequest:(OIDTokenRequest *)request
     parameters:(NSDictionary<NSString *, NSObject<NSCopying> *> *)parameters {
@@ -152,7 +152,7 @@ static NSString *const kAdditionalParametersKey = @"additionalParameters";
                                      "tokenType: %@, idToken: \"%@\", refreshToken: \"%@\", "
                                      "scope: \"%@\", additionalParameters: %@, request: %@>",
                                     NSStringFromClass([self class]),
-                                    self,
+                                    (void *)self,
                                     _accessToken,
                                     _accessTokenExpirationDate,
                                     _tokenType,

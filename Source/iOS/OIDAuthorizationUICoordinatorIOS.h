@@ -33,8 +33,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (nullable instancetype)init NS_UNAVAILABLE;
 
 /*! @brief The designated initializer.
-    @param presentingViewController The view controller from which to present the
-        \SFSafariViewController.
+    @param parentViewController The view controller from which to present the
+        SFSafariViewController.
  */
 - (nullable instancetype)initWithPresentingViewController:(UIViewController *)parentViewController
     NS_DESIGNATED_INITIALIZER;

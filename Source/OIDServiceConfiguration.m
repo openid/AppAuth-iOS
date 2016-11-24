@@ -48,7 +48,7 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation OIDServiceConfiguration
 
 - (instancetype)init
-    OID_UNAVAILABLE_USE_INITIALIZER(@selector(initWithAuthorizationEndpoint:tokenEndpoint:));
+    OID_UNAVAILABLE_USE_INITIALIZER(@selector(initWithAuthorizationEndpoint:tokenEndpoint:))
 
 - (instancetype)initWithAuthorizationEndpoint:(NSURL *)authorizationEndpoint
         tokenEndpoint:(NSURL *)tokenEndpoint
