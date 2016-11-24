@@ -23,6 +23,11 @@
 #import "Source/OIDScopeUtilities.h"
 #import "Source/OIDServiceConfiguration.h"
 
+// Ignore warnings about "Use of GNU statement expression extension" which is raised by our use of
+// the XCTAssert___ macros.
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wgnu"
+
 /*! @brief Test value for the @c responseType property.
  */
 static NSString *const kTestResponseType = @"ResponseType";
@@ -180,13 +185,13 @@ static int const kCodeVerifierRecommendedLength = 43;
                   responseType:OIDResponseTypeCode
           additionalParameters:additionalParameters];
 
-  XCTAssertEqualObjects(request.responseType, @"code");
-  XCTAssertEqualObjects(request.scope, kTestScopesMerged);
-  XCTAssertEqualObjects(request.clientID, kTestClientID);
-  XCTAssertEqualObjects(request.clientSecret, nil);
-  XCTAssertEqualObjects(request.redirectURL, [NSURL URLWithString:kTestRedirectURL]);
+  XCTAssertEqualObjects(request.responseType, @"code", @"");
+  XCTAssertEqualObjects(request.scope, kTestScopesMerged, @"");
+  XCTAssertEqualObjects(request.clientID, kTestClientID, @"");
+  XCTAssertEqualObjects(request.clientSecret, nil, @"");
+  XCTAssertEqualObjects(request.redirectURL, [NSURL URLWithString:kTestRedirectURL], @"");
   XCTAssertEqualObjects(request.additionalParameters[kTestAdditionalParameterKey],
-                        kTestAdditionalParameterValue);
+                        kTestAdditionalParameterValue, @"");
 }
 
 - (void)testScopeInitializerWithManyScopesAndClientSecret {
@@ -202,13 +207,13 @@ static int const kCodeVerifierRecommendedLength = 43;
                   responseType:OIDResponseTypeCode
           additionalParameters:additionalParameters];
 
-  XCTAssertEqualObjects(request.responseType, @"code");
-  XCTAssertEqualObjects(request.scope, kTestScopesMerged);
-  XCTAssertEqualObjects(request.clientID, kTestClientID);
-  XCTAssertEqualObjects(request.clientSecret, kTestClientSecret);
-  XCTAssertEqualObjects(request.redirectURL, [NSURL URLWithString:kTestRedirectURL]);
+  XCTAssertEqualObjects(request.responseType, @"code", @"");
+  XCTAssertEqualObjects(request.scope, kTestScopesMerged, @"");
+  XCTAssertEqualObjects(request.clientID, kTestClientID, @"");
+  XCTAssertEqualObjects(request.clientSecret, kTestClientSecret, @"");
+  XCTAssertEqualObjects(request.redirectURL, [NSURL URLWithString:kTestRedirectURL], @"");
   XCTAssertEqualObjects(request.additionalParameters[kTestAdditionalParameterKey],
-                        kTestAdditionalParameterValue);
+                        kTestAdditionalParameterValue, @"");
 }
 
 /*! @brief Tests the @c NSCopying implementation by round-tripping an instance through the copying
@@ -217,33 +222,33 @@ static int const kCodeVerifierRecommendedLength = 43;
 - (void)testCopying {
   OIDAuthorizationRequest *request = [[self class] testInstance];
 
-  XCTAssertEqualObjects(request.responseType, kTestResponseType);
-  XCTAssertEqualObjects(request.scope, kTestScopesMerged);
-  XCTAssertEqualObjects(request.clientID, kTestClientID);
-  XCTAssertEqualObjects(request.clientSecret, kTestClientSecret);
-  XCTAssertEqualObjects(request.redirectURL, [NSURL URLWithString:kTestRedirectURL]);
-  XCTAssertEqualObjects(request.state, kTestState);
-  XCTAssertEqualObjects(request.codeVerifier, kTestCodeVerifier);
-  XCTAssertEqualObjects(request.codeChallenge, [[self class] codeChallenge]);
-  XCTAssertEqualObjects(request.codeChallengeMethod, [[self class] codeChallengeMethod]);
+  XCTAssertEqualObjects(request.responseType, kTestResponseType, @"");
+  XCTAssertEqualObjects(request.scope, kTestScopesMerged, @"");
+  XCTAssertEqualObjects(request.clientID, kTestClientID, @"");
+  XCTAssertEqualObjects(request.clientSecret, kTestClientSecret, @"");
+  XCTAssertEqualObjects(request.redirectURL, [NSURL URLWithString:kTestRedirectURL], @"");
+  XCTAssertEqualObjects(request.state, kTestState, @"");
+  XCTAssertEqualObjects(request.codeVerifier, kTestCodeVerifier, @"");
+  XCTAssertEqualObjects(request.codeChallenge, [[self class] codeChallenge], @"");
+  XCTAssertEqualObjects(request.codeChallengeMethod, [[self class] codeChallengeMethod], @"");
   XCTAssertEqualObjects(request.additionalParameters[kTestAdditionalParameterKey],
-                        kTestAdditionalParameterValue);
+                        kTestAdditionalParameterValue, @"");
 
   OIDAuthorizationRequest *requestCopy = [request copy];
 
-  XCTAssertNotNil(requestCopy.configuration);
-  XCTAssertEqualObjects(requestCopy.configuration, request.configuration);
-  XCTAssertEqualObjects(requestCopy.responseType, request.responseType);
-  XCTAssertEqualObjects(requestCopy.scope, request.scope);
-  XCTAssertEqualObjects(requestCopy.clientID, request.clientID);
-  XCTAssertEqualObjects(requestCopy.clientSecret, request.clientSecret);
-  XCTAssertEqualObjects(requestCopy.redirectURL, request.redirectURL);
-  XCTAssertEqualObjects(requestCopy.state, request.state);
-  XCTAssertEqualObjects(requestCopy.codeVerifier, request.codeVerifier);
-  XCTAssertEqualObjects(requestCopy.codeChallenge, request.codeChallenge);
-  XCTAssertEqualObjects(requestCopy.codeChallengeMethod, request.codeChallengeMethod);
+  XCTAssertNotNil(requestCopy.configuration, @"");
+  XCTAssertEqualObjects(requestCopy.configuration, request.configuration, @"");
+  XCTAssertEqualObjects(requestCopy.responseType, request.responseType, @"");
+  XCTAssertEqualObjects(requestCopy.scope, request.scope, @"");
+  XCTAssertEqualObjects(requestCopy.clientID, request.clientID, @"");
+  XCTAssertEqualObjects(requestCopy.clientSecret, request.clientSecret, @"");
+  XCTAssertEqualObjects(requestCopy.redirectURL, request.redirectURL, @"");
+  XCTAssertEqualObjects(requestCopy.state, request.state, @"");
+  XCTAssertEqualObjects(requestCopy.codeVerifier, request.codeVerifier, @"");
+  XCTAssertEqualObjects(requestCopy.codeChallenge, request.codeChallenge, @"");
+  XCTAssertEqualObjects(requestCopy.codeChallengeMethod, request.codeChallengeMethod, @"");
   XCTAssertEqualObjects(requestCopy.additionalParameters,
-                        request.additionalParameters);
+                        request.additionalParameters, @"");
 }
 
 /*! @brief Tests the @c NSSecureCoding by round-tripping an instance through the coding process and
@@ -252,17 +257,17 @@ static int const kCodeVerifierRecommendedLength = 43;
 - (void)testSecureCoding {
   OIDAuthorizationRequest *request = [[self class] testInstance];
 
-  XCTAssertEqualObjects(request.responseType, kTestResponseType);
-  XCTAssertEqualObjects(request.scope, kTestScopesMerged);
-  XCTAssertEqualObjects(request.clientID, kTestClientID);
-  XCTAssertEqualObjects(request.clientSecret, kTestClientSecret);
-  XCTAssertEqualObjects(request.redirectURL, [NSURL URLWithString:kTestRedirectURL]);
-  XCTAssertEqualObjects(request.state, kTestState);
-  XCTAssertEqualObjects(request.codeVerifier, kTestCodeVerifier);
-  XCTAssertEqualObjects(request.codeChallenge, [[self class] codeChallenge]);
-  XCTAssertEqualObjects(request.codeChallengeMethod, [[self class] codeChallengeMethod]);
+  XCTAssertEqualObjects(request.responseType, kTestResponseType, @"");
+  XCTAssertEqualObjects(request.scope, kTestScopesMerged, @"");
+  XCTAssertEqualObjects(request.clientID, kTestClientID, @"");
+  XCTAssertEqualObjects(request.clientSecret, kTestClientSecret, @"");
+  XCTAssertEqualObjects(request.redirectURL, [NSURL URLWithString:kTestRedirectURL], @"");
+  XCTAssertEqualObjects(request.state, kTestState, @"");
+  XCTAssertEqualObjects(request.codeVerifier, kTestCodeVerifier, @"");
+  XCTAssertEqualObjects(request.codeChallenge, [[self class] codeChallenge], @"");
+  XCTAssertEqualObjects(request.codeChallengeMethod, [[self class] codeChallengeMethod], @"");
   XCTAssertEqualObjects(request.additionalParameters[kTestAdditionalParameterKey],
-                        kTestAdditionalParameterValue);
+                        kTestAdditionalParameterValue, @"");
 
   NSData *data = [NSKeyedArchiver archivedDataWithRootObject:request];
   OIDAuthorizationRequest *requestCopy = [NSKeyedUnarchiver unarchiveObjectWithData:data];
@@ -271,20 +276,20 @@ static int const kCodeVerifierRecommendedLength = 43;
   // to make sure the configuration IS actually getting serialized and deserialized in the
   // NSSecureCoding implementation. We'll leave it up to the OIDServiceConfiguration tests to make
   // sure the NSSecureCoding implementation of that class is correct.
-  XCTAssertNotNil(requestCopy.configuration);
+  XCTAssertNotNil(requestCopy.configuration, @"");
   XCTAssertEqualObjects(requestCopy.configuration.authorizationEndpoint,
-                        request.configuration.authorizationEndpoint);
+                        request.configuration.authorizationEndpoint, @"");
 
-  XCTAssertEqualObjects(requestCopy.responseType, kTestResponseType);
-  XCTAssertEqualObjects(requestCopy.scope, kTestScopesMerged);
-  XCTAssertEqualObjects(requestCopy.clientID, kTestClientID);
-  XCTAssertEqualObjects(requestCopy.redirectURL, [NSURL URLWithString:kTestRedirectURL]);
-  XCTAssertEqualObjects(requestCopy.state, kTestState);
-  XCTAssertEqualObjects(requestCopy.codeVerifier, kTestCodeVerifier);
-  XCTAssertEqualObjects(requestCopy.codeChallenge, [[self class] codeChallenge]);
-  XCTAssertEqualObjects(requestCopy.codeChallengeMethod, [[self class] codeChallengeMethod]);
+  XCTAssertEqualObjects(requestCopy.responseType, kTestResponseType, @"");
+  XCTAssertEqualObjects(requestCopy.scope, kTestScopesMerged, @"");
+  XCTAssertEqualObjects(requestCopy.clientID, kTestClientID, @"");
+  XCTAssertEqualObjects(requestCopy.redirectURL, [NSURL URLWithString:kTestRedirectURL], @"");
+  XCTAssertEqualObjects(requestCopy.state, kTestState, @"");
+  XCTAssertEqualObjects(requestCopy.codeVerifier, kTestCodeVerifier, @"");
+  XCTAssertEqualObjects(requestCopy.codeChallenge, [[self class] codeChallenge], @"");
+  XCTAssertEqualObjects(requestCopy.codeChallengeMethod, [[self class] codeChallengeMethod], @"");
   XCTAssertEqualObjects(requestCopy.additionalParameters[kTestAdditionalParameterKey],
-                        kTestAdditionalParameterValue);
+                        kTestAdditionalParameterValue, @"");
 }
 
 /*! @brief Tests the scope string logic to make sure the disallowed characters are properly
@@ -299,63 +304,63 @@ static int const kCodeVerifierRecommendedLength = 43;
                                                       scopes:@[ kTestInvalidScope1 ]
                                                  redirectURL:redirectURL
                                                 responseType:OIDResponseTypeCode
-                                        additionalParameters:nil]);
+                                        additionalParameters:nil], @"");
   XCTAssertThrows(
       [[OIDAuthorizationRequest alloc] initWithConfiguration:configuration
                                                     clientId:kTestClientID
                                                       scopes:@[ kTestInvalidScope2 ]
                                                  redirectURL:redirectURL
                                                 responseType:OIDResponseTypeCode
-                                        additionalParameters:nil]);
+                                        additionalParameters:nil], @"");
   XCTAssertThrows(
       [[OIDAuthorizationRequest alloc] initWithConfiguration:configuration
                                                     clientId:kTestClientID
                                                       scopes:@[ kTestInvalidScope3 ]
                                                  redirectURL:redirectURL
                                                 responseType:OIDResponseTypeCode
-                                        additionalParameters:nil]);
+                                        additionalParameters:nil], @"");
   XCTAssertThrows(
       [[OIDAuthorizationRequest alloc] initWithConfiguration:configuration
                                                     clientId:kTestClientID
                                                       scopes:@[ kTestInvalidScope4 ]
                                                  redirectURL:redirectURL
                                                 responseType:OIDResponseTypeCode
-                                        additionalParameters:nil]);
+                                        additionalParameters:nil], @"");
   XCTAssertNoThrow(
       [[OIDAuthorizationRequest alloc] initWithConfiguration:configuration
                                                     clientId:kTestClientID
                                                       scopes:@[ kTestValidScope1 ]
                                                  redirectURL:redirectURL
                                                 responseType:OIDResponseTypeCode
-                                        additionalParameters:nil]);
+                                        additionalParameters:nil], @"");
   XCTAssertNoThrow(
       [[OIDAuthorizationRequest alloc] initWithConfiguration:configuration
                                                     clientId:kTestClientID
                                                       scopes:@[ kTestValidScope2 ]
                                                  redirectURL:redirectURL
                                                 responseType:OIDResponseTypeCode
-                                        additionalParameters:nil]);
+                                        additionalParameters:nil], @"");
   XCTAssertNoThrow(
       [[OIDAuthorizationRequest alloc] initWithConfiguration:configuration
                                                     clientId:kTestClientID
                                                       scopes:@[ kTestValidScope3 ]
                                                  redirectURL:redirectURL
                                                 responseType:OIDResponseTypeCode
-                                        additionalParameters:nil]);
+                                        additionalParameters:nil], @"");
   XCTAssertNoThrow(
       [[OIDAuthorizationRequest alloc] initWithConfiguration:configuration
                                                     clientId:kTestClientID
                                                       scopes:@[ kTestValidScope4 ]
                                                  redirectURL:redirectURL
                                                 responseType:OIDResponseTypeCode
-                                        additionalParameters:nil]);
+                                        additionalParameters:nil], @"");
   XCTAssertNoThrow(
       [[OIDAuthorizationRequest alloc] initWithConfiguration:configuration
                                                     clientId:kTestClientID
                                                       scopes:@[ kTestValidScope5 ]
                                                  redirectURL:redirectURL
                                                 responseType:OIDResponseTypeCode
-                                        additionalParameters:nil]);
+                                        additionalParameters:nil], @"");
 }
 /*! @brief Returns a character set with all legal PKCE characters for the codeVerifier.
     @return Character set representing all legal codeVerifier characters.
@@ -378,11 +383,11 @@ static int const kCodeVerifierRecommendedLength = 43;
   // as this test involves random numbers, repeats multiple times
   for (int i = 0; i < 1000; i++) {
     NSString *codeVerifier = [OIDAuthorizationRequest generateCodeVerifier];
-    XCTAssertNotNil(codeVerifier);
+    XCTAssertNotNil(codeVerifier, @"");
 
     // tests that the code verifier is within the specified size bounds
-    XCTAssertGreaterThanOrEqual(codeVerifier.length, kCodeVerifierMinLength);
-    XCTAssertLessThanOrEqual(codeVerifier.length, kCodeVerifierMaxLength);
+    XCTAssertGreaterThanOrEqual(codeVerifier.length, kCodeVerifierMinLength, @"");
+    XCTAssertLessThanOrEqual(codeVerifier.length, kCodeVerifierMaxLength, @"");
 
     // tests that the code verifier uses legal characters
     NSCharacterSet *legalChars = [[self class] legalPKCECharacters];
@@ -397,10 +402,12 @@ static int const kCodeVerifierRecommendedLength = 43;
  */
 - (void)testPKCEVerifierRecommendations {
   NSString *codeVerifier = [OIDAuthorizationRequest generateCodeVerifier];
-  XCTAssertNotNil(codeVerifier);
+  XCTAssertNotNil(codeVerifier, @"");
   XCTAssertEqual(codeVerifier.length,
                  kCodeVerifierRecommendedLength,
                  @"The spec RECOMMENDS a '43-octet URL safe string'");
 }
 
 @end
+
+#pragma GCC diagnostic pop

@@ -20,6 +20,11 @@
 
 #import "Source/OIDURLQueryComponent.h"
 
+// Ignore warnings about "Use of GNU statement expression extension" which is raised by our use of
+// the XCTAssert___ macros.
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wgnu"
+
 /*! @brief A testing parameter name.
  */
 static NSString *const kTestParameterName = @"ParameterName";
@@ -72,21 +77,21 @@ static NSString *const kTestURLRoot = @"https://www.example.com/";
   OIDURLQueryComponent *query = [[OIDURLQueryComponent alloc] init];
   [query addParameter:kTestParameterName value:kTestParameterValue];
   XCTAssertEqualObjects([query valuesForParameter:kTestParameterName].firstObject,
-                        kTestParameterValue);
+                        kTestParameterValue, @"");
 }
 
 - (void)testAddingTwoParameters {
   OIDURLQueryComponent *query = [[OIDURLQueryComponent alloc] init];
   [query addParameter:kTestParameterName value:kTestParameterValue];
   XCTAssertEqualObjects([query valuesForParameter:kTestParameterName].firstObject,
-                        kTestParameterValue);
+                        kTestParameterValue, @"");
 
   [query addParameter:kTestParameterName value:kTestParameterValue2];
   NSArray<NSString *> *values = [query valuesForParameter:kTestParameterName];
-  XCTAssertNotNil(values);
-  XCTAssertEqual(values.count, 2);
-  XCTAssertEqualObjects(values.firstObject, kTestParameterValue);
-  XCTAssertEqualObjects(values[1], kTestParameterValue2);
+  XCTAssertNotNil(values, @"");
+  XCTAssertEqual(values.count, 2, @"");
+  XCTAssertEqualObjects(values.firstObject, kTestParameterValue, @"");
+  XCTAssertEqualObjects(values[1], kTestParameterValue2, @"");
 }
 
 /* @brief Tests the application/x-www-form-urlencoded encoding.
@@ -100,34 +105,34 @@ static NSString *const kTestURLRoot = @"https://www.example.com/";
   // Tests the URLEncodedParameters method
   NSString *encodedParams = [query URLEncodedParameters];
   NSString *expected = [NSString stringWithFormat:@"%@=%@", kTestParameterName, kEncodingTestEncoded];
-  XCTAssertEqualObjects(encodedParams, expected);
+  XCTAssertEqualObjects(encodedParams, expected, @"");
 
   // Tests that params are correctly encoded when using URLByReplacingQueryInURL
   NSURL *url = [query URLByReplacingQueryInURL:baseURL];
   NSString* expectedURL = [NSString stringWithFormat:@"%@?%@", kTestURLRoot, expected];
-  XCTAssertEqualObjects([url absoluteString], expectedURL);
+  XCTAssertEqualObjects([url absoluteString], expectedURL, @"");
 }
 
 - (void)testAddingThreeParameters {
   OIDURLQueryComponent *query = [[OIDURLQueryComponent alloc] init];
   [query addParameter:kTestParameterName value:kTestParameterValue];
   XCTAssertEqualObjects([query valuesForParameter:kTestParameterName].firstObject,
-                        kTestParameterValue);
+                        kTestParameterValue, @"");
 
   [query addParameter:kTestParameterName value:kTestParameterValue2];
   [query addParameter:kTestParameterName value:kTestParameterValue];
   NSArray<NSString *> *values = [query valuesForParameter:kTestParameterName];
-  XCTAssertNotNil(values);
-  XCTAssertEqual(values.count, 3);
-  XCTAssertEqualObjects(values.firstObject, kTestParameterValue);
-  XCTAssertEqualObjects(values[1], kTestParameterValue2);
-  XCTAssertEqualObjects(values[2], kTestParameterValue);
+  XCTAssertNotNil(values, @"");
+  XCTAssertEqual(values.count, 3, @"");
+  XCTAssertEqualObjects(values.firstObject, kTestParameterValue, @"");
+  XCTAssertEqualObjects(values[1], kTestParameterValue2, @"");
+  XCTAssertEqualObjects(values[2], kTestParameterValue, @"");
 
   NSDictionary<NSString *, NSObject<NSCopying> *> *parametersAsDictionary = @{
     kTestParameterName : @[ kTestParameterValue, kTestParameterValue2, kTestParameterValue ]
   };
 
-  XCTAssertEqualObjects(query.dictionaryValue, parametersAsDictionary);
+  XCTAssertEqualObjects(query.dictionaryValue, parametersAsDictionary, @"");
 }
 
 - (void)testBuildingParameterStringWithSimpleParameters {
@@ -143,12 +148,13 @@ static NSString *const kTestURLRoot = @"https://www.example.com/";
   NSURL *rootURLWithParameters = [query URLByReplacingQueryInURL:rootURL];
 
   XCTAssert([rootURLWithParameters.query isEqualToString:kTestSimpleParameterStringEncoded]
-            || [rootURLWithParameters.query isEqualToString:kTestSimpleParameterStringEncodedRev]);
+            || [rootURLWithParameters.query isEqualToString:kTestSimpleParameterStringEncodedRev],
+            @"");
 
   OIDURLQueryComponent *parsedParameters =
       [[OIDURLQueryComponent alloc] initWithURL:rootURLWithParameters];
 
-  XCTAssertEqualObjects(parsedParameters.dictionaryValue, parameters);
+  XCTAssertEqualObjects(parsedParameters.dictionaryValue, parameters, @"");
 }
 
 - (void)testParsingQueryString {
@@ -163,7 +169,9 @@ static NSString *const kTestURLRoot = @"https://www.example.com/";
         kTestParameterName2 : kTestParameterValue2
       };
 
-  XCTAssertEqualObjects(query.dictionaryValue, parameters);
+  XCTAssertEqualObjects(query.dictionaryValue, parameters, @"");
 }
 
 @end
+
+#pragma GCC diagnostic pop

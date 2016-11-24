@@ -26,6 +26,11 @@
 #import "Source/OIDServiceConfiguration.h"
 #import "Source/OIDServiceDiscovery.h"
 
+// Ignore warnings about "Use of GNU statement expression extension" which is raised by our use of
+// the XCTAssert___ macros.
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wgnu"
+
 /*! @brief The callback signature for @c NSURLSession 's @c dataTaskWithURL:completionHandler:
         method, which we swizzle in @c testFetcher to fake the network response with an OpenID
         Connect Discovery document.
@@ -140,9 +145,9 @@ static NSString *const kIssuerTestExpectedFullDiscoveryURL =
 - (void)testInitializer {
   OIDServiceConfiguration *configuration = [[self class] testInstance];
   XCTAssertEqualObjects(configuration.authorizationEndpoint.absoluteString,
-                        kInitializerTestAuthEndpoint);
+                        kInitializerTestAuthEndpoint, @"");
   XCTAssertEqualObjects(configuration.tokenEndpoint.absoluteString,
-                        kInitializerTestTokenEndpoint);
+                        kInitializerTestTokenEndpoint, @"");
 }
 
 - (void)testIssuer {
@@ -219,12 +224,12 @@ static NSString *const kIssuerTestExpectedFullDiscoveryURL =
     ^(OIDServiceConfiguration *_Nullable serviceConfiguration,
       NSError *_Nullable error) {
       [expectation fulfill];
-      XCTAssertNil(error);
-      XCTAssertNotNil(serviceConfiguration);
+      XCTAssertNil(error, @"");
+      XCTAssertNotNil(serviceConfiguration, @"");
       XCTAssertEqualObjects(serviceConfiguration.tokenEndpoint,
-                            expectedValues.tokenEndpoint);
+                            expectedValues.tokenEndpoint, @"");
       XCTAssertEqualObjects(serviceConfiguration.authorizationEndpoint,
-                            expectedValues.authorizationEndpoint);
+                            expectedValues.authorizationEndpoint, @"");
     };
   [OIDAuthorizationService discoverServiceConfigurationForDiscoveryURL:url
                                                             completion:callback];
@@ -254,8 +259,8 @@ static NSString *const kIssuerTestExpectedFullDiscoveryURL =
     ^(OIDServiceConfiguration *_Nullable serviceConfiguration,
       NSError *_Nullable error) {
       [expectation fulfill];
-      XCTAssertNotNil(error);
-      XCTAssertNil(serviceConfiguration);
+      XCTAssertNotNil(error, @"");
+      XCTAssertNil(serviceConfiguration, @"");
     };
   [OIDAuthorizationService discoverServiceConfigurationForDiscoveryURL:url
                                                             completion:callback];
@@ -295,8 +300,8 @@ static NSString *const kIssuerTestExpectedFullDiscoveryURL =
     ^(OIDServiceConfiguration *_Nullable serviceConfiguration,
       NSError *_Nullable error) {
       [expectation fulfill];
-      XCTAssertNotNil(error);
-      XCTAssertNil(serviceConfiguration);
+      XCTAssertNotNil(error, @"");
+      XCTAssertNil(serviceConfiguration, @"");
     };
   [OIDAuthorizationService discoverServiceConfigurationForDiscoveryURL:url
                                                             completion:callback];
@@ -331,8 +336,8 @@ static NSString *const kIssuerTestExpectedFullDiscoveryURL =
     ^(OIDServiceConfiguration *_Nullable serviceConfiguration,
       NSError *_Nullable error) {
       [expectation fulfill];
-      XCTAssertNotNil(error);
-      XCTAssertNil(serviceConfiguration);
+      XCTAssertNotNil(error, @"");
+      XCTAssertNil(serviceConfiguration, @"");
     };
   [OIDAuthorizationService discoverServiceConfigurationForDiscoveryURL:url
                                                             completion:callback];
@@ -347,8 +352,8 @@ static NSString *const kIssuerTestExpectedFullDiscoveryURL =
   NSData *data = [NSKeyedArchiver archivedDataWithRootObject:configuration];
   OIDServiceConfiguration *unarchived = [NSKeyedUnarchiver unarchiveObjectWithData:data];
 
-  XCTAssertEqualObjects(configuration.authorizationEndpoint, unarchived.authorizationEndpoint);
-  XCTAssertEqualObjects(configuration.tokenEndpoint, unarchived.tokenEndpoint);
+  XCTAssertEqualObjects(configuration.authorizationEndpoint, unarchived.authorizationEndpoint, @"");
+  XCTAssertEqualObjects(configuration.tokenEndpoint, unarchived.tokenEndpoint, @"");
 }
 
 /*! @brief Tests the @c NSCopying implementation by round-tripping an instance through the copying
@@ -359,8 +364,10 @@ static NSString *const kIssuerTestExpectedFullDiscoveryURL =
   OIDServiceConfiguration *configuration = [[self class] testInstance];
   OIDServiceConfiguration *unarchived = [configuration copy];
 
-  XCTAssertEqualObjects(configuration.authorizationEndpoint, unarchived.authorizationEndpoint);
-  XCTAssertEqualObjects(configuration.tokenEndpoint, unarchived.tokenEndpoint);
+  XCTAssertEqualObjects(configuration.authorizationEndpoint, unarchived.authorizationEndpoint, @"");
+  XCTAssertEqualObjects(configuration.tokenEndpoint, unarchived.tokenEndpoint, @"");
 }
 
 @end
+
+#pragma GCC diagnostic pop

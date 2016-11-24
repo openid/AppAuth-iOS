@@ -22,6 +22,11 @@
 #import "Source/OIDTokenRequest.h"
 #import "Source/OIDTokenResponse.h"
 
+// Ignore warnings about "Use of GNU statement expression extension" which is raised by our use of
+// the XCTAssert___ macros.
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wgnu"
+
 /*! @brief The key for the @c accessToken property in the incoming parameters and for
         @c NSSecureCoding.
  */
@@ -133,31 +138,31 @@ static NSString *const kTestAdditionalParameterValue = @"example_value";
  */
 - (void)testCopying {
   OIDTokenResponse *response = [[self class] testInstance];
-  XCTAssertNotNil(response.request);
-  XCTAssertEqualObjects(response.accessToken, kAccessTokenTestValue);
-  XCTAssertEqualObjects(response.tokenType, kTokenTypeTestValue);
-  XCTAssertEqualObjects(response.idToken, kIDTokenTestValue);
-  XCTAssertEqualObjects(response.refreshToken, kRefreshTokenTestValue);
-  XCTAssertEqualObjects(response.scope, kScopesTestValue);
+  XCTAssertNotNil(response.request, @"");
+  XCTAssertEqualObjects(response.accessToken, kAccessTokenTestValue, @"");
+  XCTAssertEqualObjects(response.tokenType, kTokenTypeTestValue, @"");
+  XCTAssertEqualObjects(response.idToken, kIDTokenTestValue, @"");
+  XCTAssertEqualObjects(response.refreshToken, kRefreshTokenTestValue, @"");
+  XCTAssertEqualObjects(response.scope, kScopesTestValue, @"");
   XCTAssertEqualObjects(response.additionalParameters[kTestAdditionalParameterKey],
-                        kTestAdditionalParameterValue);
+                        kTestAdditionalParameterValue, @"");
 
   // Should be ~ kTestExpirationSeconds seconds. Avoiding swizzling NSDate here for certainty
   // to keep dependencies down, and simply making an assumption that this check will be executed
   // relatively quickly after the initialization above (less than 5 seconds.)
   NSTimeInterval expiration = [response.accessTokenExpirationDate timeIntervalSinceNow];
-  XCTAssert(expiration > kExpiresInTestValue - 5 && expiration <= kExpiresInTestValue);
+  XCTAssert(expiration > kExpiresInTestValue - 5 && expiration <= kExpiresInTestValue, @"");
 
   OIDTokenResponse *responseCopy = [response copy];
 
-  XCTAssertNotNil(responseCopy.request);
-  XCTAssertEqualObjects(responseCopy.accessToken, kAccessTokenTestValue);
-  XCTAssertEqualObjects(responseCopy.tokenType, kTokenTypeTestValue);
-  XCTAssertEqualObjects(responseCopy.idToken, kIDTokenTestValue);
-  XCTAssertEqualObjects(responseCopy.refreshToken, kRefreshTokenTestValue);
-  XCTAssertEqualObjects(responseCopy.scope, kScopesTestValue);
+  XCTAssertNotNil(responseCopy.request, @"");
+  XCTAssertEqualObjects(responseCopy.accessToken, kAccessTokenTestValue, @"");
+  XCTAssertEqualObjects(responseCopy.tokenType, kTokenTypeTestValue, @"");
+  XCTAssertEqualObjects(responseCopy.idToken, kIDTokenTestValue, @"");
+  XCTAssertEqualObjects(responseCopy.refreshToken, kRefreshTokenTestValue, @"");
+  XCTAssertEqualObjects(responseCopy.scope, kScopesTestValue, @"");
   XCTAssertEqualObjects(responseCopy.additionalParameters[kTestAdditionalParameterKey],
-                        kTestAdditionalParameterValue);
+                        kTestAdditionalParameterValue, @"");
 }
 
 /*! @brief Tests the @c NSSecureCoding by round-tripping an instance through the coding process and
@@ -172,16 +177,18 @@ static NSString *const kTestAdditionalParameterValue = @"example_value";
   // to make sure the request IS actually getting serialized and deserialized in the
   // NSSecureCoding implementation. We'll leave it up to the OIDAuthorizationRequest tests to make
   // sure the NSSecureCoding implementation of that class is correct.
-  XCTAssertNotNil(responseCopy.request);
-  XCTAssertEqualObjects(responseCopy.request.clientID, response.request.clientID);
+  XCTAssertNotNil(responseCopy.request, @"");
+  XCTAssertEqualObjects(responseCopy.request.clientID, response.request.clientID, @"");
 
-  XCTAssertEqualObjects(responseCopy.accessToken, kAccessTokenTestValue);
-  XCTAssertEqualObjects(responseCopy.tokenType, kTokenTypeTestValue);
-  XCTAssertEqualObjects(responseCopy.idToken, kIDTokenTestValue);
-  XCTAssertEqualObjects(responseCopy.refreshToken, kRefreshTokenTestValue);
-  XCTAssertEqualObjects(responseCopy.scope, kScopesTestValue);
+  XCTAssertEqualObjects(responseCopy.accessToken, kAccessTokenTestValue, @"");
+  XCTAssertEqualObjects(responseCopy.tokenType, kTokenTypeTestValue, @"");
+  XCTAssertEqualObjects(responseCopy.idToken, kIDTokenTestValue, @"");
+  XCTAssertEqualObjects(responseCopy.refreshToken, kRefreshTokenTestValue, @"");
+  XCTAssertEqualObjects(responseCopy.scope, kScopesTestValue, @"");
   XCTAssertEqualObjects(responseCopy.additionalParameters[kTestAdditionalParameterKey],
-                        kTestAdditionalParameterValue);
+                        kTestAdditionalParameterValue, @"");
 }
 
 @end
+
+#pragma GCC diagnostic pop
