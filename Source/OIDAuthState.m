@@ -418,7 +418,7 @@ static const NSUInteger kExpiryTimeTolerance = 60;
   }
 
   // access token is expired, first refresh the token, then perform action
-  NSAssert(_pendingActionsSyncObject, @"_pendingActionsSyncObject cannot be nil");
+  NSAssert(_pendingActionsSyncObject, @"_pendingActionsSyncObject cannot be nil", @"");
   @synchronized(_pendingActionsSyncObject) {
     // if a token is already in the process of being refreshed, adds to pending actions
     if (_pendingActions) {
