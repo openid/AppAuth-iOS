@@ -185,4 +185,13 @@ static NSString *const kQueryStringParamAdditionalDisallowedCharacters = @"=&+";
   return URLWithParameters;
 }
 
+#pragma mark - NSObject overrides
+
+- (NSString *)description {
+  return [NSString stringWithFormat:@"<%@: %p, parameters: %@>",
+                                    NSStringFromClass([self class]),
+                                    self,
+                                    _parameters];
+}
+
 @end
