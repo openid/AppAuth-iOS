@@ -126,7 +126,7 @@ NS_ASSUME_NONNULL_BEGIN
   // verifies that the state in the response matches the state in the request, or both are nil
   if (!OIDIsEqualIncludingNil(_request.state, query.dictionaryValue[kStateParameter])) {
     NSMutableDictionary *userInfo = [query.dictionaryValue mutableCopy];
-    userInfo[NSLocalizedFailureReasonErrorKey] =
+    userInfo[NSLocalizedDescriptionKey] =
         [NSString stringWithFormat:@"State mismatch, expecting %@ but got %@ in authorization "
                                     "response %@",
                                    _request.state,
@@ -195,7 +195,7 @@ NS_ASSUME_NONNULL_BEGIN
     if (error || !data) {
       error = [OIDErrorUtilities errorWithCode:OIDErrorCodeNetworkError
                                underlyingError:error
-                                   description:nil];
+                                   description:error.localizedDescription];
       dispatch_async(dispatch_get_main_queue(), ^{
         completion(nil, error);
       });
