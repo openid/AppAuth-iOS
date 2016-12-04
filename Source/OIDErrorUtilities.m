@@ -28,7 +28,7 @@
     userInfo[NSUnderlyingErrorKey] = underlyingError;
   }
   if (description) {
-    userInfo[NSLocalizedFailureReasonErrorKey] = description;
+    userInfo[NSLocalizedDescriptionKey] = description;
   }
   // TODO: Populate localized description based on code.
   NSError *error = [NSError errorWithDomain:OIDGeneralErrorDomain
@@ -68,7 +68,7 @@
       || !errorResponse[OIDOAuthErrorFieldError]) {
     return [[self class] errorWithCode:OIDErrorCodeNetworkError
                        underlyingError:underlyingError
-                           description:@""];
+                           description:underlyingError.localizedDescription];
   }
 
   // builds the userInfo dictionary with the full OAuth response and other information
@@ -84,7 +84,9 @@
 
   // builds the error description, using the information supplied by the server if possible
   NSMutableString *description = [NSMutableString string];
+  [description appendString:oauthErrorCodeString];
   if (oauthErrorMessage) {
+    [description appendString:@": "];
     [description appendString:oauthErrorMessage];
   }
   if (oauthErrorURI) {
@@ -98,7 +100,7 @@
     [description appendFormat:@"OAuth error: %@ - https://tools.ietf.org/html/rfc6749#section-5.2",
                               oauthErrorCodeString];
   }
-  userInfo[NSLocalizedFailureReasonErrorKey] = description;
+  userInfo[NSLocalizedDescriptionKey] = description;
 
   // looks up the error code based on the "error" response param
   OIDErrorCodeOAuth code = [[self class] OAuthErrorCodeFromString:oauthErrorCodeString];
