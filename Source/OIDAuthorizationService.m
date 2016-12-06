@@ -183,7 +183,6 @@ NS_ASSUME_NONNULL_BEGIN
                                                         completion:completion];
 }
 
-
 + (void)discoverServiceConfigurationForDiscoveryURL:(NSURL *)discoveryURL
     completion:(OIDDiscoveryCallback)completion {
 
@@ -275,14 +274,16 @@ NS_ASSUME_NONNULL_BEGIN
     }
 
     NSHTTPURLResponse *HTTPURLResponse = (NSHTTPURLResponse *)response;
-
-    if (HTTPURLResponse.statusCode != 200) {
+    NSInteger statusCode = HTTPURLResponse.statusCode;
+    if (statusCode != 200) {
       // A server error occurred.
       NSError *serverError =
           [OIDErrorUtilities HTTPErrorWithHTTPResponse:HTTPURLResponse data:data];
 
-      // HTTP 400 may indicate an RFC6749 Section 5.2 error response, checks for that
-      if (HTTPURLResponse.statusCode == 400) {
+      // HTTP 400 may indicate an RFC6749 Section 5.2 error response.
+      // HTTP 429 may occur during polling for device-flow requests for the slow_down error
+      // https://tools.ietf.org/html/draft-ietf-oauth-device-flow-03#section-3.5
+      if (statusCode == 400 || statusCode == 429) {
         NSError *jsonDeserializationError;
         NSDictionary<NSString *, NSObject<NSCopying> *> *json =
             [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonDeserializationError];

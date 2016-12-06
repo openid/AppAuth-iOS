@@ -81,7 +81,7 @@ extern NSString *const OIDOAuthorizationRequestCodeChallengeMethodS256;
     @remarks redirect_uri
     @see https://tools.ietf.org/html/rfc6749#section-3.1.2
  */
-@property(nonatomic, readonly) NSURL *redirectURL;
+@property(nonatomic, readonly, nullable) NSURL *redirectURL;
 
 /*! @brief An opaque value used by the client to maintain state between the request and callback.
     @remarks state
@@ -189,7 +189,7 @@ extern NSString *const OIDOAuthorizationRequestCodeChallengeMethodS256;
                  clientId:(NSString *)clientID
              clientSecret:(nullable NSString *)clientSecret
                     scope:(nullable NSString *)scope
-              redirectURL:(NSURL *)redirectURL
+              redirectURL:(nullable NSURL *)redirectURL
              responseType:(NSString *)responseType
                     state:(nullable NSString *)state
              codeVerifier:(nullable NSString *)codeVerifier
