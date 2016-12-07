@@ -180,7 +180,7 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
                                                 responseTypes:nil
                                                    grantTypes:nil
                                                   subjectType:nil
-                                      tokenEndpointAuthMethod:nil
+                                      tokenEndpointAuthMethod:OIDClientSecretBasicName
                                          additionalParameters:nil];
     // performs registration request
     [self logMessage:@"Initiating registration request"];
@@ -218,7 +218,13 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
           presentingViewController:self
                           callback:^(OIDAuthState *_Nullable authState, NSError *_Nullable error) {
             if (authState) {
-              [self setAuthState:authState];
+              if (!_authState) {
+                [self setAuthState:authState];
+              } else {
+                // preserve existing registration info
+                [_authState updateWithAuthorizationResponse:authState.lastAuthorizationResponse
+                                                      error:authState.authorizationError];
+              }
               [self logMessage:@"Got authorization tokens. Access token: %@",
                                authState.lastTokenResponse.accessToken];
             } else {
@@ -248,9 +254,7 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
                           callback:^(OIDAuthorizationResponse *_Nullable authorizationResponse,
                                      NSError *_Nullable error) {
         if (authorizationResponse) {
-          OIDAuthState *authState =
-              [[OIDAuthState alloc] initWithAuthorizationResponse:authorizationResponse];
-          [self setAuthState:authState];
+          [_authState updateWithAuthorizationResponse:authorizationResponse error:error];
 
           [self logMessage:@"Authorization response with code: %@",
                            authorizationResponse.authorizationCode];
@@ -324,6 +328,7 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
                    tokenExchangeRequest];
 
   [OIDAuthorizationService performTokenRequest:tokenExchangeRequest
+                            withAuthentication:[_authState constructClientAuthentication]
                                       callback:^(OIDTokenResponse *_Nullable tokenResponse,
                                                  NSError *_Nullable error) {
 

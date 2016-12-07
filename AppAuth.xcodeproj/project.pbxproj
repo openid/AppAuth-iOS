@@ -72,6 +72,12 @@
 		60140F801DE4344200DA0DC3 /* OIDRegistrationResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 60140F7F1DE4344200DA0DC3 /* OIDRegistrationResponse.m */; };
 		60140F831DE43BAF00DA0DC3 /* OIDRegistrationRequestTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 60140F821DE43BAF00DA0DC3 /* OIDRegistrationRequestTests.m */; };
 		60140F861DE43CC700DA0DC3 /* OIDRegistrationResponseTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 60140F851DE43CC700DA0DC3 /* OIDRegistrationResponseTests.m */; };
+		609E58AC1DF7DD3B00346106 /* OIDClientSecretBasic.m in Sources */ = {isa = PBXBuildFile; fileRef = 609E58AB1DF7DD3B00346106 /* OIDClientSecretBasic.m */; };
+		609E58AF1DF7DE5F00346106 /* OIDClientSecretPost.m in Sources */ = {isa = PBXBuildFile; fileRef = 609E58AE1DF7DE5F00346106 /* OIDClientSecretPost.m */; };
+		609E58B21DF7DF9D00346106 /* OIDNoClientAuthentication.m in Sources */ = {isa = PBXBuildFile; fileRef = 609E58B11DF7DF9D00346106 /* OIDNoClientAuthentication.m */; };
+		609E58B51DF7E89600346106 /* OIDClientSecretBasicTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 609E58B41DF7E89600346106 /* OIDClientSecretBasicTests.m */; };
+		609E58B81DF7E9C400346106 /* OIDClientSecretPostTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 609E58B71DF7E9C400346106 /* OIDClientSecretPostTests.m */; };
+		609E58BA1DF7EA9300346106 /* OIDNoClientAuthenticationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 609E58B91DF7EA9300346106 /* OIDNoClientAuthenticationTests.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -181,6 +187,18 @@
 		60140F821DE43BAF00DA0DC3 /* OIDRegistrationRequestTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OIDRegistrationRequestTests.m; sourceTree = "<group>"; };
 		60140F841DE43C8C00DA0DC3 /* OIDRegistrationResponseTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OIDRegistrationResponseTests.h; sourceTree = "<group>"; };
 		60140F851DE43CC700DA0DC3 /* OIDRegistrationResponseTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OIDRegistrationResponseTests.m; sourceTree = "<group>"; };
+		609E58A91DF7DBB600346106 /* OIDClientAuthentication.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OIDClientAuthentication.h; sourceTree = "<group>"; };
+		609E58AA1DF7DC7B00346106 /* OIDClientSecretBasic.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OIDClientSecretBasic.h; sourceTree = "<group>"; };
+		609E58AB1DF7DD3B00346106 /* OIDClientSecretBasic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OIDClientSecretBasic.m; sourceTree = "<group>"; };
+		609E58AD1DF7DDE100346106 /* OIDClientSecretPost.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OIDClientSecretPost.h; sourceTree = "<group>"; };
+		609E58AE1DF7DE5F00346106 /* OIDClientSecretPost.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OIDClientSecretPost.m; sourceTree = "<group>"; };
+		609E58B01DF7DF0D00346106 /* OIDNoClientAuthentication.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OIDNoClientAuthentication.h; sourceTree = "<group>"; };
+		609E58B11DF7DF9D00346106 /* OIDNoClientAuthentication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OIDNoClientAuthentication.m; sourceTree = "<group>"; };
+		609E58B31DF7E84D00346106 /* OIDClientSecretBasicTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OIDClientSecretBasicTests.h; sourceTree = "<group>"; };
+		609E58B41DF7E89600346106 /* OIDClientSecretBasicTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OIDClientSecretBasicTests.m; sourceTree = "<group>"; };
+		609E58B61DF7E98800346106 /* OIDClientSecretPostTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OIDClientSecretPostTests.h; sourceTree = "<group>"; };
+		609E58B71DF7E9C400346106 /* OIDClientSecretPostTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OIDClientSecretPostTests.m; sourceTree = "<group>"; };
+		609E58B91DF7EA9300346106 /* OIDNoClientAuthenticationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OIDNoClientAuthenticationTests.m; sourceTree = "<group>"; };
 		F68103B61D2568D10053658E /* OIDAuthorizationUICoordinator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OIDAuthorizationUICoordinator.h; sourceTree = "<group>"; };
 		F6F60FB01D2BFEFE00325CB3 /* OIDAuthState+IOS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "OIDAuthState+IOS.m"; path = "iOS/OIDAuthState+IOS.m"; sourceTree = "<group>"; };
 		F6F60FB11D2BFEFE00325CB3 /* OIDAuthorizationService+IOS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "OIDAuthorizationService+IOS.m"; path = "iOS/OIDAuthorizationService+IOS.m"; sourceTree = "<group>"; };
@@ -260,15 +278,20 @@
 				340DAE241D581FE700EC285B /* macOS */,
 				F6F60FAF1D2BFEF000325CB3 /* iOS */,
 				341741AF1C5D8243000EF209 /* AppAuth.h */,
+				609E58B01DF7DF0D00346106 /* OIDNoClientAuthentication.h */,
 				341741B41C5D8243000EF209 /* OIDAuthorizationRequest.h */,
 				341741B51C5D8243000EF209 /* OIDAuthorizationRequest.m */,
+				609E58AE1DF7DE5F00346106 /* OIDClientSecretPost.m */,
+				609E58AB1DF7DD3B00346106 /* OIDClientSecretBasic.m */,
 				341741B61C5D8243000EF209 /* OIDAuthorizationResponse.h */,
+				609E58AD1DF7DDE100346106 /* OIDClientSecretPost.h */,
 				341741B71C5D8243000EF209 /* OIDAuthorizationResponse.m */,
 				341741B81C5D8243000EF209 /* OIDAuthorizationService.h */,
 				341741B91C5D8243000EF209 /* OIDAuthorizationService.m */,
 				F68103B61D2568D10053658E /* OIDAuthorizationUICoordinator.h */,
 				341741BA1C5D8243000EF209 /* OIDAuthState.h */,
 				341741BB1C5D8243000EF209 /* OIDAuthState.m */,
+				609E58B11DF7DF9D00346106 /* OIDNoClientAuthentication.m */,
 				341741BC1C5D8243000EF209 /* OIDAuthStateChangeDelegate.h */,
 				341741BD1C5D8243000EF209 /* OIDAuthStateErrorDelegate.h */,
 				60140F781DE4262000DA0DC3 /* OIDClientMetadataParameters.h */,
@@ -304,6 +327,8 @@
 				341741D61C5D8243000EF209 /* OIDTokenUtilities.m */,
 				341741D71C5D8243000EF209 /* OIDURLQueryComponent.h */,
 				341741D81C5D8243000EF209 /* OIDURLQueryComponent.m */,
+				609E58A91DF7DBB600346106 /* OIDClientAuthentication.h */,
+				609E58AA1DF7DC7B00346106 /* OIDClientSecretBasic.h */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -336,6 +361,11 @@
 				60140F821DE43BAF00DA0DC3 /* OIDRegistrationRequestTests.m */,
 				60140F841DE43C8C00DA0DC3 /* OIDRegistrationResponseTests.h */,
 				60140F851DE43CC700DA0DC3 /* OIDRegistrationResponseTests.m */,
+				609E58B31DF7E84D00346106 /* OIDClientSecretBasicTests.h */,
+				609E58B41DF7E89600346106 /* OIDClientSecretBasicTests.m */,
+				609E58B61DF7E98800346106 /* OIDClientSecretPostTests.h */,
+				609E58B71DF7E9C400346106 /* OIDClientSecretPostTests.m */,
+				609E58B91DF7EA9300346106 /* OIDNoClientAuthenticationTests.m */,
 			);
 			path = UnitTests;
 			sourceTree = "<group>";
@@ -534,11 +564,14 @@
 				341741E61C5D8243000EF209 /* OIDServiceConfiguration.m in Sources */,
 				60140F7A1DE4276800DA0DC3 /* OIDClientMetadataParameters.m in Sources */,
 				341741DE1C5D8243000EF209 /* OIDAuthState.m in Sources */,
+				609E58B21DF7DF9D00346106 /* OIDNoClientAuthentication.m in Sources */,
+				609E58AC1DF7DD3B00346106 /* OIDClientSecretBasic.m in Sources */,
 				341741DD1C5D8243000EF209 /* OIDAuthorizationService.m in Sources */,
 				340DAECD1D582DE100EC285B /* OIDAuthorizationUICoordinatorIOS.m in Sources */,
 				341741EB1C5D8243000EF209 /* OIDURLQueryComponent.m in Sources */,
 				341741E11C5D8243000EF209 /* OIDFieldMapping.m in Sources */,
 				341741DF1C5D8243000EF209 /* OIDError.m in Sources */,
+				609E58AF1DF7DE5F00346106 /* OIDClientSecretPost.m in Sources */,
 				341741DB1C5D8243000EF209 /* OIDAuthorizationRequest.m in Sources */,
 				60140F801DE4344200DA0DC3 /* OIDRegistrationResponse.m in Sources */,
 				340DAECB1D582DE100EC285B /* OIDAuthorizationService+IOS.m in Sources */,
@@ -557,6 +590,8 @@
 				341742221C5D82D3000EF209 /* OIDURLQueryComponentTestsIOS7.m in Sources */,
 				3417421E1C5D82D3000EF209 /* OIDServiceDiscoveryTests.m in Sources */,
 				3417421F1C5D82D3000EF209 /* OIDTokenRequestTests.m in Sources */,
+				609E58B51DF7E89600346106 /* OIDClientSecretBasicTests.m in Sources */,
+				609E58BA1DF7EA9300346106 /* OIDNoClientAuthenticationTests.m in Sources */,
 				341742181C5D82D3000EF209 /* OIDAuthorizationResponseTests.m in Sources */,
 				341742171C5D82D3000EF209 /* OIDAuthorizationRequestTests.m in Sources */,
 				3417421A1C5D82D3000EF209 /* OIDGrantTypesTests.m in Sources */,
@@ -566,6 +601,7 @@
 				341742191C5D82D3000EF209 /* OIDAuthStateTests.m in Sources */,
 				3417421D1C5D82D3000EF209 /* OIDServiceConfigurationTests.m in Sources */,
 				3417421C1C5D82D3000EF209 /* OIDScopesTests.m in Sources */,
+				609E58B81DF7E9C400346106 /* OIDClientSecretPostTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

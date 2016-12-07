@@ -23,9 +23,12 @@
 #import "OIDAuthorizationRequest.h"
 #import "OIDAuthorizationResponse.h"
 #import "OIDAuthorizationService.h"
+#import "OIDClientSecretBasic.h"
+#import "OIDClientSecretPost.h"
 #import "OIDDefines.h"
 #import "OIDError.h"
 #import "OIDErrorUtilities.h"
+#import "OIDNoClientAuthentication.h"
 #import "OIDRegistrationResponse.h"
 #import "OIDTokenRequest.h"
 #import "OIDTokenResponse.h"
@@ -300,10 +303,37 @@ static const NSUInteger kExpiryTimeTolerance = 60;
                             : _lastAuthorizationResponse.idToken;
 }
 
+- (NSString *)clientSecret {
+  if (_lastRegistrationResponse) {
+    return _lastRegistrationResponse.clientSecret;
+  }
+  return nil;
+}
+
 #pragma mark - Getters
 
 - (BOOL)isAuthorized {
   return !self.authorizationError && (self.accessToken || self.idToken || self.refreshToken);
+}
+
+- (nullable id<OIDClientAuthentication>)constructClientAuthentication {
+  if (![self clientSecret]) {
+    return [OIDNoClientAuthentication instance];
+  } else if (!_lastRegistrationResponse.tokenEndpointAuthenticationMethod) {
+    return [[OIDClientSecretBasic alloc] initWithClientSecret:[self clientSecret]];
+  }
+
+  if ([_lastRegistrationResponse.tokenEndpointAuthenticationMethod
+       isEqualToString:OIDNoClientAuthenticationName]) {
+    return [OIDNoClientAuthentication instance];
+  } else if ([_lastRegistrationResponse.tokenEndpointAuthenticationMethod
+              isEqualToString:OIDClientSecretBasicName]) {
+    return [[OIDClientSecretBasic alloc] initWithClientSecret:[self clientSecret]];
+  } else if ([_lastRegistrationResponse.tokenEndpointAuthenticationMethod
+              isEqualToString:OIDClientSecretPostName]) {
+    return [[OIDClientSecretPost alloc] initWithClientSecret:[self clientSecret]];
+  }
+  return nil;
 }
 
 #pragma mark - Updating the state

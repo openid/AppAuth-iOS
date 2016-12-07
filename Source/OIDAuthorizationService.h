@@ -28,6 +28,7 @@
 @class OIDTokenResponse;
 @protocol OIDAuthorizationFlowSession;
 @protocol OIDAuthorizationUICoordinator;
+@protocol OIDClientAuthentication;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -126,6 +127,15 @@ typedef void (^OIDRegistrationCompletion)(OIDRegistrationResponse *_Nullable reg
     @param callback The method called when the request has completed or failed.
  */
 + (void)performTokenRequest:(OIDTokenRequest *)request callback:(OIDTokenCallback)callback;
+
+/*! @brief Performs a token request.
+    @param request The token request.
+    @param withAuthentication The client authentication to use at the token endpoint.
+    @param callback The method called when the request has completed or failed.
+ */
++ (void)performTokenRequest:(OIDTokenRequest *)request
+         withAuthentication:(id<OIDClientAuthentication>)withAuthentication
+                   callback:(OIDTokenCallback)callback;
 
 /*! @brief Performs a registration request.
     @param request The registration request.

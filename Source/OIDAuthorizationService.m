@@ -21,8 +21,10 @@
 #import "OIDAuthorizationRequest.h"
 #import "OIDAuthorizationResponse.h"
 #import "OIDAuthorizationUICoordinator.h"
+#import "OIDClientAuthentication.h"
 #import "OIDDefines.h"
 #import "OIDErrorUtilities.h"
+#import "OIDNoClientAuthentication.h"
 #import "OIDRegistrationRequest.h"
 #import "OIDRegistrationResponse.h"
 #import "OIDServiceConfiguration.h"
@@ -258,7 +260,15 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark - Token Endpoint
 
 + (void)performTokenRequest:(OIDTokenRequest *)request callback:(OIDTokenCallback)callback {
-  NSURLRequest *URLRequest = [request URLRequest];
+  [[self class] performTokenRequest:request
+                 withAuthentication:[OIDNoClientAuthentication instance]
+                           callback:callback];
+}
+
++ (void)performTokenRequest:(OIDTokenRequest *)request
+         withAuthentication:(id<OIDClientAuthentication>)withAuthentication
+                   callback:(OIDTokenCallback)callback {
+  NSURLRequest *URLRequest = [request URLRequestWithClientAuthentication:withAuthentication];
   NSURLSession *session = [NSURLSession sharedSession];
   [[session dataTaskWithRequest:URLRequest
               completionHandler:^(NSData *_Nullable data,

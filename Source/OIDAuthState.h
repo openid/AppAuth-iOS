@@ -27,6 +27,7 @@
 @protocol OIDAuthorizationUICoordinator;
 @protocol OIDAuthStateChangeDelegate;
 @protocol OIDAuthStateErrorDelegate;
+@protocol OIDClientAuthentication;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -262,6 +263,12 @@ typedef void (^OIDAuthStateAuthorizationCallback)(OIDAuthState *_Nullable authSt
  */
 - (void)withFreshTokensPerformAction:(OIDAuthStateAction)action
     __deprecated_msg("Use OIDAuthState.performActionWithFreshTokens:");
+
+/*! @brief Creates the required client authentication for the token endpoint based on the
+        information in the most recent registration response (if it is set).
+    @return A @c OIDClientAuthentication suitable for using with a token request.
+ */
+- (nullable id<OIDClientAuthentication>)constructClientAuthentication;
 
 @end
 

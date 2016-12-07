@@ -18,7 +18,9 @@
 
 #import "OIDTokenRequest.h"
 
+#import "OIDClientAuthentication.h"
 #import "OIDDefines.h"
+#import "OIDNoClientAuthentication.h"
 #import "OIDScopeUtilities.h"
 #import "OIDServiceConfiguration.h"
 #import "OIDURLQueryComponent.h"
@@ -219,7 +221,7 @@ static NSString *const kAdditionalParametersKey = @"additionalParameters";
     @return The data to pass to the token request URL.
     @see https://tools.ietf.org/html/rfc6749#section-4.1.3
  */
-- (NSData *)tokenRequestBody {
+- (OIDURLQueryComponent *)tokenRequestBody {
   OIDURLQueryComponent *query = [[OIDURLQueryComponent alloc] init];
 
   // Add parameters, as applicable.
@@ -251,13 +253,14 @@ static NSString *const kAdditionalParametersKey = @"additionalParameters";
   // Add any additional parameters the client has specified.
   [query addParameters:_additionalParameters];
 
-  // Construct the body string:
-  NSString *bodyString = [query URLEncodedParameters];
-  NSData *body = [bodyString dataUsingEncoding:NSUTF8StringEncoding];
-  return body;
+  return query;
 }
 
 - (NSURLRequest *)URLRequest {
+  return [self URLRequestWithClientAuthentication:[OIDNoClientAuthentication instance]];
+}
+
+- (NSURLRequest *)URLRequestWithClientAuthentication:(id<OIDClientAuthentication>)clientAuth {
   static NSString *const kHTTPPost = @"POST";
   static NSString *const kHTTPContentTypeHeaderKey = @"Content-Type";
   static NSString *const kHTTPContentTypeHeaderValue =
@@ -267,7 +270,21 @@ static NSString *const kAdditionalParametersKey = @"additionalParameters";
   NSMutableURLRequest *URLRequest = [[NSURLRequest requestWithURL:tokenRequestURL] mutableCopy];
   URLRequest.HTTPMethod = kHTTPPost;
   [URLRequest setValue:kHTTPContentTypeHeaderValue forHTTPHeaderField:kHTTPContentTypeHeaderKey];
-  URLRequest.HTTPBody = [self tokenRequestBody];
+
+  id httpHeaders = [clientAuth constructRequestHeaders:[self clientID]];
+  for (id header in httpHeaders) {
+    [URLRequest setValue:httpHeaders[header] forHTTPHeaderField:header];
+  }
+
+  OIDURLQueryComponent *requestBody = [self tokenRequestBody];
+  id authenticationParameters = [clientAuth constructRequestParameters:[self clientID]];
+  [requestBody addParameters:authenticationParameters];
+
+  // Construct the body string:
+  NSString *bodyString = [requestBody URLEncodedParameters];
+  NSData *body = [bodyString dataUsingEncoding:NSUTF8StringEncoding];
+  URLRequest.HTTPBody = body;
+
   return URLRequest;
 }
 
