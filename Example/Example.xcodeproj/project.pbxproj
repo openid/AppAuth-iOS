@@ -7,18 +7,17 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		340513291C79223600C0979A /* libAppAuth.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 340513281C79223600C0979A /* libAppAuth.a */; };
 		346E916E1C29D42800D3620B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 346E916D1C29D42800D3620B /* main.m */; };
 		346E91711C29D42800D3620B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 346E91701C29D42800D3620B /* AppDelegate.m */; };
 		346E91791C29D42800D3620B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 346E91781C29D42800D3620B /* Assets.xcassets */; };
 		346E917C1C29D42800D3620B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 346E917A1C29D42800D3620B /* LaunchScreen.storyboard */; };
 		346E91991C2A245000D3620B /* SafariServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 346E91981C2A245000D3620B /* SafariServices.framework */; };
+		3474C8DE1DFCB08E00F22B34 /* libAppAuth-iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3474C8DD1DFCB08E00F22B34 /* libAppAuth-iOS.a */; };
 		34CB09BD1C42007600A54261 /* AppAuthExampleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34CB09BB1C42007600A54261 /* AppAuthExampleViewController.m */; };
 		34CB09BE1C42007600A54261 /* AppAuthExampleViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 34CB09BC1C42007600A54261 /* AppAuthExampleViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		340513281C79223600C0979A /* libAppAuth.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libAppAuth.a; path = "../build/Debug-iphoneos/libAppAuth.a"; sourceTree = "<group>"; };
 		346E91691C29D42800D3620B /* Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		346E916D1C29D42800D3620B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		346E916F1C29D42800D3620B /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -27,6 +26,7 @@
 		346E917B1C29D42800D3620B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		346E917D1C29D42800D3620B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		346E91981C2A245000D3620B /* SafariServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SafariServices.framework; path = System/Library/Frameworks/SafariServices.framework; sourceTree = SDKROOT; };
+		3474C8DD1DFCB08E00F22B34 /* libAppAuth-iOS.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libAppAuth-iOS.a"; path = "../build/Debug-iphoneos/libAppAuth-iOS.a"; sourceTree = "<group>"; };
 		34CB09BA1C42007600A54261 /* AppAuthExampleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppAuthExampleViewController.h; sourceTree = "<group>"; };
 		34CB09BB1C42007600A54261 /* AppAuthExampleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppAuthExampleViewController.m; sourceTree = "<group>"; };
 		34CB09BC1C42007600A54261 /* AppAuthExampleViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AppAuthExampleViewController.xib; sourceTree = "<group>"; };
@@ -37,7 +37,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				340513291C79223600C0979A /* libAppAuth.a in Frameworks */,
+				3474C8DE1DFCB08E00F22B34 /* libAppAuth-iOS.a in Frameworks */,
 				346E91991C2A245000D3620B /* SafariServices.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -48,7 +48,7 @@
 		341564001C487ABA00ECA3D9 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				340513281C79223600C0979A /* libAppAuth.a */,
+				3474C8DD1DFCB08E00F22B34 /* libAppAuth-iOS.a */,
 				346E91981C2A245000D3620B /* SafariServices.framework */,
 			);
 			name = Frameworks;
