@@ -84,7 +84,8 @@ static id<OIDSafariViewControllerFactory> __nullable gSafariViewControllerFactor
         [[[self class] safariViewControllerFactory] safariViewControllerWithURL:URL];
     safariVC.delegate = self;
     _safariVC = safariVC;
-    [_presentingViewController presentViewController:safariVC animated:YES completion:nil];
+    //[_presentingViewController presentViewController:safariVC animated:YES completion:nil];
+    [[[[UIApplication sharedApplication] keyWindow] rootViewController] presentViewController:safariVC animated:YES completion:nil];
     return YES;
   }
   BOOL openedSafari = [[UIApplication sharedApplication] openURL:URL];
