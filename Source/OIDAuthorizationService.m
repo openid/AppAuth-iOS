@@ -179,8 +179,8 @@ NS_ASSUME_NONNULL_BEGIN
   NSURL *fullDiscoveryURL =
       [issuerURL URLByAppendingPathComponent:kOpenIDConfigurationWellKnownPath];
 
-  return [[self class] discoverServiceConfigurationForDiscoveryURL:fullDiscoveryURL
-                                                        completion:completion];
+  [[self class] discoverServiceConfigurationForDiscoveryURL:fullDiscoveryURL
+                                                 completion:completion];
 }
 
 + (void)discoverServiceConfigurationForDiscoveryURL:(NSURL *)discoveryURL

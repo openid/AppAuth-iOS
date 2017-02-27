@@ -85,7 +85,6 @@ static const NSUInteger kExpiryTimeTolerance = 60;
 
 @end
 
-
 @implementation OIDAuthState {
   /*! @brief Array of pending actions (use @c _pendingActionsSyncObject to synchronize access).
    */
@@ -152,7 +151,7 @@ static const NSUInteger kExpiryTimeTolerance = 60;
 #pragma mark - Initializers
 
 - (nullable instancetype)init
-    OID_UNAVAILABLE_USE_INITIALIZER(@selector(initWithAuthorizationResponse:tokenResponse:));
+    OID_UNAVAILABLE_USE_INITIALIZER(@selector(initWithAuthorizationResponse:tokenResponse:))
 
 /*! @brief Creates an auth state from an authorization response.
     @param response The authorization response.
@@ -191,7 +190,7 @@ static const NSUInteger kExpiryTimeTolerance = 60;
                                      "lastAuthorizationResponse: %@, lastTokenResponse: %@, "
                                      "authorizationError: %@>",
                                     NSStringFromClass([self class]),
-                                    self,
+                                    (void *)self,
                                     (self.isAuthorized) ? @"YES" : @"NO",
                                     _refreshToken,
                                     _scope,
@@ -283,7 +282,7 @@ static const NSUInteger kExpiryTimeTolerance = 60;
 - (void)updateWithAuthorizationResponse:(nullable OIDAuthorizationResponse *)authorizationResponse
                                   error:(nullable NSError *)error {
   // If the error is an OAuth authorization error, updates the state. Other errors are ignored.
-  if (error.domain == OIDOAuthAuthorizationErrorDomain) {
+  if (error && error.domain == OIDOAuthAuthorizationErrorDomain) {
     [self updateWithAuthorizationError:error];
     return;
   }
@@ -322,7 +321,7 @@ static const NSUInteger kExpiryTimeTolerance = 60;
   }
 
   // If the error is an OAuth authorization error, updates the state. Other errors are ignored.
-  if (error.domain == OIDOAuthTokenErrorDomain) {
+  if (error && error.domain == OIDOAuthTokenErrorDomain) {
     [self updateWithAuthorizationError:error];
     return;
   }
@@ -419,7 +418,7 @@ static const NSUInteger kExpiryTimeTolerance = 60;
   }
 
   // access token is expired, first refresh the token, then perform action
-  NSAssert(_pendingActionsSyncObject, @"_pendingActionsSyncObject cannot be nil");
+  NSAssert(_pendingActionsSyncObject, @"_pendingActionsSyncObject cannot be nil", @"");
   @synchronized(_pendingActionsSyncObject) {
     // if a token is already in the process of being refreshed, adds to pending actions
     if (_pendingActions) {
@@ -434,37 +433,46 @@ static const NSUInteger kExpiryTimeTolerance = 60;
   // refresh the tokens
   OIDTokenRequest *tokenRefreshRequest =
       [self tokenRefreshRequestWithAdditionalParameters:additionalParameters];
+  __weak OIDAuthState *weakself = self;
   [OIDAuthorizationService performTokenRequest:tokenRefreshRequest
                                       callback:^(OIDTokenResponse *_Nullable response,
                                                  NSError *_Nullable error) {
     dispatch_async(dispatch_get_main_queue(), ^() {
-      // update OIDAuthState based on response
-      if (response) {
-        _needsTokenRefresh = NO;
-        [self updateWithTokenResponse:response error:nil];
-      } else {
-        if (error.domain == OIDOAuthTokenErrorDomain) {
-          _needsTokenRefresh = NO;
-          [self updateWithAuthorizationError:error];
-        } else {
-          if ([_errorDelegate respondsToSelector:
-              @selector(authState:didEncounterTransientError:)]) {
-            [_errorDelegate authState:self didEncounterTransientError:error];
-          }
-        }
-      }
-
-      // nil the pending queue and process everything that was queued up
-      NSArray *actionsToProcess;
-      @synchronized(_pendingActionsSyncObject) {
-        actionsToProcess = _pendingActions;
-        _pendingActions = nil;
-      }
-      for (OIDAuthStateAction actionToProcess in actionsToProcess) {
-        actionToProcess(self.accessToken, self.idToken, error);
-      }
+      [weakself performTokenRequestCompletedWithTokenResponse:response error:error];
     });
   }];
+}
+
+/*! Handles the response to a Token Request.
+    @see OIDAuthState.performActionWithFreshTokens:additionalRefreshParameters:
+ */
+- (void)performTokenRequestCompletedWithTokenResponse:(OIDTokenResponse *)response
+                                                error:(NSError *)error {
+  // update OIDAuthState based on response
+  if (response) {
+    _needsTokenRefresh = NO;
+    [self updateWithTokenResponse:response error:nil];
+  } else {
+    if (error.domain == OIDOAuthTokenErrorDomain) {
+      _needsTokenRefresh = NO;
+      [self updateWithAuthorizationError:error];
+    } else {
+      if ([_errorDelegate respondsToSelector:
+          @selector(authState:didEncounterTransientError:)]) {
+        [_errorDelegate authState:self didEncounterTransientError:error];
+      }
+    }
+  }
+
+  // nil the pending queue and process everything that was queued up
+  NSArray *actionsToProcess;
+  @synchronized(_pendingActionsSyncObject) {
+    actionsToProcess = _pendingActions;
+    _pendingActions = nil;
+  }
+  for (OIDAuthStateAction actionToProcess in actionsToProcess) {
+    actionToProcess(self.accessToken, self.idToken, error);
+  }
 }
 
 #pragma mark - Deprecated

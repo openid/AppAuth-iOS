@@ -131,13 +131,14 @@ typedef void (^OIDAuthStateAuthorizationCallback)(OIDAuthState *_Nullable authSt
 - (nullable instancetype)init NS_UNAVAILABLE;
 
 /*! @brief Creates an auth state from an authorization response.
-    @param response The authorization response.
+    @param authorizationResponse The authorization response.
  */
 - (nullable instancetype)initWithAuthorizationResponse:
     (OIDAuthorizationResponse *)authorizationResponse;
 
 /*! @brief Creates an auth state from an authorization response.
-    @param response The authorization response.
+    @param authorizationResponse The authorization response.
+    @param tokenResponse The token response.
  */
 - (nullable instancetype)initWithAuthorizationResponse:
     (OIDAuthorizationResponse *)authorizationResponse
@@ -191,7 +192,7 @@ typedef void (^OIDAuthStateAuthorizationCallback)(OIDAuthState *_Nullable authSt
         refresh was needed and failed, with the error that caused it to fail.
     @param action The block to execute with a fresh token. This block will be executed on the main
         thread.
-    @param additionalRefreshParameters Additional parameters for the token request if token is
+    @param additionalParameters Additional parameters for the token request if token is
         refreshed.
  */
 - (void)performActionWithFreshTokens:(OIDAuthStateAction)action

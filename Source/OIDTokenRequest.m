@@ -79,7 +79,7 @@ static NSString *const kAdditionalParametersKey = @"additionalParameters";
                            refreshToken:
                            codeVerifier:
                    additionalParameters:)
-    );
+    )
 
 - (nullable instancetype)initWithConfiguration:(OIDServiceConfiguration *)configuration
                grantType:(NSString *)grantType
@@ -199,7 +199,7 @@ static NSString *const kAdditionalParametersKey = @"additionalParameters";
       [[NSString alloc] initWithData:request.HTTPBody encoding:NSUTF8StringEncoding];
   return [NSString stringWithFormat:@"<%@: %p, request: <URL: %@, HTTPBody: %@>>",
                                     NSStringFromClass([self class]),
-                                    self,
+                                    (void *)self,
                                     request.URL,
                                     requestBody];
 }

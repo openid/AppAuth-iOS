@@ -110,7 +110,7 @@ static NSString *const kTokenExchangeRequestException =
 #pragma mark - Initializers
 
 - (nullable instancetype)init
-    OID_UNAVAILABLE_USE_INITIALIZER(@selector(initWithRequest:parameters:));
+    OID_UNAVAILABLE_USE_INITIALIZER(@selector(initWithRequest:parameters:))
 
 - (nullable instancetype)initWithRequest:(OIDAuthorizationRequest *)request
     parameters:(NSDictionary<NSString *, NSObject<NSCopying> *> *)parameters {
@@ -168,7 +168,7 @@ static NSString *const kTokenExchangeRequestException =
                                      "idToken: \"%@\", scope: \"%@\", additionalParameters: %@, "
                                      "request: %@>",
                                     NSStringFromClass([self class]),
-                                    self,
+                                    (void *)self,
                                     _authorizationCode,
                                     _state,
                                     _accessToken,
