@@ -53,6 +53,11 @@ static NSString *const kInitializerTestAuthEndpoint = @"https://www.example.com/
  */
 static NSString *const kInitializerTestTokenEndpoint = @"https://www.example.com/token";
 
+/*! @brief Test value for the @c tokenEndpoint property.
+ */
+static NSString *const kInitializerTestRegistrationEndpoint =
+    @"https://www.example.com/registration";
+
 /*! @brief Test URL for OpenID Connect Discovery document. Not actually retrieved.
  */
 static NSString *const kInitializerTestDiscoveryEndpoint = @"https://www.example.com/discovery";
@@ -80,9 +85,11 @@ static NSString *const kIssuerTestExpectedFullDiscoveryURL =
 + (OIDServiceConfiguration *)testInstance {
   NSURL *authEndpoint = [NSURL URLWithString:kInitializerTestAuthEndpoint];
   NSURL *tokenEndpoint = [NSURL URLWithString:kInitializerTestTokenEndpoint];
+  NSURL *registrationEndpoint = [NSURL URLWithString:kInitializerTestRegistrationEndpoint];
   OIDServiceConfiguration *configuration =
       [[OIDServiceConfiguration alloc] initWithAuthorizationEndpoint:authEndpoint
-                                                       tokenEndpoint:tokenEndpoint];
+                                                       tokenEndpoint:tokenEndpoint
+                                                registrationEndpoint:registrationEndpoint];
   return configuration;
 }
 
@@ -143,6 +150,8 @@ static NSString *const kIssuerTestExpectedFullDiscoveryURL =
                         kInitializerTestAuthEndpoint);
   XCTAssertEqualObjects(configuration.tokenEndpoint.absoluteString,
                         kInitializerTestTokenEndpoint);
+  XCTAssertEqualObjects(configuration.registrationEndpoint.absoluteString,
+                        kInitializerTestRegistrationEndpoint);
 }
 
 - (void)testIssuer {
@@ -349,6 +358,7 @@ static NSString *const kIssuerTestExpectedFullDiscoveryURL =
 
   XCTAssertEqualObjects(configuration.authorizationEndpoint, unarchived.authorizationEndpoint);
   XCTAssertEqualObjects(configuration.tokenEndpoint, unarchived.tokenEndpoint);
+  XCTAssertEqualObjects(configuration.registrationEndpoint, unarchived.registrationEndpoint);
 }
 
 /*! @brief Tests the @c NSCopying implementation by round-tripping an instance through the copying
@@ -361,6 +371,7 @@ static NSString *const kIssuerTestExpectedFullDiscoveryURL =
 
   XCTAssertEqualObjects(configuration.authorizationEndpoint, unarchived.authorizationEndpoint);
   XCTAssertEqualObjects(configuration.tokenEndpoint, unarchived.tokenEndpoint);
+  XCTAssertEqualObjects(configuration.registrationEndpoint, unarchived.registrationEndpoint);
 }
 
 @end
