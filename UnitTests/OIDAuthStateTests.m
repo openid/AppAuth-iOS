@@ -19,10 +19,17 @@
 #import "OIDAuthStateTests.h"
 
 #import "OIDAuthorizationResponseTests.h"
+#import "OIDClientMetadataParameters.h"
+#import "OIDRegistrationRequestTests.h"
+#import "OIDRegistrationResponseTests.h"
 #import "OIDTokenResponseTests.h"
 #import "Source/OIDAuthState.h"
 #import "Source/OIDAuthorizationResponse.h"
 #import "Source/OIDErrorUtilities.h"
+#import "Source/OIDClientSecretBasic.h"
+#import "Source/OIDClientSecretPost.h"
+#import "Source/OIDNoClientAuthentication.h"
+#import "Source/OIDRegistrationResponse.h"
 #import "Source/OIDTokenResponse.h"
 #import "OIDTokenRequestTests.h"
 
@@ -237,6 +244,20 @@
   XCTAssertNotNil(authState.authorizationError);
 }
 
+/*! @brief Tests @c OIDAuthState.updateWithRegistrationResponse: with a success response.
+ */
+- (void)testupdateWithRegistrationResponse {
+  OIDAuthState *authState = [[self class] testInstance];
+  OIDRegistrationResponse *registrationResponse = [OIDRegistrationResponseTests testInstance];
+  [authState updateWithRegistrationResponse:registrationResponse];
+  XCTAssertEqualObjects(authState.lastRegistrationResponse, registrationResponse);
+  XCTAssertNil(authState.refreshToken);
+  XCTAssertNil(authState.scope);
+  XCTAssertNil(authState.lastAuthorizationResponse);
+  XCTAssertNil(authState.authorizationError);
+  XCTAssertFalse(authState.isAuthorized);
+}
+
 /*! @brief Tests @c OIDAuthState.updateWithTokenResponse:error: with a success response.
  */
 - (void)testUpdateWithTokenResponseSuccess {
@@ -406,6 +427,117 @@
       [[OIDAuthState alloc] initWithAuthorizationResponse:authorizationResponse
                                             tokenResponse:tokenResponse];
   XCTAssertEqual([authState isTokenFresh], YES);
+}
+
+/*! @brief Tests @c OIDAuthState.constructClientAuthentication which has no client registration
+        response.
+ */
+- (void)testConstructClientAuthenticationWithoutRegistrationRequest {
+  OIDAuthState *authState = [[self class] testInstance];
+  id<OIDClientAuthentication> clientAuth = [authState constructClientAuthentication];
+  XCTAssertTrue([clientAuth isKindOfClass: [OIDNoClientAuthentication class]]);
+}
+
+/*! @brief Tests @c OIDAuthState.constructClientAuthentication when no client credentials are
+        included in the registration request. This should result in no client authentication.
+ */
+- (void)testConstructClientAuthenticationWithoutClientCredentials {
+  OIDRegistrationRequest *registrationRequest = [OIDRegistrationRequestTests testInstance];
+  OIDRegistrationResponse *registrationResponse =
+      [[OIDRegistrationResponse alloc] initWithRequest:registrationRequest
+                                            parameters:@{ @"client_id": @"client1" }];
+
+  OIDAuthState *authState =
+      [[OIDAuthState alloc] initWithRegistrationResponse:registrationResponse];
+  id<OIDClientAuthentication> clientAuth = [authState constructClientAuthentication];
+  XCTAssertTrue([clientAuth isKindOfClass: [OIDNoClientAuthentication class]]);
+}
+
+/*! @brief Tests @c OIDAuthState.constructClientAuthentication with client credentials. Since
+        'token_endpoint_auth_method' isn't specified, this should default to client secret basic
+        authentication.
+ */
+- (void)testConstructClientAuthenticationWithoutTokenEndpointAuthMethod {
+  OIDRegistrationRequest *registrationRequest = [OIDRegistrationRequestTests testInstance];
+  OIDRegistrationResponse *registrationResponse =
+      [[OIDRegistrationResponse alloc] initWithRequest:registrationRequest
+          parameters:@{ OIDClientIDParam: @"client1",
+                        OIDClientSecretParam: @"mySecret",
+                        OIDClientSecretExpirestAtParam: @0 }];
+
+  OIDAuthState *authState =
+      [[OIDAuthState alloc] initWithRegistrationResponse:registrationResponse];
+  id<OIDClientAuthentication> clientAuth = [authState constructClientAuthentication];
+  XCTAssertTrue([clientAuth isKindOfClass: [OIDClientSecretBasic class]]);
+}
+
+/*! @brief Tests @c OIDAuthState.constructClientAuthentication with explicit no client
+        authentication with 'token_endpoint_auth_method="none"'.
+ */
+- (void)testConstructClientAuthenticationWithTokenEndpointAuthMethodNone {
+  OIDRegistrationRequest *registrationRequest = [OIDRegistrationRequestTests testInstance];
+  OIDRegistrationResponse *registrationResponse =
+      [[OIDRegistrationResponse alloc] initWithRequest:registrationRequest
+          parameters:@{ OIDClientIDParam: @"client1",
+                        OIDClientSecretParam: @"mySecret",
+                        OIDClientSecretExpirestAtParam: @0,
+                        OIDTokenEndpointAuthenticationMethodParam: @"none" }];
+
+  OIDAuthState *authState =
+      [[OIDAuthState alloc] initWithRegistrationResponse:registrationResponse];
+  id<OIDClientAuthentication> clientAuth = [authState constructClientAuthentication];
+  XCTAssertTrue([clientAuth isKindOfClass: [OIDNoClientAuthentication class]]);
+}
+
+/*! @brief Tests @c OIDAuthState.constructClientAuthentication with explicit basic authentication
+        with 'token_endpoint_auth_method="client_secret_basic"'.
+ */
+- (void)testConstructClientAuthenticationWithTokenEndpointAuthMethodBasic {
+  OIDRegistrationRequest *registrationRequest = [OIDRegistrationRequestTests testInstance];
+  OIDRegistrationResponse *registrationResponse =
+      [[OIDRegistrationResponse alloc] initWithRequest:registrationRequest
+          parameters:@{ OIDClientIDParam: @"client1",
+                        OIDClientSecretParam: @"mySecret",
+                        OIDClientSecretExpirestAtParam: @0,
+                        OIDTokenEndpointAuthenticationMethodParam: @"client_secret_basic" }];
+
+  OIDAuthState *authState = [[OIDAuthState alloc] initWithRegistrationResponse:registrationResponse];
+  id<OIDClientAuthentication> clientAuth = [authState constructClientAuthentication];
+  XCTAssertTrue([clientAuth isKindOfClass: [OIDClientSecretBasic class]]);
+}
+
+/*! @brief Tests @c OIDAuthState.constructClientAuthentication with explicit POST authentication
+        with 'token_endpoint_auth_method="client_secret_post"'.
+ */
+- (void)testConstructClientAuthenticationWithTokenEndpointAuthMethodPost {
+  OIDRegistrationRequest *registrationRequest = [OIDRegistrationRequestTests testInstance];
+  OIDRegistrationResponse *registrationResponse =
+      [[OIDRegistrationResponse alloc] initWithRequest:registrationRequest
+          parameters:@{ OIDClientIDParam: @"client1",
+                        OIDClientSecretParam: @"mySecret",
+                        OIDClientSecretExpirestAtParam: @0,
+                        OIDTokenEndpointAuthenticationMethodParam: @"client_secret_post" }];
+
+  OIDAuthState *authState = [[OIDAuthState alloc] initWithRegistrationResponse:registrationResponse];
+  id<OIDClientAuthentication> clientAuth = [authState constructClientAuthentication];
+  XCTAssertTrue([clientAuth isKindOfClass: [OIDClientSecretPost class]]);
+}
+
+/*! @brief Tests @c OIDAuthState.constructClientAuthentication with unknown
+        'token_endpoint_auth_method="unknown"'.
+ */
+- (void)testConstructClientAuthenticationWithUnknownTokenEndpointAuthMethod {
+  OIDRegistrationRequest *registrationRequest = [OIDRegistrationRequestTests testInstance];
+  OIDRegistrationResponse *registrationResponse =
+      [[OIDRegistrationResponse alloc] initWithRequest:registrationRequest
+          parameters:@{ OIDClientIDParam: @"client1",
+                        OIDClientSecretParam: @"mySecret",
+                        OIDClientSecretExpirestAtParam: @0,
+                        OIDTokenEndpointAuthenticationMethodParam: @"unknown" }];
+
+  OIDAuthState *authState = [[OIDAuthState alloc] initWithRegistrationResponse:registrationResponse];
+  id<OIDClientAuthentication> clientAuth = [authState constructClientAuthentication];
+  XCTAssertNil(clientAuth);
 }
 
 @end

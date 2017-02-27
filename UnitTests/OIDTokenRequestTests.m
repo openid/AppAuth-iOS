@@ -19,12 +19,15 @@
 #import "OIDTokenRequestTests.h"
 
 #import "OIDAuthorizationResponseTests.h"
+#import "OIDClientSecretBasicTests.h"
+#import "OIDClientSecretPostTests.h"
 #import "OIDServiceConfigurationTests.h"
 #import "Source/OIDAuthorizationRequest.h"
 #import "Source/OIDAuthorizationResponse.h"
 #import "Source/OIDScopeUtilities.h"
 #import "Source/OIDServiceConfiguration.h"
 #import "Source/OIDTokenRequest.h"
+#import "Source/OIDURLQueryComponent.h"
 
 /*! @brief Test value for the @c refreshToken property.
  */
@@ -183,6 +186,27 @@ static NSString *const kTestAdditionalParameterValue = @"1";
   XCTAssertNotNil(requestCopy.additionalParameters);
   XCTAssertEqualObjects(requestCopy.additionalParameters[kTestAdditionalParameterKey],
                         kTestAdditionalParameterValue);
+}
+
+- (void)testURLRequestWithBasicAuth {
+  OIDTokenRequest *request = [[self class] testInstance];
+  OIDClientSecretBasic *clientAuth = [OIDClientSecretBasicTests testInstance];
+  NSURLRequest *httpRequest = [request URLRequestWithClientAuthentication:clientAuth];
+  XCTAssertNotNil([httpRequest valueForHTTPHeaderField:@"Authorization"]);
+}
+
+- (void)testURLRequestWithPostAuth {
+  OIDTokenRequest *request = [[self class] testInstance];
+  OIDClientSecretPost *clientAuth = [OIDClientSecretPostTests testInstance];
+  NSURLRequest *httpRequest = [request URLRequestWithClientAuthentication:clientAuth];
+
+  NSString *requestBodyString = [[NSString alloc] initWithData:httpRequest.HTTPBody
+                                                      encoding:NSUTF8StringEncoding];
+  NSString *queryString = [NSString stringWithFormat:@"://?%@", requestBodyString];
+  NSURL *url= [NSURL URLWithString:queryString];
+  OIDURLQueryComponent *requestBody = [[OIDURLQueryComponent alloc] initWithURL: url];
+  XCTAssertTrue([requestBody.parameters containsObject:@"client_id"]);
+  XCTAssertTrue([requestBody.parameters containsObject:@"client_secret"]);
 }
 
 @end

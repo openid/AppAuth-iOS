@@ -24,6 +24,7 @@
 
 @class OIDAuthorizationResponse;
 @class OIDServiceConfiguration;
+@protocol OIDClientAuthentication;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -152,6 +153,12 @@ NS_ASSUME_NONNULL_BEGIN
     @return An @c NSURLRequest representing the token request.
  */
 - (NSURLRequest *)URLRequest;
+
+/*! @brief Constructs an @c NSURLRequest representing the token request.
+    @param clientAuth the client authentication to use
+    @return An @c NSURLRequest representing the token request.
+ */
+- (NSURLRequest *)URLRequestWithClientAuthentication:(id<OIDClientAuthentication>)clientAuth;
 
 @end
 
