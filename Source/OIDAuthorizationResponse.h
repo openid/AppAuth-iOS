@@ -92,7 +92,7 @@ NS_ASSUME_NONNULL_BEGIN
 /*! @internal
     @brief Unavailable. Please use initWithParameters:.
  */
-- (nullable instancetype)init NS_UNAVAILABLE;
+- (nonnull instancetype)init NS_UNAVAILABLE;
 
 /*! @brief Designated initializer.
     @param request The serviced request.

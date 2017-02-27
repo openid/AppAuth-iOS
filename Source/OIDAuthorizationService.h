@@ -84,7 +84,7 @@ typedef void (^OIDRegistrationCompletion)(OIDRegistrationResponse *_Nullable reg
 /*! @internal
     @brief Unavailable. This class should not be initialized.
  */
-- (nullable instancetype)init NS_UNAVAILABLE;
+- (nonnull instancetype)init NS_UNAVAILABLE;
 
 /*! @brief Convenience method for creating an authorization service configuration from an OpenID
         Connect compliant issuer URL.

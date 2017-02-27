@@ -46,7 +46,7 @@ typedef _Nullable id(^OIDFieldMappingConversionFunction)(NSObject *_Nullable val
 /*! @internal
     @brief Unavailable. Please use initWithName:type:conversion:.
  */
-- (nullable instancetype)init NS_UNAVAILABLE;
+- (nonnull instancetype)init NS_UNAVAILABLE;
 
 /*! @brief The designated initializer.
     @param name The name of the instance variable the field should be mapped to.

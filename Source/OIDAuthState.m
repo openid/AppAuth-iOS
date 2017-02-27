@@ -152,7 +152,7 @@ static const NSUInteger kExpiryTimeTolerance = 60;
 
 #pragma mark - Initializers
 
-- (nullable instancetype)init
+- (nonnull instancetype)init
     OID_UNAVAILABLE_USE_INITIALIZER(@selector(initWithAuthorizationResponse:tokenResponse:));
 
 /*! @brief Creates an auth state from an authorization response.

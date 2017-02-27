@@ -52,7 +52,7 @@ NS_ASSUME_NONNULL_BEGIN
 /*! @internal
     @brief Unavailable. Please use @c initWithPresentingViewController:
  */
-- (nullable instancetype)init NS_UNAVAILABLE;
+- (nonnull instancetype)init NS_UNAVAILABLE;
 
 /*! @brief The designated initializer.
     @param presentingViewController The view controller from which to present the

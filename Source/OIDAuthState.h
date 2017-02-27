@@ -134,7 +134,7 @@ typedef void (^OIDAuthStateAuthorizationCallback)(OIDAuthState *_Nullable authSt
 /*! @internal
     @brief Unavailable. Please use @c initWithAuthorizationResponse:.
  */
-- (nullable instancetype)init NS_UNAVAILABLE;
+- (nonnull instancetype)init NS_UNAVAILABLE;
 
 /*! @brief Creates an auth state from an authorization response.
     @param response The authorization response.
