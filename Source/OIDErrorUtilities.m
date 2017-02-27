@@ -38,7 +38,8 @@
 }
 
 + (BOOL)isOAuthErrorDomain:(NSString *)errorDomain {
-  return errorDomain == OIDOAuthAuthorizationErrorDomain
+  return errorDomain == OIDOAuthRegistrationErrorDomain
+      || errorDomain == OIDOAuthAuthorizationErrorDomain
       || errorDomain == OIDOAuthTokenErrorDomain;
 }
 

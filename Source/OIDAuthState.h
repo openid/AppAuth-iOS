@@ -20,6 +20,7 @@
 @class OIDAuthorizationRequest;
 @class OIDAuthorizationResponse;
 @class OIDAuthState;
+@class OIDRegistrationResponse;
 @class OIDTokenResponse;
 @class OIDTokenRequest;
 @protocol OIDAuthorizationFlowSession;
@@ -76,6 +77,11 @@ typedef void (^OIDAuthStateAuthorizationCallback)(OIDAuthState *_Nullable authSt
         contain the latest access token.
  */
 @property(nonatomic, readonly, nullable) OIDTokenResponse *lastTokenResponse;
+
+/*! @brief The most recent registration response used to update this authorization state. This will
+        contain the latest client credentials.
+ */
+@property(nonatomic, readonly, nullable) OIDRegistrationResponse *lastRegistrationResponse;
 
 /*! @brief The authorization error that invalidated this @c OIDAuthState.
     @discussion The authorization error encountered by @c OIDAuthState or set by the user via
@@ -143,6 +149,23 @@ typedef void (^OIDAuthStateAuthorizationCallback)(OIDAuthState *_Nullable authSt
     (OIDAuthorizationResponse *)authorizationResponse
                                          tokenResponse:(nullable OIDTokenResponse *)tokenResponse;
 
+/*! @brief Creates an auth state from an registration response.
+    @param registrationResponse The registration response.
+ */
+- (nullable instancetype)initWithRegistrationResponse:
+    (OIDRegistrationResponse *)registrationResponse;
+
+/*! @brief Creates an auth state from an authorization, token and registration response.
+    @param authorizationResponse The authorization response.
+    @param tokenResponse The token response.
+    @param registrationResponse The registration response.
+ */
+- (nullable instancetype)initWithAuthorizationResponse:
+    (nullable OIDAuthorizationResponse *)authorizationResponse
+           tokenResponse:(nullable OIDTokenResponse *)tokenResponse
+    registrationResponse:(nullable OIDRegistrationResponse *)registrationResponse
+    NS_DESIGNATED_INITIALIZER;
+
 /*! @brief Updates the authorization state based on a new authorization response.
     @param authorizationResponse The new authorization response to update the state with.
     @param error Any error encountered when performing the authorization request. Errors in the
@@ -164,6 +187,13 @@ typedef void (^OIDAuthStateAuthorizationCallback)(OIDAuthState *_Nullable authSt
  */
 - (void)updateWithTokenResponse:(nullable OIDTokenResponse *)tokenResponse
                           error:(nullable NSError *)error;
+
+/*! @brief Updates the authorization state based on a new registration response.
+    @param registrationResponse The new registration response to update the state with.
+    @discussion Typically called with the response from a successful client registration
+        request. Will reset the auth state.
+ */
+- (void)updateWithRegistrationResponse:(nullable OIDRegistrationResponse *)registrationResponse;
 
 /*! @brief Updates the authorization state based on an authorization error.
     @param authorizationError The authorization error.

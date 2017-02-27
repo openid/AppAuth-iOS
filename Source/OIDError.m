@@ -24,6 +24,8 @@ NSString *const OIDOAuthTokenErrorDomain = @"org.openid.appauth.oauth_token";
 
 NSString *const OIDOAuthAuthorizationErrorDomain = @"org.openid.appauth.oauth_authorization";
 
+NSString *const OIDOAuthRegistrationErrorDomain = @"org.openid.appauth.oauth_registration";
+
 NSString *const OIDResourceServerAuthorizationErrorDomain = @"org.openid.appauth.resourceserver";
 
 NSString *const OIDHTTPErrorDomain = @"org.openid.appauth.remote-http";

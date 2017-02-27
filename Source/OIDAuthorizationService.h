@@ -21,6 +21,8 @@
 @class OIDAuthorization;
 @class OIDAuthorizationRequest;
 @class OIDAuthorizationResponse;
+@class OIDRegistrationRequest;
+@class OIDRegistrationResponse;
 @class OIDServiceConfiguration;
 @class OIDTokenRequest;
 @class OIDTokenResponse;
@@ -57,6 +59,14 @@ typedef void (^OIDTokenCallback)(OIDTokenResponse *_Nullable tokenResponse,
         when making authorization or token endpoint requests.
  */
 typedef NSDictionary<NSString *, NSString *> *_Nullable OIDTokenEndpointParameters;
+
+/*! @brief Represents the type of block used as a callback for various methods of
+        @c OIDAuthorizationService.
+    @param registrationResponse The registration response, if available.
+    @param error The error if an error occurred.
+*/
+typedef void (^OIDRegistrationCompletion)(OIDRegistrationResponse *_Nullable registrationResponse,
+                                          NSError *_Nullable error);
 
 /*! @brief Performs various OAuth and OpenID Connect related calls via the user agent or
         \NSURLSession.
@@ -116,6 +126,13 @@ typedef NSDictionary<NSString *, NSString *> *_Nullable OIDTokenEndpointParamete
     @param callback The method called when the request has completed or failed.
  */
 + (void)performTokenRequest:(OIDTokenRequest *)request callback:(OIDTokenCallback)callback;
+
+/*! @brief Performs a registration request.
+    @param request The registration request.
+    @param completion The method called when the request has completed or failed.
+ */
++ (void)performRegistrationRequest:(OIDRegistrationRequest *)request
+                        completion:(OIDRegistrationCompletion)completion;
 
 @end
 
