@@ -24,7 +24,7 @@
 #import "AppDelegate.h"
 
 typedef void (^PostRegistrationCallback)(OIDServiceConfiguration *configuration,
-                                         NSString *clientID);
+                                         OIDRegistrationResponse *registrationResponse);
 
 /*! @brief The OIDC issuer from which the configuration will be discovered.
  */
@@ -34,6 +34,7 @@ static NSString *const kIssuer = @"https://accounts.google.com";
     @discussion For Google, register your client at
         https://console.developers.google.com/apis/credentials?project=_
         The client should be registered with the "iOS" type.
+        Set to nil to use dynamic registration with this example.
  */
 static NSString *const kClientID =
     @"YOUR_CLIENT.apps.googleusercontent.com";
@@ -180,7 +181,7 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
                                                 responseTypes:nil
                                                    grantTypes:nil
                                                   subjectType:nil
-                                      tokenEndpointAuthMethod:nil
+                                      tokenEndpointAuthMethod:@"client_secret_post"
                                          additionalParameters:nil];
     // performs registration request
     [self logMessage:@"Initiating registration request"];
@@ -190,7 +191,7 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
       if (regResp) {
         [self setAuthState:[[OIDAuthState alloc] initWithRegistrationResponse:regResp]];
         [self logMessage:@"Got registration response: [%@]", regResp];
-        callback(configuration, regResp.clientID);
+        callback(configuration, regResp);
       } else {
         [self logMessage:@"Registration error: %@", [error localizedDescription]];
         [self setAuthState:nil];
@@ -199,12 +200,14 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
 }
 
 - (void)doAuthWithAutoCodeExchange:(OIDServiceConfiguration *)configuration
-                          clientID:(NSString *)clientID {
+                          clientID:(NSString *)clientID
+                      clientSecret:(NSString *)clientSecret {
   NSURL *redirectURI = [NSURL URLWithString:kRedirectURI];
   // builds authentication request
   OIDAuthorizationRequest *request =
       [[OIDAuthorizationRequest alloc] initWithConfiguration:configuration
                                                     clientId:clientID
+                                                clientSecret:clientSecret
                                                       scopes:@[ OIDScopeOpenID, OIDScopeProfile ]
                                                  redirectURL:redirectURI
                                                 responseType:OIDResponseTypeCode
@@ -228,13 +231,16 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
           }];
 }
 
-- (void)doAuthWithoutCodeExchange:(OIDServiceConfiguration *)configuration :(NSString *)clientID {
+- (void)doAuthWithoutCodeExchange:(OIDServiceConfiguration *)configuration
+                         clientID:(NSString *)clientID
+                     clientSecret:(NSString *)clientSecret {
   NSURL *redirectURI = [NSURL URLWithString:kRedirectURI];
 
   // builds authentication request
   OIDAuthorizationRequest *request =
       [[OIDAuthorizationRequest alloc] initWithConfiguration:configuration
                                                     clientId:clientID
+                                                clientSecret:clientSecret
                                                       scopes:@[ OIDScopeOpenID, OIDScopeProfile ]
                                                  redirectURL:redirectURI
                                                 responseType:OIDResponseTypeCode
@@ -279,11 +285,13 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
 
     if (!kClientID) {
       [self doClientRegistration:configuration :^(OIDServiceConfiguration *configuration,
-                                                  NSString *clientID) {
-          [self doAuthWithAutoCodeExchange:configuration clientID:clientID];
+                                                  OIDRegistrationResponse *registrationResponse) {
+        [self doAuthWithAutoCodeExchange:configuration
+                                clientID:registrationResponse.clientID
+                            clientSecret:registrationResponse.clientSecret];
       }];
     } else {
-      [self doAuthWithAutoCodeExchange:configuration clientID:kClientID];
+      [self doAuthWithAutoCodeExchange:configuration clientID:kClientID clientSecret:nil];
     }
    }];
 }
@@ -306,11 +314,13 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
 
     if (!kClientID) {
       [self doClientRegistration:configuration :^(OIDServiceConfiguration *configuration,
-                                                  NSString *clientID) {
-        [self doAuthWithoutCodeExchange:configuration :clientID];
+                                                  OIDRegistrationResponse *registrationResponse) {
+        [self doAuthWithoutCodeExchange:configuration
+                               clientID:registrationResponse.clientID
+                           clientSecret:registrationResponse.clientSecret];
       }];
     } else {
-      [self doAuthWithoutCodeExchange:configuration :kClientID];
+      [self doAuthWithoutCodeExchange:configuration clientID:kClientID clientSecret:nil];
     }
   }];
 }
