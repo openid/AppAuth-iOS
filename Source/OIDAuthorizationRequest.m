@@ -107,21 +107,19 @@ NSString *const OIDOAuthorizationRequestCodeChallengeMethodS256 = @"S256";
     additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters
 {
   self = [super init];
-  if (self) {
-    _configuration = [configuration copy];
-    _clientID = [clientID copy];
-    _clientSecret = [clientSecret copy];
-    _scope = [scope copy];
-    _redirectURL = [redirectURL copy];
-    _responseType = [responseType copy];
-    _state = [state copy];
-    _codeVerifier = [codeVerifier copy];
-    _codeChallenge = [codeChallenge copy];
-    _codeChallengeMethod = [codeChallengeMethod copy];
+  _configuration = [configuration copy];
+  _clientID = [clientID copy];
+  _clientSecret = [clientSecret copy];
+  _scope = [scope copy];
+  _redirectURL = [redirectURL copy];
+  _responseType = [responseType copy];
+  _state = [state copy];
+  _codeVerifier = [codeVerifier copy];
+  _codeChallenge = [codeChallenge copy];
+  _codeChallengeMethod = [codeChallengeMethod copy];
 
-    _additionalParameters =
-        [[NSDictionary alloc] initWithDictionary:additionalParameters copyItems:YES];
-  }
+  _additionalParameters =
+      [[NSDictionary alloc] initWithDictionary:additionalParameters copyItems:YES];
   return self;
 }
 

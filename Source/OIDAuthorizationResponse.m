@@ -112,7 +112,7 @@ static NSString *const kTokenExchangeRequestException =
 - (nonnull instancetype)init
     OID_UNAVAILABLE_USE_INITIALIZER(@selector(initWithRequest:parameters:));
 
-- (nullable instancetype)initWithRequest:(OIDAuthorizationRequest *)request
+- (nonnull instancetype)initWithRequest:(OIDAuthorizationRequest *)request
     parameters:(NSDictionary<NSString *, NSObject<NSCopying> *> *)parameters {
   self = [super init];
   if (self) {

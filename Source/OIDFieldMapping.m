@@ -25,20 +25,18 @@
 - (nonnull instancetype)init
     OID_UNAVAILABLE_USE_INITIALIZER(@selector(initWithName:type:conversion:));
 
-- (nullable instancetype)initWithName:(NSString *)name
-                                 type:(Class)type {
+- (instancetype)initWithName:(NSString *)name
+                        type:(Class)type {
   return [self initWithName:name type:type conversion:nil];
 }
 
-- (nullable instancetype)initWithName:(NSString *)name
-                                 type:(Class)type
-                           conversion:(nullable OIDFieldMappingConversionFunction)conversion {
+- (instancetype)initWithName:(NSString *)name
+                        type:(Class)type
+                  conversion:(nullable OIDFieldMappingConversionFunction)conversion {
   self = [super init];
-  if (self) {
-    _name = [name copy];
-    _expectedType = type;
-    _conversion = conversion;
-  }
+  _name = [name copy];
+  _expectedType = type;
+  _conversion = conversion;
   return self;
 }
 
