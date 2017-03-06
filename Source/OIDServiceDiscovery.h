@@ -316,7 +316,7 @@ NS_ASSUME_NONNULL_BEGIN
     @brief Unavailable. Please use @c initWithDictionary:error:, @c initWithJSON:error, or the
         @c serviceDiscoveryWithURL:callback: factory method.
  */
-- (nullable instancetype)init NS_UNAVAILABLE;
+- (nonnull instancetype)init NS_UNAVAILABLE;
 
 /*! @brief Decodes a OpenID Connect Discovery 1.0 JSON document.
     @param serviceDiscoveryJSON An OpenID Connect Service Discovery document.

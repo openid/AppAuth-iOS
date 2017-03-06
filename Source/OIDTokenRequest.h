@@ -99,7 +99,7 @@ NS_ASSUME_NONNULL_BEGIN
     @brief Unavailable. Please use
         initWithConfiguration:grantType:code:redirectURL:clientID:additionalParameters:.
  */
-- (nullable instancetype)init NS_UNAVAILABLE;
+- (nonnull instancetype)init NS_UNAVAILABLE;
 
 /*! @param configuration The service's configuration.
     @param grantType the type of token being sent to the token endpoint, i.e. "authorization_code"

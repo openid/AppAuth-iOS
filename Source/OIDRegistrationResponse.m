@@ -78,7 +78,7 @@ static NSString *const kAdditionalParametersKey = @"additionalParameters";
 
 #pragma mark - Initializers
 
-- (nullable instancetype)init
+- (nonnull instancetype)init
   OID_UNAVAILABLE_USE_INITIALIZER(@selector(initWithRequest:parameters:));
 
 - (nullable instancetype)initWithRequest:(OIDRegistrationRequest *)request

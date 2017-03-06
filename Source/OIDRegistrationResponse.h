@@ -108,7 +108,7 @@ extern NSString *const OIDRegistrationClientURIParam;
 /*! @internal
     @brief Unavailable. Please use initWithRequest
  */
-- (nullable instancetype)init NS_UNAVAILABLE;
+- (nonnull instancetype)init NS_UNAVAILABLE;
 
 /*! @brief Designated initializer.
     @param request The serviced request.
