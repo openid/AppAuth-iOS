@@ -60,10 +60,9 @@ NS_ASSUME_NONNULL_BEGIN
     );
 
 - (instancetype)initWithAuthorizationEndpoint:(NSURL *)authorizationEndpoint
-        tokenEndpoint:(NSURL *)tokenEndpoint
- registrationEndpoint:(nullable NSURL *)registrationEndpoint
-    discoveryDocument:(nullable OIDServiceDiscovery *)discoveryDocument {
-
+                                tokenEndpoint:(NSURL *)tokenEndpoint
+                         registrationEndpoint:(nullable NSURL *)registrationEndpoint
+                            discoveryDocument:(nullable OIDServiceDiscovery *)discoveryDocument {
   self = [super init];
   if (self) {
     _authorizationEndpoint = [authorizationEndpoint copy];

@@ -62,7 +62,7 @@ static NSString *const kAdditionalParametersKey = @"additionalParameters";
                    additionalParameters:)
     );
 
-- (nullable instancetype)initWithConfiguration:(OIDServiceConfiguration *)configuration
+- (instancetype)initWithConfiguration:(OIDServiceConfiguration *)configuration
             redirectURIs:(NSArray<NSURL *> *)redirectURIs
            responseTypes:(nullable NSArray<NSString *> *)responseTypes
               grantTypes:(nullable NSArray<NSString *> *)grantTypes
@@ -70,18 +70,16 @@ static NSString *const kAdditionalParametersKey = @"additionalParameters";
  tokenEndpointAuthMethod:(nullable NSString *)tokenEndpointAuthenticationMethod
     additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters {
   self = [super init];
-  if (self) {
-    _configuration = [configuration copy];
-    _redirectURIs = [redirectURIs copy];
-    _responseTypes = [responseTypes copy];
-    _grantTypes = [grantTypes copy];
-    _subjectType = [subjectType copy];
-    _tokenEndpointAuthenticationMethod = [tokenEndpointAuthenticationMethod copy];
-    _additionalParameters =
-        [[NSDictionary alloc] initWithDictionary:additionalParameters copyItems:YES];
+  _configuration = [configuration copy];
+  _redirectURIs = [redirectURIs copy];
+  _responseTypes = [responseTypes copy];
+  _grantTypes = [grantTypes copy];
+  _subjectType = [subjectType copy];
+  _tokenEndpointAuthenticationMethod = [tokenEndpointAuthenticationMethod copy];
+  _additionalParameters =
+      [[NSDictionary alloc] initWithDictionary:additionalParameters copyItems:YES];
 
-    _applicationType = OIDApplicationTypeNative;
-  }
+  _applicationType = OIDApplicationTypeNative;
   return self;
 }
 

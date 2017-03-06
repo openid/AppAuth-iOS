@@ -158,8 +158,7 @@ static const NSUInteger kExpiryTimeTolerance = 60;
 /*! @brief Creates an auth state from an authorization response.
     @param response The authorization response.
  */
-- (nullable instancetype)initWithAuthorizationResponse:
-    (OIDAuthorizationResponse *)authorizationResponse {
+- (instancetype)initWithAuthorizationResponse:(OIDAuthorizationResponse *)authorizationResponse {
   return [self initWithAuthorizationResponse:authorizationResponse tokenResponse:nil];
 }
 
@@ -168,9 +167,8 @@ static const NSUInteger kExpiryTimeTolerance = 60;
     @param response The authorization response.
     @discussion Creates an auth state from an authorization response and token response.
  */
-- (nullable instancetype)initWithAuthorizationResponse:
-    (OIDAuthorizationResponse *)authorizationResponse
-                                         tokenResponse:(nullable OIDTokenResponse *)tokenResponse {
+- (instancetype)initWithAuthorizationResponse:(OIDAuthorizationResponse *)authorizationResponse
+                                tokenResponse:(nullable OIDTokenResponse *)tokenResponse {
   return [self initWithAuthorizationResponse:authorizationResponse
                                tokenResponse:tokenResponse
                         registrationResponse:nil];
@@ -179,32 +177,29 @@ static const NSUInteger kExpiryTimeTolerance = 60;
 /*! @brief Creates an auth state from an registration response.
     @param registrationResponse The registration response.
  */
-- (nullable instancetype)initWithRegistrationResponse:
-        (OIDRegistrationResponse *)registrationResponse {
+- (instancetype)initWithRegistrationResponse:(OIDRegistrationResponse *)registrationResponse {
   return [self initWithAuthorizationResponse:nil
                                tokenResponse:nil
                         registrationResponse:registrationResponse];
 }
 
-- (nullable instancetype)initWithAuthorizationResponse:
+- (instancetype)initWithAuthorizationResponse:
     (nullable OIDAuthorizationResponse *)authorizationResponse
            tokenResponse:(nullable OIDTokenResponse *)tokenResponse
     registrationResponse:(nullable OIDRegistrationResponse *)registrationResponse {
   self = [super init];
-  if (self) {
-    _pendingActionsSyncObject = [[NSObject alloc] init];
+  _pendingActionsSyncObject = [[NSObject alloc] init];
 
-    if (registrationResponse) {
-      [self updateWithRegistrationResponse:registrationResponse];
-    }
+  if (registrationResponse) {
+    [self updateWithRegistrationResponse:registrationResponse];
+  }
 
-    if (authorizationResponse) {
-      [self updateWithAuthorizationResponse:authorizationResponse error:nil];
-    }
+  if (authorizationResponse) {
+    [self updateWithAuthorizationResponse:authorizationResponse error:nil];
+  }
 
-    if (tokenResponse) {
-      [self updateWithTokenResponse:tokenResponse error:nil];
-    }
+  if (tokenResponse) {
+    [self updateWithTokenResponse:tokenResponse error:nil];
   }
   return self;
 }

@@ -81,7 +81,7 @@ static NSString *const kAdditionalParametersKey = @"additionalParameters";
                    additionalParameters:)
     );
 
-- (nullable instancetype)initWithConfiguration:(OIDServiceConfiguration *)configuration
+- (instancetype)initWithConfiguration:(OIDServiceConfiguration *)configuration
                grantType:(NSString *)grantType
        authorizationCode:(nullable NSString *)code
              redirectURL:(NSURL *)redirectURL
@@ -103,7 +103,7 @@ static NSString *const kAdditionalParametersKey = @"additionalParameters";
                 additionalParameters:additionalParameters];
 }
 
-- (nullable instancetype)initWithConfiguration:(OIDServiceConfiguration *)configuration
+- (instancetype)initWithConfiguration:(OIDServiceConfiguration *)configuration
                grantType:(NSString *)grantType
        authorizationCode:(nullable NSString *)code
              redirectURL:(NSURL *)redirectURL

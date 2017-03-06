@@ -81,24 +81,22 @@ static NSString *const kAdditionalParametersKey = @"additionalParameters";
 - (nonnull instancetype)init
   OID_UNAVAILABLE_USE_INITIALIZER(@selector(initWithRequest:parameters:));
 
-- (nullable instancetype)initWithRequest:(OIDRegistrationRequest *)request
+- (instancetype)initWithRequest:(OIDRegistrationRequest *)request
                               parameters:(NSDictionary<NSString *, NSObject <NSCopying> *> *)parameters {
   self = [super init];
-  if (self) {
-    _request = [request copy];
-    NSDictionary<NSString *, NSObject <NSCopying> *> *additionalParameters =
-    [OIDFieldMapping remainingParametersWithMap:[[self class] fieldMap]
-                                     parameters:parameters
-                                       instance:self];
-    _additionalParameters = additionalParameters;
+  _request = [request copy];
+  NSDictionary<NSString *, NSObject <NSCopying> *> *additionalParameters =
+  [OIDFieldMapping remainingParametersWithMap:[[self class] fieldMap]
+                                   parameters:parameters
+                                     instance:self];
+  _additionalParameters = additionalParameters;
 
-    if ((_clientSecret && !_clientSecretExpiresAt)
-        || (!!_registrationClientURI != !!_registrationAccessToken)) {
-      // If client_secret is issued, client_secret_expires_at is REQUIRED,
-      // and the response MUST contain "[...] both a Client Configuration Endpoint
-      // and a Registration Access Token or neither of them"
-      return nil;
-    }
+  if ((_clientSecret && !_clientSecretExpiresAt)
+      || (!!_registrationClientURI != !!_registrationAccessToken)) {
+    // If client_secret is issued, client_secret_expires_at is REQUIRED,
+    // and the response MUST contain "[...] both a Client Configuration Endpoint
+    // and a Registration Access Token or neither of them"
+    return nil;
   }
   return self;
 }

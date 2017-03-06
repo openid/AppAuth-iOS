@@ -88,20 +88,18 @@ static NSString *const kAdditionalParametersKey = @"additionalParameters";
 
 #pragma mark - Initializers
 
-- (nonnull instancetype)init
+- (instancetype)init
     OID_UNAVAILABLE_USE_INITIALIZER(@selector(initWithRequest:parameters:));
 
-- (nullable instancetype)initWithRequest:(OIDTokenRequest *)request
+- (instancetype)initWithRequest:(OIDTokenRequest *)request
     parameters:(NSDictionary<NSString *, NSObject<NSCopying> *> *)parameters {
   self = [super init];
-  if (self) {
-    _request = [request copy];
-    NSDictionary<NSString *, NSObject<NSCopying> *> *additionalParameters =
-        [OIDFieldMapping remainingParametersWithMap:[[self class] fieldMap]
-                                         parameters:parameters
-                                           instance:self];
-    _additionalParameters = additionalParameters;
-  }
+  _request = [request copy];
+  NSDictionary<NSString *, NSObject<NSCopying> *> *additionalParameters =
+      [OIDFieldMapping remainingParametersWithMap:[[self class] fieldMap]
+                                       parameters:parameters
+                                         instance:self];
+  _additionalParameters = additionalParameters;
   return self;
 }
 

@@ -125,7 +125,7 @@ extern NSString *const OIDOAuthorizationRequestCodeChallengeMethodS256;
     @brief Unavailable. Please use
         @c initWithConfiguration:clientId:scopes:redirectURL:additionalParameters:.
  */
-- (instancetype)init NS_UNAVAILABLE;
+- (nonnull instancetype)init NS_UNAVAILABLE;
 
 /*! @brief Creates an authorization request with opinionated defaults (a secure @c state, and
         PKCE with S256 as the @c code_challenge_method).
@@ -138,7 +138,7 @@ extern NSString *const OIDOAuthorizationRequestCodeChallengeMethodS256;
     @remarks This convenience initializer generates a state parameter and PKCE challenges
         automatically.
  */
-- (instancetype)
+- (nonnull instancetype)
     initWithConfiguration:(OIDServiceConfiguration *)configuration
                  clientId:(NSString *)clientID
                    scopes:(nullable NSArray<NSString *> *)scopes
@@ -158,7 +158,7 @@ extern NSString *const OIDOAuthorizationRequestCodeChallengeMethodS256;
     @remarks This convenience initializer generates a state parameter and PKCE challenges
         automatically.
  */
-- (instancetype)
+- (nonnull instancetype)
     initWithConfiguration:(OIDServiceConfiguration *)configuration
                  clientId:(NSString *)clientID
              clientSecret:(nullable NSString *)clientSecret
@@ -184,7 +184,7 @@ extern NSString *const OIDOAuthorizationRequestCodeChallengeMethodS256;
         challenge.
     @param additionalParameters The client's additional authorization parameters.
  */
-- (instancetype)
+- (nonnull instancetype)
     initWithConfiguration:(OIDServiceConfiguration *)configuration
                  clientId:(NSString *)clientID
              clientSecret:(nullable NSString *)clientSecret

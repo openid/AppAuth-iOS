@@ -20,9 +20,9 @@
 
 @implementation OIDErrorUtilities
 
-+ (nullable NSError *)errorWithCode:(OIDErrorCode)code
-                    underlyingError:(NSError *)underlyingError
-                        description:(NSString *)description {
++ (NSError *)errorWithCode:(OIDErrorCode)code
+           underlyingError:(NSError *)underlyingError
+               description:(NSString *)description {
   NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
   if (underlyingError) {
     userInfo[NSUnderlyingErrorKey] = underlyingError;
@@ -43,7 +43,7 @@
       || errorDomain == OIDOAuthTokenErrorDomain;
 }
 
-+ (nullable NSError *)resourceServerAuthorizationErrorWithCode:(NSInteger)code
++ (NSError *)resourceServerAuthorizationErrorWithCode:(NSInteger)code
       errorResponse:(nullable NSDictionary *)errorResponse
     underlyingError:(nullable NSError *)underlyingError {
   // builds the userInfo dictionary with the full OAuth response and other information
@@ -60,9 +60,9 @@
   return error;
 }
 
-+ (nullable NSError *)OAuthErrorWithDomain:(NSString *)oAuthErrorDomain
-                             OAuthResponse:(NSDictionary *)errorResponse
-                           underlyingError:(NSError *)underlyingError {
++ (NSError *)OAuthErrorWithDomain:(NSString *)oAuthErrorDomain
+                    OAuthResponse:(NSDictionary *)errorResponse
+                  underlyingError:(NSError *)underlyingError {
   // not a valid OAuth error
   if (![self isOAuthErrorDomain:oAuthErrorDomain]
       || !errorResponse
@@ -112,8 +112,8 @@
   return error;
 }
 
-+ (nullable NSError *)HTTPErrorWithHTTPResponse:(NSHTTPURLResponse *)HTTPURLResponse
-                                           data:(nullable NSData *)data {
++ (NSError *)HTTPErrorWithHTTPResponse:(NSHTTPURLResponse *)HTTPURLResponse
+                                  data:(nullable NSData *)data {
   NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
   if (data) {
     NSString *serverResponse =
