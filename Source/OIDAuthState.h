@@ -134,33 +134,30 @@ typedef void (^OIDAuthStateAuthorizationCallback)(OIDAuthState *_Nullable authSt
 /*! @internal
     @brief Unavailable. Please use @c initWithAuthorizationResponse:.
  */
-- (nonnull instancetype)init NS_UNAVAILABLE;
+- (instancetype)init NS_UNAVAILABLE;
 
 /*! @brief Creates an auth state from an authorization response.
     @param response The authorization response.
  */
-- (nullable instancetype)initWithAuthorizationResponse:
-    (OIDAuthorizationResponse *)authorizationResponse;
+- (instancetype)initWithAuthorizationResponse:(OIDAuthorizationResponse *)authorizationResponse;
 
 /*! @brief Creates an auth state from an authorization response.
     @param response The authorization response.
  */
-- (nullable instancetype)initWithAuthorizationResponse:
-    (OIDAuthorizationResponse *)authorizationResponse
-                                         tokenResponse:(nullable OIDTokenResponse *)tokenResponse;
+- (instancetype)initWithAuthorizationResponse:(OIDAuthorizationResponse *)authorizationResponse
+                                tokenResponse:(nullable OIDTokenResponse *)tokenResponse;
 
 /*! @brief Creates an auth state from an registration response.
     @param registrationResponse The registration response.
  */
-- (nullable instancetype)initWithRegistrationResponse:
-    (OIDRegistrationResponse *)registrationResponse;
+- (instancetype)initWithRegistrationResponse:(OIDRegistrationResponse *)registrationResponse;
 
 /*! @brief Creates an auth state from an authorization, token and registration response.
     @param authorizationResponse The authorization response.
     @param tokenResponse The token response.
     @param registrationResponse The registration response.
  */
-- (nullable instancetype)initWithAuthorizationResponse:
+- (instancetype)initWithAuthorizationResponse:
     (nullable OIDAuthorizationResponse *)authorizationResponse
            tokenResponse:(nullable OIDTokenResponse *)tokenResponse
     registrationResponse:(nullable OIDRegistrationResponse *)registrationResponse

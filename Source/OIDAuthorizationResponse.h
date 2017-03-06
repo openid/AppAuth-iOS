@@ -92,7 +92,7 @@ NS_ASSUME_NONNULL_BEGIN
 /*! @internal
     @brief Unavailable. Please use initWithParameters:.
  */
-- (nonnull instancetype)init NS_UNAVAILABLE;
+- (instancetype)init NS_UNAVAILABLE;
 
 /*! @brief Designated initializer.
     @param request The serviced request.
@@ -101,7 +101,7 @@ NS_ASSUME_NONNULL_BEGIN
         properties are populated. Non-normative parameters are placed in the
         @c #additionalParameters dictionary.
  */
-- (nullable instancetype)initWithRequest:(OIDAuthorizationRequest *)request
+- (instancetype)initWithRequest:(OIDAuthorizationRequest *)request
     parameters:(NSDictionary<NSString *, NSObject<NSCopying> *> *)parameters
     NS_DESIGNATED_INITIALIZER;
 

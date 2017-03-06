@@ -77,7 +77,7 @@ NS_ASSUME_NONNULL_BEGIN
 /*! @internal
     @brief Unavailable. Please use initWithConfiguration
  */
-- (nonnull instancetype)init NS_UNAVAILABLE;
+- (instancetype)init NS_UNAVAILABLE;
 
 /*! @brief Designated initializer.
     @param configuration The service's configuration.
@@ -89,13 +89,13 @@ NS_ASSUME_NONNULL_BEGIN
         client.
     @param additionalParameters The client's additional registration request parameters.
  */
-- (nullable instancetype)initWithConfiguration:(OIDServiceConfiguration *)configuration
-            redirectURIs:(NSArray<NSURL *> *)redirectURIs
-           responseTypes:(nullable NSArray<NSString *> *)responseTypes
-              grantTypes:(nullable NSArray<NSString *> *)grantTypes
-             subjectType:(nullable NSString *)subjectType
- tokenEndpointAuthMethod:(nullable NSString *)tokenEndpointAuthMethod
-    additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters
+- (instancetype)initWithConfiguration:(OIDServiceConfiguration *)configuration
+               redirectURIs:(NSArray<NSURL *> *)redirectURIs
+              responseTypes:(nullable NSArray<NSString *> *)responseTypes
+                 grantTypes:(nullable NSArray<NSString *> *)grantTypes
+                subjectType:(nullable NSString *)subjectType
+    tokenEndpointAuthMethod:(nullable NSString *)tokenEndpointAuthMethod
+       additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters
     NS_DESIGNATED_INITIALIZER;
 
 /*! @brief Constructs an @c NSURLRequest representing the registration request.

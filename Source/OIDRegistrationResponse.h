@@ -108,7 +108,7 @@ extern NSString *const OIDRegistrationClientURIParam;
 /*! @internal
     @brief Unavailable. Please use initWithRequest
  */
-- (nonnull instancetype)init NS_UNAVAILABLE;
+- (instancetype)init NS_UNAVAILABLE;
 
 /*! @brief Designated initializer.
     @param request The serviced request.
@@ -117,9 +117,9 @@ extern NSString *const OIDRegistrationClientURIParam;
         properties are populated. Non-normative parameters are placed in the
         @c #additionalParameters dictionary.
  */
-- (nullable instancetype)initWithRequest:(OIDRegistrationRequest *)request
-                         parameters:(NSDictionary<NSString *, NSObject <NSCopying> *> *)parameters
-                         NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithRequest:(OIDRegistrationRequest *)request
+                     parameters:(NSDictionary<NSString *, NSObject <NSCopying> *> *)parameters
+                     NS_DESIGNATED_INITIALIZER;
 
 @end
 

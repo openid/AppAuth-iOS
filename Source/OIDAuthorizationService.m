@@ -46,7 +46,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)init NS_UNAVAILABLE;
 
-- (nullable instancetype)initWithRequest:(OIDAuthorizationRequest *)request
+- (instancetype)initWithRequest:(OIDAuthorizationRequest *)request
     NS_DESIGNATED_INITIALIZER;
 
 @end
@@ -57,7 +57,7 @@ NS_ASSUME_NONNULL_BEGIN
   OIDAuthorizationCallback _pendingauthorizationFlowCallback;
 }
 
-- (nullable instancetype)initWithRequest:(OIDAuthorizationRequest *)request {
+- (instancetype)initWithRequest:(OIDAuthorizationRequest *)request {
   self = [super init];
   if (self) {
     _request = [request copy];
