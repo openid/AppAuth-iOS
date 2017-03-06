@@ -55,6 +55,17 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
 - (void)viewDidLoad {
   [super viewDidLoad];
 
+  _logTextView.layer.borderColor = [UIColor colorWithWhite:0.8 alpha:1.0].CGColor;
+  _logTextView.layer.borderWidth = 1.0f;
+  _logTextView.alwaysBounceVertical = true;
+  _logTextView.textContainer.lineBreakMode = NSLineBreakByCharWrapping;
+  _logTextView.text = @"";
+
+  [self loadState];
+  [self updateUI];
+}
+
+- (void)verifyConfig {
 #if !defined(NS_BLOCK_ASSERTIONS)
 
   // The example needs to be configured with your own client details.
@@ -87,15 +98,6 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
             "https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-iOS_ObjC/README.md");
 
 #endif // !defined(NS_BLOCK_ASSERTIONS)
-
-  _logTextView.layer.borderColor = [UIColor colorWithWhite:0.8 alpha:1.0].CGColor;
-  _logTextView.layer.borderWidth = 1.0f;
-  _logTextView.alwaysBounceVertical = true;
-  _logTextView.textContainer.lineBreakMode = NSLineBreakByCharWrapping;
-  _logTextView.text = @"";
-
-  [self loadState];
-  [self updateUI];
 }
 
 /*! @brief Saves the @c OIDAuthState to @c NSUSerDefaults.
@@ -166,7 +168,9 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
 }
 
 - (void)doClientRegistration:(OIDServiceConfiguration *)configuration
-                            :(PostRegistrationCallback)callback {
+                    callback:(PostRegistrationCallback)callback {
+    [self verifyConfig];
+
     NSURL *redirectURI = [NSURL URLWithString:kRedirectURI];
 
     OIDRegistrationRequest *request =
@@ -196,6 +200,8 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
 - (void)doAuthWithAutoCodeExchange:(OIDServiceConfiguration *)configuration
                           clientID:(NSString *)clientID
                       clientSecret:(NSString *)clientSecret {
+  [self verifyConfig];
+
   NSURL *redirectURI = [NSURL URLWithString:kRedirectURI];
   // builds authentication request
   OIDAuthorizationRequest *request =
@@ -228,6 +234,8 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
 - (void)doAuthWithoutCodeExchange:(OIDServiceConfiguration *)configuration
                          clientID:(NSString *)clientID
                      clientSecret:(NSString *)clientSecret {
+  [self verifyConfig];
+
   NSURL *redirectURI = [NSURL URLWithString:kRedirectURI];
 
   // builds authentication request
@@ -278,8 +286,9 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
     [self logMessage:@"Got configuration: %@", configuration];
 
     if (!kClientID) {
-      [self doClientRegistration:configuration :^(OIDServiceConfiguration *configuration,
-                                                  OIDRegistrationResponse *registrationResponse) {
+      [self doClientRegistration:configuration
+                        callback:^(OIDServiceConfiguration *configuration,
+                                   OIDRegistrationResponse *registrationResponse) {
         [self doAuthWithAutoCodeExchange:configuration
                                 clientID:registrationResponse.clientID
                             clientSecret:registrationResponse.clientSecret];
@@ -307,8 +316,9 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
     [self logMessage:@"Got configuration: %@", configuration];
 
     if (!kClientID) {
-      [self doClientRegistration:configuration :^(OIDServiceConfiguration *configuration,
-                                                  OIDRegistrationResponse *registrationResponse) {
+      [self doClientRegistration:configuration
+                        callback:^(OIDServiceConfiguration *configuration,
+                                   OIDRegistrationResponse *registrationResponse) {
         [self doAuthWithoutCodeExchange:configuration
                                clientID:registrationResponse.clientID
                            clientSecret:registrationResponse.clientSecret];
