@@ -62,7 +62,7 @@ static NSString *const kAdditionalParametersKey = @"additionalParameters";
                    additionalParameters:)
     );
 
-- (nullable instancetype)initWithConfiguration:(OIDServiceConfiguration *)configuration
+- (instancetype)initWithConfiguration:(OIDServiceConfiguration *)configuration
             redirectURIs:(NSArray<NSURL *> *)redirectURIs
            responseTypes:(nullable NSArray<NSString *> *)responseTypes
               grantTypes:(nullable NSArray<NSString *> *)grantTypes

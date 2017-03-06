@@ -109,10 +109,10 @@ static NSString *const kTokenExchangeRequestException =
 
 #pragma mark - Initializers
 
-- (nonnull instancetype)init
+- (instancetype)init
     OID_UNAVAILABLE_USE_INITIALIZER(@selector(initWithRequest:parameters:));
 
-- (nullable instancetype)initWithRequest:(OIDAuthorizationRequest *)request
+- (instancetype)initWithRequest:(OIDAuthorizationRequest *)request
     parameters:(NSDictionary<NSString *, NSObject<NSCopying> *> *)parameters {
   self = [super init];
   if (self) {
@@ -142,7 +142,7 @@ static NSString *const kTokenExchangeRequestException =
   return YES;
 }
 
-- (nullable instancetype)initWithCoder:(NSCoder *)aDecoder {
+- (instancetype)initWithCoder:(NSCoder *)aDecoder {
   OIDAuthorizationRequest *request =
       [aDecoder decodeObjectOfClass:[OIDAuthorizationRequest class] forKey:kRequestKey];
   self = [self initWithRequest:request parameters:@{ }];
