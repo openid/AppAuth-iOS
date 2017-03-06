@@ -25,36 +25,32 @@
 
 /*! @brief The OIDC issuer from which the configuration will be discovered.
  */
-static NSString *const kIssuer = @"https://accounts.google.com";
+static NSString *const kIssuer = @"https://issuer.example.com";
 
 /*! @brief The OAuth client ID.
-    @discussion For Google, register your client at
-        https://console.developers.google.com/apis/credentials?project=_
+    @discussion For client configuration instructions, see the README.
+    @see https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-macOS/README.md
  */
-static NSString *const kClientID = @"YOUR_CLIENT.apps.googleusercontent.com";
+static NSString *const kClientID = @"YOUR_CLIENT_ID";
 
 /*! @brief The OAuth client secret.
-    @discussion For Google, register your client at
-        https://console.developers.google.com/apis/credentials?project=_
+    @discussion For client configuration instructions, see the README.
+    @see https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-macOS/README.md
  */
 static NSString *const kClientSecret = @"YOUR_CLIENT_SECRET";
 
 /*! @brief The OAuth redirect URI for the client @c kClientID.
-    @discussion With Google, the scheme of the redirect URI is the reverse DNS notation of the
-        client ID. This scheme must be registered as a scheme in the project's Info
-        property list ("CFBundleURLTypes" plist key). Any path component will work, we use
-        'oauthredirect' here to help disambiguate from any other use of this scheme.
+    @discussion For client configuration instructions, see the README.
+    @see https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-macOS/README.md
  */
-static NSString *const kRedirectURI =
-    @"com.googleusercontent.apps.YOUR_CLIENT:/oauthredirect";
+static NSString *const kRedirectURI = @"com.example.app:/oauth2redirect/example-provider";
 
 /*! @brief Post-authorization redirect URI.
     @discussion This is the URL that users will be redirected to after the OAuth flow is complete.
         Generally you will point them at a nice page on your site that instructs them to return to
         the app. It's best when that page is uncluttered and to the point.
  */
-static NSString *const kSuccessURLString =
-    @"http://openid.github.io/AppAuth-iOS/redirect/";
+static NSString *const kSuccessURLString = @"http://openid.github.io/AppAuth-iOS/redirect/";
 
 /*! @var kAppAuthExampleAuthStateKey
     @brief NSCoding key for the authState property.
@@ -73,18 +69,14 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
 
 #if !defined(NS_BLOCK_ASSERTIONS)
 
-  // NOTE:
-  //
-  // To run this sample, you need to register your own Google API client at
-  // https://console.developers.google.com/apis/credentials?project=_ and update three configuration
-  // points in the sample: kClientID and kRedirectURI constants in AppAuthExampleViewController.m
-  // and the URI scheme in Info.plist (URL Types -> Item 0 -> URL Schemes -> Item 0).
-  // Full instructions: https://github.com/openid/AppAuth-iOS/blob/master/Example-Mac/README.md
-
-  NSAssert(![kClientID isEqualToString:@"YOUR_CLIENT.apps.googleusercontent.com"],
+  // The example needs to be configured with your own Client ID.
+  // See: https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-macOS/README.md
+  
+  NSAssert(![kClientID isEqualToString:@"YOUR_CLIENT_ID"],
            @"Update kClientID with your own client ID. "
             "Instructions: "
-            "https://github.com/openid/AppAuth-iOS/blob/master/Example-Mac/README.md");
+            "https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-macOS/README.md"
+            );
 
 #endif // !defined(NS_BLOCK_ASSERTIONS)
 
@@ -164,23 +156,18 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
 
 #if !defined(NS_BLOCK_ASSERTIONS)
 
-  // NOTE:
-  //
-  // To run this sample, you need to register your own Google API client at
-  // https://console.developers.google.com/apis/credentials?project=_ and update three configuration
-  // points in the sample: kClientID and kRedirectURI constants in AppAuthExampleViewController.m
-  // and the URI scheme in Info.plist (URL Types -> Item 0 -> URL Schemes -> Item 0).
-  // Full instructions: https://github.com/openid/AppAuth-iOS/blob/master/Example-Mac/README.md
+  // The example needs to be configured with your own client details.
+  // See: https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-macOS/README.md
 
-  NSAssert(![kClientID isEqualToString:@"YOUR_CLIENT.apps.googleusercontent.com"],
+  NSAssert(![kClientID isEqualToString:@"YOUR_CLIENT_ID"],
            @"Update kClientID with your own client ID. "
             "Instructions: "
-            "https://github.com/openid/AppAuth-iOS/blob/master/Example-Mac/README.md");
+            "https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-macOS/README.md");
 
-  NSAssert(![kRedirectURI isEqualToString:@"com.googleusercontent.apps.YOUR_CLIENT:/oauthredirect"],
+  NSAssert(![kRedirectURI isEqualToString:@"com.example.app:/oauth2redirect/example-provider"],
            @"Update kRedirectURI with your own redirect URI. "
             "Instructions: "
-            "https://github.com/openid/AppAuth-iOS/blob/master/Example-Mac/README.md");
+            "https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-macOS/README.md");
 
   // verifies that the custom URI scheme has been updated in the Info.plist
   NSArray __unused* urlTypes =
@@ -191,10 +178,10 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
   NSAssert([urlSchemes count] > 0, @"No custom URI scheme has been configured for the project.");
   NSString *urlScheme = [urlSchemes objectAtIndex:0];
 
-  NSAssert(![urlScheme isEqualToString:@"com.googleusercontent.apps.YOUR_CLIENT"],
+  NSAssert(![urlScheme isEqualToString:@"com.example.app"],
            @"Configure the URI scheme in Info.plist (URL Types -> Item 0 -> URL Schemes -> Item 0) "
             "with the scheme of your redirect URI. Full instructions: "
-            "https://github.com/openid/AppAuth-iOS/blob/master/Example-Mac/README.md");
+            "https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-macOS/README.md");
 
 #endif // !defined(NS_BLOCK_ASSERTIONS)
 
@@ -245,18 +232,13 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
 
 #if !defined(NS_BLOCK_ASSERTIONS)
 
-  // NOTE:
-  //
-  // To run this sample, you need to register your own Google API client at
-  // https://console.developers.google.com/apis/credentials?project=_ and update three configuration
-  // points in the sample: kClientID and kRedirectURI constants in AppAuthExampleViewController.m
-  // and the URI scheme in Info.plist (URL Types -> Item 0 -> URL Schemes -> Item 0).
-  // Full instructions: https://github.com/openid/AppAuth-iOS/blob/master/Example-Mac/README.md
+  // The example needs to be configured with your own client details.
+  // See: https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-macOS/README.md
 
   NSAssert(![kClientSecret isEqualToString:@"YOUR_CLIENT_SECRET"],
            @"Update kClientSecret with your own client ID secret. "
             "Instructions: "
-            "https://github.com/openid/AppAuth-iOS/blob/master/Example-Mac/README.md");
+            "https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-macOS/README.md");
 
 #endif // !defined(NS_BLOCK_ASSERTIONS)
 
