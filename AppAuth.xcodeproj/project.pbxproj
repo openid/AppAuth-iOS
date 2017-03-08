@@ -14,24 +14,43 @@
 		340DAE5B1D5821AB00EC285B /* OIDAuthorizationResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741B71C5D8243000EF209 /* OIDAuthorizationResponse.m */; };
 		340DAE5C1D5821AB00EC285B /* OIDAuthorizationService.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741B91C5D8243000EF209 /* OIDAuthorizationService.m */; };
 		340DAE5D1D5821AB00EC285B /* OIDAuthState.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741BB1C5D8243000EF209 /* OIDAuthState.m */; };
-		340DAE5E1D5821AB00EC285B /* OIDError.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741C01C5D8243000EF209 /* OIDError.m */; };
-		340DAE5F1D5821AB00EC285B /* OIDErrorUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741C21C5D8243000EF209 /* OIDErrorUtilities.m */; };
-		340DAE601D5821AB00EC285B /* OIDFieldMapping.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741C41C5D8243000EF209 /* OIDFieldMapping.m */; };
-		340DAE611D5821AB00EC285B /* OIDGrantTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741C61C5D8243000EF209 /* OIDGrantTypes.m */; };
-		340DAE621D5821AB00EC285B /* OIDResponseTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741C81C5D8243000EF209 /* OIDResponseTypes.m */; };
-		340DAE631D5821AB00EC285B /* OIDScopes.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741CA1C5D8243000EF209 /* OIDScopes.m */; };
-		340DAE641D5821AB00EC285B /* OIDScopeUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741CC1C5D8243000EF209 /* OIDScopeUtilities.m */; };
-		340DAE651D5821AB00EC285B /* OIDServiceConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741CE1C5D8243000EF209 /* OIDServiceConfiguration.m */; };
-		340DAE661D5821AB00EC285B /* OIDServiceDiscovery.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741D01C5D8243000EF209 /* OIDServiceDiscovery.m */; };
-		340DAE671D5821AB00EC285B /* OIDTokenRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741D21C5D8243000EF209 /* OIDTokenRequest.m */; };
-		340DAE681D5821AB00EC285B /* OIDTokenResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741D41C5D8243000EF209 /* OIDTokenResponse.m */; };
-		340DAE691D5821AB00EC285B /* OIDTokenUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741D61C5D8243000EF209 /* OIDTokenUtilities.m */; };
-		340DAE6A1D5821AB00EC285B /* OIDURLQueryComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741D81C5D8243000EF209 /* OIDURLQueryComponent.m */; };
 		340DAE741D58223A00EC285B /* AppAuth.h in Headers */ = {isa = PBXBuildFile; fileRef = 341741AF1C5D8243000EF209 /* AppAuth.h */; };
 		340DAEBC1D582AF100EC285B /* OIDRedirectHTTPHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 340DAEBA1D582AF100EC285B /* OIDRedirectHTTPHandler.m */; };
 		340DAECB1D582DE100EC285B /* OIDAuthorizationService+IOS.m in Sources */ = {isa = PBXBuildFile; fileRef = F6F60FB11D2BFEFE00325CB3 /* OIDAuthorizationService+IOS.m */; };
 		340DAECC1D582DE100EC285B /* OIDAuthState+IOS.m in Sources */ = {isa = PBXBuildFile; fileRef = F6F60FB01D2BFEFE00325CB3 /* OIDAuthState+IOS.m */; };
 		340DAECD1D582DE100EC285B /* OIDAuthorizationUICoordinatorIOS.m in Sources */ = {isa = PBXBuildFile; fileRef = F6F60FB21D2BFEFE00325CB3 /* OIDAuthorizationUICoordinatorIOS.m */; };
+		341310BE1E6F943C00D5DEE5 /* OIDClientMetadataParameters.m in Sources */ = {isa = PBXBuildFile; fileRef = 60140F791DE4276800DA0DC3 /* OIDClientMetadataParameters.m */; };
+		341310BF1E6F943C00D5DEE5 /* OIDClientMetadataParameters.m in Sources */ = {isa = PBXBuildFile; fileRef = 60140F791DE4276800DA0DC3 /* OIDClientMetadataParameters.m */; };
+		341310C21E6F944B00D5DEE5 /* OIDError.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741C01C5D8243000EF209 /* OIDError.m */; };
+		341310C31E6F944B00D5DEE5 /* OIDErrorUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741C21C5D8243000EF209 /* OIDErrorUtilities.m */; };
+		341310C41E6F944B00D5DEE5 /* OIDFieldMapping.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741C41C5D8243000EF209 /* OIDFieldMapping.m */; };
+		341310C51E6F944B00D5DEE5 /* OIDRegistrationResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 60140F7F1DE4344200DA0DC3 /* OIDRegistrationResponse.m */; };
+		341310C61E6F944B00D5DEE5 /* OIDRegistrationRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 60140F7B1DE42E1000DA0DC3 /* OIDRegistrationRequest.m */; };
+		341310C71E6F944B00D5DEE5 /* OIDGrantTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741C61C5D8243000EF209 /* OIDGrantTypes.m */; };
+		341310C81E6F944B00D5DEE5 /* OIDResponseTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741C81C5D8243000EF209 /* OIDResponseTypes.m */; };
+		341310C91E6F944B00D5DEE5 /* OIDScopes.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741CA1C5D8243000EF209 /* OIDScopes.m */; };
+		341310CA1E6F944B00D5DEE5 /* OIDScopeUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741CC1C5D8243000EF209 /* OIDScopeUtilities.m */; };
+		341310CB1E6F944B00D5DEE5 /* OIDServiceConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741CE1C5D8243000EF209 /* OIDServiceConfiguration.m */; };
+		341310CC1E6F944B00D5DEE5 /* OIDServiceDiscovery.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741D01C5D8243000EF209 /* OIDServiceDiscovery.m */; };
+		341310CD1E6F944B00D5DEE5 /* OIDTokenRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741D21C5D8243000EF209 /* OIDTokenRequest.m */; };
+		341310CE1E6F944B00D5DEE5 /* OIDTokenResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741D41C5D8243000EF209 /* OIDTokenResponse.m */; };
+		341310CF1E6F944B00D5DEE5 /* OIDTokenUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741D61C5D8243000EF209 /* OIDTokenUtilities.m */; };
+		341310D01E6F944B00D5DEE5 /* OIDURLQueryComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741D81C5D8243000EF209 /* OIDURLQueryComponent.m */; };
+		341310D31E6F944D00D5DEE5 /* OIDError.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741C01C5D8243000EF209 /* OIDError.m */; };
+		341310D41E6F944D00D5DEE5 /* OIDErrorUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741C21C5D8243000EF209 /* OIDErrorUtilities.m */; };
+		341310D51E6F944D00D5DEE5 /* OIDFieldMapping.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741C41C5D8243000EF209 /* OIDFieldMapping.m */; };
+		341310D61E6F944D00D5DEE5 /* OIDRegistrationResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 60140F7F1DE4344200DA0DC3 /* OIDRegistrationResponse.m */; };
+		341310D71E6F944D00D5DEE5 /* OIDRegistrationRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 60140F7B1DE42E1000DA0DC3 /* OIDRegistrationRequest.m */; };
+		341310D81E6F944D00D5DEE5 /* OIDGrantTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741C61C5D8243000EF209 /* OIDGrantTypes.m */; };
+		341310D91E6F944D00D5DEE5 /* OIDResponseTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741C81C5D8243000EF209 /* OIDResponseTypes.m */; };
+		341310DA1E6F944D00D5DEE5 /* OIDScopes.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741CA1C5D8243000EF209 /* OIDScopes.m */; };
+		341310DB1E6F944D00D5DEE5 /* OIDScopeUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741CC1C5D8243000EF209 /* OIDScopeUtilities.m */; };
+		341310DC1E6F944D00D5DEE5 /* OIDServiceConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741CE1C5D8243000EF209 /* OIDServiceConfiguration.m */; };
+		341310DD1E6F944D00D5DEE5 /* OIDServiceDiscovery.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741D01C5D8243000EF209 /* OIDServiceDiscovery.m */; };
+		341310DE1E6F944D00D5DEE5 /* OIDTokenRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741D21C5D8243000EF209 /* OIDTokenRequest.m */; };
+		341310DF1E6F944D00D5DEE5 /* OIDTokenResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741D41C5D8243000EF209 /* OIDTokenResponse.m */; };
+		341310E01E6F944D00D5DEE5 /* OIDTokenUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741D61C5D8243000EF209 /* OIDTokenUtilities.m */; };
+		341310E11E6F944D00D5DEE5 /* OIDURLQueryComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741D81C5D8243000EF209 /* OIDURLQueryComponent.m */; };
 		341741DB1C5D8243000EF209 /* OIDAuthorizationRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741B51C5D8243000EF209 /* OIDAuthorizationRequest.m */; };
 		341741DC1C5D8243000EF209 /* OIDAuthorizationResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741B71C5D8243000EF209 /* OIDAuthorizationResponse.m */; };
 		341741DD1C5D8243000EF209 /* OIDAuthorizationService.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741B91C5D8243000EF209 /* OIDAuthorizationService.m */; };
@@ -69,19 +88,6 @@
 		341E70991DE18796004353C1 /* OIDAuthorizationResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741B71C5D8243000EF209 /* OIDAuthorizationResponse.m */; };
 		341E709A1DE18796004353C1 /* OIDAuthorizationService.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741B91C5D8243000EF209 /* OIDAuthorizationService.m */; };
 		341E709B1DE18796004353C1 /* OIDAuthState.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741BB1C5D8243000EF209 /* OIDAuthState.m */; };
-		341E709C1DE18796004353C1 /* OIDError.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741C01C5D8243000EF209 /* OIDError.m */; };
-		341E709D1DE18796004353C1 /* OIDErrorUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741C21C5D8243000EF209 /* OIDErrorUtilities.m */; };
-		341E709E1DE18796004353C1 /* OIDFieldMapping.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741C41C5D8243000EF209 /* OIDFieldMapping.m */; };
-		341E709F1DE18796004353C1 /* OIDGrantTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741C61C5D8243000EF209 /* OIDGrantTypes.m */; };
-		341E70A01DE18796004353C1 /* OIDResponseTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741C81C5D8243000EF209 /* OIDResponseTypes.m */; };
-		341E70A11DE18796004353C1 /* OIDScopes.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741CA1C5D8243000EF209 /* OIDScopes.m */; };
-		341E70A21DE18796004353C1 /* OIDScopeUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741CC1C5D8243000EF209 /* OIDScopeUtilities.m */; };
-		341E70A31DE18796004353C1 /* OIDServiceConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741CE1C5D8243000EF209 /* OIDServiceConfiguration.m */; };
-		341E70A41DE18796004353C1 /* OIDServiceDiscovery.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741D01C5D8243000EF209 /* OIDServiceDiscovery.m */; };
-		341E70A51DE18796004353C1 /* OIDTokenRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741D21C5D8243000EF209 /* OIDTokenRequest.m */; };
-		341E70A61DE18796004353C1 /* OIDTokenResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741D41C5D8243000EF209 /* OIDTokenResponse.m */; };
-		341E70A71DE18796004353C1 /* OIDTokenUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741D61C5D8243000EF209 /* OIDTokenUtilities.m */; };
-		341E70A81DE18796004353C1 /* OIDURLQueryComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741D81C5D8243000EF209 /* OIDURLQueryComponent.m */; };
 		34FEA6AE1DB6E083005C9212 /* OIDLoopbackHTTPServer.h in Headers */ = {isa = PBXBuildFile; fileRef = 34FEA6AC1DB6E083005C9212 /* OIDLoopbackHTTPServer.h */; };
 		34FEA6AF1DB6E083005C9212 /* OIDLoopbackHTTPServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 34FEA6AD1DB6E083005C9212 /* OIDLoopbackHTTPServer.m */; };
 		60140F7A1DE4276800DA0DC3 /* OIDClientMetadataParameters.m in Sources */ = {isa = PBXBuildFile; fileRef = 60140F791DE4276800DA0DC3 /* OIDClientMetadataParameters.m */; };
@@ -550,28 +556,31 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				341310C21E6F944B00D5DEE5 /* OIDError.m in Sources */,
+				341310BE1E6F943C00D5DEE5 /* OIDClientMetadataParameters.m in Sources */,
 				34FEA6AF1DB6E083005C9212 /* OIDLoopbackHTTPServer.m in Sources */,
+				341310C61E6F944B00D5DEE5 /* OIDRegistrationRequest.m in Sources */,
 				340DAEBC1D582AF100EC285B /* OIDRedirectHTTPHandler.m in Sources */,
-				340DAE631D5821AB00EC285B /* OIDScopes.m in Sources */,
 				340DAE5D1D5821AB00EC285B /* OIDAuthState.m in Sources */,
 				340DAE5B1D5821AB00EC285B /* OIDAuthorizationResponse.m in Sources */,
+				341310CF1E6F944B00D5DEE5 /* OIDTokenUtilities.m in Sources */,
+				341310C71E6F944B00D5DEE5 /* OIDGrantTypes.m in Sources */,
+				341310C51E6F944B00D5DEE5 /* OIDRegistrationResponse.m in Sources */,
+				341310CB1E6F944B00D5DEE5 /* OIDServiceConfiguration.m in Sources */,
 				340DAE571D5821A100EC285B /* OIDAuthorizationService+Mac.m in Sources */,
-				340DAE5E1D5821AB00EC285B /* OIDError.m in Sources */,
-				340DAE661D5821AB00EC285B /* OIDServiceDiscovery.m in Sources */,
+				341310CC1E6F944B00D5DEE5 /* OIDServiceDiscovery.m in Sources */,
+				341310CA1E6F944B00D5DEE5 /* OIDScopeUtilities.m in Sources */,
 				340DAE5C1D5821AB00EC285B /* OIDAuthorizationService.m in Sources */,
-				340DAE641D5821AB00EC285B /* OIDScopeUtilities.m in Sources */,
+				341310CD1E6F944B00D5DEE5 /* OIDTokenRequest.m in Sources */,
+				341310C91E6F944B00D5DEE5 /* OIDScopes.m in Sources */,
+				341310CE1E6F944B00D5DEE5 /* OIDTokenResponse.m in Sources */,
+				341310C31E6F944B00D5DEE5 /* OIDErrorUtilities.m in Sources */,
 				340DAE581D5821A100EC285B /* OIDAuthorizationUICoordinatorMac.m in Sources */,
 				340DAE5A1D5821AB00EC285B /* OIDAuthorizationRequest.m in Sources */,
-				340DAE671D5821AB00EC285B /* OIDTokenRequest.m in Sources */,
-				340DAE681D5821AB00EC285B /* OIDTokenResponse.m in Sources */,
-				340DAE651D5821AB00EC285B /* OIDServiceConfiguration.m in Sources */,
 				340DAE591D5821A100EC285B /* OIDAuthState+Mac.m in Sources */,
-				340DAE691D5821AB00EC285B /* OIDTokenUtilities.m in Sources */,
-				340DAE601D5821AB00EC285B /* OIDFieldMapping.m in Sources */,
-				340DAE621D5821AB00EC285B /* OIDResponseTypes.m in Sources */,
-				340DAE6A1D5821AB00EC285B /* OIDURLQueryComponent.m in Sources */,
-				340DAE5F1D5821AB00EC285B /* OIDErrorUtilities.m in Sources */,
-				340DAE611D5821AB00EC285B /* OIDGrantTypes.m in Sources */,
+				341310D01E6F944B00D5DEE5 /* OIDURLQueryComponent.m in Sources */,
+				341310C81E6F944B00D5DEE5 /* OIDResponseTypes.m in Sources */,
+				341310C41E6F944B00D5DEE5 /* OIDFieldMapping.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -630,23 +639,26 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				341310DA1E6F944D00D5DEE5 /* OIDScopes.m in Sources */,
+				341310D51E6F944D00D5DEE5 /* OIDFieldMapping.m in Sources */,
 				341E709B1DE18796004353C1 /* OIDAuthState.m in Sources */,
-				341E70A11DE18796004353C1 /* OIDScopes.m in Sources */,
 				341E70981DE18796004353C1 /* OIDAuthorizationRequest.m in Sources */,
-				341E709D1DE18796004353C1 /* OIDErrorUtilities.m in Sources */,
+				341310D71E6F944D00D5DEE5 /* OIDRegistrationRequest.m in Sources */,
+				341310DD1E6F944D00D5DEE5 /* OIDServiceDiscovery.m in Sources */,
 				341E70991DE18796004353C1 /* OIDAuthorizationResponse.m in Sources */,
-				341E709E1DE18796004353C1 /* OIDFieldMapping.m in Sources */,
+				341310DB1E6F944D00D5DEE5 /* OIDScopeUtilities.m in Sources */,
+				341310D61E6F944D00D5DEE5 /* OIDRegistrationResponse.m in Sources */,
+				341310D31E6F944D00D5DEE5 /* OIDError.m in Sources */,
+				341310DE1E6F944D00D5DEE5 /* OIDTokenRequest.m in Sources */,
+				341310DF1E6F944D00D5DEE5 /* OIDTokenResponse.m in Sources */,
+				341310DC1E6F944D00D5DEE5 /* OIDServiceConfiguration.m in Sources */,
+				341310BF1E6F943C00D5DEE5 /* OIDClientMetadataParameters.m in Sources */,
+				341310E01E6F944D00D5DEE5 /* OIDTokenUtilities.m in Sources */,
 				341E709A1DE18796004353C1 /* OIDAuthorizationService.m in Sources */,
-				341E70A71DE18796004353C1 /* OIDTokenUtilities.m in Sources */,
-				341E70A21DE18796004353C1 /* OIDScopeUtilities.m in Sources */,
-				341E70A81DE18796004353C1 /* OIDURLQueryComponent.m in Sources */,
-				341E70A61DE18796004353C1 /* OIDTokenResponse.m in Sources */,
-				341E70A01DE18796004353C1 /* OIDResponseTypes.m in Sources */,
-				341E70A31DE18796004353C1 /* OIDServiceConfiguration.m in Sources */,
-				341E70A51DE18796004353C1 /* OIDTokenRequest.m in Sources */,
-				341E709C1DE18796004353C1 /* OIDError.m in Sources */,
-				341E70A41DE18796004353C1 /* OIDServiceDiscovery.m in Sources */,
-				341E709F1DE18796004353C1 /* OIDGrantTypes.m in Sources */,
+				341310D91E6F944D00D5DEE5 /* OIDResponseTypes.m in Sources */,
+				341310E11E6F944D00D5DEE5 /* OIDURLQueryComponent.m in Sources */,
+				341310D41E6F944D00D5DEE5 /* OIDErrorUtilities.m in Sources */,
+				341310D81E6F944D00D5DEE5 /* OIDGrantTypes.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
