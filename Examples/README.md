@@ -23,4 +23,4 @@ are welcome to submit a README with IdP information.
 Those with instructions on file:
 
 * [Google](README-Google.md)
-
+* [IdentityServer](README-IdentityServer.md)
