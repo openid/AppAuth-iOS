@@ -115,6 +115,26 @@
 		341E709A1DE18796004353C1 /* OIDAuthorizationService.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741B91C5D8243000EF209 /* OIDAuthorizationService.m */; };
 		341E709B1DE18796004353C1 /* OIDAuthState.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741BB1C5D8243000EF209 /* OIDAuthState.m */; };
 		347423E41E7F3C4000D3E6D6 /* OIDAuthorizationResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741B71C5D8243000EF209 /* OIDAuthorizationResponse.m */; };
+		347423FF1E7F4BA000D3E6D6 /* OIDAuthorizationRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741B51C5D8243000EF209 /* OIDAuthorizationRequest.m */; };
+		347424001E7F4BA000D3E6D6 /* OIDAuthorizationResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741B71C5D8243000EF209 /* OIDAuthorizationResponse.m */; };
+		347424011E7F4BA000D3E6D6 /* OIDAuthorizationService.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741B91C5D8243000EF209 /* OIDAuthorizationService.m */; };
+		347424021E7F4BA000D3E6D6 /* OIDAuthState.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741BB1C5D8243000EF209 /* OIDAuthState.m */; };
+		347424031E7F4BA000D3E6D6 /* OIDClientMetadataParameters.m in Sources */ = {isa = PBXBuildFile; fileRef = 60140F791DE4276800DA0DC3 /* OIDClientMetadataParameters.m */; };
+		347424041E7F4BA000D3E6D6 /* OIDError.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741C01C5D8243000EF209 /* OIDError.m */; };
+		347424051E7F4BA000D3E6D6 /* OIDErrorUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741C21C5D8243000EF209 /* OIDErrorUtilities.m */; };
+		347424061E7F4BA000D3E6D6 /* OIDFieldMapping.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741C41C5D8243000EF209 /* OIDFieldMapping.m */; };
+		347424071E7F4BA000D3E6D6 /* OIDRegistrationResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 60140F7F1DE4344200DA0DC3 /* OIDRegistrationResponse.m */; };
+		347424081E7F4BA000D3E6D6 /* OIDRegistrationRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 60140F7B1DE42E1000DA0DC3 /* OIDRegistrationRequest.m */; };
+		347424091E7F4BA000D3E6D6 /* OIDGrantTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741C61C5D8243000EF209 /* OIDGrantTypes.m */; };
+		3474240A1E7F4BA000D3E6D6 /* OIDResponseTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741C81C5D8243000EF209 /* OIDResponseTypes.m */; };
+		3474240B1E7F4BA000D3E6D6 /* OIDScopes.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741CA1C5D8243000EF209 /* OIDScopes.m */; };
+		3474240C1E7F4BA000D3E6D6 /* OIDScopeUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741CC1C5D8243000EF209 /* OIDScopeUtilities.m */; };
+		3474240D1E7F4BA000D3E6D6 /* OIDServiceConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741CE1C5D8243000EF209 /* OIDServiceConfiguration.m */; };
+		3474240E1E7F4BA000D3E6D6 /* OIDServiceDiscovery.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741D01C5D8243000EF209 /* OIDServiceDiscovery.m */; };
+		3474240F1E7F4BA000D3E6D6 /* OIDTokenRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741D21C5D8243000EF209 /* OIDTokenRequest.m */; };
+		347424101E7F4BA000D3E6D6 /* OIDTokenResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741D41C5D8243000EF209 /* OIDTokenResponse.m */; };
+		347424111E7F4BA000D3E6D6 /* OIDTokenUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741D61C5D8243000EF209 /* OIDTokenUtilities.m */; };
+		347424121E7F4BA000D3E6D6 /* OIDURLQueryComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741D81C5D8243000EF209 /* OIDURLQueryComponent.m */; };
 		34D5EC451E6D1AD900814354 /* OIDSwiftTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D5EC441E6D1AD900814354 /* OIDSwiftTests.swift */; };
 		34FEA6AE1DB6E083005C9212 /* OIDLoopbackHTTPServer.h in Headers */ = {isa = PBXBuildFile; fileRef = 34FEA6AC1DB6E083005C9212 /* OIDLoopbackHTTPServer.h */; };
 		34FEA6AF1DB6E083005C9212 /* OIDLoopbackHTTPServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 34FEA6AD1DB6E083005C9212 /* OIDLoopbackHTTPServer.m */; };
@@ -160,6 +180,15 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		341E707C1DE18744004353C1 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		347423F41E7F4B5600D3E6D6 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "include/$(PRODUCT_NAME)";
@@ -246,6 +275,7 @@
 		341AA4CE1E7F392C00FCA5C6 /* AppAuth-macOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "AppAuth-macOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		341AA4ED1E7F39F100FCA5C6 /* AppAuth-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "AppAuth-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		341E707E1DE18744004353C1 /* libAppAuth-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libAppAuth-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		347423F61E7F4B5600D3E6D6 /* libAppAuth-watchOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libAppAuth-watchOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		34D5EC431E6D1AD900814354 /* OIDAppAuthTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "OIDAppAuthTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		34D5EC441E6D1AD900814354 /* OIDSwiftTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OIDSwiftTests.swift; sourceTree = "<group>"; };
 		34FEA6AC1DB6E083005C9212 /* OIDLoopbackHTTPServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OIDLoopbackHTTPServer.h; sourceTree = "<group>"; };
@@ -317,6 +347,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		347423F31E7F4B5600D3E6D6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -355,6 +392,7 @@
 				341E707E1DE18744004353C1 /* libAppAuth-tvOS.a */,
 				341AA4CE1E7F392C00FCA5C6 /* AppAuth-macOSTests.xctest */,
 				341AA4ED1E7F39F100FCA5C6 /* AppAuth-tvOSTests.xctest */,
+				347423F61E7F4B5600D3E6D6 /* libAppAuth-watchOS.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -598,6 +636,23 @@
 			productReference = 341E707E1DE18744004353C1 /* libAppAuth-tvOS.a */;
 			productType = "com.apple.product-type.library.static";
 		};
+		347423F51E7F4B5600D3E6D6 /* AppAuth-watchOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 347423FE1E7F4B5600D3E6D6 /* Build configuration list for PBXNativeTarget "AppAuth-watchOS" */;
+			buildPhases = (
+				347423F21E7F4B5600D3E6D6 /* Sources */,
+				347423F31E7F4B5600D3E6D6 /* Frameworks */,
+				347423F41E7F4B5600D3E6D6 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "AppAuth-watchOS";
+			productName = "AppAuth-watchOS";
+			productReference = 347423F61E7F4B5600D3E6D6 /* libAppAuth-watchOS.a */;
+			productType = "com.apple.product-type.library.static";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -629,6 +684,10 @@
 						CreatedOnToolsVersion = 8.2;
 						ProvisioningStyle = Automatic;
 					};
+					347423F51E7F4B5600D3E6D6 = {
+						CreatedOnToolsVersion = 8.2.1;
+						ProvisioningStyle = Automatic;
+					};
 				};
 			};
 			buildConfigurationList = 340E73771C5D819B0076B1F6 /* Build configuration list for PBXProject "AppAuth" */;
@@ -649,6 +708,7 @@
 				341AA4CD1E7F392C00FCA5C6 /* AppAuth-macOSTests */,
 				341E707D1DE18744004353C1 /* AppAuth-tvOS */,
 				341AA4EC1E7F39F100FCA5C6 /* AppAuth-tvOSTests */,
+				347423F51E7F4B5600D3E6D6 /* AppAuth-watchOS */,
 			);
 		};
 /* End PBXProject section */
@@ -826,6 +886,33 @@
 				341310E11E6F944D00D5DEE5 /* OIDURLQueryComponent.m in Sources */,
 				341310D41E6F944D00D5DEE5 /* OIDErrorUtilities.m in Sources */,
 				341310D81E6F944D00D5DEE5 /* OIDGrantTypes.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		347423F21E7F4B5600D3E6D6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3474240B1E7F4BA000D3E6D6 /* OIDScopes.m in Sources */,
+				347424061E7F4BA000D3E6D6 /* OIDFieldMapping.m in Sources */,
+				347424021E7F4BA000D3E6D6 /* OIDAuthState.m in Sources */,
+				347423FF1E7F4BA000D3E6D6 /* OIDAuthorizationRequest.m in Sources */,
+				347424081E7F4BA000D3E6D6 /* OIDRegistrationRequest.m in Sources */,
+				3474240E1E7F4BA000D3E6D6 /* OIDServiceDiscovery.m in Sources */,
+				347424001E7F4BA000D3E6D6 /* OIDAuthorizationResponse.m in Sources */,
+				3474240C1E7F4BA000D3E6D6 /* OIDScopeUtilities.m in Sources */,
+				347424071E7F4BA000D3E6D6 /* OIDRegistrationResponse.m in Sources */,
+				347424041E7F4BA000D3E6D6 /* OIDError.m in Sources */,
+				3474240F1E7F4BA000D3E6D6 /* OIDTokenRequest.m in Sources */,
+				347424101E7F4BA000D3E6D6 /* OIDTokenResponse.m in Sources */,
+				3474240D1E7F4BA000D3E6D6 /* OIDServiceConfiguration.m in Sources */,
+				347424031E7F4BA000D3E6D6 /* OIDClientMetadataParameters.m in Sources */,
+				347424111E7F4BA000D3E6D6 /* OIDTokenUtilities.m in Sources */,
+				347424011E7F4BA000D3E6D6 /* OIDAuthorizationService.m in Sources */,
+				3474240A1E7F4BA000D3E6D6 /* OIDResponseTypes.m in Sources */,
+				347424121E7F4BA000D3E6D6 /* OIDURLQueryComponent.m in Sources */,
+				347424051E7F4BA000D3E6D6 /* OIDErrorUtilities.m in Sources */,
+				347424091E7F4BA000D3E6D6 /* OIDGrantTypes.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1098,6 +1185,32 @@
 			};
 			name = Release;
 		};
+		347423FC1E7F4B5600D3E6D6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				WATCHOS_DEPLOYMENT_TARGET = 3.1;
+			};
+			name = Debug;
+		};
+		347423FD1E7F4B5600D3E6D6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				WATCHOS_DEPLOYMENT_TARGET = 3.1;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1163,6 +1276,14 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		347423FE1E7F4B5600D3E6D6 /* Build configuration list for PBXNativeTarget "AppAuth-watchOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				347423FC1E7F4B5600D3E6D6 /* Debug */,
+				347423FD1E7F4B5600D3E6D6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
 	};
