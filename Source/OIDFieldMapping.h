@@ -46,7 +46,7 @@ typedef _Nullable id(^OIDFieldMappingConversionFunction)(NSObject *_Nullable val
 /*! @internal
     @brief Unavailable. Please use initWithName:type:conversion:.
  */
-- (nonnull instancetype)init NS_UNAVAILABLE;
+- (instancetype)init NS_UNAVAILABLE;
 
 /*! @brief The designated initializer.
     @param name The name of the instance variable the field should be mapped to.
@@ -57,17 +57,17 @@ typedef _Nullable id(^OIDFieldMappingConversionFunction)(NSObject *_Nullable val
         encoding/decoding, since the encoded and decoded values should already be of the type
         specified by the @c type parameter.
  */
-- (nullable instancetype)initWithName:(NSString *)name
-                                 type:(Class)type
-                           conversion:(nullable OIDFieldMappingConversionFunction)conversion
+- (instancetype)initWithName:(NSString *)name
+                        type:(Class)type
+                  conversion:(nullable OIDFieldMappingConversionFunction)conversion
     NS_DESIGNATED_INITIALIZER;
 
 /*! @brief A convenience initializer.
     @param name The name of the instance variable the field should be mapped to.
     @param type The type of the instance variable.
  */
-- (nullable instancetype)initWithName:(NSString *)name
-                                 type:(Class)type;
+- (instancetype)initWithName:(NSString *)name
+                        type:(Class)type;
 
 /*! @brief Performs a mapping of key/value pairs in an incoming parameters dictionary to instance
         variables, returning a dictionary of parameter key/values which didn't map to instance

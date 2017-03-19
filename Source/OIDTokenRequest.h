@@ -99,7 +99,7 @@ NS_ASSUME_NONNULL_BEGIN
     @brief Unavailable. Please use
         initWithConfiguration:grantType:code:redirectURL:clientID:additionalParameters:.
  */
-- (nonnull instancetype)init NS_UNAVAILABLE;
+- (instancetype)init NS_UNAVAILABLE;
 
 /*! @param configuration The service's configuration.
     @param grantType the type of token being sent to the token endpoint, i.e. "authorization_code"
@@ -112,7 +112,7 @@ NS_ASSUME_NONNULL_BEGIN
     @param refreshToken The refresh token.
     @param additionalParameters The client's additional token request parameters.
  */
-- (nullable instancetype)initWithConfiguration:(OIDServiceConfiguration *)configuration
+- (instancetype)initWithConfiguration:(OIDServiceConfiguration *)configuration
                grantType:(NSString *)grantType
        authorizationCode:(nullable NSString *)code
              redirectURL:(NSURL *)redirectURL
@@ -136,7 +136,7 @@ NS_ASSUME_NONNULL_BEGIN
     @param refreshToken The refresh token.
     @param additionalParameters The client's additional token request parameters.
  */
-- (nullable instancetype)initWithConfiguration:(OIDServiceConfiguration *)configuration
+- (instancetype)initWithConfiguration:(OIDServiceConfiguration *)configuration
                grantType:(NSString *)grantType
        authorizationCode:(nullable NSString *)code
              redirectURL:(NSURL *)redirectURL
