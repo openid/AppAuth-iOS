@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		341AA4C31E7F2E5000FCA5C6 /* AppAuthExampleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 341AA4C21E7F2E5000FCA5C6 /* AppAuthExampleTests.m */; };
 		EFEF6E9CC6F12EA4870987D5 /* libPods-Example-macOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FED92DEDC2639A35907A5D4D /* libPods-Example-macOS.a */; };
 		F6016E951D2BD988003497D7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F6016E8B1D2BD988003497D7 /* AppDelegate.m */; };
 		F6016E971D2BD988003497D7 /* AppAuthExampleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F6016E8D1D2BD988003497D7 /* AppAuthExampleViewController.m */; };
@@ -16,7 +17,20 @@
 		F6016E9C1D2BD9C0003497D7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F6016E9B1D2BD9C0003497D7 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		341AA4C51E7F2E5000FCA5C6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F6016E681D2AC11E003497D7 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F6016E6F1D2AC11F003497D7;
+			remoteInfo = "Example-macOS";
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		341AA4C01E7F2E5000FCA5C6 /* Example-macOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Example-macOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		341AA4C21E7F2E5000FCA5C6 /* AppAuthExampleTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppAuthExampleTests.m; sourceTree = "<group>"; };
+		341AA4C41E7F2E5000FCA5C6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		60553B3AB5BA3E1BB259E487 /* Pods-Example-macOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Example-macOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-Example-macOS/Pods-Example-macOS.release.xcconfig"; sourceTree = "<group>"; };
 		7FF583C8F7036437BE8875B3 /* Pods-Example-macOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Example-macOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Example-macOS/Pods-Example-macOS.debug.xcconfig"; sourceTree = "<group>"; };
 		F6016E701D2AC11F003497D7 /* Example-macOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Example-macOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -33,6 +47,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		341AA4BD1E7F2E5000FCA5C6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F6016E6D1D2AC11F003497D7 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -61,10 +82,20 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		341AA4C11E7F2E5000FCA5C6 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				341AA4C21E7F2E5000FCA5C6 /* AppAuthExampleTests.m */,
+				341AA4C41E7F2E5000FCA5C6 /* Info.plist */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
 		F6016E671D2AC11E003497D7 = {
 			isa = PBXGroup;
 			children = (
 				F6016E8A1D2BD973003497D7 /* Source */,
+				341AA4C11E7F2E5000FCA5C6 /* Tests */,
 				F6016E711D2AC11F003497D7 /* Products */,
 				186006823FF563B11A81B036 /* Pods */,
 				27454E5D219A9EBB94F74197 /* Frameworks */,
@@ -75,6 +106,7 @@
 			isa = PBXGroup;
 			children = (
 				F6016E701D2AC11F003497D7 /* Example-macOS.app */,
+				341AA4C01E7F2E5000FCA5C6 /* Example-macOSTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -98,6 +130,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		341AA4BF1E7F2E5000FCA5C6 /* Example-macOSTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 341AA4C91E7F2E5000FCA5C6 /* Build configuration list for PBXNativeTarget "Example-macOSTests" */;
+			buildPhases = (
+				341AA4BC1E7F2E5000FCA5C6 /* Sources */,
+				341AA4BD1E7F2E5000FCA5C6 /* Frameworks */,
+				341AA4BE1E7F2E5000FCA5C6 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				341AA4C61E7F2E5000FCA5C6 /* PBXTargetDependency */,
+			);
+			name = "Example-macOSTests";
+			productName = "Example-macOSTests";
+			productReference = 341AA4C01E7F2E5000FCA5C6 /* Example-macOSTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		F6016E6F1D2AC11F003497D7 /* Example-macOS */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = F6016E811D2AC11F003497D7 /* Build configuration list for PBXNativeTarget "Example-macOS" */;
@@ -127,6 +177,11 @@
 				LastUpgradeCheck = 0730;
 				ORGANIZATIONNAME = Google;
 				TargetAttributes = {
+					341AA4BF1E7F2E5000FCA5C6 = {
+						CreatedOnToolsVersion = 8.2.1;
+						ProvisioningStyle = Automatic;
+						TestTargetID = F6016E6F1D2AC11F003497D7;
+					};
 					F6016E6F1D2AC11F003497D7 = {
 						CreatedOnToolsVersion = 7.3.1;
 					};
@@ -146,11 +201,19 @@
 			projectRoot = "";
 			targets = (
 				F6016E6F1D2AC11F003497D7 /* Example-macOS */,
+				341AA4BF1E7F2E5000FCA5C6 /* Example-macOSTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		341AA4BE1E7F2E5000FCA5C6 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F6016E6E1D2AC11F003497D7 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -212,6 +275,14 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		341AA4BC1E7F2E5000FCA5C6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				341AA4C31E7F2E5000FCA5C6 /* AppAuthExampleTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F6016E6C1D2AC11F003497D7 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -223,6 +294,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		341AA4C61E7F2E5000FCA5C6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F6016E6F1D2AC11F003497D7 /* Example-macOS */;
+			targetProxy = 341AA4C51E7F2E5000FCA5C6 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		F6016E8F1D2BD988003497D7 /* AppAuthExampleViewController.xib */ = {
@@ -244,6 +323,40 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		341AA4C71E7F2E5000FCA5C6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = Tests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				PRODUCT_BUNDLE_IDENTIFIER = "net.openid.Example-macOSTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Example-macOS.app/Contents/MacOS/Example-macOS";
+			};
+			name = Debug;
+		};
+		341AA4C81E7F2E5000FCA5C6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = Tests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				PRODUCT_BUNDLE_IDENTIFIER = "net.openid.Example-macOSTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Example-macOS.app/Contents/MacOS/Example-macOS";
+			};
+			name = Release;
+		};
 		F6016E7F1D2AC11F003497D7 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -354,6 +467,14 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		341AA4C91E7F2E5000FCA5C6 /* Build configuration list for PBXNativeTarget "Example-macOSTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				341AA4C71E7F2E5000FCA5C6 /* Debug */,
+				341AA4C81E7F2E5000FCA5C6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 		F6016E6B1D2AC11E003497D7 /* Build configuration list for PBXProject "Example-macOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
