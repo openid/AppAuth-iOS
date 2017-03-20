@@ -1,5 +1,5 @@
 /*! @file AppAuthExampleTests.m
-    @brief AppAuth iOS SDK Example Tests
+    @brief AppAuth macOS SDK Example Tests
     @copyright
         Copyright 2017 Google Inc. All Rights Reserved.
     @copydetails
