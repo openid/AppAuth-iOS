@@ -134,33 +134,31 @@ typedef void (^OIDAuthStateAuthorizationCallback)(OIDAuthState *_Nullable authSt
 /*! @internal
     @brief Unavailable. Please use @c initWithAuthorizationResponse:.
  */
-- (nonnull instancetype)init NS_UNAVAILABLE;
+- (instancetype)init NS_UNAVAILABLE;
 
 /*! @brief Creates an auth state from an authorization response.
-    @param response The authorization response.
+    @param authorizationResponse The authorization response.
  */
-- (nullable instancetype)initWithAuthorizationResponse:
-    (OIDAuthorizationResponse *)authorizationResponse;
+- (instancetype)initWithAuthorizationResponse:(OIDAuthorizationResponse *)authorizationResponse;
 
-/*! @brief Creates an auth state from an authorization response.
-    @param response The authorization response.
+/*! @brief Creates an auth state from an authorization and token response.
+    @param authorizationResponse The authorization response.
+    @param tokenResponse The token response.
  */
-- (nullable instancetype)initWithAuthorizationResponse:
-    (OIDAuthorizationResponse *)authorizationResponse
-                                         tokenResponse:(nullable OIDTokenResponse *)tokenResponse;
+- (instancetype)initWithAuthorizationResponse:(OIDAuthorizationResponse *)authorizationResponse
+                                tokenResponse:(nullable OIDTokenResponse *)tokenResponse;
 
 /*! @brief Creates an auth state from an registration response.
     @param registrationResponse The registration response.
  */
-- (nullable instancetype)initWithRegistrationResponse:
-    (OIDRegistrationResponse *)registrationResponse;
+- (instancetype)initWithRegistrationResponse:(OIDRegistrationResponse *)registrationResponse;
 
 /*! @brief Creates an auth state from an authorization, token and registration response.
     @param authorizationResponse The authorization response.
     @param tokenResponse The token response.
     @param registrationResponse The registration response.
  */
-- (nullable instancetype)initWithAuthorizationResponse:
+- (instancetype)initWithAuthorizationResponse:
     (nullable OIDAuthorizationResponse *)authorizationResponse
            tokenResponse:(nullable OIDTokenResponse *)tokenResponse
     registrationResponse:(nullable OIDRegistrationResponse *)registrationResponse
@@ -221,7 +219,7 @@ typedef void (^OIDAuthStateAuthorizationCallback)(OIDAuthState *_Nullable authSt
         refresh was needed and failed, with the error that caused it to fail.
     @param action The block to execute with a fresh token. This block will be executed on the main
         thread.
-    @param additionalRefreshParameters Additional parameters for the token request if token is
+    @param additionalParameters Additional parameters for the token request if token is
         refreshed.
  */
 - (void)performActionWithFreshTokens:(OIDAuthStateAction)action

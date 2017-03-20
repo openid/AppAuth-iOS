@@ -81,7 +81,7 @@ static NSString *const kAdditionalParametersKey = @"additionalParameters";
 - (nonnull instancetype)init
   OID_UNAVAILABLE_USE_INITIALIZER(@selector(initWithRequest:parameters:));
 
-- (nullable instancetype)initWithRequest:(OIDRegistrationRequest *)request
+- (instancetype)initWithRequest:(OIDRegistrationRequest *)request
                               parameters:(NSDictionary<NSString *, NSObject <NSCopying> *> *)parameters {
   self = [super init];
   if (self) {

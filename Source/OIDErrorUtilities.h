@@ -33,9 +33,9 @@ NS_ASSUME_NONNULL_BEGIN
     @param description A custom description, if applicable.
     @return An \NSError representing the error code.
  */
-+ (nullable NSError *)errorWithCode:(OIDErrorCode)code
-                    underlyingError:(nullable NSError *)underlyingError
-                        description:(nullable NSString *)description;
++ (NSError *)errorWithCode:(OIDErrorCode)code
+           underlyingError:(nullable NSError *)underlyingError
+               description:(nullable NSString *)description;
 
 /*! @brief Creates a standard \NSError from an @c ::OIDErrorCode and custom user info.
         Automatically populates the localized error description.
@@ -46,9 +46,9 @@ NS_ASSUME_NONNULL_BEGIN
     @return An \NSError representing the OAuth error.
     @see https://tools.ietf.org/html/rfc6749#section-5.2
  */
-+ (nullable NSError *)OAuthErrorWithDomain:(NSString *)OAuthErrorDomain
-                             OAuthResponse:(NSDictionary *)errorResponse
-                           underlyingError:(nullable NSError *)underlyingError;
++ (NSError *)OAuthErrorWithDomain:(NSString *)OAuthErrorDomain
+                    OAuthResponse:(NSDictionary *)errorResponse
+                  underlyingError:(nullable NSError *)underlyingError;
 
 /*! @brief Creates a \NSError indicating that the resource server responded with an authorization
         error.
@@ -57,9 +57,9 @@ NS_ASSUME_NONNULL_BEGIN
     @param underlyingError The underlying error which occurred, if applicable.
     @return An \NSError representing the authorization error from the resource server.
  */
-+ (nullable NSError *)resourceServerAuthorizationErrorWithCode:(NSInteger)code
-                                                errorResponse:(nullable NSDictionary *)errorResponse
-                                              underlyingError:(nullable NSError *)underlyingError;
++ (NSError *)resourceServerAuthorizationErrorWithCode:(NSInteger)code
+                                        errorResponse:(nullable NSDictionary *)errorResponse
+                                      underlyingError:(nullable NSError *)underlyingError;
 
 
 /*! @brief Creates a standard \NSError from an \NSHTTPURLResponse. Automatically
@@ -70,8 +70,8 @@ NS_ASSUME_NONNULL_BEGIN
         @c NSString assuming a UTF-8 encoding, if available.
     @return An \NSError representing the error.
  */
-+ (nullable NSError *)HTTPErrorWithHTTPResponse:(NSHTTPURLResponse *)HTTPURLResponse
-                                           data:(nullable NSData *)data;
++ (NSError *)HTTPErrorWithHTTPResponse:(NSHTTPURLResponse *)HTTPURLResponse
+                                  data:(nullable NSData *)data;
 
 /*! @brief Raises an exception with the given name as both the name, and the message.
     @param name The name of the exception.

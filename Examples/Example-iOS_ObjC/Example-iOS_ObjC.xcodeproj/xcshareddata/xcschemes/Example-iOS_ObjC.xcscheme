@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "346E91681C29D42800D3620B"
-               BuildableName = "Example.app"
-               BlueprintName = "Example"
-               ReferencedContainer = "container:Example.xcodeproj">
+               BuildableName = "Example-iOS_ObjC.app"
+               BlueprintName = "Example-iOS_ObjC"
+               ReferencedContainer = "container:Example-iOS_ObjC.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -28,14 +28,24 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "341310A61E6DEF7000D5DEE5"
+               BuildableName = "AppAuthExample-iOS_ObjCTests.xctest"
+               BlueprintName = "AppAuthExample-iOS_ObjCTests"
+               ReferencedContainer = "container:Example-iOS_ObjC.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "346E91681C29D42800D3620B"
-            BuildableName = "Example.app"
-            BlueprintName = "Example"
-            ReferencedContainer = "container:Example.xcodeproj">
+            BuildableName = "Example-iOS_ObjC.app"
+            BlueprintName = "Example-iOS_ObjC"
+            ReferencedContainer = "container:Example-iOS_ObjC.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -56,9 +66,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "346E91681C29D42800D3620B"
-            BuildableName = "Example.app"
-            BlueprintName = "Example"
-            ReferencedContainer = "container:Example.xcodeproj">
+            BuildableName = "Example-iOS_ObjC.app"
+            BlueprintName = "Example-iOS_ObjC"
+            ReferencedContainer = "container:Example-iOS_ObjC.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -75,9 +85,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "346E91681C29D42800D3620B"
-            BuildableName = "Example.app"
-            BlueprintName = "Example"
-            ReferencedContainer = "container:Example.xcodeproj">
+            BuildableName = "Example-iOS_ObjC.app"
+            BlueprintName = "Example-iOS_ObjC"
+            ReferencedContainer = "container:Example-iOS_ObjC.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
