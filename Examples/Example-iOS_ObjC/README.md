@@ -2,9 +2,22 @@
 
 ## Setup & Open the Project
 
-Open the `Example.xcworkspace` file. This contains the example app,
-and embeds the AppAuth dependency. You can also use CocoaPods to manage the
-dependency, an example Podfile is contained in the Example-macOS folder.
+1. In the `Example-iOS_ObjC` folder, run the following command to install the
+AppAuth pod.
+
+```
+pod install
+```
+
+2. Open the `Example-iOS_ObjC.xcworkspace` workspace.
+
+```
+open Example-iOS_ObjC.xcworkspace
+```
+
+This workspace is configured to include AppAuth via CocoaPods. You can also
+directly include AppAuth as a static library using the build targets in the
+`AppAuth.xcodeproj` project.
 
 ## Configuration
 

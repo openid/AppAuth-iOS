@@ -169,8 +169,6 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
 
 - (void)doClientRegistration:(OIDServiceConfiguration *)configuration
                     callback:(PostRegistrationCallback)callback {
-    [self verifyConfig];
-
     NSURL *redirectURI = [NSURL URLWithString:kRedirectURI];
 
     OIDRegistrationRequest *request =
@@ -200,8 +198,6 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
 - (void)doAuthWithAutoCodeExchange:(OIDServiceConfiguration *)configuration
                           clientID:(NSString *)clientID
                       clientSecret:(NSString *)clientSecret {
-  [self verifyConfig];
-
   NSURL *redirectURI = [NSURL URLWithString:kRedirectURI];
   // builds authentication request
   OIDAuthorizationRequest *request =
@@ -234,8 +230,6 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
 - (void)doAuthWithoutCodeExchange:(OIDServiceConfiguration *)configuration
                          clientID:(NSString *)clientID
                      clientSecret:(NSString *)clientSecret {
-  [self verifyConfig];
-
   NSURL *redirectURI = [NSURL URLWithString:kRedirectURI];
 
   // builds authentication request
@@ -270,6 +264,8 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
 }
 
 - (IBAction)authWithAutoCodeExchange:(nullable id)sender {
+  [self verifyConfig];
+
   NSURL *issuer = [NSURL URLWithString:kIssuer];
 
   [self logMessage:@"Fetching configuration for issuer: %@", issuer];
@@ -300,6 +296,8 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
 }
 
 - (IBAction)authNoCodeExchange:(nullable id)sender {
+  [self verifyConfig];
+
   NSURL *issuer = [NSURL URLWithString:kIssuer];
 
   [self logMessage:@"Fetching configuration for issuer: %@", issuer];
