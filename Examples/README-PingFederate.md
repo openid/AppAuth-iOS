@@ -23,7 +23,7 @@ Developer licenses and the PingFederate software can be found at https://develop
 
 Single sign-on using the SFSafariViewController expects a persistent session cookie to be used. This is not the default configuration for PingFederate, however there are [simple instructions to switch from using session cookies to persistent cookies](https://docs.pingidentity.com/bundle/pf_sm_extendLifetimeOfPfCookie_pf83/page/concept/extendingLifetimeOfPfCookie.html).
 
-**Note**: Due to the Application Transport Security (ATS) features of iOS9+, your PingFederate server must have a valid SSL certificate.
+**Note**: Due to the Application Transport Security (ATS) features of iOS9+, your PingFederate server must have a valid SSL certificate. Developers may disable ATS by following [Apple directions](https://developer.apple.com/library/content/documentation/General/Reference/InfoPlistKeyReference/Articles/CocoaKeys.html), however this should only be done so in development environments.
 
 
 
@@ -35,18 +35,24 @@ Use the following information to configure the examples.
 
 | Configuration | Description      |
 |---------------|------------------|
-| Issuer        | The hostname of your PingFederate server, include the port if applicable (e.g. https://pf.example.com:9031). |
-| Client ID     | The `Client ID` from the OAuth client configuration (e.g. ac_client). |
+| Issuer        | The hostname of your PingFederate server, include the port if applicable (e.g. `https://pf.example.com:9031`). |
+| Client ID     | The `Client ID` from the OAuth client configuration (e.g. `ac_client`). |
 | Client Secret | Blank. The authorization code client does not have a secret. |
-| Redirect URI  | The `Redirect URI` from the OAuth client configuration (e.g. com.example.appauth://cb). | 
+| Redirect URI  | The `Redirect URI` from the OAuth client configuration (e.g. `com.example.appauth://cb`). | 
 
 
 ### macOS
 
 | Configuration | Description      |
 |---------------|------------------|
-| Issuer        | The hostname of your PingFederate server, include the port if applicable (e.g. https://pf.example.com:9031). |
-| Client ID     | The `Client ID` from the OAuth client configuration (e.g. ac_client). |
+| Issuer        | The hostname of your PingFederate server, include the port if applicable (e.g. `https://pf.example.com:9031`). |
+| Client ID     | The `Client ID` from the OAuth client configuration (e.g. `ac_client`). |
 | Client Secret | Blank. The authorization code client does not have a secret. |
-| Redirect URI  | For macOS, you can use either the loopback interface (where AppAuth will generate the redirect URI for you), or a custom scheme. For a custom scheme, use the `Redirect URI` from the OAuth client configuration (e.g. com.example.appauth://cb). | 
+| Redirect URI  | For macOS, you can use either the loopback interface (where AppAuth will generate the redirect URI for you), or a custom scheme. For a custom scheme, use the `Redirect URI` from the OAuth client configuration (e.g. `com.example.appauth://cb`). | 
+
+
+
+## Support Information
+
+For help and support visit the [Ping Identity developers site](https://developer.pingidentity.com/en/support.html) or contact your account team.
 
