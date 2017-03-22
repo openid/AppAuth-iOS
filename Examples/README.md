@@ -24,3 +24,4 @@ Those with instructions on file:
 
 * [Google](README-Google.md)
 * [IdentityServer](README-IdentityServer.md)
+* [PingFederate](README-PingFederate.md)
