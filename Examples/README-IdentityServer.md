@@ -39,3 +39,7 @@ static NSString *const kClientID =
 static NSString *const kRedirectURI =
     @"io.identityserver.demo:/oauthredirect";
 ```
+
+## Getting support for IdentityServer
+The IdentityServer project has an [issue tracker](https://github.com/IdentityServer/IdentityServer4/issues) and [documentation](https://identityserver4.readthedocs.io/en/release/). Feel free to open an issue when you think you found a bug or unexpected behavior.
+There's also a pretty active community on [StackOverflow](https://stackoverflow.com/questions/tagged/identityserver4) that can help out with more general questions.
