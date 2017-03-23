@@ -74,20 +74,37 @@ client info to try the demo).
 
 ## Setup
 
-If you use [CocoaPods](https://guides.cocoapods.org/using/getting-started.html),
-simply add:
+AppAuth supports three options for dependency management.
+
+### CocoaPods
+
+With [CocoaPods](https://guides.cocoapods.org/using/getting-started.html),
+add the following line to your `Podfile`:
 
     pod 'AppAuth'
 
-To your `Podfile` and run `pod install`
+Then run `pod install`.
 
-Or if you use [Carthage](https://github.com/Carthage/Carthage),
-simply add:
+### Carthage
 
-    github "openid/AppAuth-iOS"
+With [Carthage](https://github.com/Carthage/Carthage), add the following
+line to your `Cartfile`:
 
-To your `Cartfile` and run `carthage bootstrap`. Otherwise, add `AppAuth.xcodeproj`
-into your workspace.
+    github "openid/AppAuth-iOS" "master"
+
+Then run `carthage bootstrap`.
+
+### Static Library
+
+You can also use AppAuth as a static library. This requires linking the library
+and your project and including the headers.  Suggested configuration:
+
+1. Create an XCode Workspace.
+2. Add `AppAuth.xcodeproj` to your Workspace.
+3. Include libAppAuth as a linked library for your target (in the "General ->
+Linked Framework and Libraries" section of your target).
+4. Add `AppAuth/Source` to your search paths of your target ("Build Settings ->
+"Header Search Paths").
 
 ## Auth Flow
 
