@@ -58,7 +58,8 @@ NS_ASSUME_NONNULL_BEGIN
     @param presentingViewController The view controller from which to present the
         \SFSafariViewController.
  */
-- (nullable instancetype)initWithPresentingViewController:(UIViewController *)parentViewController
+- (nullable instancetype)initWithPresentingViewController:
+    (UIViewController *)presentingViewController
     NS_DESIGNATED_INITIALIZER;
 
 @end
