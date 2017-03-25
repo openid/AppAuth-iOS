@@ -138,7 +138,7 @@ static int const kCodeVerifierRecommendedLength = 43;
       [[OIDAuthorizationRequest alloc] initWithConfiguration:configuration
                       clientId:kTestClientID
                   clientSecret:kTestClientSecret
-                        scope:[OIDScopeUtilities scopesWithArray:@[ kTestScope, kTestScopeA ]]
+                         scope:[OIDScopeUtilities scopesWithArray:@[ kTestScope, kTestScopeA ]]
                    redirectURL:[NSURL URLWithString:kTestRedirectURL]
                   responseType:kTestResponseType
                          state:kTestState
@@ -154,8 +154,25 @@ static int const kCodeVerifierRecommendedLength = 43;
   OIDAuthorizationRequest *request =
       [[OIDAuthorizationRequest alloc] initWithConfiguration:configuration
                       clientId:kTestClientID
+                  clientSecret:nil
+                         scope:[OIDScopeUtilities scopesWithArray:@[ kTestScope, kTestScopeA ]]
+                   redirectURL:[NSURL URLWithString:kTestRedirectURL]
+                  responseType:OIDResponseTypeCode
+                         state:kTestState
+                  codeVerifier:kTestCodeVerifier
+                 codeChallenge:[[self class] codeChallenge]
+           codeChallengeMethod:[[self class] codeChallengeMethod]
+          additionalParameters:nil];
+  return request;
+}
+
++ (OIDAuthorizationRequest *)testInstanceCodeFlowClientAuth {
+  OIDServiceConfiguration *configuration = [OIDServiceConfigurationTests testInstance];
+  OIDAuthorizationRequest *request =
+      [[OIDAuthorizationRequest alloc] initWithConfiguration:configuration
+                      clientId:kTestClientID
                   clientSecret:kTestClientSecret
-                        scope:[OIDScopeUtilities scopesWithArray:@[ kTestScope, kTestScopeA ]]
+                         scope:[OIDScopeUtilities scopesWithArray:@[ kTestScope, kTestScopeA ]]
                    redirectURL:[NSURL URLWithString:kTestRedirectURL]
                   responseType:OIDResponseTypeCode
                          state:kTestState

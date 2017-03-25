@@ -34,6 +34,11 @@ NS_ASSUME_NONNULL_BEGIN
  */
 + (OIDAuthorizationRequest *)testInstanceCodeFlow;
 
+/*! @brief Creates a new @c OIDAuthorizationRequest testing a code flow request
+        with client authentication.
+ */
++ (OIDAuthorizationRequest *)testInstanceCodeFlowClientAuth;
+
 @end
 
 NS_ASSUME_NONNULL_END
