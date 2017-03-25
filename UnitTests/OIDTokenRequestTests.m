@@ -61,7 +61,27 @@ static NSString *const kTestAdditionalParameterValue = @"1";
 }
 
 + (OIDTokenRequest *)testInstanceCodeExchange {
-  OIDAuthorizationResponse *authResponse = [OIDAuthorizationResponseTests testInstance];
+  OIDAuthorizationResponse *authResponse = [OIDAuthorizationResponseTests testInstanceCodeFlow];
+  NSArray<NSString *> *scopesArray =
+      [OIDScopeUtilities scopesArrayWithString:authResponse.request.scope];
+  NSDictionary *additionalParameters =
+      @{ kTestAdditionalParameterKey : kTestAdditionalParameterValue };
+  OIDTokenRequest *request =
+      [[OIDTokenRequest alloc] initWithConfiguration:authResponse.request.configuration
+                                           grantType:OIDGrantTypeAuthorizationCode
+                                   authorizationCode:authResponse.authorizationCode
+                                         redirectURL:authResponse.request.redirectURL
+                                            clientID:authResponse.request.clientID
+                                        clientSecret:authResponse.request.clientSecret
+                                              scopes:scopesArray
+                                        refreshToken:kRefreshTokenTestValue
+                                        codeVerifier:authResponse.request.codeVerifier
+                                additionalParameters:additionalParameters];
+  return request;
+}
+
++ (OIDTokenRequest *)testInstanceCodeExchangeClientAuth {
+  OIDAuthorizationResponse *authResponse = [OIDAuthorizationResponseTests testInstanceCodeFlowClientAuth];
   NSArray<NSString *> *scopesArray =
       [OIDScopeUtilities scopesArrayWithString:authResponse.request.scope];
   NSDictionary *additionalParameters =
@@ -183,6 +203,22 @@ static NSString *const kTestAdditionalParameterValue = @"1";
   XCTAssertNotNil(requestCopy.additionalParameters);
   XCTAssertEqualObjects(requestCopy.additionalParameters[kTestAdditionalParameterKey],
                         kTestAdditionalParameterValue);
+}
+
+- (void)testURLRequestNoClientAuth {
+  OIDTokenRequest *request = [[self class] testInstanceCodeExchange];
+  NSURLRequest *urlRequest = [request URLRequest];
+
+  id authorization = [urlRequest.allHTTPHeaderFields objectForKey:@"Authorization"];
+  XCTAssertNil(authorization);
+}
+
+- (void)testURLRequestBasicClientAuth {
+  OIDTokenRequest *request = [[self class] testInstanceCodeExchangeClientAuth];
+  NSURLRequest* urlRequest = [request URLRequest];
+
+  id authorization = [urlRequest.allHTTPHeaderFields objectForKey:@"Authorization"];
+  XCTAssertNotNil(authorization);
 }
 
 @end

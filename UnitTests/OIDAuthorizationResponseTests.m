@@ -95,6 +95,19 @@ static NSString *const kTestScope = @"Scope";
   return response;
 }
 
++ (OIDAuthorizationResponse *)testInstanceCodeFlowClientAuth {
+  OIDAuthorizationRequest *request = [OIDAuthorizationRequestTests testInstanceCodeFlowClientAuth];
+  OIDAuthorizationResponse *response =
+      [[OIDAuthorizationResponse alloc] initWithRequest:request parameters:@{
+        @"code" : kTestAuthorizationCode,
+        @"code_verifier" : kTestAuthorizationCodeVerifier,
+        @"state" : kTestState,
+        @"token_type" : OIDGrantTypeAuthorizationCode,
+        kTestAdditionalParameterKey : kTestAdditionalParameterValue
+      }];
+  return response;
+}
+
 /*! @brief Tests the @c NSCopying implementation by round-tripping an instance through the copying
         process and checking to make sure the source and destination instances are equivalent.
  */
