@@ -1,5 +1,6 @@
 ![AppAuth for iOS and macOS](https://rawgit.com/openid/AppAuth-iOS/master/appauth_lockup.svg)
 [![Build Status](https://www.bitrise.io/app/8e4dbca635a964dc.svg?token=8rT4oJnhjUuFWH-QvXuJzg&branch=master)](https://www.bitrise.io/app/8e4dbca635a964dc)
+[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 
 AppAuth for iOS and macOS is a client SDK for communicating with [OAuth 2.0]
 (https://tools.ietf.org/html/rfc6749) and [OpenID Connect]
@@ -73,13 +74,37 @@ client info to try the demo).
 
 ## Setup
 
-If you use [CocoaPods](https://guides.cocoapods.org/using/getting-started.html),
-simply add:
+AppAuth supports three options for dependency management.
+
+### CocoaPods
+
+With [CocoaPods](https://guides.cocoapods.org/using/getting-started.html),
+add the following line to your `Podfile`:
 
     pod 'AppAuth'
 
-To your `Podfile` and run `pod install`. Otherwise, add `AppAuth.xcodeproj`
-into your workspace.
+Then run `pod install`.
+
+### Carthage
+
+With [Carthage](https://github.com/Carthage/Carthage), add the following
+line to your `Cartfile`:
+
+    github "openid/AppAuth-iOS" "master"
+
+Then run `carthage bootstrap`.
+
+### Static Library
+
+You can also use AppAuth as a static library. This requires linking the library
+and your project and including the headers.  Suggested configuration:
+
+1. Create an XCode Workspace.
+2. Add `AppAuth.xcodeproj` to your Workspace.
+3. Include libAppAuth as a linked library for your target (in the "General ->
+Linked Framework and Libraries" section of your target).
+4. Add `AppAuth/Source` to your search paths of your target ("Build Settings ->
+"Header Search Paths").
 
 ## Auth Flow
 
