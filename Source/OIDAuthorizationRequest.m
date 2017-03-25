@@ -19,6 +19,7 @@
 #import "OIDAuthorizationRequest.h"
 
 #import "OIDDefines.h"
+#import "OIDError.h"
 #import "OIDScopeUtilities.h"
 #import "OIDServiceConfiguration.h"
 #import "OIDTokenUtilities.h"
@@ -80,6 +81,13 @@ static NSUInteger const kStateSizeBytes = 32;
  */
 static NSUInteger const kCodeVerifierBytes = 32;
 
+/*! @brief Exception text for unsupported response types.
+ */
+static NSString *const OIDOAuthExceptionUnsupportedResponseTypeMessage =
+    @"The response_type \"%@\" isn't supported. AppAuth only supports the \"code\" response_type.";
+
+/*! @brief Code challenge request method.
+ */
 NSString *const OIDOAuthorizationRequestCodeChallengeMethodS256 = @"S256";
 
 @implementation OIDAuthorizationRequest
@@ -114,6 +122,12 @@ NSString *const OIDOAuthorizationRequestCodeChallengeMethodS256 = @"S256";
     _scope = [scope copy];
     _redirectURL = [redirectURL copy];
     _responseType = [responseType copy];
+    if (![_responseType isEqualToString:OIDResponseTypeCode]) {
+      // AppAuth only supports the `code` response type.
+      // Discussion: https://github.com/openid/AppAuth-iOS/issues/98
+      [NSException raise:OIDOAuthExceptionUnsupportedResponseType
+                  format:OIDOAuthExceptionUnsupportedResponseTypeMessage, _responseType, nil];
+    }
     _state = [state copy];
     _codeVerifier = [codeVerifier copy];
     _codeChallenge = [codeChallenge copy];

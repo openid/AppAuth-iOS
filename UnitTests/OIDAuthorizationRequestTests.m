@@ -25,7 +25,7 @@
 
 /*! @brief Test value for the @c responseType property.
  */
-static NSString *const kTestResponseType = @"ResponseType";
+static NSString *const kTestResponseType = @"code";
 
 /*! @brief Test value for the @c clientID property.
  */
@@ -401,6 +401,57 @@ static int const kCodeVerifierRecommendedLength = 43;
   XCTAssertEqual(codeVerifier.length,
                  kCodeVerifierRecommendedLength,
                  @"The spec RECOMMENDS a '43-octet URL safe string'");
+}
+
+- (void)testSupportedResponseTypes {
+  NSDictionary *additionalParameters =
+      @{ kTestAdditionalParameterKey : kTestAdditionalParameterValue };
+  OIDServiceConfiguration *configuration = [OIDServiceConfigurationTests testInstance];
+
+  NSString *scope = [OIDScopeUtilities scopesWithArray:@[ kTestScope, kTestScopeA ]];
+
+  XCTAssertThrows(
+      [[OIDAuthorizationRequest alloc] initWithConfiguration:configuration
+                      clientId:kTestClientID
+                  clientSecret:kTestClientSecret
+                        scope:scope
+                  redirectURL:[NSURL URLWithString:kTestRedirectURL]
+                  responseType:@"code id_token"
+                         state:kTestState
+                  codeVerifier:kTestCodeVerifier
+                 codeChallenge:[[self class] codeChallenge]
+           codeChallengeMethod:[[self class] codeChallengeMethod]
+          additionalParameters:additionalParameters]
+  );
+
+  XCTAssertThrows(
+      [[OIDAuthorizationRequest alloc] initWithConfiguration:configuration
+                      clientId:kTestClientID
+                  clientSecret:kTestClientSecret
+                        scope:scope
+                  redirectURL:[NSURL URLWithString:kTestRedirectURL]
+                  responseType:@"code token id_token"
+                         state:kTestState
+                  codeVerifier:kTestCodeVerifier
+                 codeChallenge:[[self class] codeChallenge]
+           codeChallengeMethod:[[self class] codeChallengeMethod]
+          additionalParameters:additionalParameters]
+  );
+
+ XCTAssertNoThrow(
+      [[OIDAuthorizationRequest alloc] initWithConfiguration:configuration
+                      clientId:kTestClientID
+                  clientSecret:kTestClientSecret
+                        scope:scope
+                  redirectURL:[NSURL URLWithString:kTestRedirectURL]
+                  responseType:@"code"
+                         state:kTestState
+                  codeVerifier:kTestCodeVerifier
+                 codeChallenge:[[self class] codeChallenge]
+           codeChallengeMethod:[[self class] codeChallengeMethod]
+          additionalParameters:additionalParameters]
+  );
+
 }
 
 @end
