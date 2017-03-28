@@ -2,16 +2,17 @@
 [![Build Status](https://www.bitrise.io/app/8e4dbca635a964dc.svg?token=8rT4oJnhjUuFWH-QvXuJzg&branch=master)](https://www.bitrise.io/app/8e4dbca635a964dc)
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 
-AppAuth for iOS and macOS is a client SDK for communicating with [OAuth 2.0]
-(https://tools.ietf.org/html/rfc6749) and [OpenID Connect]
-(http://openid.net/specs/openid-connect-core-1_0.html) providers. It strives to
+AppAuth for iOS and macOS is a client SDK for communicating with 
+[OAuth 2.0](https://tools.ietf.org/html/rfc6749) and 
+[OpenID Connect](http://openid.net/specs/openid-connect-core-1_0.html) providers. 
+It strives to
 directly map the requests and responses of those specifications, while following
 the idiomatic style of the implementation language. In addition to mapping the
 raw protocol flows, convenience methods are available to assist with common
 tasks like performing an action with fresh tokens.
 
-It follows the best practices set out in [OAuth 2.0 for Native Apps]
-(https://tools.ietf.org/html/draft-ietf-oauth-native-apps)
+It follows the best practices set out in 
+[OAuth 2.0 for Native Apps](https://tools.ietf.org/html/draft-ietf-oauth-native-apps)
 including using `SFSafariViewController` on iOS for the auth request. For this
 reason, `UIWebView` is explicitly *not* supported due to usability and security
 reasons.
