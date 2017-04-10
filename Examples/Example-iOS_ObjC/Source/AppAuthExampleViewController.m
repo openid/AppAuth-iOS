@@ -28,20 +28,20 @@ typedef void (^PostRegistrationCallback)(OIDServiceConfiguration *configuration,
 
 /*! @brief The OIDC issuer from which the configuration will be discovered.
  */
-static NSString *const kIssuer = @"https://issuer.example.com";
+static NSString *const kIssuer = @"https://login.microsoftonline.com/organizations/v2.0";
 
 /*! @brief The OAuth client ID.
     @discussion For client configuration instructions, see the README.
         Set to nil to use dynamic registration with this example.
     @see https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-iOS_ObjC/README.md
  */
-static NSString *const kClientID = @"YOUR_CLIENT_ID";
+static NSString *const kClientID = @"ab032846-efee-481f-b6bc-493aae92c432";
 
 /*! @brief The OAuth redirect URI for the client @c kClientID.
     @discussion For client configuration instructions, see the README.
     @see https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-iOS_ObjC/README.md
  */
-static NSString *const kRedirectURI = @"com.example.app:/oauth2redirect/example-provider";
+static NSString *const kRedirectURI = @"appauth://ab032846-efee-481f-b6bc-493aae92c432";
 
 /*! @brief NSCoding key for the authState property.
  */
