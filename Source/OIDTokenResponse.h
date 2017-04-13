@@ -26,7 +26,17 @@ NS_ASSUME_NONNULL_BEGIN
     @see https://tools.ietf.org/html/rfc6749#section-3.2
     @see https://tools.ietf.org/html/rfc6749#section-4.1.3
  */
-@interface OIDTokenResponse : NSObject <NSCopying, NSSecureCoding>
+@interface OIDTokenResponse : NSObject <NSCopying, NSSecureCoding> {
+  // property variables
+  OIDTokenRequest *_request;
+  NSString *_accessToken;
+  NSDate *_accessTokenExpirationDate;
+  NSString *_tokenType;
+  NSString *_idToken;
+  NSString *_refreshToken;
+  NSString *_scope;
+  NSDictionary<NSString *, NSObject<NSCopying> *> *_additionalParameters;
+}
 
 /*! @brief The request which was serviced.
  */

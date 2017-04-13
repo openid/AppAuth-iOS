@@ -92,6 +92,18 @@ NSString *const OIDOAuthorizationRequestCodeChallengeMethodS256 = @"S256";
 
 @implementation OIDAuthorizationRequest
 
+@synthesize configuration = _configuration;
+@synthesize responseType = _responseType;
+@synthesize clientID = _clientID;
+@synthesize clientSecret = _clientSecret;
+@synthesize scope = _scope;
+@synthesize redirectURL = _redirectURL;
+@synthesize state = _state;
+@synthesize codeVerifier = _codeVerifier;
+@synthesize codeChallenge = _codeChallenge;
+@synthesize codeChallengeMethod = _codeChallengeMethod;
+@synthesize additionalParameters = _additionalParameters;
+
 - (instancetype)init
     OID_UNAVAILABLE_USE_INITIALIZER(
         @selector(initWithConfiguration:

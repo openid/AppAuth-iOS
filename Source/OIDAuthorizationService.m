@@ -42,7 +42,12 @@ static NSString *const kStateParameter = @"state";
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface OIDAuthorizationFlowSessionImplementation : NSObject<OIDAuthorizationFlowSession>
+@interface OIDAuthorizationFlowSessionImplementation : NSObject<OIDAuthorizationFlowSession> {
+  // private variables
+  OIDAuthorizationRequest *_request;
+  id<OIDAuthorizationUICoordinator> _UICoordinator;
+  OIDAuthorizationCallback _pendingauthorizationFlowCallback;
+}
 
 - (instancetype)init NS_UNAVAILABLE;
 
@@ -51,11 +56,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-@implementation OIDAuthorizationFlowSessionImplementation {
-  OIDAuthorizationRequest *_request;
-  id<OIDAuthorizationUICoordinator> _UICoordinator;
-  OIDAuthorizationCallback _pendingauthorizationFlowCallback;
-}
+@implementation OIDAuthorizationFlowSessionImplementation
 
 - (instancetype)initWithRequest:(OIDAuthorizationRequest *)request {
   self = [super init];
@@ -175,6 +176,8 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 @implementation OIDAuthorizationService
+
+@synthesize configuration = _configuration;
 
 + (void)discoverServiceConfigurationForIssuer:(NSURL *)issuerURL
                                    completion:(OIDDiscoveryCallback)completion {

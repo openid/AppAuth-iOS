@@ -76,11 +76,7 @@ static NSString *const kIssuerTestExpectedFullDiscoveryURL =
     @"https://accounts.google.com/.well-known/openid-configuration";
 
 
-@implementation OIDServiceConfigurationTests {
-  /*! @brief A list of tasks to perform during tearDown.
-   */
-  NSMutableArray<TeardownTask> *_teardownTasks;
-}
+@implementation OIDServiceConfigurationTests
 
 + (OIDServiceConfiguration *)testInstance {
   NSURL *authEndpoint = [NSURL URLWithString:kInitializerTestAuthEndpoint];

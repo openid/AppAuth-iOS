@@ -51,7 +51,30 @@ typedef void (^OIDAuthStateAuthorizationCallback)(OIDAuthState *_Nullable authSt
 /*! @brief A convenience class that retains the auth state between @c OIDAuthorizationResponse%s
         and @c OIDTokenResponse%s.
  */
-@interface OIDAuthState : NSObject <NSSecureCoding>
+@interface OIDAuthState : NSObject <NSSecureCoding> {
+  // private variables
+  /*! @brief Array of pending actions (use @c _pendingActionsSyncObject to synchronize access).
+   */
+  NSMutableArray *_pendingActions;
+
+  /*! @brief Object for synchronizing access to @c pendingActions.
+   */
+  id _pendingActionsSyncObject;
+
+  /*! @brief If YES, tokens will be refreshed on the next API call regardless of expiry.
+   */
+  BOOL _needsTokenRefresh;
+
+  // property variables
+  NSString *_refreshToken;
+  NSString *_scope;
+  OIDAuthorizationResponse *_lastAuthorizationResponse;
+  OIDTokenResponse *_lastTokenResponse;
+  OIDRegistrationResponse *_lastRegistrationResponse;
+  NSError *_authorizationError;
+  __weak id<OIDAuthStateChangeDelegate> _stateChangeDelegate;
+  __weak id<OIDAuthStateErrorDelegate> _errorDelegate;
+}
 
 /*! @brief The most recent refresh token received from the server.
     @discussion Rather than using this property directly, you should call

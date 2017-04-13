@@ -24,11 +24,10 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface AppDelegate ()
-@property(nullable) IBOutlet NSWindow *window;
-@end
-
 @implementation AppDelegate
+
+@synthesize window = _window;
+@synthesize currentAuthorizationFlow = _currentAuthorizationFlow;
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
   _window.title = @"AppAuth Example for macOS";

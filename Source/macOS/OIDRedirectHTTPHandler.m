@@ -46,10 +46,9 @@ static NSString *const kHTMLErrorMissingCurrentAuthorizationFlow =
 static NSString *const kHTMLErrorRedirectNotValid =
     @"<html><body>AppAuth Error: Not a valid redirect.</body></html>";
 
-@implementation OIDRedirectHTTPHandler {
-  HTTPServer *_httpServ;
-  NSURL *_successURL;
-}
+@implementation OIDRedirectHTTPHandler
+
+@synthesize currentAuthorizationFlow = _currentAuthorizationFlow;
 
 - (instancetype)init {
   return [self initWithSuccessURL:nil];
