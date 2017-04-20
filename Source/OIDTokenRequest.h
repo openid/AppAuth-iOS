@@ -31,7 +31,19 @@ NS_ASSUME_NONNULL_BEGIN
     @see https://tools.ietf.org/html/rfc6749#section-3.2
     @see https://tools.ietf.org/html/rfc6749#section-4.1.3
  */
-@interface OIDTokenRequest : NSObject <NSCopying, NSSecureCoding>
+@interface OIDTokenRequest : NSObject <NSCopying, NSSecureCoding> {
+  // property variables
+  OIDServiceConfiguration *_configuration;
+  NSString *_grantType;
+  NSString *_authorizationCode;
+  NSURL *_redirectURL;
+  NSString *_clientID;
+  NSString *_clientSecret;
+  NSString *_scope;
+  NSString *_refreshToken;
+  NSString *_codeVerifier;
+  NSDictionary<NSString *, NSString *> *_additionalParameters;
+}
 
 /*! @brief The service's configuration.
     @remarks This configuration specifies how to connect to a particular OAuth provider.

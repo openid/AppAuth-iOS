@@ -25,10 +25,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@implementation OIDAuthorizationUICoordinatorMac {
-  BOOL _authorizationFlowInProgress;
-  __weak id<OIDAuthorizationFlowSession> _session;
-}
+@implementation OIDAuthorizationUICoordinatorMac
 
 - (BOOL)presentAuthorizationWithURL:(NSURL *)URL session:(id<OIDAuthorizationFlowSession>)session {
   if (_authorizationFlowInProgress) {

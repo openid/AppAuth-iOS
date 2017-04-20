@@ -49,6 +49,15 @@ static NSString *const kAdditionalParametersKey = @"additionalParameters";
 
 @implementation OIDRegistrationRequest
 
+@synthesize configuration = _configuration;
+@synthesize applicationType = _applicationType;
+@synthesize redirectURIs = _redirectURIs;
+@synthesize responseTypes = _responseTypes;
+@synthesize grantTypes = _grantTypes;
+@synthesize subjectType = _subjectType;
+@synthesize tokenEndpointAuthenticationMethod = _tokenEndpointAuthenticationMethod;
+@synthesize additionalParameters = _additionalParameters;
+
 #pragma mark - Initializers
 
 - (instancetype)init

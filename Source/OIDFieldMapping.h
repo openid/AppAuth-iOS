@@ -28,7 +28,12 @@ typedef _Nullable id(^OIDFieldMappingConversionFunction)(NSObject *_Nullable val
 /*! @brief Describes the mapping of a key/value pair to an iVar with an optional conversion
         function.
  */
-@interface OIDFieldMapping : NSObject
+@interface OIDFieldMapping : NSObject {
+  // property variables
+  NSString *_name;
+  Class _expectedType;
+  OIDFieldMappingConversionFunction _conversion;
+}
 
 /*! @brief The name of the instance variable the field should be mapped to.
  */
