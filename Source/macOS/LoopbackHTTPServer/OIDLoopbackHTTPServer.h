@@ -72,6 +72,9 @@ typedef enum {
 - (BOOL)start:(NSError **)error;
 - (BOOL)stop;
 
+- (BOOL)hasIPv4Socket;
+- (BOOL)hasIPv6Socket;
+
 // called when a new connection comes in; by default, informs the delegate
 - (void)handleNewConnectionFromAddress:(NSData *)addr
                            inputStream:(NSInputStream *)istr
