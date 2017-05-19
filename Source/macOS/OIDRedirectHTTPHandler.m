@@ -76,10 +76,17 @@ static NSString *const kHTMLErrorRedirectNotValid =
       *returnError = error;
     }
     return nil;
-  } else {
+  } else if ([_httpServ hasIPv4Socket]) {
+    // Prefer the IPv4 loopback address
     NSString *serverURL = [NSString stringWithFormat:@"http://127.0.0.1:%d/", [_httpServ port]];
     return [NSURL URLWithString:serverURL];
+  } else if ([_httpServ hasIPv6Socket]) {
+    // Use the IPv6 loopback address if IPv4 isn't available
+    NSString *serverURL = [NSString stringWithFormat:@"http://[::1]:%d/", [_httpServ port]];
+    return [NSURL URLWithString:serverURL];
   }
+
+  return nil;
 }
 
 - (void)cancelHTTPListener {
