@@ -33,8 +33,6 @@ NSString *const OIDHTTPErrorDomain = @"org.openid.appauth.remote-http";
 NSString *const OIDOAuthExceptionInvalidAuthorizationFlow = @"An OAuth redirect was sent to a "
     "OIDAuthorizationFlowSession after it already completed.";
 
-NSString *const OIDOAuthExceptionUnsupportedResponseType = @"Unsupported response type";
-
 NSString *const OIDOAuthErrorResponseErrorKey = @"OIDOAuthErrorResponseErrorKey";
 
 NSString *const OIDOAuthErrorFieldError = @"error";
