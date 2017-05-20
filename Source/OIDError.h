@@ -378,8 +378,4 @@ typedef NS_ENUM(NSInteger, OIDErrorCodeOAuthRegistration) {
  */
 extern NSString *const OIDOAuthExceptionInvalidAuthorizationFlow;
 
-/*! @brief Exception for unsupported response types.
- */
-extern NSString *const OIDOAuthExceptionUnsupportedResponseType;
-
 NS_ASSUME_NONNULL_END
