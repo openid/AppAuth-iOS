@@ -2,7 +2,7 @@
 
 Since Okta is a certified OpenID Connect provider and supports PKCE by default, configuration is quick and simple. There are no additional libraries or tools required.
 
-## Add an OpenID Connect 
+## Add an OpenID Connect Client
 
 You can create an Okta developer account at [https://developer.okta.com/](https://developer.okta.com/). 
 
