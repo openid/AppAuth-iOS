@@ -25,4 +25,5 @@ Those with instructions on file:
 
 * [Google](README-Google.md)
 * [IdentityServer](README-IdentityServer.md)
+* [Okta](README-Okta.md)
 * [PingFederate](README-PingFederate.md)
