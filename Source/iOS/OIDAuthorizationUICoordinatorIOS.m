@@ -19,6 +19,7 @@
 #import "OIDAuthorizationUICoordinatorIOS.h"
 
 #import <SafariServices/SafariServices.h>
+#import <objc/message.h>
 
 #import "OIDAuthorizationService.h"
 #import "OIDErrorUtilities.h"
@@ -62,6 +63,12 @@ static id<OIDSafariViewControllerFactory> __nullable gSafariViewControllerFactor
   gSafariViewControllerFactory = factory;
 }
 
++ (BOOL)mayUseNonAppExtensionSafeAPI
+{
+    NSString* mainBundlePath = [[NSBundle mainBundle] bundlePath];
+    return ![mainBundlePath hasSuffix:@"appex"];
+}
+
 - (nullable instancetype)initWithPresentingViewController:
         (UIViewController *)presentingViewController {
   self = [super init];
@@ -87,7 +94,18 @@ static id<OIDSafariViewControllerFactory> __nullable gSafariViewControllerFactor
     [_presentingViewController presentViewController:safariVC animated:YES completion:nil];
     return YES;
   }
-  BOOL openedSafari = [[UIApplication sharedApplication] openURL:URL];
+  BOOL openedSafari = NO;
+  if ([[self class] mayUseNonAppExtensionSafeAPI]) {
+    // +[UIApplication sharedApplication] must not be called from app extensions
+    // +mayUseNonAppExtensionSafeAPI returns YES only when called from the main app
+    // Calling +sharedApplication directly will cause a compiler error, so objc_msgSend is used instead
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+    UIApplication *sharedApplication = ((UIApplication * (*)(id, SEL, ...))objc_msgSend)([UIApplication class], NSSelectorFromString(@"sharedApplication"));
+    openedSafari = ((BOOL (*)(id, SEL, NSURL *, ...))objc_msgSend)(sharedApplication, NSSelectorFromString(@"openURL:"), URL);
+#pragma clang diagnostic pop
+  }
+
   if (!openedSafari) {
     [self cleanUp];
     NSError *safariError = [OIDErrorUtilities errorWithCode:OIDErrorCodeSafariOpenError
