@@ -135,9 +135,11 @@ NSString *const OIDOAuthorizationRequestCodeChallengeMethodS256 = @"S256";
     _responseType = [responseType copy];
     // Attention: Please refer to https://github.com/openid/AppAuth-iOS/issues/105
     // If you change the restriction on response type here, you must also update initWithCoder:
-    if (![_responseType isEqualToString:OIDResponseTypeCode]) {
+    // token is required for Facebook Desktop apps
+    if (![_responseType isEqualToString:OIDResponseTypeCode] && ![_responseType isEqualToString:OIDResponseTypeToken]) {
       // AppAuth only supports the `code` response type.
       // Discussion: https://github.com/openid/AppAuth-iOS/issues/98
+      // token is required for Facebook Desktop apps
       NSAssert(NO, OIDOAuthUnsupportedResponseTypeMessage, _responseType);
       return nil;
     }
@@ -218,8 +220,8 @@ NSString *const OIDOAuthorizationRequestCodeChallengeMethodS256 = @"S256";
   // If the initializer relaxes it's restriction on the response type field, this code must also
   // be updated to re-enable use of the serialized responseType value. The value of 'code' here
   // is only a valid assumption for that reason.
-  // [aDecoder decodeObjectOfClass:[NSString class] forKey:kResponseTypeKey];
-  NSString *responseType = OIDResponseTypeCode;
+  // token is required for Facebook Desktop apps
+  NSString *responseType = [aDecoder decodeObjectOfClass:[NSString class] forKey:kResponseTypeKey];
   NSString *clientID = [aDecoder decodeObjectOfClass:[NSString class] forKey:kClientIDKey];
   NSString *clientSecret = [aDecoder decodeObjectOfClass:[NSString class] forKey:kClientSecretKey];
   NSString *scope = [aDecoder decodeObjectOfClass:[NSString class] forKey:kScopeKey];
