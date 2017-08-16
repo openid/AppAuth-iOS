@@ -273,17 +273,22 @@ static NSString *const kAdditionalParametersKey = @"additionalParameters";
   OIDURLQueryComponent *bodyParameters = [self tokenRequestBody];
   NSMutableDictionary *httpHeaders = [[NSMutableDictionary alloc] init];
 
-  if (_clientSecret) {
-    NSString *credentials = [NSString stringWithFormat:@"%@:%@", _clientID, _clientSecret];
-    NSData *plainData = [credentials dataUsingEncoding:NSUTF8StringEncoding];
-    NSString *basicAuth = [plainData base64EncodedStringWithOptions:kNilOptions];
-
-    NSString *authValue = [NSString stringWithFormat:@"Basic %@", basicAuth];
-    [httpHeaders setObject:authValue forKey:@"Authorization"];
-  } else  {
-    [bodyParameters addParameter:kClientIDKey value:_clientID];
+//  if (_clientSecret) {
+//    NSString *credentials = [NSString stringWithFormat:@"%@:%@", _clientID, _clientSecret];
+//    NSData *plainData = [credentials dataUsingEncoding:NSUTF8StringEncoding];
+//    NSString *basicAuth = [plainData base64EncodedStringWithOptions:kNilOptions];
+//
+//    NSString *authValue = [NSString stringWithFormat:@"Basic %@", basicAuth];
+//    [httpHeaders setObject:authValue forKey:@"Authorization"];
+//  } else  {
+//    [bodyParameters addParameter:kClientIDKey value:_clientID];
+//  }
+    
+  [bodyParameters addParameter:kClientIDKey value:_clientID];
+  if( _clientSecret ) {
+    [bodyParameters addParameter:kClientSecretKey value:_clientSecret];
   }
-
+  
   // Constructs request with the body string and headers.
   NSString *bodyString = [bodyParameters URLEncodedParameters];
   NSData *body = [bodyString dataUsingEncoding:NSUTF8StringEncoding];
