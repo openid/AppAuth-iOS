@@ -81,6 +81,8 @@ typedef void (^OIDAuthStateAuthorizationCallback)(OIDAuthState *_Nullable authSt
  @c OIDAuthState.withFreshTokenPerformAction:.
  */
 @property(nonatomic, readonly, nullable) NSString *accessToken;
+@property(nonatomic, readonly, nullable) NSString *tokenType;
+
 
 /*! @brief The approximate expiration date & time of the access token.
  @discussion Rather than using this property directly, you should call
