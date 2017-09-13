@@ -46,9 +46,7 @@ static id<OIDSafariViewControllerFactory> __nullable gSafariViewControllerFactor
   BOOL _authorizationFlowInProgress;
   __weak id<OIDAuthorizationFlowSession> _session;
   __weak SFSafariViewController *_safariVC;
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
-  SFAuthenticationSession *_authenticationVC;
-#endif // __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
+  id _authenticationVC;
 }
 
 /** @brief Obtains the current @c OIDSafariViewControllerFactory; creating a new default instance if
