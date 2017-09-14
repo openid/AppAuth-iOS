@@ -20,6 +20,7 @@
 
 #import <SafariServices/SafariServices.h>
 
+#import "OIDAuthorizationRequest.h"
 #import "OIDAuthorizationService.h"
 #import "OIDErrorUtilities.h"
 
@@ -45,6 +46,7 @@ static id<OIDSafariViewControllerFactory> __nullable gSafariViewControllerFactor
   BOOL _authorizationFlowInProgress;
   __weak id<OIDAuthorizationFlowSession> _session;
   __weak SFSafariViewController *_safariVC;
+  id _authenticationVC;
 }
 
 /** @brief Obtains the current @c OIDSafariViewControllerFactory; creating a new default instance if
@@ -71,7 +73,8 @@ static id<OIDSafariViewControllerFactory> __nullable gSafariViewControllerFactor
   return self;
 }
 
-- (BOOL)presentAuthorizationWithURL:(NSURL *)URL session:(id<OIDAuthorizationFlowSession>)session {
+- (BOOL)presentAuthorizationRequest:(OIDAuthorizationRequest *)request
+                            session:(id<OIDAuthorizationFlowSession>)session {
   if (_authorizationFlowInProgress) {
     // TODO: Handle errors as authorization is already in progress.
     return NO;
@@ -79,15 +82,44 @@ static id<OIDSafariViewControllerFactory> __nullable gSafariViewControllerFactor
 
   _authorizationFlowInProgress = YES;
   _session = session;
-  if ([SFSafariViewController class]) {
-    SFSafariViewController *safariVC =
-        [[[self class] safariViewControllerFactory] safariViewControllerWithURL:URL];
-    safariVC.delegate = self;
-    _safariVC = safariVC;
-    [_presentingViewController presentViewController:safariVC animated:YES completion:nil];
-    return YES;
+  BOOL openedSafari = NO;
+  NSURL *requestURL = [request authorizationRequestURL];
+
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
+  if (@available(iOS 11.0, *)) {
+    NSString *redirectScheme = request.redirectURL.scheme;
+    SFAuthenticationSession* authenticationVC =
+        [[SFAuthenticationSession alloc] initWithURL:requestURL
+                                   callbackURLScheme:redirectScheme
+                                   completionHandler:^(NSURL * _Nullable callbackURL,
+                                                       NSError * _Nullable error) {
+      _authenticationVC = nil;
+      if (callbackURL) {
+        [_session resumeAuthorizationFlowWithURL:callbackURL];
+      } else {
+        NSError *safariError =
+            [OIDErrorUtilities errorWithCode:OIDErrorCodeUserCanceledAuthorizationFlow
+                             underlyingError:error
+                                 description:nil];
+        [_session failAuthorizationFlowWithError:safariError];
+      }
+    }];
+    _authenticationVC = authenticationVC;
+    openedSafari = [authenticationVC start];
+  } else
+#endif // __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
+  {
+    if ([SFSafariViewController class]) {
+      SFSafariViewController *safariVC =
+      [[[self class] safariViewControllerFactory] safariViewControllerWithURL:requestURL];
+      safariVC.delegate = self;
+      _safariVC = safariVC;
+      [_presentingViewController presentViewController:safariVC animated:YES completion:nil];
+      return YES;
+    }
+    openedSafari = [[UIApplication sharedApplication] openURL:requestURL];
   }
-  BOOL openedSafari = [[UIApplication sharedApplication] openURL:URL];
+
   if (!openedSafari) {
     [self cleanUp];
     NSError *safariError = [OIDErrorUtilities errorWithCode:OIDErrorCodeSafariOpenError

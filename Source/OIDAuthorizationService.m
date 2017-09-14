@@ -70,8 +70,8 @@ NS_ASSUME_NONNULL_BEGIN
                                    callback:(OIDAuthorizationCallback)authorizationFlowCallback {
   _UICoordinator = UICoordinator;
   _pendingauthorizationFlowCallback = authorizationFlowCallback;
-  NSURL *URL = [_request authorizationRequestURL];
-  BOOL authorizationFlowStarted = [_UICoordinator presentAuthorizationWithURL:URL session:self];
+  BOOL authorizationFlowStarted =
+      [_UICoordinator presentAuthorizationRequest:_request session:self];
   if (!authorizationFlowStarted) {
     NSError *safariError = [OIDErrorUtilities errorWithCode:OIDErrorCodeSafariOpenError
                                             underlyingError:nil
