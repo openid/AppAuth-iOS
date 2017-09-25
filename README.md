@@ -69,7 +69,7 @@ Want to try out AppAuth? Just run:
 
     pod try AppAuth
 
-Follow the instructions in [Example/README.md](Example/README.md) to configure
+Follow the instructions in [Examples/README.md](Examples/README.md) to configure
 with your own OAuth client (you need to update 3 configuration points with your
 client info to try the demo).
 
