@@ -43,7 +43,7 @@ typedef NSURLSessionDataTask *(^DataTaskWithURLCompletionImplementation)
 
 /*! @brief A block to be called during teardown.
  */
-typedef void(^TeardownTask)();
+typedef void(^TeardownTask)(void);
 
 /*! @brief Test value for the @c authorizationEndpoint property.
  */
