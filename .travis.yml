@@ -1,0 +1,4 @@
+language: objective-c
+osx_image: xcode9
+xcode_project: AppAuth.xcodeproj
+xcode_scheme: AppAuth-iOS
