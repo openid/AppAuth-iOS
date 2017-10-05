@@ -119,7 +119,7 @@ static const NSUInteger kExpiryTimeTolerance = 60;
                                // code is intended for this client, and performs the authorization
                                // code exchange
                                OIDTokenRequest *tokenExchangeRequest =
-                                   [authorizationResponse tokenExchangeRequest];
+                                   [authorizationResponse tokenExchangeRequestWithAdditionalParameters:authorizationRequest.additionalParameters];
                                [OIDAuthorizationService
                                    performTokenRequest:tokenExchangeRequest
                                               callback:^(OIDTokenResponse *_Nullable tokenResponse,
