@@ -2,3 +2,7 @@ language: objective-c
 osx_image: xcode9
 xcode_project: AppAuth.xcodeproj
 xcode_scheme: AppAuth-iOS
+before_script:
+  - sudo gem install xcpretty
+script:
+  - xcodebuild -project AppAuth.xcodeproj -scheme "AppAuth-iOS" -sdk iphonesimulator11.0 -destination 'platform=iOS Simulator,name=iPhone 6,OS=11.0' test | xcpretty
