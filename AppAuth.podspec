@@ -14,6 +14,9 @@ the idiomatic style of the implementation language. In addition to mapping the
 raw protocol flows, convenience methods are available to assist with common
 tasks like performing an action with fresh tokens.
 
+It follows the OAuth 2.0 for Native Apps best current practice
+([RFC 8252](https://tools.ietf.org/html/rfc8252)).
+
                    DESC
 
   s.homepage     = "https://openid.github.io/AppAuth-iOS"

@@ -12,10 +12,11 @@ raw protocol flows, convenience methods are available to assist with common
 tasks like performing an action with fresh tokens.
 
 It follows the best practices set out in 
-[OAuth 2.0 for Native Apps](https://tools.ietf.org/html/draft-ietf-oauth-native-apps)
-including using `SFSafariViewController` on iOS for the auth request. For this
-reason, `UIWebView` is explicitly *not* supported due to usability and security
-reasons.
+[RFC 8252 - OAuth 2.0 for Native Apps](https://tools.ietf.org/html/rfc8252)
+including using `SFAuthenticationSession` and `SFSafariViewController` on iOS
+for the auth request. `UIWebView` and `WKWebView` are explicitly *not*
+supported due to the security and usability reasons explained in
+[Section 8.12 of RFC 8252](https://tools.ietf.org/html/rfc8252#section-8.12).
 
 It also supports the [PKCE](https://tools.ietf.org/html/rfc7636) extension to
 OAuth which was created to secure authorization codes in public clients when
@@ -41,7 +42,7 @@ Both Custom URI Schemes (all supported versions of iOS) and Universal Links
 (iOS 9+) can be used with the library.
 
 In general, AppAuth can work with any Authorization Server (AS) that supports
-[native apps](https://tools.ietf.org/html/draft-ietf-oauth-native-apps),
+native apps as documented in [RFC 8252](https://tools.ietf.org/html/rfc8252),
 either through custom URI scheme redirects, or universal links.
 AS's that assume all clients are web-based or require clients to maintain
 confidentiality of the client secrets may not work well.
@@ -58,7 +59,7 @@ AppAuth for macOS supports both custom schemes, a loopback HTTP redirects
 via a small embedded server.
 
 In general, AppAuth can work with any Authorization Server (AS) that supports
-[native apps](https://tools.ietf.org/html/draft-ietf-oauth-native-apps),
+native apps as documented in [RFC 8252](https://tools.ietf.org/html/rfc8252),
 either through custom URI scheme, or loopback HTTP redirects.
 AS's that assume all clients are web-based or require clients to maintain
 confidentiality of the client secrets may not work well.
