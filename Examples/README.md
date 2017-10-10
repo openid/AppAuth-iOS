@@ -17,8 +17,8 @@ may view the IdP-specific information in the next section.
 
 ## OpenID Certified Providers
 
-All [Certified OpenID providers](http://openid.net/certification/) that support the 
-[OAuth for Native Apps BCP](https://tools.ietf.org/html/draft-ietf-oauth-native-apps-08#appendix-A)
+All [Certified OpenID providers](http://openid.net/certification/) that support
+[RFC 8252](https://tools.ietf.org/html/rfc8252-08#appendix-A)
 are welcome to submit a README with IdP information.
 
 Those with instructions on file:
