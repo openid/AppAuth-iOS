@@ -5,4 +5,7 @@ xcode_scheme: AppAuth-iOS
 before_script:
   - sudo gem install xcpretty
 script:
-  - xcodebuild -project AppAuth.xcodeproj -scheme "AppAuth-iOS" -sdk iphonesimulator11.0 -destination 'platform=iOS Simulator,name=iPhone 6,OS=11.0' test | xcpretty
+  - xcodebuild -project AppAuth.xcodeproj -scheme "AppAuth-iOS" -sdk iphonesimulator11.0 -destination 'platform=iOS Simulator,name=iPhone 6,OS=11.0' -enableCodeCoverage YES test | xcpretty
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
+
