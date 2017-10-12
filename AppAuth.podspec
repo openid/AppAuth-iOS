@@ -34,11 +34,6 @@ It follows the OAuth 2.0 for Native Apps best current practice
 
   s.source       = { :git => "https://github.com/openid/AppAuth-iOS.git", :tag => s.version }
 
-  s.pod_target_xcconfig = {
-    # Treat warnings as errors.
-    'GCC_TREAT_WARNINGS_AS_ERRORS' => 'YES',
-  }
-
   s.source_files = "Source/*.{h,m}"
   s.requires_arc = true
 
