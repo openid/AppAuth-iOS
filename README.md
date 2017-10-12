@@ -105,7 +105,7 @@ and your project and including the headers.  Suggested configuration:
 2. Add `AppAuth.xcodeproj` to your Workspace.
 3. Include libAppAuth as a linked library for your target (in the "General ->
 Linked Framework and Libraries" section of your target).
-4. Add `AppAuth/Source` to your search paths of your target ("Build Settings ->
+4. Add `AppAuth-iOS/Source` to your search paths of your target ("Build Settings ->
 "Header Search Paths").
 
 ## Auth Flow
