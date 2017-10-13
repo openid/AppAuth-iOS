@@ -112,7 +112,7 @@ static NSString *const kQueryStringParamAdditionalDisallowedCharacters = @"=&+";
     @discussion The parameter names and values are NOT URL encoded.
     @return An array of unencoded @c NSURLQueryItem objects.
  */
-- (NSMutableArray<NSURLQueryItem *> *)queryItems NS_AVAILABLE_IOS(8.0) {
+- (NSMutableArray<NSURLQueryItem *> *)queryItems NS_AVAILABLE(10.10, 8.0) {
   NSMutableArray<NSURLQueryItem *> *queryParameters = [NSMutableArray array];
   for (NSString *parameterName in _parameters.allKeys) {
     NSArray<NSString *> *values = _parameters[parameterName];
