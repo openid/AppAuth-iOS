@@ -39,7 +39,7 @@ It follows the OAuth 2.0 for Native Apps best current practice
 
   # iOS
   s.ios.source_files      = "Source/iOS/**/*.{h,m}"
-  s.ios.deployment_target = "7.0"
+  s.ios.deployment_target = "9.0"
   s.ios.framework         = "SafariServices"
 
   # macOS
