@@ -31,6 +31,12 @@
 #import "OIDTokenResponse.h"
 #import "OIDURLQueryComponent.h"
 
+#if TARGET_OS_IOS
+#import "OIDURLQueryComponent+IOS.h"
+#elif TARGET_OS_MAC
+#import "OIDURLQueryComponent+Mac.h"
+#endif
+
 /*! @brief Path appended to an OpenID Connect issuer for discovery
     @see https://openid.net/specs/openid-connect-discovery-1_0.html#ProviderConfig
  */

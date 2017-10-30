@@ -23,6 +23,13 @@
 #import "OIDServiceConfiguration.h"
 #import "OIDURLQueryComponent.h"
 
+#if TARGET_OS_IOS
+#import "OIDURLQueryComponent+IOS.h"
+#elif TARGET_OS_MAC
+#import "OIDURLQueryComponent+Mac.h"
+#endif
+
+
 /*! @brief The key for the @c configuration property for @c NSSecureCoding
  */
 static NSString *const kConfigurationKey = @"configuration";
