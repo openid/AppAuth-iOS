@@ -47,11 +47,6 @@ extern BOOL gOIDURLQueryComponentForceIOS7Handling;
  */
 @property(nonatomic, readonly) NSDictionary<NSString *, NSObject<NSCopying> *> *dictionaryValue;
 
-/*! @brief Creates an @c OIDURLQueryComponent by parsing the query string in a URL.
-    @param URL The URL from which to extract a query component.
- */
-- (nullable instancetype)initWithURL:(NSURL *)URL;
-
 /*! @brief The value (or values) for a named parameter in the query.
     @param parameter The parameter name. Case sensitive.
     @return The value (or values) for a named parameter in the query.
@@ -74,10 +69,13 @@ extern BOOL gOIDURLQueryComponentForceIOS7Handling;
  */
 - (NSURL *)URLByReplacingQueryInURL:(NSURL *)URL;
 
-/*! @brief Builds an x-www-form-urlencoded string representing the parameters.
-    @return The x-www-form-urlencoded string representing the parameters.
+/*! @brief Builds a query string that can be set to @c NSURLComponents.percentEncodedQuery
+ @discussion This string is percent encoded, and shouldn't be used with
+ @c NSURLComponents.query.
+ @return An percentage encoded query string.
  */
-- (NSString *)URLEncodedParameters;
+- (NSString *)percentEncodedQueryString;
+
 
 @end
 
