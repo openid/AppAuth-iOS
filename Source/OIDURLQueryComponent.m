@@ -39,7 +39,7 @@ static NSString *const kQueryStringParamAdditionalDisallowedCharacters = @"=&+";
 - (nullable instancetype)initWithURL:(NSURL *)URL {
   self = [self init];
   if (self) {
-    if (@available(iOS 8.0, *)) {
+    if (@available(iOS 8.0, macOS 10.10, *)) {
       // If NSURLQueryItem is available, use it for deconstructing the new URL. (iOS 8+)
       if (!gOIDURLQueryComponentForceIOS7Handling) {
         NSURLComponents *components =
@@ -112,7 +112,7 @@ static NSString *const kQueryStringParamAdditionalDisallowedCharacters = @"=&+";
     @discussion The parameter names and values are NOT URL encoded.
     @return An array of unencoded @c NSURLQueryItem objects.
  */
-- (NSMutableArray<NSURLQueryItem *> *)queryItems NS_AVAILABLE_IOS(8.0) {
+- (NSMutableArray<NSURLQueryItem *> *)queryItems NS_AVAILABLE(10.10, 8.0) {
   NSMutableArray<NSURLQueryItem *> *queryParameters = [NSMutableArray array];
   for (NSString *parameterName in _parameters.allKeys) {
     NSArray<NSString *> *values = _parameters[parameterName];
@@ -158,7 +158,7 @@ static NSString *const kQueryStringParamAdditionalDisallowedCharacters = @"=&+";
 
 - (NSString *)URLEncodedParameters {
   // If NSURLQueryItem is available, uses it for constructing the encoded parameters. (iOS 8+)
-  if (@available(iOS 8.0, *)) {
+  if (@available(iOS 8.0, macOS 10.10, *)) {
     if (!gOIDURLQueryComponentForceIOS7Handling) {
       NSURLComponents *components = [[NSURLComponents alloc] init];
       components.queryItems = [self queryItems];
