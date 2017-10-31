@@ -30,6 +30,7 @@
 #import "OIDTokenRequest.h"
 #import "OIDTokenResponse.h"
 #import "OIDURLQueryComponent.h"
+#import "OIDURLSessionProvider.h"
 
 /*! @brief Path appended to an OpenID Connect issuer for discovery
     @see https://openid.net/specs/openid-connect-discovery-1_0.html#ProviderConfig
@@ -191,7 +192,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (void)discoverServiceConfigurationForDiscoveryURL:(NSURL *)discoveryURL
     completion:(OIDDiscoveryCallback)completion {
 
-  NSURLSession *session = [NSURLSession sharedSession];
+  NSURLSession *session = [OIDURLSessionProvider session];
   NSURLSessionDataTask *task =
       [session dataTaskWithURL:discoveryURL
              completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
@@ -261,7 +262,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (void)performTokenRequest:(OIDTokenRequest *)request callback:(OIDTokenCallback)callback {
   NSURLRequest *URLRequest = [request URLRequest];
-  NSURLSession *session = [NSURLSession sharedSession];
+  NSURLSession *session = [OIDURLSessionProvider session];
   [[session dataTaskWithRequest:URLRequest
               completionHandler:^(NSData *_Nullable data,
                                   NSURLResponse *_Nullable response,
@@ -372,7 +373,7 @@ NS_ASSUME_NONNULL_BEGIN
     return;
   }
 
-  NSURLSession *session = [NSURLSession sharedSession];
+  NSURLSession *session = [OIDURLSessionProvider session];
   [[session dataTaskWithRequest:URLRequest
               completionHandler:^(NSData *_Nullable data,
                                   NSURLResponse *_Nullable response,
