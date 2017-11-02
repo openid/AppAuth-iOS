@@ -20,7 +20,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-static NSURLSession * __nullable gURLSession;
+static NSURLSession *__nullable gURLSession;
 
 @implementation OIDURLSessionProvider
 

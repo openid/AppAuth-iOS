@@ -37,7 +37,7 @@
     NSURLSession *customSession = [NSURLSession sessionWithConfiguration:config];
     [OIDURLSessionProvider setSession:customSession];
     NSURLSession *session = [OIDURLSessionProvider session];
-    XCTAssertEqual(session, customSession);
+    XCTAssertEqualObjects(session, customSession);
 }
 
 @end
