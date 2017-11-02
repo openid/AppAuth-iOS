@@ -368,6 +368,18 @@
 		60140F801DE4344200DA0DC3 /* OIDRegistrationResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 60140F7F1DE4344200DA0DC3 /* OIDRegistrationResponse.m */; };
 		60140F831DE43BAF00DA0DC3 /* OIDRegistrationRequestTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 60140F821DE43BAF00DA0DC3 /* OIDRegistrationRequestTests.m */; };
 		60140F861DE43CC700DA0DC3 /* OIDRegistrationResponseTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 60140F851DE43CC700DA0DC3 /* OIDRegistrationResponseTests.m */; };
+		CF37C06D1F1FC21A00662E41 /* OIDLogoutRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = CF37C06B1F1FC21A00662E41 /* OIDLogoutRequest.h */; };
+		CF37C06E1F1FC21A00662E41 /* OIDLogoutRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = CF37C06C1F1FC21A00662E41 /* OIDLogoutRequest.m */; };
+		CF37C06F1F1FC21A00662E41 /* OIDLogoutRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = CF37C06C1F1FC21A00662E41 /* OIDLogoutRequest.m */; };
+		CF37C0701F1FC21A00662E41 /* OIDLogoutRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = CF37C06C1F1FC21A00662E41 /* OIDLogoutRequest.m */; };
+		CF37C0711F1FC21A00662E41 /* OIDLogoutRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = CF37C06C1F1FC21A00662E41 /* OIDLogoutRequest.m */; };
+		CF6431F41F228A980075B6B5 /* OIDLogoutResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = CF6431F31F228A980075B6B5 /* OIDLogoutResponse.m */; };
+		CFBD5D3F1F2147FD0029F9C3 /* OIDLogoutRequestTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CFBD5D3E1F2147FD0029F9C3 /* OIDLogoutRequestTests.m */; };
+		CFBD5D401F2147FD0029F9C3 /* OIDLogoutRequestTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CFBD5D3E1F2147FD0029F9C3 /* OIDLogoutRequestTests.m */; };
+		CFBD5D411F2147FD0029F9C3 /* OIDLogoutRequestTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CFBD5D3E1F2147FD0029F9C3 /* OIDLogoutRequestTests.m */; };
+		CFBD5D421F223E8C0029F9C3 /* OIDLogoutRequestTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CFBD5D3E1F2147FD0029F9C3 /* OIDLogoutRequestTests.m */; };
+		CFBD5D441F223E920029F9C3 /* OIDLogoutRequestTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CFBD5D3E1F2147FD0029F9C3 /* OIDLogoutRequestTests.m */; };
+		CFBD5D451F223E920029F9C3 /* OIDLogoutRequestTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CFBD5D3E1F2147FD0029F9C3 /* OIDLogoutRequestTests.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -545,6 +557,12 @@
 		60140F821DE43BAF00DA0DC3 /* OIDRegistrationRequestTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OIDRegistrationRequestTests.m; sourceTree = "<group>"; };
 		60140F841DE43C8C00DA0DC3 /* OIDRegistrationResponseTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OIDRegistrationResponseTests.h; sourceTree = "<group>"; };
 		60140F851DE43CC700DA0DC3 /* OIDRegistrationResponseTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OIDRegistrationResponseTests.m; sourceTree = "<group>"; };
+		CF37C06B1F1FC21A00662E41 /* OIDLogoutRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OIDLogoutRequest.h; sourceTree = "<group>"; };
+		CF37C06C1F1FC21A00662E41 /* OIDLogoutRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OIDLogoutRequest.m; sourceTree = "<group>"; };
+		CF6431F21F228A980075B6B5 /* OIDLogoutResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OIDLogoutResponse.h; sourceTree = "<group>"; };
+		CF6431F31F228A980075B6B5 /* OIDLogoutResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OIDLogoutResponse.m; sourceTree = "<group>"; };
+		CFBD5D3D1F2147FD0029F9C3 /* OIDLogoutRequestTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OIDLogoutRequestTests.h; sourceTree = "<group>"; };
+		CFBD5D3E1F2147FD0029F9C3 /* OIDLogoutRequestTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OIDLogoutRequestTests.m; sourceTree = "<group>"; };
 		F68103B61D2568D10053658E /* OIDAuthorizationUICoordinator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OIDAuthorizationUICoordinator.h; sourceTree = "<group>"; };
 		F6F60FB01D2BFEFE00325CB3 /* OIDAuthState+IOS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "OIDAuthState+IOS.m"; path = "iOS/OIDAuthState+IOS.m"; sourceTree = "<group>"; };
 		F6F60FB11D2BFEFE00325CB3 /* OIDAuthorizationService+IOS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "OIDAuthorizationService+IOS.m"; path = "iOS/OIDAuthorizationService+IOS.m"; sourceTree = "<group>"; };
@@ -738,6 +756,10 @@
 				341741C21C5D8243000EF209 /* OIDErrorUtilities.m */,
 				341741C31C5D8243000EF209 /* OIDFieldMapping.h */,
 				341741C41C5D8243000EF209 /* OIDFieldMapping.m */,
+				CF37C06B1F1FC21A00662E41 /* OIDLogoutRequest.h */,
+				CF6431F21F228A980075B6B5 /* OIDLogoutResponse.h */,
+				CF6431F31F228A980075B6B5 /* OIDLogoutResponse.m */,
+				CF37C06C1F1FC21A00662E41 /* OIDLogoutRequest.m */,
 				60140F7E1DE4335200DA0DC3 /* OIDRegistrationResponse.h */,
 				60140F7F1DE4344200DA0DC3 /* OIDRegistrationResponse.m */,
 				60140F7D1DE42E3000DA0DC3 /* OIDRegistrationRequest.h */,
@@ -796,6 +818,8 @@
 				60140F851DE43CC700DA0DC3 /* OIDRegistrationResponseTests.m */,
 				34D5EC441E6D1AD900814354 /* OIDSwiftTests.swift */,
 				34D5EC431E6D1AD900814354 /* OIDAppAuthTests-Bridging-Header.h */,
+				CFBD5D3D1F2147FD0029F9C3 /* OIDLogoutRequestTests.h */,
+				CFBD5D3E1F2147FD0029F9C3 /* OIDLogoutRequestTests.m */,
 			);
 			path = UnitTests;
 			sourceTree = "<group>";
@@ -849,6 +873,7 @@
 			files = (
 				340DAE741D58223A00EC285B /* AppAuth.h in Headers */,
 				34FEA6AE1DB6E083005C9212 /* OIDLoopbackHTTPServer.h in Headers */,
+				CF37C06D1F1FC21A00662E41 /* OIDLogoutRequest.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1410,6 +1435,7 @@
 				341310CC1E6F944B00D5DEE5 /* OIDServiceDiscovery.m in Sources */,
 				341310CA1E6F944B00D5DEE5 /* OIDScopeUtilities.m in Sources */,
 				340DAE5C1D5821AB00EC285B /* OIDAuthorizationService.m in Sources */,
+				CF37C06F1F1FC21A00662E41 /* OIDLogoutRequest.m in Sources */,
 				341310CD1E6F944B00D5DEE5 /* OIDTokenRequest.m in Sources */,
 				341310C91E6F944B00D5DEE5 /* OIDScopes.m in Sources */,
 				341310CE1E6F944B00D5DEE5 /* OIDTokenResponse.m in Sources */,
@@ -1429,6 +1455,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				341741E01C5D8243000EF209 /* OIDErrorUtilities.m in Sources */,
+				CF6431F41F228A980075B6B5 /* OIDLogoutResponse.m in Sources */,
 				341741EA1C5D8243000EF209 /* OIDTokenUtilities.m in Sources */,
 				341741E21C5D8243000EF209 /* OIDGrantTypes.m in Sources */,
 				60140F7C1DE42E1000DA0DC3 /* OIDRegistrationRequest.m in Sources */,
@@ -1440,6 +1467,7 @@
 				341741E61C5D8243000EF209 /* OIDServiceConfiguration.m in Sources */,
 				60140F7A1DE4276800DA0DC3 /* OIDClientMetadataParameters.m in Sources */,
 				341741DE1C5D8243000EF209 /* OIDAuthState.m in Sources */,
+				CF37C06E1F1FC21A00662E41 /* OIDLogoutRequest.m in Sources */,
 				341741DD1C5D8243000EF209 /* OIDAuthorizationService.m in Sources */,
 				340DAECD1D582DE100EC285B /* OIDAuthorizationUICoordinatorIOS.m in Sources */,
 				341741EB1C5D8243000EF209 /* OIDURLQueryComponent.m in Sources */,
@@ -1462,6 +1490,7 @@
 				341742211C5D82D3000EF209 /* OIDURLQueryComponentTests.m in Sources */,
 				341742201C5D82D3000EF209 /* OIDTokenResponseTests.m in Sources */,
 				341742221C5D82D3000EF209 /* OIDURLQueryComponentTestsIOS7.m in Sources */,
+				CFBD5D3F1F2147FD0029F9C3 /* OIDLogoutRequestTests.m in Sources */,
 				3417421E1C5D82D3000EF209 /* OIDServiceDiscoveryTests.m in Sources */,
 				3417421F1C5D82D3000EF209 /* OIDTokenRequestTests.m in Sources */,
 				341742181C5D82D3000EF209 /* OIDAuthorizationResponseTests.m in Sources */,
@@ -1482,6 +1511,7 @@
 			files = (
 				341AA50A1E7F3A9B00FCA5C6 /* OIDScopesTests.m in Sources */,
 				341AA50F1E7F3A9B00FCA5C6 /* OIDURLQueryComponentTests.m in Sources */,
+				CFBD5D401F2147FD0029F9C3 /* OIDLogoutRequestTests.m in Sources */,
 				341AA50B1E7F3A9B00FCA5C6 /* OIDServiceConfigurationTests.m in Sources */,
 				341AA50C1E7F3A9B00FCA5C6 /* OIDServiceDiscoveryTests.m in Sources */,
 				341AA5071E7F3A9B00FCA5C6 /* OIDAuthStateTests.m in Sources */,
@@ -1502,6 +1532,7 @@
 			files = (
 				341AA4FD1E7F3A9400FCA5C6 /* OIDScopesTests.m in Sources */,
 				341AA5021E7F3A9400FCA5C6 /* OIDURLQueryComponentTests.m in Sources */,
+				CFBD5D411F2147FD0029F9C3 /* OIDLogoutRequestTests.m in Sources */,
 				341AA4FE1E7F3A9400FCA5C6 /* OIDServiceConfigurationTests.m in Sources */,
 				341AA4FF1E7F3A9400FCA5C6 /* OIDServiceDiscoveryTests.m in Sources */,
 				341AA4FA1E7F3A9400FCA5C6 /* OIDAuthStateTests.m in Sources */,
@@ -1538,6 +1569,7 @@
 				341E709A1DE18796004353C1 /* OIDAuthorizationService.m in Sources */,
 				341310D91E6F944D00D5DEE5 /* OIDResponseTypes.m in Sources */,
 				341310E11E6F944D00D5DEE5 /* OIDURLQueryComponent.m in Sources */,
+				CF37C0701F1FC21A00662E41 /* OIDLogoutRequest.m in Sources */,
 				341310D41E6F944D00D5DEE5 /* OIDErrorUtilities.m in Sources */,
 				341310D81E6F944D00D5DEE5 /* OIDGrantTypes.m in Sources */,
 			);
@@ -1590,6 +1622,7 @@
 				343AAA7F1E8346B400F9D36E /* OIDRegistrationRequestTests.m in Sources */,
 				343AAA731E8346B400F9D36E /* OIDAuthorizationRequestTests.m in Sources */,
 				343AAA761E8346B400F9D36E /* OIDGrantTypesTests.m in Sources */,
+				CFBD5D421F223E8C0029F9C3 /* OIDLogoutRequestTests.m in Sources */,
 				343AAA741E8346B400F9D36E /* OIDAuthorizationResponseTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1665,6 +1698,7 @@
 				343AAB8B1E8349CE00F9D36E /* OIDRegistrationRequestTests.m in Sources */,
 				343AAB7F1E8349CE00F9D36E /* OIDAuthorizationRequestTests.m in Sources */,
 				343AAB821E8349CE00F9D36E /* OIDGrantTypesTests.m in Sources */,
+				CFBD5D441F223E920029F9C3 /* OIDLogoutRequestTests.m in Sources */,
 				343AAB801E8349CE00F9D36E /* OIDAuthorizationResponseTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1718,6 +1752,7 @@
 				343AAB991E8349CF00F9D36E /* OIDRegistrationRequestTests.m in Sources */,
 				343AAB8D1E8349CF00F9D36E /* OIDAuthorizationRequestTests.m in Sources */,
 				343AAB901E8349CF00F9D36E /* OIDGrantTypesTests.m in Sources */,
+				CFBD5D451F223E920029F9C3 /* OIDLogoutRequestTests.m in Sources */,
 				343AAB8E1E8349CF00F9D36E /* OIDAuthorizationResponseTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1744,6 +1779,7 @@
 				347424011E7F4BA000D3E6D6 /* OIDAuthorizationService.m in Sources */,
 				3474240A1E7F4BA000D3E6D6 /* OIDResponseTypes.m in Sources */,
 				347424121E7F4BA000D3E6D6 /* OIDURLQueryComponent.m in Sources */,
+				CF37C0711F1FC21A00662E41 /* OIDLogoutRequest.m in Sources */,
 				347424051E7F4BA000D3E6D6 /* OIDErrorUtilities.m in Sources */,
 				347424091E7F4BA000D3E6D6 /* OIDGrantTypes.m in Sources */,
 			);
