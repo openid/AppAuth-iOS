@@ -21,19 +21,19 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /*! @brief A NSURLSession provider that allows clients to provide custom implementation
- for NSURLSession
+        for NSURLSession
  */
 @interface OIDURLSessionProvider : NSObject
 
 /*! @brief Obtains the current @c NSURLSession; using the +[NSURLSession sharedSession] if
- no custom implementation provided
- @return NSURLSession object to be used for making network requests
+        no custom implementation is provided.
+    @return NSURLSession object to be used for making network requests.
  */
 + (NSURLSession *)session;
 
-/*! @brief Allows library consumers to change the @c NSURLSession used to create make
- network requests
- @param session The @c NSURLSession instance that should be used for making network requests
+/*! @brief Allows library consumers to change the @c NSURLSession instance used to make
+        network requests.
+    @param session The @c NSURLSession instance that should be used for making network requests.
  */
 + (void)setSession:(NSURLSession *)session;
 @end
