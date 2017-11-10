@@ -1,11 +1,25 @@
+# Travis CI config for AppAuth
+# Use the `wwtd` gem to test locally.
 language: objective-c
 osx_image: xcode9
-xcode_project: AppAuth.xcodeproj
-xcode_scheme: AppAuth-iOS
+# Tests iOS, macOS and tvOS: both static library and framework schemes.
+env: 
+# To generate this list, use `xcodebuild -showsdks` to get possible SDK values, and platforms.
+# Use `instruments -s devices` to get the device name.
+  - SCHEME=AppAuth-iOS DESTINATION="'platform=iOS Simulator,name=iPhone 6,OS=11.0'" SDK=iphonesimulator11.0
+  - SCHEME=AppAuth_iOS DESTINATION="'platform=iOS Simulator,name=iPhone 6,OS=11.0'" SDK=iphonesimulator11.0
+  - SCHEME=AppAuth-macOS DESTINATION="'platform=macOS,arch=x86_64'" SDK=macosx10.13
+  - SCHEME=AppAuth_macOS DESTINATION="'platform=macOS,arch=x86_64'" SDK=macosx10.13
+  - SCHEME=AppAuth-tvOS DESTINATION="'platform=tvOS Simulator,name=Apple TV,OS=11.0'" SDK=appletvsimulator11.0
+  - SCHEME=AppAuth_tvOS DESTINATION="'platform=tvOS Simulator,name=Apple TV,OS=11.0'" SDK=appletvsimulator11.0
 before_script:
   - sudo gem install xcpretty
 script:
-  - xcodebuild -project AppAuth.xcodeproj -scheme "AppAuth-iOS" -sdk iphonesimulator11.0 -destination 'platform=iOS Simulator,name=iPhone 6,OS=11.0' -enableCodeCoverage YES GCC_INSTRUMENT_PROGRAM_FLOW_ARCS=YES GCC_GENERATE_TEST_COVERAGE_FILES=YES OTHERCFLAGS="-Werror" test | xcpretty
+# Breaking down this command:
+# eval is used here, otherwise environment variables are not present.
+# `set -o pipefail && ` is so that the return code isn't gobbled by xcpretty (per https://github.com/supermarin/xcpretty#usage)
+# then it's standard xcodebuild | xcpretty.
+  - eval "set -o pipefail && xcodebuild -project AppAuth.xcodeproj -scheme $SCHEME -sdk $SDK -destination $DESTINATION -enableCodeCoverage YES GCC_INSTRUMENT_PROGRAM_FLOW_ARCS=YES GCC_GENERATE_TEST_COVERAGE_FILES=YES OTHERCFLAGS='-Werror' test | xcpretty"
 after_success:
   - bash <(curl -s https://codecov.io/bash)
 
