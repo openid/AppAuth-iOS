@@ -27,7 +27,22 @@ NS_ASSUME_NONNULL_BEGIN
 
 /*! @brief Unit tests for @c OIDAuthState.
  */
-@interface OIDAuthStateTests : XCTestCase
+@interface OIDAuthStateTests : XCTestCase {
+  // private variables
+  /*! @brief An expectation for tests waiting on OIDAuthStateChangeDelegate.didChangeState:.
+   */
+  XCTestExpectation *_didChangeStateExpectation;
+
+  /*! @brief An expectation for tests waiting on
+          OIDAuthStateErrorDelegate.didEncounterAuthorizationError:.
+   */
+  XCTestExpectation *_didEncounterAuthorizationErrorExpectation;
+
+  /*! @brief An expectation for tests waiting on
+          OIDAuthStateErrorDelegate.didEncounterTransientError:.
+   */
+  XCTestExpectation *_didEncounterTransientErrorExpectation;
+}
 
 /*! @brief Creates a new @c OIDAuthState for testing.
  */

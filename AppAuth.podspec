@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "AppAuth"
-  s.version      = "0.8.0"
+  s.version      = "0.91.0"
   s.summary      = "AppAuth for iOS and macOS is a client SDK for communicating with OAuth 2.0 and OpenID Connect providers."
 
   s.description  = <<-DESC
@@ -13,6 +13,9 @@ directly map the requests and responses of those specifications, while following
 the idiomatic style of the implementation language. In addition to mapping the
 raw protocol flows, convenience methods are available to assist with common
 tasks like performing an action with fresh tokens.
+
+It follows the OAuth 2.0 for Native Apps best current practice
+([RFC 8252](https://tools.ietf.org/html/rfc8252)).
 
                    DESC
 
@@ -27,14 +30,9 @@ tasks like performing an action with fresh tokens.
   #       classes of AppAuth with tokens on watchOS and tvOS, but currently the
   #       library won't help you obtain authorization grants on those platforms.
 
-  s.platforms    = { :ios => "7.0", :osx => "10.8", :watchos => "2.0", :tvos => "9.0" }
+  s.platforms    = { :ios => "7.0", :osx => "10.9", :watchos => "2.0", :tvos => "9.0" }
 
   s.source       = { :git => "https://github.com/openid/AppAuth-iOS.git", :tag => s.version }
-
-  s.pod_target_xcconfig = {
-    # Treat warnings as errors.
-    'GCC_TREAT_WARNINGS_AS_ERRORS' => 'YES',
-  }
 
   s.source_files = "Source/*.{h,m}"
   s.requires_arc = true
@@ -46,5 +44,5 @@ tasks like performing an action with fresh tokens.
 
   # macOS
   s.osx.source_files = "Source/macOS/**/*.{h,m}"
-  s.osx.deployment_target = '10.8'
+  s.osx.deployment_target = '10.9'
 end

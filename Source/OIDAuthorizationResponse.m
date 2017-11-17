@@ -73,6 +73,16 @@ static NSString *const kTokenExchangeRequestException =
 
 @implementation OIDAuthorizationResponse
 
+@synthesize request = _request;
+@synthesize authorizationCode = _authorizationCode;
+@synthesize state = _state;
+@synthesize accessToken = _accessToken;
+@synthesize accessTokenExpirationDate = _accessTokenExpirationDate;
+@synthesize tokenType = _tokenType;
+@synthesize idToken = _idToken;
+@synthesize scope = _scope;
+@synthesize additionalParameters = _additionalParameters;
+
 /*! @brief Returns a mapping of incoming parameters to instance variables.
     @return A mapping of incoming parameters to instance variables.
  */
@@ -200,7 +210,7 @@ static NSString *const kTokenExchangeRequestException =
                                             redirectURL:_request.redirectURL
                                                clientID:_request.clientID
                                            clientSecret:_request.clientSecret
-                                                  scope:_scope
+                                                  scope:nil
                                            refreshToken:nil
                                            codeVerifier:_request.codeVerifier
                                    additionalParameters:additionalParameters];

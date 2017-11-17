@@ -20,12 +20,19 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class HTTPServer;
 @protocol OIDAuthorizationFlowSession;
 
 /*! @brief Start a HTTP server on the loopback interface (i.e. @c 127.0.0.1) to receive OAuth
         authorization response redirects on macOS.
  */
-@interface OIDRedirectHTTPHandler : NSObject
+@interface OIDRedirectHTTPHandler : NSObject {
+  // private variables
+  HTTPServer *_httpServ;
+  NSURL *_successURL;
+  // property variables
+  NSObject<OIDAuthorizationFlowSession> *_currentAuthorizationFlow;
+}
 
 /*! @brief The authorization flow session which receives the return URL from the browser.
     @discussion The loopback HTTP server will try sending incoming request URLs to the OAuth

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		039697461FA8258D003D1FB2 /* OIDURLSessionProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 039697451FA8258D003D1FB2 /* OIDURLSessionProvider.m */; };
+		0396974D1FA827AD003D1FB2 /* OIDURLSessionProviderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0396974C1FA827AD003D1FB2 /* OIDURLSessionProviderTests.m */; };
 		340DAE571D5821A100EC285B /* OIDAuthorizationService+Mac.m in Sources */ = {isa = PBXBuildFile; fileRef = 340DAE261D581FE700EC285B /* OIDAuthorizationService+Mac.m */; };
 		340DAE581D5821A100EC285B /* OIDAuthorizationUICoordinatorMac.m in Sources */ = {isa = PBXBuildFile; fileRef = 340DAE281D581FE700EC285B /* OIDAuthorizationUICoordinatorMac.m */; };
 		340DAE591D5821A100EC285B /* OIDAuthState+Mac.m in Sources */ = {isa = PBXBuildFile; fileRef = 340DAE2A1D581FE700EC285B /* OIDAuthState+Mac.m */; };
@@ -360,6 +362,13 @@
 		347424101E7F4BA000D3E6D6 /* OIDTokenResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741D41C5D8243000EF209 /* OIDTokenResponse.m */; };
 		347424111E7F4BA000D3E6D6 /* OIDTokenUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741D61C5D8243000EF209 /* OIDTokenUtilities.m */; };
 		347424121E7F4BA000D3E6D6 /* OIDURLQueryComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741D81C5D8243000EF209 /* OIDURLQueryComponent.m */; };
+		34AF73671FB4E4B00022335F /* OIDURLSessionProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 039697451FA8258D003D1FB2 /* OIDURLSessionProvider.m */; };
+		34AF73681FB4E4B10022335F /* OIDURLSessionProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 039697451FA8258D003D1FB2 /* OIDURLSessionProvider.m */; };
+		34AF73691FB4E4B20022335F /* OIDURLSessionProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 039697451FA8258D003D1FB2 /* OIDURLSessionProvider.m */; };
+		34AF736A1FB4E4B30022335F /* OIDURLSessionProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 039697451FA8258D003D1FB2 /* OIDURLSessionProvider.m */; };
+		34AF736B1FB4E4B30022335F /* OIDURLSessionProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 039697451FA8258D003D1FB2 /* OIDURLSessionProvider.m */; };
+		34AF736C1FB4E4B40022335F /* OIDURLSessionProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 039697451FA8258D003D1FB2 /* OIDURLSessionProvider.m */; };
+		34AF736D1FB4E4B40022335F /* OIDURLSessionProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 039697451FA8258D003D1FB2 /* OIDURLSessionProvider.m */; };
 		34D5EC451E6D1AD900814354 /* OIDSwiftTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D5EC441E6D1AD900814354 /* OIDSwiftTests.swift */; };
 		34FEA6AE1DB6E083005C9212 /* OIDLoopbackHTTPServer.h in Headers */ = {isa = PBXBuildFile; fileRef = 34FEA6AC1DB6E083005C9212 /* OIDLoopbackHTTPServer.h */; };
 		34FEA6AF1DB6E083005C9212 /* OIDLoopbackHTTPServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 34FEA6AD1DB6E083005C9212 /* OIDLoopbackHTTPServer.m */; };
@@ -446,6 +455,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		039697441FA8258D003D1FB2 /* OIDURLSessionProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OIDURLSessionProvider.h; sourceTree = "<group>"; };
+		039697451FA8258D003D1FB2 /* OIDURLSessionProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OIDURLSessionProvider.m; sourceTree = "<group>"; };
+		0396974C1FA827AD003D1FB2 /* OIDURLSessionProviderTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OIDURLSessionProviderTests.m; sourceTree = "<group>"; };
 		340DAE251D581FE700EC285B /* OIDAuthorizationService+Mac.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "OIDAuthorizationService+Mac.h"; sourceTree = "<group>"; };
 		340DAE261D581FE700EC285B /* OIDAuthorizationService+Mac.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "OIDAuthorizationService+Mac.m"; sourceTree = "<group>"; };
 		340DAE271D581FE700EC285B /* OIDAuthorizationUICoordinatorMac.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OIDAuthorizationUICoordinatorMac.h; sourceTree = "<group>"; };
@@ -762,6 +774,8 @@
 				341741D61C5D8243000EF209 /* OIDTokenUtilities.m */,
 				341741D71C5D8243000EF209 /* OIDURLQueryComponent.h */,
 				341741D81C5D8243000EF209 /* OIDURLQueryComponent.m */,
+				039697441FA8258D003D1FB2 /* OIDURLSessionProvider.h */,
+				039697451FA8258D003D1FB2 /* OIDURLSessionProvider.m */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -796,6 +810,7 @@
 				60140F851DE43CC700DA0DC3 /* OIDRegistrationResponseTests.m */,
 				34D5EC441E6D1AD900814354 /* OIDSwiftTests.swift */,
 				34D5EC431E6D1AD900814354 /* OIDAppAuthTests-Bridging-Header.h */,
+				0396974C1FA827AD003D1FB2 /* OIDURLSessionProviderTests.m */,
 			);
 			path = UnitTests;
 			sourceTree = "<group>";
@@ -1229,7 +1244,7 @@
 		340E73741C5D819B0076B1F6 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0820;
+				LastUpgradeCheck = 0900;
 				ORGANIZATIONNAME = "OpenID Foundation";
 				TargetAttributes = {
 					340DAE4D1D58216A00EC285B = {
@@ -1240,7 +1255,7 @@
 					};
 					341741EF1C5D8283000EF209 = {
 						CreatedOnToolsVersion = 7.2;
-						LastSwiftMigration = 0820;
+						LastSwiftMigration = 0900;
 					};
 					341AA4CD1E7F392C00FCA5C6 = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -1418,6 +1433,7 @@
 				340DAE5A1D5821AB00EC285B /* OIDAuthorizationRequest.m in Sources */,
 				347423E41E7F3C4000D3E6D6 /* OIDAuthorizationResponse.m in Sources */,
 				340DAE591D5821A100EC285B /* OIDAuthState+Mac.m in Sources */,
+				34AF73671FB4E4B00022335F /* OIDURLSessionProvider.m in Sources */,
 				341310D01E6F944B00D5DEE5 /* OIDURLQueryComponent.m in Sources */,
 				341310C81E6F944B00D5DEE5 /* OIDResponseTypes.m in Sources */,
 				341310C41E6F944B00D5DEE5 /* OIDFieldMapping.m in Sources */,
@@ -1444,6 +1460,7 @@
 				340DAECD1D582DE100EC285B /* OIDAuthorizationUICoordinatorIOS.m in Sources */,
 				341741EB1C5D8243000EF209 /* OIDURLQueryComponent.m in Sources */,
 				341741E11C5D8243000EF209 /* OIDFieldMapping.m in Sources */,
+				039697461FA8258D003D1FB2 /* OIDURLSessionProvider.m in Sources */,
 				341741DF1C5D8243000EF209 /* OIDError.m in Sources */,
 				341741DB1C5D8243000EF209 /* OIDAuthorizationRequest.m in Sources */,
 				60140F801DE4344200DA0DC3 /* OIDRegistrationResponse.m in Sources */,
@@ -1466,6 +1483,7 @@
 				3417421F1C5D82D3000EF209 /* OIDTokenRequestTests.m in Sources */,
 				341742181C5D82D3000EF209 /* OIDAuthorizationResponseTests.m in Sources */,
 				341742171C5D82D3000EF209 /* OIDAuthorizationRequestTests.m in Sources */,
+				0396974D1FA827AD003D1FB2 /* OIDURLSessionProviderTests.m in Sources */,
 				3417421A1C5D82D3000EF209 /* OIDGrantTypesTests.m in Sources */,
 				3417421B1C5D82D3000EF209 /* OIDResponseTypesTests.m in Sources */,
 				60140F831DE43BAF00DA0DC3 /* OIDRegistrationRequestTests.m in Sources */,
@@ -1524,6 +1542,7 @@
 				341310D51E6F944D00D5DEE5 /* OIDFieldMapping.m in Sources */,
 				341E709B1DE18796004353C1 /* OIDAuthState.m in Sources */,
 				341E70981DE18796004353C1 /* OIDAuthorizationRequest.m in Sources */,
+				34AF73681FB4E4B10022335F /* OIDURLSessionProvider.m in Sources */,
 				341310D71E6F944D00D5DEE5 /* OIDRegistrationRequest.m in Sources */,
 				341310DD1E6F944D00D5DEE5 /* OIDServiceDiscovery.m in Sources */,
 				341E70991DE18796004353C1 /* OIDAuthorizationResponse.m in Sources */,
@@ -1563,6 +1582,7 @@
 				343AAA6F1E83467D00F9D36E /* OIDAuthorizationService+IOS.m in Sources */,
 				343AAA8F1E83478900F9D36E /* OIDServiceConfiguration.m in Sources */,
 				343AAA891E83478900F9D36E /* OIDRegistrationResponse.m in Sources */,
+				34AF736A1FB4E4B30022335F /* OIDURLSessionProvider.m in Sources */,
 				343AAA8D1E83478900F9D36E /* OIDScopes.m in Sources */,
 				343AAA8E1E83478900F9D36E /* OIDScopeUtilities.m in Sources */,
 				343AAA8B1E83478900F9D36E /* OIDGrantTypes.m in Sources */,
@@ -1602,6 +1622,7 @@
 				343AAB721E8349B000F9D36E /* OIDFieldMapping.m in Sources */,
 				343AAB6E1E8349B000F9D36E /* OIDAuthState.m in Sources */,
 				343AAB6B1E8349B000F9D36E /* OIDAuthorizationRequest.m in Sources */,
+				34AF736B1FB4E4B30022335F /* OIDURLSessionProvider.m in Sources */,
 				343AAB741E8349B000F9D36E /* OIDRegistrationRequest.m in Sources */,
 				343AAB7A1E8349B000F9D36E /* OIDServiceDiscovery.m in Sources */,
 				343AAB6C1E8349B000F9D36E /* OIDAuthorizationResponse.m in Sources */,
@@ -1629,6 +1650,7 @@
 				343AAB5E1E8349B000F9D36E /* OIDFieldMapping.m in Sources */,
 				343AAB5A1E8349B000F9D36E /* OIDAuthState.m in Sources */,
 				343AAB571E8349B000F9D36E /* OIDAuthorizationRequest.m in Sources */,
+				34AF736C1FB4E4B40022335F /* OIDURLSessionProvider.m in Sources */,
 				343AAB601E8349B000F9D36E /* OIDRegistrationRequest.m in Sources */,
 				343AAB661E8349B000F9D36E /* OIDServiceDiscovery.m in Sources */,
 				343AAB581E8349B000F9D36E /* OIDAuthorizationResponse.m in Sources */,
@@ -1695,6 +1717,7 @@
 				343AAADB1E83493D00F9D36E /* OIDAuthorizationUICoordinatorMac.m in Sources */,
 				343AAB471E8349AF00F9D36E /* OIDClientMetadataParameters.m in Sources */,
 				343AAB461E8349AF00F9D36E /* OIDAuthState.m in Sources */,
+				34AF736D1FB4E4B40022335F /* OIDURLSessionProvider.m in Sources */,
 				343AAB561E8349AF00F9D36E /* OIDURLQueryComponent.m in Sources */,
 				343AAB4E1E8349AF00F9D36E /* OIDResponseTypes.m in Sources */,
 				343AAB4A1E8349AF00F9D36E /* OIDFieldMapping.m in Sources */,
@@ -1730,6 +1753,7 @@
 				347424061E7F4BA000D3E6D6 /* OIDFieldMapping.m in Sources */,
 				347424021E7F4BA000D3E6D6 /* OIDAuthState.m in Sources */,
 				347423FF1E7F4BA000D3E6D6 /* OIDAuthorizationRequest.m in Sources */,
+				34AF73691FB4E4B20022335F /* OIDURLSessionProvider.m in Sources */,
 				347424081E7F4BA000D3E6D6 /* OIDRegistrationRequest.m in Sources */,
 				3474240E1E7F4BA000D3E6D6 /* OIDServiceDiscovery.m in Sources */,
 				347424001E7F4BA000D3E6D6 /* OIDAuthorizationResponse.m in Sources */,
@@ -1788,24 +1812,26 @@
 		340DAE551D58216A00EC285B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				CLANG_ANALYZER_NONNULL = YES;
 				CODE_SIGN_IDENTITY = "-";
 				EXECUTABLE_PREFIX = lib;
-				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
 			};
 			name = Debug;
 		};
 		340DAE561D58216A00EC285B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				CLANG_ANALYZER_NONNULL = YES;
 				CODE_SIGN_IDENTITY = "-";
 				EXECUTABLE_PREFIX = lib;
-				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
 			};
 			name = Release;
 		};
@@ -1813,18 +1839,25 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				BITCODE_GENERATION_MODE = bitcode;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -1848,6 +1881,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -1858,18 +1892,25 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				BITCODE_GENERATION_MODE = bitcode;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -1887,6 +1928,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
@@ -1922,7 +1964,8 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "UnitTests/OIDAppAuthTests-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Off;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
 		};
@@ -1937,7 +1980,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = net.openid.appauth.AppAuthTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "UnitTests/OIDAppAuthTests-Bridging-Header.h";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Off;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Release;
 		};
@@ -1951,7 +1995,6 @@
 				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/";
 				INFOPLIST_FILE = UnitTests/UnitTestsInfo.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				PRODUCT_BUNDLE_IDENTIFIER = "net.openid.AppAuth-macOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
@@ -1968,7 +2011,6 @@
 				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/";
 				INFOPLIST_FILE = UnitTests/UnitTestsInfo.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				PRODUCT_BUNDLE_IDENTIFIER = "net.openid.AppAuth-macOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
@@ -2088,7 +2130,7 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				HEADER_SEARCH_PATHS = .;
 				INFOPLIST_FILE = UnitTests/UnitTestsInfo.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "net.openid.AppAuth-iOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2102,7 +2144,7 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				HEADER_SEARCH_PATHS = .;
 				INFOPLIST_FILE = UnitTests/UnitTestsInfo.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "net.openid.AppAuth-iOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2244,6 +2286,7 @@
 		343AAAD41E8348AA00F9D36E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CODE_SIGN_IDENTITY = "-";
@@ -2257,7 +2300,6 @@
 				INFOPLIST_FILE = Source/Framework/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				PRODUCT_BUNDLE_IDENTIFIER = "net.openid.AppAuth-macOS";
 				PRODUCT_NAME = AppAuth;
 				SDKROOT = macosx;
@@ -2270,6 +2312,7 @@
 		343AAAD51E8348AA00F9D36E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CODE_SIGN_IDENTITY = "-";
@@ -2283,7 +2326,6 @@
 				INFOPLIST_FILE = Source/Framework/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				PRODUCT_BUNDLE_IDENTIFIER = "net.openid.AppAuth-macOS";
 				PRODUCT_NAME = AppAuth;
 				SDKROOT = macosx;
@@ -2303,7 +2345,6 @@
 				HEADER_SEARCH_PATHS = .;
 				INFOPLIST_FILE = UnitTests/UnitTestsInfo.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				PRODUCT_BUNDLE_IDENTIFIER = "net.openid.AppAuth-macOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
@@ -2320,7 +2361,6 @@
 				HEADER_SEARCH_PATHS = .;
 				INFOPLIST_FILE = UnitTests/UnitTestsInfo.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				PRODUCT_BUNDLE_IDENTIFIER = "net.openid.AppAuth-macOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;

@@ -71,7 +71,10 @@ typedef void (^OIDRegistrationCompletion)(OIDRegistrationResponse *_Nullable reg
 /*! @brief Performs various OAuth and OpenID Connect related calls via the user agent or
         \NSURLSession.
  */
-@interface OIDAuthorizationService : NSObject
+@interface OIDAuthorizationService : NSObject {
+  // property variables
+  OIDServiceConfiguration *_configuration;
+}
 
 /*! @brief The service's configuration.
     @remarks Each authorization service is initialized with a configuration. This configuration

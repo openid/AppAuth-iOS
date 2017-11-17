@@ -20,17 +20,16 @@
 
 #import <Cocoa/Cocoa.h>
 
+#import "OIDAuthorizationRequest.h"
 #import "OIDAuthorizationService.h"
 #import "OIDErrorUtilities.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@implementation OIDAuthorizationUICoordinatorMac {
-  BOOL _authorizationFlowInProgress;
-  __weak id<OIDAuthorizationFlowSession> _session;
-}
+@implementation OIDAuthorizationUICoordinatorMac
 
-- (BOOL)presentAuthorizationWithURL:(NSURL *)URL session:(id<OIDAuthorizationFlowSession>)session {
+- (BOOL)presentAuthorizationRequest:(OIDAuthorizationRequest *)request
+                            session:(id<OIDAuthorizationFlowSession>)session {
   if (_authorizationFlowInProgress) {
     // TODO: Handle errors as authorization is already in progress.
     return NO;
@@ -38,7 +37,9 @@ NS_ASSUME_NONNULL_BEGIN
 
   _authorizationFlowInProgress = YES;
   _session = session;
-  BOOL openedBrowser = [[NSWorkspace sharedWorkspace] openURL:URL];
+  NSURL *requestURL = [request authorizationRequestURL];
+
+  BOOL openedBrowser = [[NSWorkspace sharedWorkspace] openURL:requestURL];
   if (!openedBrowser) {
     [self cleanUp];
     NSError *safariError = [OIDErrorUtilities errorWithCode:OIDErrorCodeBrowserOpenError

@@ -34,6 +34,10 @@
  */
 static NSString *const kRefreshTokenKey = @"refreshToken";
 
+/*! @brief Key used to encode the @c needsTokenRefresh property for @c NSSecureCoding.
+ */
+static NSString *const kNeedsTokenRefreshKey = @"needsTokenRefresh";
+
 /*! @brief Key used to encode the @c scope property for @c NSSecureCoding.
  */
 static NSString *const kScopeKey = @"scope";
@@ -87,19 +91,16 @@ static const NSUInteger kExpiryTimeTolerance = 60;
 @end
 
 
-@implementation OIDAuthState {
-  /*! @brief Array of pending actions (use @c _pendingActionsSyncObject to synchronize access).
-   */
-  NSMutableArray *_pendingActions;
+@implementation OIDAuthState
 
-  /*! @brief Object for synchronizing access to @c pendingActions.
-   */
-  id _pendingActionsSyncObject;
-
-  /*! @brief If YES, tokens will be refreshed on the next API call regardless of expiry.
-   */
-  BOOL _needsTokenRefresh;
-}
+@synthesize refreshToken = _refreshToken;
+@synthesize scope = _scope;
+@synthesize lastAuthorizationResponse = _lastAuthorizationResponse;
+@synthesize lastTokenResponse = _lastTokenResponse;
+@synthesize lastRegistrationResponse = _lastRegistrationResponse;
+@synthesize authorizationError = _authorizationError;
+@synthesize stateChangeDelegate = _stateChangeDelegate;
+@synthesize errorDelegate = _errorDelegate;
 
 #pragma mark - Convenience initializers
 
@@ -246,6 +247,7 @@ static const NSUInteger kExpiryTimeTolerance = 60;
         [aDecoder decodeObjectOfClass:[NSError class] forKey:kAuthorizationErrorKey];
     _scope = [aDecoder decodeObjectOfClass:[NSString class] forKey:kScopeKey];
     _refreshToken = [aDecoder decodeObjectOfClass:[NSString class] forKey:kRefreshTokenKey];
+    _needsTokenRefresh = [aDecoder decodeBoolForKey:kNeedsTokenRefreshKey];
   }
   return self;
 }
@@ -261,6 +263,7 @@ static const NSUInteger kExpiryTimeTolerance = 60;
   }
   [aCoder encodeObject:_scope forKey:kScopeKey];
   [aCoder encodeObject:_refreshToken forKey:kRefreshTokenKey];
+  [aCoder encodeBool:_needsTokenRefresh forKey:kNeedsTokenRefreshKey];
 }
 
 #pragma mark - Private convenience getters

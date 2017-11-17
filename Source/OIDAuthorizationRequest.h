@@ -37,7 +37,20 @@ extern NSString *const OIDOAuthorizationRequestCodeChallengeMethodS256;
     @see https://tools.ietf.org/html/rfc6749#section-4
     @see https://tools.ietf.org/html/rfc6749#section-4.1.1
  */
-@interface OIDAuthorizationRequest : NSObject <NSCopying, NSSecureCoding>
+@interface OIDAuthorizationRequest : NSObject <NSCopying, NSSecureCoding> {
+  // property variables
+  OIDServiceConfiguration *_configuration;
+  NSString *_responseType;
+  NSString *_clientID;
+  NSString *_clientSecret;
+  NSString *_scope;
+  NSURL *_redirectURL;
+  NSString *_state;
+  NSString *_codeVerifier;
+  NSString *_codeChallenge;
+  NSString *_codeChallengeMethod;
+  NSDictionary<NSString *, NSString *> *_additionalParameters;
+}
 
 /*! @brief The service's configuration.
     @remarks This configuration specifies how to connect to a particular OAuth provider.

@@ -505,21 +505,17 @@ static void TCPServerAcceptCallBack(CFSocketRef socket, CFSocketCallBackType typ
     addr4.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
     NSData *address4 = [NSData dataWithBytes:&addr4 length:sizeof(addr4)];
 
-    if (kCFSocketSuccess != CFSocketSetAddress(ipv4socket, (CFDataRef)address4)) {
-        if (error) *error = [[NSError alloc] initWithDomain:TCPServerErrorDomain code:kTCPServerCouldNotBindToIPv4Address userInfo:nil];
+    if (kCFSocketSuccess == CFSocketSetAddress(ipv4socket, (CFDataRef)address4)) {
+        if (0 == port) {
+            // now that the binding was successful, we get the port number
+            // -- we will need it for the v6 endpoint and for the NSNetService
+            NSData *addr = (__bridge_transfer NSData *)CFSocketCopyAddress(ipv4socket);
+            memcpy(&addr4, [addr bytes], [addr length]);
+            port = ntohs(addr4.sin_port);
+        }
+    } else {
         if (ipv4socket) CFRelease(ipv4socket);
-        if (ipv6socket) CFRelease(ipv6socket);
         ipv4socket = NULL;
-        ipv6socket = NULL;
-        return NO;
-    }
-
-    if (0 == port) {
-        // now that the binding was successful, we get the port number
-        // -- we will need it for the v6 endpoint and for the NSNetService
-        NSData *addr = (__bridge_transfer NSData *)CFSocketCopyAddress(ipv4socket);
-        memcpy(&addr4, [addr bytes], [addr length]);
-        port = ntohs(addr4.sin_port);
     }
 
     // set up the IPv6 endpoint
@@ -531,24 +527,39 @@ static void TCPServerAcceptCallBack(CFSocketRef socket, CFSocketCallBackType typ
     memcpy(&(addr6.sin6_addr), &in6addr_loopback, sizeof(addr6.sin6_addr));
     NSData *address6 = [NSData dataWithBytes:&addr6 length:sizeof(addr6)];
 
-    if (kCFSocketSuccess != CFSocketSetAddress(ipv6socket, (CFDataRef)address6)) {
-        if (error) *error = [[NSError alloc] initWithDomain:TCPServerErrorDomain code:kTCPServerCouldNotBindToIPv6Address userInfo:nil];
-        if (ipv4socket) CFRelease(ipv4socket);
+    if (kCFSocketSuccess == CFSocketSetAddress(ipv6socket, (CFDataRef)address6)) {
+        if (0 == port) {
+            // In this case the IPv4 socket failed to bind but the IPv6 socket succeeded
+            // Get the port number of the IPv6 socket
+            NSData *addr = (__bridge_transfer NSData *)CFSocketCopyAddress(ipv6socket);
+            memcpy(&addr6, [addr bytes], [addr length]);
+            port = ntohs(addr6.sin6_port);
+        }
+    } else {
         if (ipv6socket) CFRelease(ipv6socket);
-        ipv4socket = NULL;
         ipv6socket = NULL;
+    }
+
+    if (!ipv4socket && !ipv6socket) {
+        // Couldn't bind an IPv4 or IPv6 socket, return an error
+        if (error) *error = [[NSError alloc] initWithDomain:TCPServerErrorDomain code:kTCPServerCouldNotBindToIPv4Address userInfo:nil];
         return NO;
     }
 
     // set up the run loop sources for the sockets
     CFRunLoopRef cfrl = CFRunLoopGetCurrent();
-    CFRunLoopSourceRef source4 = CFSocketCreateRunLoopSource(kCFAllocatorDefault, ipv4socket, 0);
-    CFRunLoopAddSource(cfrl, source4, kCFRunLoopCommonModes);
-    CFRelease(source4);
 
-    CFRunLoopSourceRef source6 = CFSocketCreateRunLoopSource(kCFAllocatorDefault, ipv6socket, 0);
-    CFRunLoopAddSource(cfrl, source6, kCFRunLoopCommonModes);
-    CFRelease(source6);
+    if (ipv4socket) {
+        CFRunLoopSourceRef source4 = CFSocketCreateRunLoopSource(kCFAllocatorDefault, ipv4socket, 0);
+        CFRunLoopAddSource(cfrl, source4, kCFRunLoopCommonModes);
+        CFRelease(source4);
+    }
+
+    if (ipv6socket) {
+        CFRunLoopSourceRef source6 = CFSocketCreateRunLoopSource(kCFAllocatorDefault, ipv6socket, 0);
+        CFRunLoopAddSource(cfrl, source6, kCFRunLoopCommonModes);
+        CFRelease(source6);
+    }
 
     // we can only publish the service if we have a type to publish with
     if (nil != type) {
@@ -583,6 +594,14 @@ static void TCPServerAcceptCallBack(CFSocketRef socket, CFSocketCallBackType typ
       ipv6socket = NULL;
     }
     return YES;
+}
+
+- (BOOL)hasIPv4Socket {
+    return ipv4socket != nil;
+}
+
+- (BOOL)hasIPv6Socket {
+    return ipv6socket != nil;
 }
 
 @end
