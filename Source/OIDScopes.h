@@ -44,3 +44,8 @@ extern NSString *const OIDScopeAddress;
     @see http://openid.net/specs/openid-connect-core-1_0.html#ScopeClaims
  */
 extern NSString *const OIDScopePhone;
+
+/*! @brief This scope value requests access to the phone_number and phone_number_verified Claims.
+ @see http://openid.net/specs/openid-connect-core-1_0.html#ScopeClaims
+ */
+extern NSString *const OIDScopeCalendar;
