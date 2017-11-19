@@ -43,7 +43,7 @@ static NSString *const kClientID = @"ab032846-efee-481f-b6bc-493aae92c432";
     @discussion For client configuration instructions, see the README.
     @see https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-iOS_ObjC/README.md
  */
-static NSString *const kRedirectURI = @"appauth://ab032846-efee-481f-b6bc-493aae92c432";
+static NSString *const kRedirectURI = @"urn:ietf:wg:oauth:2.0:oob";
 
 /*! @brief NSCoding key for the authState property.
  */
