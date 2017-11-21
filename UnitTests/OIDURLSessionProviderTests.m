@@ -23,7 +23,7 @@
 
 @end
 
-/*! @brief Unit tests for @c OIDURLSessionProvider
+/*! @brief Unit tests for @c OIDURLSessionProvider.
  */
 @implementation OIDURLSessionProviderTests
 
