@@ -252,6 +252,12 @@ static NSString *const kAdditionalParametersKey = @"additionalParameters";
   if (_codeVerifier) {
     [query addParameter:kCodeVerifierKey value:_codeVerifier];
   }
+  if (_clientID) {
+    [query addParameter:kClientIDKey value:_clientID];
+  }
+  if (_clientSecret) {
+    [query addParameter:kClientSecretKey value:_clientSecret];
+  }
 
   // Add any additional parameters the client has specified.
   [query addParameters:_additionalParameters];
