@@ -377,6 +377,12 @@
 		34A663321E871DD40060B664 /* OIDIDToken.m in Sources */ = {isa = PBXBuildFile; fileRef = 34A663271E871DD40060B664 /* OIDIDToken.m */; };
 		34A663331E871DD40060B664 /* OIDIDToken.m in Sources */ = {isa = PBXBuildFile; fileRef = 34A663271E871DD40060B664 /* OIDIDToken.m */; };
 		34A663341E871DD40060B664 /* OIDIDToken.m in Sources */ = {isa = PBXBuildFile; fileRef = 34A663271E871DD40060B664 /* OIDIDToken.m */; };
+		34A6638B1E8865090060B664 /* OIDRPProfileCode.m in Sources */ = {isa = PBXBuildFile; fileRef = 34A6638A1E8865090060B664 /* OIDRPProfileCode.m */; };
+		34A6638C1E8865090060B664 /* OIDRPProfileCode.m in Sources */ = {isa = PBXBuildFile; fileRef = 34A6638A1E8865090060B664 /* OIDRPProfileCode.m */; };
+		34A6638D1E8865090060B664 /* OIDRPProfileCode.m in Sources */ = {isa = PBXBuildFile; fileRef = 34A6638A1E8865090060B664 /* OIDRPProfileCode.m */; };
+		34A6638E1E8865090060B664 /* OIDRPProfileCode.m in Sources */ = {isa = PBXBuildFile; fileRef = 34A6638A1E8865090060B664 /* OIDRPProfileCode.m */; };
+		34A6638F1E8865090060B664 /* OIDRPProfileCode.m in Sources */ = {isa = PBXBuildFile; fileRef = 34A6638A1E8865090060B664 /* OIDRPProfileCode.m */; };
+		34A663901E8865090060B664 /* OIDRPProfileCode.m in Sources */ = {isa = PBXBuildFile; fileRef = 34A6638A1E8865090060B664 /* OIDRPProfileCode.m */; };
 		34D5EC451E6D1AD900814354 /* OIDSwiftTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D5EC441E6D1AD900814354 /* OIDSwiftTests.swift */; };
 		34FEA6AE1DB6E083005C9212 /* OIDLoopbackHTTPServer.h in Headers */ = {isa = PBXBuildFile; fileRef = 34FEA6AC1DB6E083005C9212 /* OIDLoopbackHTTPServer.h */; };
 		34FEA6AF1DB6E083005C9212 /* OIDLoopbackHTTPServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 34FEA6AD1DB6E083005C9212 /* OIDLoopbackHTTPServer.m */; };
@@ -574,6 +580,8 @@
 		347423F61E7F4B5600D3E6D6 /* libAppAuth-watchOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libAppAuth-watchOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		34A663261E871DD40060B664 /* OIDIDToken.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OIDIDToken.h; sourceTree = "<group>"; };
 		34A663271E871DD40060B664 /* OIDIDToken.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OIDIDToken.m; sourceTree = "<group>"; };
+		34A6638A1E8865090060B664 /* OIDRPProfileCode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OIDRPProfileCode.m; sourceTree = "<group>"; };
+		34A663911E886AED0060B664 /* OIDRPProfileCode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OIDRPProfileCode.h; sourceTree = "<group>"; };
 		34D5EC431E6D1AD900814354 /* OIDAppAuthTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "OIDAppAuthTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		34D5EC441E6D1AD900814354 /* OIDSwiftTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OIDSwiftTests.swift; sourceTree = "<group>"; };
 		34FEA6AC1DB6E083005C9212 /* OIDLoopbackHTTPServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OIDLoopbackHTTPServer.h; sourceTree = "<group>"; };
@@ -847,6 +855,8 @@
 				60140F821DE43BAF00DA0DC3 /* OIDRegistrationRequestTests.m */,
 				60140F841DE43C8C00DA0DC3 /* OIDRegistrationResponseTests.h */,
 				60140F851DE43CC700DA0DC3 /* OIDRegistrationResponseTests.m */,
+				34A663911E886AED0060B664 /* OIDRPProfileCode.h */,
+				34A6638A1E8865090060B664 /* OIDRPProfileCode.m */,
 				34D5EC441E6D1AD900814354 /* OIDSwiftTests.swift */,
 				34D5EC431E6D1AD900814354 /* OIDAppAuthTests-Bridging-Header.h */,
 				0396974C1FA827AD003D1FB2 /* OIDURLSessionProviderTests.m */,
@@ -1543,6 +1553,7 @@
 				3417421E1C5D82D3000EF209 /* OIDServiceDiscoveryTests.m in Sources */,
 				3417421F1C5D82D3000EF209 /* OIDTokenRequestTests.m in Sources */,
 				341742181C5D82D3000EF209 /* OIDAuthorizationResponseTests.m in Sources */,
+				34A6638B1E8865090060B664 /* OIDRPProfileCode.m in Sources */,
 				341742171C5D82D3000EF209 /* OIDAuthorizationRequestTests.m in Sources */,
 				0396974D1FA827AD003D1FB2 /* OIDURLSessionProviderTests.m in Sources */,
 				3417421A1C5D82D3000EF209 /* OIDGrantTypesTests.m in Sources */,
@@ -1568,6 +1579,7 @@
 				341AA50D1E7F3A9B00FCA5C6 /* OIDTokenRequestTests.m in Sources */,
 				341AA5091E7F3A9B00FCA5C6 /* OIDResponseTypesTests.m in Sources */,
 				341AA4D91E7F393500FCA5C6 /* OIDAuthorizationRequestTests.m in Sources */,
+				34A6638C1E8865090060B664 /* OIDRPProfileCode.m in Sources */,
 				341AA5101E7F3A9B00FCA5C6 /* OIDRegistrationRequestTests.m in Sources */,
 				341AA5111E7F3A9B00FCA5C6 /* OIDRegistrationResponseTests.m in Sources */,
 				341AA5081E7F3A9B00FCA5C6 /* OIDGrantTypesTests.m in Sources */,
@@ -1588,6 +1600,7 @@
 				341AA5001E7F3A9400FCA5C6 /* OIDTokenRequestTests.m in Sources */,
 				341AA4FC1E7F3A9400FCA5C6 /* OIDResponseTypesTests.m in Sources */,
 				341AA4F81E7F3A3000FCA5C6 /* OIDAuthorizationRequestTests.m in Sources */,
+				34A6638D1E8865090060B664 /* OIDRPProfileCode.m in Sources */,
 				341AA5031E7F3A9400FCA5C6 /* OIDRegistrationRequestTests.m in Sources */,
 				341AA5041E7F3A9400FCA5C6 /* OIDRegistrationResponseTests.m in Sources */,
 				341AA4FB1E7F3A9400FCA5C6 /* OIDGrantTypesTests.m in Sources */,
@@ -1674,6 +1687,7 @@
 				343AAA7F1E8346B400F9D36E /* OIDRegistrationRequestTests.m in Sources */,
 				343AAA731E8346B400F9D36E /* OIDAuthorizationRequestTests.m in Sources */,
 				343AAA761E8346B400F9D36E /* OIDGrantTypesTests.m in Sources */,
+				34A6638E1E8865090060B664 /* OIDRPProfileCode.m in Sources */,
 				343AAA741E8346B400F9D36E /* OIDAuthorizationResponseTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1753,6 +1767,7 @@
 				343AAB8B1E8349CE00F9D36E /* OIDRegistrationRequestTests.m in Sources */,
 				343AAB7F1E8349CE00F9D36E /* OIDAuthorizationRequestTests.m in Sources */,
 				343AAB821E8349CE00F9D36E /* OIDGrantTypesTests.m in Sources */,
+				34A6638F1E8865090060B664 /* OIDRPProfileCode.m in Sources */,
 				343AAB801E8349CE00F9D36E /* OIDAuthorizationResponseTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1808,6 +1823,7 @@
 				343AAB991E8349CF00F9D36E /* OIDRegistrationRequestTests.m in Sources */,
 				343AAB8D1E8349CF00F9D36E /* OIDAuthorizationRequestTests.m in Sources */,
 				343AAB901E8349CF00F9D36E /* OIDGrantTypesTests.m in Sources */,
+				34A663901E8865090060B664 /* OIDRPProfileCode.m in Sources */,
 				343AAB8E1E8349CF00F9D36E /* OIDAuthorizationResponseTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
