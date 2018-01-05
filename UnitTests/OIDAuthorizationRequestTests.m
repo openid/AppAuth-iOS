@@ -63,6 +63,10 @@ static NSString *const kTestAdditionalParameterValue = @"1";
  */
 static NSString *const kTestState = @"State";
 
+/*! @brief Test value for the @c nonce property.
+ */
+static NSString *const kTestNonce = @"Nonce";
+
 /*! @brief Test value for the @c codeVerifier property.
  */
 static NSString *const kTestCodeVerifier = @"code verifier";
@@ -142,6 +146,7 @@ static int const kCodeVerifierRecommendedLength = 43;
                    redirectURL:[NSURL URLWithString:kTestRedirectURL]
                   responseType:kTestResponseType
                          state:kTestState
+                         nonce:kTestNonce
                   codeVerifier:kTestCodeVerifier
                  codeChallenge:[[self class] codeChallenge]
            codeChallengeMethod:[[self class] codeChallengeMethod]
@@ -159,6 +164,7 @@ static int const kCodeVerifierRecommendedLength = 43;
                    redirectURL:[NSURL URLWithString:kTestRedirectURL]
                   responseType:OIDResponseTypeCode
                          state:kTestState
+                         nonce:kTestNonce
                   codeVerifier:kTestCodeVerifier
                  codeChallenge:[[self class] codeChallenge]
            codeChallengeMethod:[[self class] codeChallengeMethod]
@@ -176,6 +182,7 @@ static int const kCodeVerifierRecommendedLength = 43;
                    redirectURL:[NSURL URLWithString:kTestRedirectURL]
                   responseType:OIDResponseTypeCode
                          state:kTestState
+                         nonce:kTestNonce
                   codeVerifier:kTestCodeVerifier
                  codeChallenge:[[self class] codeChallenge]
            codeChallengeMethod:[[self class] codeChallengeMethod]
@@ -240,6 +247,7 @@ static int const kCodeVerifierRecommendedLength = 43;
   XCTAssertEqualObjects(request.clientSecret, kTestClientSecret);
   XCTAssertEqualObjects(request.redirectURL, [NSURL URLWithString:kTestRedirectURL]);
   XCTAssertEqualObjects(request.state, kTestState);
+  XCTAssertEqualObjects(request.nonce, kTestNonce);
   XCTAssertEqualObjects(request.codeVerifier, kTestCodeVerifier);
   XCTAssertEqualObjects(request.codeChallenge, [[self class] codeChallenge]);
   XCTAssertEqualObjects(request.codeChallengeMethod, [[self class] codeChallengeMethod]);
@@ -435,6 +443,7 @@ static int const kCodeVerifierRecommendedLength = 43;
                   redirectURL:[NSURL URLWithString:kTestRedirectURL]
                   responseType:@"code id_token"
                          state:kTestState
+                         nonce:kTestNonce
                   codeVerifier:kTestCodeVerifier
                  codeChallenge:[[self class] codeChallenge]
            codeChallengeMethod:[[self class] codeChallengeMethod]
@@ -449,6 +458,7 @@ static int const kCodeVerifierRecommendedLength = 43;
                   redirectURL:[NSURL URLWithString:kTestRedirectURL]
                   responseType:@"code token id_token"
                          state:kTestState
+                         nonce:kTestNonce
                   codeVerifier:kTestCodeVerifier
                  codeChallenge:[[self class] codeChallenge]
            codeChallengeMethod:[[self class] codeChallengeMethod]
@@ -463,6 +473,7 @@ static int const kCodeVerifierRecommendedLength = 43;
                   redirectURL:[NSURL URLWithString:kTestRedirectURL]
                   responseType:@"code"
                          state:kTestState
+                         nonce:kTestNonce
                   codeVerifier:kTestCodeVerifier
                  codeChallenge:[[self class] codeChallenge]
            codeChallengeMethod:[[self class] codeChallengeMethod]

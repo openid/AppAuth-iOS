@@ -125,7 +125,8 @@ static const NSUInteger kExpiryTimeTolerance = 60;
                                OIDTokenRequest *tokenExchangeRequest =
                                    [authorizationResponse tokenExchangeRequest];
                                [OIDAuthorizationService
-                                   performTokenRequest:tokenExchangeRequest
+                                             performTokenRequest:tokenExchangeRequest
+                                   originalAuthorizationResponse:authorizationResponse
                                               callback:^(OIDTokenResponse *_Nullable tokenResponse,
                                                          NSError *_Nullable tokenError) {
                                                 OIDAuthState *authState;
@@ -473,6 +474,7 @@ static const NSUInteger kExpiryTimeTolerance = 60;
   OIDTokenRequest *tokenRefreshRequest =
       [self tokenRefreshRequestWithAdditionalParameters:additionalParameters];
   [OIDAuthorizationService performTokenRequest:tokenRefreshRequest
+                 originalAuthorizationResponse:_lastAuthorizationResponse
                                       callback:^(OIDTokenResponse *_Nullable response,
                                                  NSError *_Nullable error) {
     dispatch_async(dispatch_get_main_queue(), ^() {

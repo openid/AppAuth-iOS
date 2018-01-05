@@ -266,6 +266,15 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark - Token Endpoint
 
 + (void)performTokenRequest:(OIDTokenRequest *)request callback:(OIDTokenCallback)callback {
+  return [[self class] performTokenRequest:request
+             originalAuthorizationResponse:nil
+                                  callback:callback];
+}
+
++ (void)performTokenRequest:(OIDTokenRequest *)request
+    originalAuthorizationResponse:(OIDAuthorizationResponse *_Nullable)authorizationResponse
+                         callback:(OIDTokenCallback)callback {
+
   NSURLRequest *URLRequest = [request URLRequest];
   NSURLSession *session = [OIDURLSessionProvider session];
   [[session dataTaskWithRequest:URLRequest
