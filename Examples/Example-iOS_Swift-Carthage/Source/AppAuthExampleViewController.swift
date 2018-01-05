@@ -1,7 +1,7 @@
 //
 //  AppAuthExampleViewController.swift
 //
-//  Copyright (c) 2017 Google Inc. All Rights Reserved.
+//  Copyright (c) 2017 The AppAuth Authors.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@ let kIssuer: String = "https://issuer.example.com";
 /**
  The OAuth client ID.
 
- For client configuration instructions, see the [README](https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-iOS_ObjC/README.md).
+ For client configuration instructions, see the [README](https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-iOS_Swift-Carthage/README.md).
  Set to nil to use dynamic registration with this example.
 */
 let kClientID: String? = "YOUR_CLIENT_ID";
@@ -37,7 +37,7 @@ let kClientID: String? = "YOUR_CLIENT_ID";
 /**
  The OAuth redirect URI for the client @c kClientID.
 
- For client configuration instructions, see the [README](https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-iOS_ObjC/README.md).
+ For client configuration instructions, see the [README](https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-iOS_Swift-Carthage/README.md).
 */
 let kRedirectURI: String = "com.example.app:/oauth2redirect/example-provider";
 
@@ -45,7 +45,6 @@ let kRedirectURI: String = "com.example.app:/oauth2redirect/example-provider";
  NSCoding key for the authState property.
 */
 let kAppAuthExampleAuthStateKey: String = "authState";
-
 
 
 class AppAuthExampleViewController: UIViewController {
@@ -74,19 +73,19 @@ extension AppAuthExampleViewController {
     func validateOAuthConfiguration() {
 
         // The example needs to be configured with your own client details.
-        // See: https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-iOS_ObjC/README.md
+        // See: https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-iOS_Swift-Carthage/README.md
 
         assert(kIssuer != "https://issuer.example.com",
                 "Update kIssuer with your own issuer.\n" +
-                "Instructions: https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-iOS_ObjC/README.md");
+                "Instructions: https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-iOS_Swift-Carthage/README.md");
 
         assert(kClientID != "YOUR_CLIENT_ID",
                 "Update kClientID with your own client ID.\n" +
-                "Instructions: https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-iOS_ObjC/README.md");
+                "Instructions: https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-iOS_Swift-Carthage/README.md");
 
         assert(kRedirectURI != "com.example.app:/oauth2redirect/example-provider",
                 "Update kRedirectURI with your own redirect URI.\n" +
-                "Instructions: https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-iOS_ObjC/README.md");
+                "Instructions: https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-iOS_Swift-Carthage/README.md");
 
         // verifies that the custom URI scheme has been updated in the Info.plist
         guard let urlTypes: [AnyObject] = Bundle.main.object(forInfoDictionaryKey: "CFBundleURLTypes") as? [AnyObject], urlTypes.count > 0 else {
@@ -108,7 +107,7 @@ extension AppAuthExampleViewController {
         assert(urlScheme != "com.example.app",
                 "Configure the URI scheme in Info.plist (URL Types -> Item 0 -> URL Schemes -> Item 0) " +
                 "with the scheme of your redirect URI. Full instructions: " +
-                "https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-iOS_ObjC/README.md")
+                "https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-iOS_Swift-Carthage/README.md")
     }
 
 }
