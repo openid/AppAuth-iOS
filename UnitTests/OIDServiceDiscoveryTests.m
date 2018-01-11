@@ -39,6 +39,7 @@ static NSString *const kTokenEndpointKey = @"token_endpoint";
 static NSString *const kUserinfoEndpointKey = @"userinfo_endpoint";
 static NSString *const kJWKSURLKey = @"jwks_uri";
 static NSString *const kRegistrationEndpointKey = @"registration_endpoint";
+static NSString *const kEndSessionEndpointKey = @"end_session_endpoint";
 static NSString *const kScopesSupportedKey = @"scopes_supported";
 static NSString *const kResponseTypesSupportedKey = @"response_types_supported";
 static NSString *const kResponseModesSupportedKey = @"response_modes_supported";
@@ -102,6 +103,7 @@ static NSString *const kOPTosURIKey = @"op_tos_uri";
     kUserinfoEndpointKey : @"User Info Endpoint",
     kJWKSURLKey : @"http://www.example.com/jwks",
     kRegistrationEndpointKey : @"Registration Endpoint",
+    kEndSessionEndpointKey : @"https://www.example.com/logout",
     kScopesSupportedKey : @"Scopes Supported",
     kResponseTypesSupportedKey : @"Response Types Supported",
     kResponseModesSupportedKey : @"Response Modes Supported",
@@ -471,6 +473,7 @@ TestURLFieldBackedBy(tokenEndpoint, kTokenEndpointKey, kTestURL)
 TestURLFieldBackedBy(userinfoEndpoint, kUserinfoEndpointKey, kTestURL)
 TestURLFieldBackedBy(jwksURL, kJWKSURLKey, kTestURL)
 TestURLFieldBackedBy(registrationEndpoint, kRegistrationEndpointKey, kTestURL)
+TestURLFieldBackedBy(endSessionEndpoint, kEndSessionEndpointKey, kTestURL)
 TestFieldBackedBy(scopesSupported, kScopesSupportedKey, @"Scopes Supported")
 TestFieldBackedBy(responseTypesSupported, kResponseTypesSupportedKey, @"Response Types Supported")
 TestFieldBackedBy(responseModesSupported, kResponseModesSupportedKey, @"Response Modes Supported")
