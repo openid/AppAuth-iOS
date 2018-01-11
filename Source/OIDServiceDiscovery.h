@@ -81,6 +81,12 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property(nonatomic, readonly, nullable) NSURL *registrationEndpoint;
 
+/* @brief OPTIONAL. URL of the OP's RP-Initiated Logout endpoint.
+   @remarks end_session_endpoint
+   @seealso http://openid.net/specs/openid-connect-session-1_0.html#OPMetadata
+ */
+@property(nonatomic, readonly, nullable) NSURL *endSessionEndpoint;
+
 /*! @brief RECOMMENDED. JSON array containing a list of the OAuth 2.0 [RFC6749] scope values that
         this server supports. The server MUST support the openid scope value. Servers MAY choose not
         to advertise some supported scope values even when this parameter is used, although those
