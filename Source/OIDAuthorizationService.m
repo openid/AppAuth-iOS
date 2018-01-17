@@ -102,10 +102,6 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (BOOL)resumeAuthorizationFlowWithURL:(NSURL *)URL {
-  // rejects URLs that don't match redirect (these may be completely unrelated to the authorization)
-  if (![self shouldHandleURL:URL]) {
-    return NO;
-  }
   // checks for an invalid state
   if (!_pendingauthorizationFlowCallback) {
     [NSException raise:OIDOAuthExceptionInvalidAuthorizationFlow
@@ -143,6 +139,18 @@ NS_ASSUME_NONNULL_BEGIN
                                   code:OIDErrorCodeOAuthAuthorizationClientError
                               userInfo:userInfo];
       }
+  }
+
+  // rejects URLs that don't match redirect (these may be completely unrelated to the authorization)
+  if (![self shouldHandleURL:URL]) {
+    error = [NSError errorWithDomain:OIDOAuthAuthorizationErrorDomain
+                                code:OIDErrorCodeOAuthInvalidRedirectURI
+                            userInfo:nil];
+    [_UICoordinator dismissAuthorizationAnimated:YES
+                                      completion:^{
+                                        [self didFinishWithResponse:response error:error];
+                                      }];
+    return NO;
   }
 
   [_UICoordinator dismissAuthorizationAnimated:YES
