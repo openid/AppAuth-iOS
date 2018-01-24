@@ -1,4 +1,4 @@
-/*! @file OIDAuthorizationUICoordinatorCustomBrowser.m
+/*! @file OIDExternalUserAgentUICoordinatorCustomBrowser.m
     @brief AppAuth iOS SDK
     @copyright
         Copyright 2018 Google LLC
@@ -16,7 +16,7 @@
         limitations under the License.
  */
 
-#import "OIDAuthorizationUICoordinatorCustomBrowser.h"
+#import "OIDExternalUserAgentUICoordinatorCustomBrowser.h"
 
 #import <UIKit/UIKit.h>
 
@@ -27,7 +27,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@implementation OIDAuthorizationUICoordinatorCustomBrowser {
+@implementation OIDExternalUserAgentUICoordinatorCustomBrowser {
   OIDCustomBrowserURLTransformation _URLTransformation;
   NSString *_canOpenURLScheme;
   NSURL *_appStoreURL;
@@ -72,7 +72,7 @@ NS_ASSUME_NONNULL_BEGIN
   OIDCustomBrowserURLTransformation transformNOP = ^NSURL *(NSURL *requestURL) {
     return requestURL;
   };
-  OIDAuthorizationUICoordinatorCustomBrowser *coordinator =
+  OIDExternalUserAgentUICoordinatorCustomBrowser *coordinator =
       [[[self class] alloc] initWithURLTransformation:transformNOP];
   return coordinator;
 }
@@ -132,8 +132,8 @@ NS_ASSUME_NONNULL_BEGIN
   return self;
 }
 
-- (BOOL)presentAuthorizationRequest:(OIDAuthorizationRequest *)request
-                            session:(id<OIDAuthorizationFlowSession>)session {
+- (BOOL)presentExternalUserAgentRequest:(nonnull id<OIDExternalUserAgentRequest>)request
+                                session:(nonnull id<OIDExternalUserAgentFlowSession>)session {
   // If the app store URL is set, checks if the app is installed and if not opens the app store.
   if (_appStoreURL && _canOpenURLScheme) {
     // Verifies existence of LSApplicationQueriesSchemes Info.plist key.
@@ -153,13 +153,14 @@ NS_ASSUME_NONNULL_BEGIN
   }
   
   // Transforms the request URL and opens it.
-  NSURL *requestURL = [request authorizationRequestURL];
+  NSURL *requestURL = [request externalUserAgentRequestURL];
   requestURL = _URLTransformation(requestURL);
   BOOL openedInBrowser = [[UIApplication sharedApplication] openURL:requestURL];
   return openedInBrowser;
 }
 
-- (void)dismissAuthorizationAnimated:(BOOL)animated completion:(nonnull void (^)(void))completion {
+- (void)dismissExternalUserAgentUIAnimated:(BOOL)animated
+                                completion:(nonnull void (^)(void))completion {
   completion();
 }
 

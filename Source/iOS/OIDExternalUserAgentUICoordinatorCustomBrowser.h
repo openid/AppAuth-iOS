@@ -1,4 +1,4 @@
-/*! @file OIDAuthorizationUICoordinatorCustomBrowser.h
+/*! @file OIDExternalUserAgentUICoordinatorCustomBrowser.h
     @brief AppAuth iOS SDK
     @copyright
         Copyright 2018 Google LLC
@@ -18,7 +18,7 @@
 
 #import <Foundation/Foundation.h>
 
-#import "OIDAuthorizationUICoordinator.h"
+#import "OIDExternalUserAgentUICoordinator.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -29,13 +29,13 @@ NS_ASSUME_NONNULL_BEGIN
  */
 typedef NSURL *_Nullable (^OIDCustomBrowserURLTransformation)(NSURL *_Nullable requestURL);
 
-/*! @brief An implementation of the OIDAuthorizationUICoordinator protocol for iOS that uses
-        a custom browser (i.e. not Safari) for authorization. It is suitable for browsers that
+/*! @brief An implementation of the OIDExternalUserAgentUICoordinator protocol for iOS that uses
+        a custom browser (i.e. not Safari) for external requests. It is suitable for browsers that
         offer a custom url scheme that simply replaces the "https" scheme. It is not designed
         for browsers that require other modifications to the URL.  If the browser is not installed
         the user will be prompted to install it.
  */
-@interface OIDAuthorizationUICoordinatorCustomBrowser : NSObject<OIDAuthorizationUICoordinator>
+@interface OIDExternalUserAgentUICoordinatorCustomBrowser : NSObject<OIDExternalUserAgentUICoordinator>
 
 /*! @brief URL transformation block for the browser.
  */
@@ -49,19 +49,19 @@ typedef NSURL *_Nullable (^OIDCustomBrowserURLTransformation)(NSURL *_Nullable r
  */
 @property(nonatomic, readonly, nullable) NSURL *appStoreURL;
 
-/*! @brief An instance of @c OIDAuthorizationUICoordinatorCustomBrowser for Chrome.
+/*! @brief An instance of @c OIDExternalUserAgentUICoordinatorCustomBrowser for Chrome.
  */
 + (instancetype)CustomBrowserChrome;
 
-/*! @brief An instance of @c OIDAuthorizationUICoordinatorCustomBrowser for Firefox.
+/*! @brief An instance of @c OIDExternalUserAgentUICoordinatorCustomBrowser for Firefox.
  */
 + (instancetype)CustomBrowserFirefox;
 
-/*! @brief An instance of @c OIDAuthorizationUICoordinatorCustomBrowser for Opera.
+/*! @brief An instance of @c OIDExternalUserAgentUICoordinatorCustomBrowser for Opera.
  */
 + (instancetype)CustomBrowserOpera;
 
-/*! @brief An instance of @c OIDAuthorizationUICoordinatorCustomBrowser for Safari.
+/*! @brief An instance of @c OIDExternalUserAgentUICoordinatorCustomBrowser for Safari.
  */
 + (instancetype)CustomBrowserSafari;
 
@@ -82,7 +82,7 @@ typedef NSURL *_Nullable (^OIDCustomBrowserURLTransformation)(NSURL *_Nullable r
  */
 - (nonnull instancetype)init NS_UNAVAILABLE;
 
-/*! @brief UICoordinator for a custom browser. @c presentAuthorizationRequest:session method
+/*! @brief UICoordinator for a custom browser. @c presentExternalUserAgentRequest:session method
         will return NO if the browser isn't installed.
  */
 - (nullable instancetype)initWithURLTransformation:(OIDCustomBrowserURLTransformation)URLTransformation;
@@ -93,7 +93,7 @@ typedef NSURL *_Nullable (^OIDCustomBrowserURLTransformation)(NSURL *_Nullable r
     @param canOpenURLScheme any scheme supported by the browser used to check if the browser is
         installed.
     @param appStoreURL URL of the browser in the app store. When this and @c canOpenURLScheme
-        are non-nil, @c presentAuthorizationRequest:session will redirect the user to the app store
+        are non-nil, @c presentExternalUserAgentRequest:session will redirect the user to the app store
         if the browser is not installed.
  */
 - (nullable instancetype)initWithURLTransformation:(OIDCustomBrowserURLTransformation)URLTransformation
