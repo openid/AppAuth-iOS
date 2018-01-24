@@ -30,7 +30,7 @@ FOUNDATION_EXPORT const unsigned char AppAuthVersionString[];
 #import <AppAuth/OIDAuthorizationRequest.h>
 #import <AppAuth/OIDAuthorizationResponse.h>
 #import <AppAuth/OIDAuthorizationService.h>
-#import <AppAuth/OIDAuthorizationUICoordinator.h>
+#import <AppAuth/OIDExternalUserAgentUICoordinator.h>
 #import <AppAuth/OIDError.h>
 #import <AppAuth/OIDErrorUtilities.h>
 #import <AppAuth/OIDGrantTypes.h>
@@ -50,12 +50,12 @@ FOUNDATION_EXPORT const unsigned char AppAuthVersionString[];
 #elif TARGET_OS_IOS
 #import <AppAuth/OIDAuthState+IOS.h>
 #import <AppAuth/OIDAuthorizationService+IOS.h>
-#import <AppAuth/OIDAuthorizationUICoordinatorCustomBrowser.h>
-#import <AppAuth/OIDAuthorizationUICoordinatorIOS.h>
+#import <AppAuth/OIDExternalUserAgentUICoordinatorCustomBrowser.h>
+#import <AppAuth/OIDExternalUserAgentUICoordinatorIOS.h>
 #elif TARGET_OS_MAC
 #import <AppAuth/OIDAuthState+Mac.h>
 #import <AppAuth/OIDAuthorizationService+Mac.h>
-#import <AppAuth/OIDAuthorizationUICoordinatorMac.h>
+#import <AppAuth/OIDExternalUserAgentUICoordinatorMac.h>
 #import <AppAuth/OIDRedirectHTTPHandler.h>
 #else
 #error "Platform Undefined"
