@@ -341,6 +341,9 @@
 		343AAB9B1E834A8800F9D36E /* AppAuth.h in Headers */ = {isa = PBXBuildFile; fileRef = 343AAA4D1E8345B600F9D36E /* AppAuth.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		343AAB9C1E834A8900F9D36E /* AppAuth.h in Headers */ = {isa = PBXBuildFile; fileRef = 343AAA4D1E8345B600F9D36E /* AppAuth.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		343AAB9D1E834A8A00F9D36E /* AppAuth.h in Headers */ = {isa = PBXBuildFile; fileRef = 343AAA4D1E8345B600F9D36E /* AppAuth.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		345AE747202D526900738D22 /* OIDAuthorizationUICoordinatorCustomBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = 345AE745202D526800738D22 /* OIDAuthorizationUICoordinatorCustomBrowser.m */; };
+		345AE748202D526900738D22 /* OIDAuthorizationUICoordinatorCustomBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = 345AE745202D526800738D22 /* OIDAuthorizationUICoordinatorCustomBrowser.m */; };
+		345AE749202D526900738D22 /* OIDAuthorizationUICoordinatorCustomBrowser.h in Headers */ = {isa = PBXBuildFile; fileRef = 345AE746202D526800738D22 /* OIDAuthorizationUICoordinatorCustomBrowser.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		347423E41E7F3C4000D3E6D6 /* OIDAuthorizationResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741B71C5D8243000EF209 /* OIDAuthorizationResponse.m */; };
 		347423FF1E7F4BA000D3E6D6 /* OIDAuthorizationRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741B51C5D8243000EF209 /* OIDAuthorizationRequest.m */; };
 		347424001E7F4BA000D3E6D6 /* OIDAuthorizationResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741B71C5D8243000EF209 /* OIDAuthorizationResponse.m */; };
@@ -542,6 +545,8 @@
 		343AAAAE1E83489A00F9D36E /* AppAuth_tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AppAuth_tvOSTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		343AAAC21E8348A900F9D36E /* AppAuth.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AppAuth.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		343AAACA1E8348AA00F9D36E /* AppAuth_macOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AppAuth_macOSTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		345AE745202D526800738D22 /* OIDAuthorizationUICoordinatorCustomBrowser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = OIDAuthorizationUICoordinatorCustomBrowser.m; path = iOS/OIDAuthorizationUICoordinatorCustomBrowser.m; sourceTree = "<group>"; };
+		345AE746202D526800738D22 /* OIDAuthorizationUICoordinatorCustomBrowser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OIDAuthorizationUICoordinatorCustomBrowser.h; path = iOS/OIDAuthorizationUICoordinatorCustomBrowser.h; sourceTree = "<group>"; };
 		347423F61E7F4B5600D3E6D6 /* libAppAuth-watchOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libAppAuth-watchOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		34D5EC431E6D1AD900814354 /* OIDAppAuthTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "OIDAppAuthTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		34D5EC441E6D1AD900814354 /* OIDSwiftTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OIDSwiftTests.swift; sourceTree = "<group>"; };
@@ -847,6 +852,8 @@
 			children = (
 				F6F60FB31D2BFEFE00325CB3 /* OIDAuthorizationService+IOS.h */,
 				F6F60FB11D2BFEFE00325CB3 /* OIDAuthorizationService+IOS.m */,
+				345AE746202D526800738D22 /* OIDAuthorizationUICoordinatorCustomBrowser.h */,
+				345AE745202D526800738D22 /* OIDAuthorizationUICoordinatorCustomBrowser.m */,
 				F6F60FB51D2BFEFE00325CB3 /* OIDAuthState+IOS.h */,
 				F6F60FB01D2BFEFE00325CB3 /* OIDAuthState+IOS.m */,
 				F6F60FB41D2BFEFE00325CB3 /* OIDAuthorizationUICoordinatorIOS.h */,
@@ -874,6 +881,7 @@
 				343AAAE41E83499000F9D36E /* OIDAuthorizationResponse.h in Headers */,
 				343AAAF31E83499000F9D36E /* OIDScopes.h in Headers */,
 				343AAAE81E83499000F9D36E /* OIDAuthStateChangeDelegate.h in Headers */,
+				345AE749202D526900738D22 /* OIDAuthorizationUICoordinatorCustomBrowser.h in Headers */,
 				343AAA6B1E83465500F9D36E /* AppAuth.h in Headers */,
 				343AAA6E1E83466B00F9D36E /* OIDAuthorizationUICoordinatorIOS.h in Headers */,
 				343AAAF21E83499000F9D36E /* OIDResponseTypes.h in Headers */,
@@ -1457,6 +1465,7 @@
 				60140F7A1DE4276800DA0DC3 /* OIDClientMetadataParameters.m in Sources */,
 				341741DE1C5D8243000EF209 /* OIDAuthState.m in Sources */,
 				341741DD1C5D8243000EF209 /* OIDAuthorizationService.m in Sources */,
+				345AE747202D526900738D22 /* OIDAuthorizationUICoordinatorCustomBrowser.m in Sources */,
 				340DAECD1D582DE100EC285B /* OIDAuthorizationUICoordinatorIOS.m in Sources */,
 				341741EB1C5D8243000EF209 /* OIDURLQueryComponent.m in Sources */,
 				341741E11C5D8243000EF209 /* OIDFieldMapping.m in Sources */,
@@ -1579,6 +1588,7 @@
 				343AAA931E83478900F9D36E /* OIDTokenUtilities.m in Sources */,
 				343AAA901E83478900F9D36E /* OIDServiceDiscovery.m in Sources */,
 				343AAA911E83478900F9D36E /* OIDTokenRequest.m in Sources */,
+				345AE748202D526900738D22 /* OIDAuthorizationUICoordinatorCustomBrowser.m in Sources */,
 				343AAA6F1E83467D00F9D36E /* OIDAuthorizationService+IOS.m in Sources */,
 				343AAA8F1E83478900F9D36E /* OIDServiceConfiguration.m in Sources */,
 				343AAA891E83478900F9D36E /* OIDRegistrationResponse.m in Sources */,

@@ -50,6 +50,7 @@ FOUNDATION_EXPORT const unsigned char AppAuthVersionString[];
 #elif TARGET_OS_IOS
 #import <AppAuth/OIDAuthState+IOS.h>
 #import <AppAuth/OIDAuthorizationService+IOS.h>
+#import <AppAuth/OIDAuthorizationUICoordinatorCustomBrowser.h>
 #import <AppAuth/OIDAuthorizationUICoordinatorIOS.h>
 #elif TARGET_OS_MAC
 #import <AppAuth/OIDAuthState+Mac.h>
