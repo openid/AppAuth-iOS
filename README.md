@@ -333,8 +333,7 @@ needing to worry about token freshness.
 
 ## API Documentation
 
-Browse the [API documentation]
-(http://openid.github.io/AppAuth-iOS/docs/latest/annotated.html).
+Browse the [API documentation](http://openid.github.io/AppAuth-iOS/docs/latest/annotated.html).
 
 ## Included Samples
 
