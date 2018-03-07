@@ -157,7 +157,7 @@ static const NSUInteger kExpiryTimeTolerance = 60;
     OID_UNAVAILABLE_USE_INITIALIZER(@selector(initWithAuthorizationResponse:tokenResponse:));
 
 /*! @brief Creates an auth state from an authorization response.
-    @param response The authorization response.
+    @param authorizationResponse The authorization response.
  */
 - (instancetype)initWithAuthorizationResponse:(OIDAuthorizationResponse *)authorizationResponse {
   return [self initWithAuthorizationResponse:authorizationResponse tokenResponse:nil];
@@ -165,7 +165,7 @@ static const NSUInteger kExpiryTimeTolerance = 60;
 
 
 /*! @brief Designated initializer.
-    @param response The authorization response.
+    @param authorizationResponse The authorization response.
     @discussion Creates an auth state from an authorization response and token response.
  */
 - (instancetype)initWithAuthorizationResponse:(OIDAuthorizationResponse *)authorizationResponse
@@ -472,32 +472,36 @@ static const NSUInteger kExpiryTimeTolerance = 60;
   // refresh the tokens
   OIDTokenRequest *tokenRefreshRequest =
       [self tokenRefreshRequestWithAdditionalParameters:additionalParameters];
+    __weak __typeof(self) weakSelf = self;
   [OIDAuthorizationService performTokenRequest:tokenRefreshRequest
                                       callback:^(OIDTokenResponse *_Nullable response,
                                                  NSError *_Nullable error) {
+                                          OIDAuthState *strongSelf = weakSelf;
     dispatch_async(dispatch_get_main_queue(), ^() {
       // update OIDAuthState based on response
       if (response) {
-        _needsTokenRefresh = NO;
+        strongSelf->_needsTokenRefresh = NO;
         [self updateWithTokenResponse:response error:nil];
       } else {
         if (error.domain == OIDOAuthTokenErrorDomain) {
-          _needsTokenRefresh = NO;
+          strongSelf->_needsTokenRefresh = NO;
           [self updateWithAuthorizationError:error];
         } else {
-          if ([_errorDelegate respondsToSelector:
+          if ([strongSelf->_errorDelegate respondsToSelector:
               @selector(authState:didEncounterTransientError:)]) {
-            [_errorDelegate authState:self didEncounterTransientError:error];
+            [strongSelf->_errorDelegate authState:self didEncounterTransientError:error];
           }
         }
       }
 
       // nil the pending queue and process everything that was queued up
       NSArray *actionsToProcess;
-      @synchronized(_pendingActionsSyncObject) {
-        actionsToProcess = _pendingActions;
-        _pendingActions = nil;
-      }
+        __weak __typeof(self) weakSelf = self;
+        @synchronized(strongSelf->_pendingActionsSyncObject) {
+            OIDAuthState *strongSelf = weakSelf;
+            actionsToProcess = strongSelf->_pendingActions;
+            strongSelf->_pendingActions = nil;
+        }
       for (OIDAuthStateAction actionToProcess in actionsToProcess) {
         actionToProcess(self.accessToken, self.idToken, error);
       }
