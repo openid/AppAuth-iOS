@@ -27,8 +27,8 @@
 @class OIDTokenRequest;
 @class OIDTokenResponse;
 @protocol OIDAuthorizationFlowSession;
-@protocol OIDExternalUserAgentFlowSession;
-@protocol OIDExternalUserAgentUICoordinator;
+@protocol OIDExternalUserAgent;
+@protocol OIDExternalUserAgentSession;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -116,13 +116,13 @@ typedef void (^OIDRegistrationCompletion)(OIDRegistrationResponse *_Nullable reg
     @param UICoordinator Generic authorization UI coordinator that can present an authorization
         request.
     @param callback The method called when the request has completed or failed.
-    @return A @c OIDExternalUserAgentFlowSession instance which will terminate when it
-        receives a @c OIDExternalUserAgentFlowSession.cancel message, or after processing a
-        @c OIDExternalUserAgentFlowSession.resumeExternalUserAgentFlowWithURL: message.
+    @return A @c OIDExternalUserAgentSession instance which will terminate when it
+        receives a @c OIDExternalUserAgentSession.cancel message, or after processing a
+        @c OIDExternalUserAgentSession.resumeExternalUserAgentFlowWithURL: message.
  */
-+ (id<OIDExternalUserAgentFlowSession, OIDAuthorizationFlowSession>)
++ (id<OIDExternalUserAgentSession, OIDAuthorizationFlowSession>)
     presentAuthorizationRequest:(OIDAuthorizationRequest *)request
-                  UICoordinator:(id<OIDExternalUserAgentUICoordinator>)UICoordinator
+                  UICoordinator:(id<OIDExternalUserAgent>)externalUserAgent
                        callback:(OIDAuthorizationCallback)callback;
 
 /*! @brief Performs a token request.

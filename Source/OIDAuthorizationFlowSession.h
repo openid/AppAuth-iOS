@@ -32,7 +32,7 @@
  */
 - (BOOL)resumeAuthorizationFlowWithURL:(NSURL *)URL;
 
-/*! @brief @c OIDAuthorizationUICoordinator or clients should call this method when the
+/*! @brief @c OIDExternalUserAgent implementations should call this method when the
         authorization flow failed with a non-OAuth error.
     @param error The error that is the reason for the failure of this authorization flow.
     @remarks Has no effect if called more than once, or after a @c cancel message was received.

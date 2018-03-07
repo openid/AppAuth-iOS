@@ -1,4 +1,4 @@
-/*! @file OIDExternalUserAgentUICoordinatorCustomBrowser.h
+/*! @file OIDExternalUserAgentIOSCustomBrowser.h
     @brief AppAuth iOS SDK
     @copyright
         Copyright 2018 Google LLC
@@ -18,7 +18,7 @@
 
 #import <Foundation/Foundation.h>
 
-#import "OIDExternalUserAgentUICoordinator.h"
+#import "OIDExternalUserAgent.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -29,13 +29,13 @@ NS_ASSUME_NONNULL_BEGIN
  */
 typedef NSURL *_Nullable (^OIDCustomBrowserURLTransformation)(NSURL *_Nullable requestURL);
 
-/*! @brief An implementation of the OIDExternalUserAgentUICoordinator protocol for iOS that uses
+/*! @brief An implementation of the OIDExternalUserAgent protocol for iOS that uses
         a custom browser (i.e. not Safari) for external requests. It is suitable for browsers that
         offer a custom url scheme that simply replaces the "https" scheme. It is not designed
         for browsers that require other modifications to the URL.  If the browser is not installed
         the user will be prompted to install it.
  */
-@interface OIDExternalUserAgentUICoordinatorCustomBrowser : NSObject<OIDExternalUserAgentUICoordinator>
+@interface OIDExternalUserAgentIOSCustomBrowser : NSObject<OIDExternalUserAgent>
 
 /*! @brief URL transformation block for the browser.
  */
@@ -49,19 +49,19 @@ typedef NSURL *_Nullable (^OIDCustomBrowserURLTransformation)(NSURL *_Nullable r
  */
 @property(nonatomic, readonly, nullable) NSURL *appStoreURL;
 
-/*! @brief An instance of @c OIDExternalUserAgentUICoordinatorCustomBrowser for Chrome.
+/*! @brief An instance of @c OIDExternalUserAgentIOSCustomBrowser for Chrome.
  */
 + (instancetype)CustomBrowserChrome;
 
-/*! @brief An instance of @c OIDExternalUserAgentUICoordinatorCustomBrowser for Firefox.
+/*! @brief An instance of @c OIDExternalUserAgentIOSCustomBrowser for Firefox.
  */
 + (instancetype)CustomBrowserFirefox;
 
-/*! @brief An instance of @c OIDExternalUserAgentUICoordinatorCustomBrowser for Opera.
+/*! @brief An instance of @c OIDExternalUserAgentIOSCustomBrowser for Opera.
  */
 + (instancetype)CustomBrowserOpera;
 
-/*! @brief An instance of @c OIDExternalUserAgentUICoordinatorCustomBrowser for Safari.
+/*! @brief An instance of @c OIDExternalUserAgentIOSCustomBrowser for Safari.
  */
 + (instancetype)CustomBrowserSafari;
 
@@ -82,7 +82,7 @@ typedef NSURL *_Nullable (^OIDCustomBrowserURLTransformation)(NSURL *_Nullable r
  */
 - (nonnull instancetype)init NS_UNAVAILABLE;
 
-/*! @brief UICoordinator for a custom browser. @c presentExternalUserAgentRequest:session method
+/*! @brief OIDExternalUserAgent for a custom browser. @c presentExternalUserAgentRequest:session method
         will return NO if the browser isn't installed.
  */
 - (nullable instancetype)initWithURLTransformation:(OIDCustomBrowserURLTransformation)URLTransformation;

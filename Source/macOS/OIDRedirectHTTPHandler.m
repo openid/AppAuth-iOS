@@ -21,7 +21,7 @@
 #import "OIDAuthorizationFlowSession.h"
 #import "OIDAuthorizationService.h"
 #import "OIDErrorUtilities.h"
-#import "OIDExternalUserAgentFlowSession.h"
+#import "OIDExternalUserAgentSession.h"
 #import "OIDLoopbackHTTPServer.h"
 
 /*! @brief Page that is returned following a completed authorization. Show your own page instead by

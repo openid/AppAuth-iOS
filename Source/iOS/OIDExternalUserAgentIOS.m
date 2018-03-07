@@ -1,4 +1,4 @@
-/*! @file OIDAuthorizationUICoordinatorIOS.m
+/*! @file OIDExternalUserAgentIOS.m
     @brief AppAuth iOS SDK
     @copyright
         Copyright 2016 Google Inc. All Rights Reserved.
@@ -16,12 +16,12 @@
         limitations under the License.
  */
 
-#import "OIDExternalUserAgentUICoordinatorIOS.h"
+#import "OIDExternalUserAgentIOS.h"
 
 #import <SafariServices/SafariServices.h>
 
 #import "OIDErrorUtilities.h"
-#import "OIDExternalUserAgentFlowSession.h"
+#import "OIDExternalUserAgentSession.h"
 #import "OIDExternalUserAgentRequest.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -37,14 +37,14 @@ static id<OIDSafariViewControllerFactory> __nullable gSafariViewControllerFactor
 @interface OIDDefaultSafariViewControllerFactory : NSObject<OIDSafariViewControllerFactory>
 @end
 
-@interface OIDExternalUserAgentUICoordinatorIOS ()<SFSafariViewControllerDelegate>
+@interface OIDExternalUserAgentIOS ()<SFSafariViewControllerDelegate>
 @end
 
-@implementation OIDExternalUserAgentUICoordinatorIOS {
+@implementation OIDExternalUserAgentIOS {
   UIViewController *_presentingViewController;
 
   BOOL _externalUserAgentFlowInProgress;
-  __weak id<OIDExternalUserAgentFlowSession> _session;
+  __weak id<OIDExternalUserAgentSession> _session;
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wpartial-availability"
   __weak SFSafariViewController *_safariVC;
@@ -77,7 +77,7 @@ static id<OIDSafariViewControllerFactory> __nullable gSafariViewControllerFactor
 }
 
 - (BOOL)presentExternalUserAgentRequest:(id<OIDExternalUserAgentRequest>)request
-                                session:(id<OIDExternalUserAgentFlowSession>)session {
+                                session:(id<OIDExternalUserAgentSession>)session {
   if (_externalUserAgentFlowInProgress) {
     // TODO: Handle errors as authorization is already in progress.
     return NO;
@@ -129,7 +129,7 @@ static id<OIDSafariViewControllerFactory> __nullable gSafariViewControllerFactor
   return openedSafari;
 }
 
-- (void)dismissExternalUserAgentUIAnimated:(BOOL)animated completion:(void (^)(void))completion {
+- (void)dismissExternalUserAgentAnimated:(BOOL)animated completion:(void (^)(void))completion {
   if (!_externalUserAgentFlowInProgress) {
     // Ignore this call if there is no authorization flow in progress.
     return;
@@ -177,7 +177,7 @@ static id<OIDSafariViewControllerFactory> __nullable gSafariViewControllerFactor
     // Ignore this call if there is no authorization flow in progress.
     return;
   }
-  id<OIDExternalUserAgentFlowSession> session = _session;
+  id<OIDExternalUserAgentSession> session = _session;
   [self cleanUp];
   NSError *error = [OIDErrorUtilities errorWithCode:OIDErrorCodeProgramCanceledAuthorizationFlow
                                     underlyingError:nil

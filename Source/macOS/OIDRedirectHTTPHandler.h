@@ -22,7 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class HTTPServer;
 @protocol OIDAuthorizationFlowSession;
-@protocol OIDExternalUserAgentFlowSession;
+@protocol OIDExternalUserAgentSession;
 
 /*! @brief Start a HTTP server on the loopback interface (i.e. @c 127.0.0.1) to receive the OAuth
         response redirects on macOS.
@@ -32,7 +32,7 @@ NS_ASSUME_NONNULL_BEGIN
   HTTPServer *_httpServ;
   NSURL *_successURL;
   // property variables
-  NSObject<OIDExternalUserAgentFlowSession, OIDAuthorizationFlowSession> *_currentAuthorizationFlow;
+  NSObject<OIDExternalUserAgentSession, OIDAuthorizationFlowSession> *_currentAuthorizationFlow;
 }
 
 /*! @brief The external user-agent request flow session which receives the return URL from the
@@ -41,23 +41,23 @@ NS_ASSUME_NONNULL_BEGIN
         redirect handler to continue the flow. This should be set while an external user-agent
         request flow is in progress.
  */
-@property(nonatomic, strong, nullable) id<OIDExternalUserAgentFlowSession,
+@property(nonatomic, strong, nullable) id<OIDExternalUserAgentSession,
     OIDAuthorizationFlowSession> currentAuthorizationFlow;
 
 /*! @brief Creates an a loopback HTTP redirect URI handler with the given success URL.
-    @param successURL The URL that the user is redirected to after the request flow completes
+    @param successURL The URL that the user is redirected to after the external user-agent request flow completes
         either with a result of success or error. The contents of this page should instruct the user
         to return to the app.
     @discussion Once you have initiated the external user-agent request, be sure to set
-        @c currentExternalUserAgentFlow on this object so that any responses received by this listener will
+        @c currentAuthorizationFlow on this object so that any responses received by this listener will
         be routed accordingly.
  */
 - (instancetype)initWithSuccessURL:(nullable NSURL *)successURL;
 
 /*! @brief Starts listening on the loopback interface on a random available port, and returns a URL
         with the base address. Use the returned redirect URI to build a @c OIDExternalUserAgentRequest,
-        and once you initiate the request, set the resulting @c OIDExternalUserAgentFlowSession to
-        @c currentExternalUserAgentFlow so the response can be handled.
+        and once you initiate the request, set the resulting @c OIDExternalUserAgentSession to
+        @c currentAuthorizationFlow so the response can be handled.
     @param error The error if an error occurred while starting the local HTTP server.
     @return The URL containing the address of the server with the randomly assigned available port.
     @discussion Each instance of @c OIDRedirectHTTPHandler can only listen for a single response.
@@ -68,7 +68,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /*! @brief Stops listening the loopback interface and sends an cancellation error (in the domain
         ::OIDGeneralErrorDomain, with the code ::OIDErrorCodeProgramCanceledAuthorizationFlow) to
-        the @c currentExternalUserAgentFlow.  Has no effect if called when no requests are pending.
+        the @c currentAuthorizationFlow.  Has no effect if called when no requests are pending.
     @discussion The HTTP listener is stopped automatically on receiving a valid response (regardless
         of whether the request succeeded or not), this method should not be called except when
         abandoning the external user-agent request.

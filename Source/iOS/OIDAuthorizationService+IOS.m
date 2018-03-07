@@ -18,17 +18,17 @@
 
 #import "OIDAuthorizationService+IOS.h"
 
-#import "OIDExternalUserAgentUICoordinatorIOS.h"
+#import "OIDExternalUserAgentIOS.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @implementation OIDAuthorizationService (IOS)
 
-+ (id<OIDExternalUserAgentFlowSession, OIDAuthorizationFlowSession>)
++ (id<OIDExternalUserAgentSession, OIDAuthorizationFlowSession>)
     presentAuthorizationRequest:(OIDAuthorizationRequest *)request
        presentingViewController:(UIViewController *)presentingViewController
                        callback:(OIDAuthorizationCallback)callback {
-  OIDExternalUserAgentUICoordinatorIOS *coordinator = [[OIDExternalUserAgentUICoordinatorIOS alloc]
+  OIDExternalUserAgentIOS *coordinator = [[OIDExternalUserAgentIOS alloc]
       initWithPresentingViewController:presentingViewController];
   return [self presentAuthorizationRequest:request UICoordinator:coordinator callback:callback];
 }

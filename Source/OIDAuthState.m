@@ -104,14 +104,14 @@ static const NSUInteger kExpiryTimeTolerance = 60;
 
 #pragma mark - Convenience initializers
 
-+ (id<OIDExternalUserAgentFlowSession, OIDAuthorizationFlowSession>)
++ (id<OIDExternalUserAgentSession, OIDAuthorizationFlowSession>)
     authStateByPresentingAuthorizationRequest:(OIDAuthorizationRequest *)authorizationRequest
-                                UICoordinator:(id<OIDExternalUserAgentUICoordinator>)UICoordinator
+                                UICoordinator:(id<OIDExternalUserAgent>)externalUserAgent
                                      callback:(OIDAuthStateAuthorizationCallback)callback {
   // presents the authorization request
-  id<OIDExternalUserAgentFlowSession, OIDAuthorizationFlowSession> authFlowSession = [OIDAuthorizationService
+  id<OIDExternalUserAgentSession, OIDAuthorizationFlowSession> authFlowSession = [OIDAuthorizationService
       presentAuthorizationRequest:authorizationRequest
-                    UICoordinator:UICoordinator
+                    UICoordinator:externalUserAgent
                          callback:^(OIDAuthorizationResponse *_Nullable authorizationResponse,
                                     NSError *_Nullable authorizationError) {
                            // inspects response and processes further if needed (e.g. authorization

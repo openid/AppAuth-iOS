@@ -1,4 +1,4 @@
-/*! @file OIDExternalUserAgentUICoordinator.h
+/*! @file OIDExternalUserAgent.h
     @brief AppAuth iOS SDK
     @copyright
         Copyright 2017 The AppAuth Authors. All Rights Reserved.
@@ -16,9 +16,9 @@
         limitations under the License.
  */
 
-/*! @protocol OIDExternalUserAgentUICoordinator
+/*! @protocol OIDExternalUserAgent
     @brief An interface that any external user-agent request may implement to use the
-        @c OIDExternalUserAgentUICoordinator flow.
+        @c OIDExternalUserAgent flow.
  */
 @protocol OIDExternalUserAgentRequest
 

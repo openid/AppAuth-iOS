@@ -1,4 +1,4 @@
-/*! @file OIDExternalUserAgentUICoordinatorMac.m
+/*! @file OIDExternalUserAgentMac.m
     @brief AppAuth iOS SDK
     @copyright
         Copyright 2016 Google Inc. All Rights Reserved.
@@ -16,20 +16,20 @@
         limitations under the License.
  */
 
-#import "OIDExternalUserAgentUICoordinatorMac.h"
+#import "OIDExternalUserAgentMac.h"
 
 #import <Cocoa/Cocoa.h>
 
 #import "OIDErrorUtilities.h"
-#import "OIDExternalUserAgentFlowSession.h"
+#import "OIDExternalUserAgentSession.h"
 #import "OIDExternalUserAgentRequest.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@implementation OIDExternalUserAgentUICoordinatorMac
+@implementation OIDExternalUserAgentMac
 
 - (BOOL)presentExternalUserAgentRequest:(id<OIDExternalUserAgentRequest>)request
-                                session:(id<OIDExternalUserAgentFlowSession>)session {
+                                session:(id<OIDExternalUserAgentSession>)session {
   if (_externalUserAgentFlowInProgress) {
     // TODO: Handle errors as authorization is already in progress.
     return NO;
@@ -50,7 +50,7 @@ NS_ASSUME_NONNULL_BEGIN
   return openedBrowser;
 }
 
-- (void)dismissExternalUserAgentUIAnimated:(BOOL)animated completion:(void (^)(void))completion {
+- (void)dismissExternalUserAgentAnimated:(BOOL)animated completion:(void (^)(void))completion {
   if (!_externalUserAgentFlowInProgress) {
     // Ignore this call if there is no authorization flow in progress.
     return;

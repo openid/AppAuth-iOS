@@ -25,8 +25,8 @@
 #import "OIDAuthorizationService.h"
 #import "OIDError.h"
 #import "OIDErrorUtilities.h"
-#import "OIDExternalUserAgentFlowSession.h"
-#import "OIDExternalUserAgentUICoordinator.h"
+#import "OIDExternalUserAgent.h"
+#import "OIDExternalUserAgentSession.h"
 #import "OIDGrantTypes.h"
 #import "OIDRegistrationRequest.h"
 #import "OIDRegistrationResponse.h"
@@ -45,11 +45,12 @@
 #elif TARGET_OS_IOS
 #import "OIDAuthState+IOS.h"
 #import "OIDAuthorizationService+IOS.h"
-#import "OIDExternalUserAgentUICoordinatorCustomBrowser.h"
+#import "OIDExternalUserAgentIOS.h"
+#import "OIDExternalUserAgentIOSCustomBrowser.h"
 #elif TARGET_OS_MAC
 #import "OIDAuthState+Mac.h"
 #import "OIDAuthorizationService+Mac.h"
-#import "OIDExternalUserAgentUICoordinatorMac.h"
+#import "OIDExternalUserAgentMac.h"
 #import "OIDRedirectHTTPHandler.h"
 #else
 #error "Platform Undefined"

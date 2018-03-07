@@ -18,15 +18,16 @@
 
 #import "OIDAuthorizationService+Mac.h"
 
-#import "OIDExternalUserAgentUICoordinatorMac.h"
+#import "OIDExternalUserAgentMac.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @implementation OIDAuthorizationService (Mac)
 
-+ (id<OIDExternalUserAgentFlowSession, OIDAuthorizationFlowSession>)presentAuthorizationRequest:(OIDAuthorizationRequest *)request
-                                                  callback:(OIDAuthorizationCallback)callback {
-  OIDExternalUserAgentUICoordinatorMac *coordinator = [[OIDExternalUserAgentUICoordinatorMac alloc] init];
++ (id<OIDExternalUserAgentSession, OIDAuthorizationFlowSession>)
+    presentAuthorizationRequest:(OIDAuthorizationRequest *)request
+                       callback:(OIDAuthorizationCallback)callback {
+  OIDExternalUserAgentMac *coordinator = [[OIDExternalUserAgentMac alloc] init];
   return [self presentAuthorizationRequest:request UICoordinator:coordinator callback:callback];
 }
 

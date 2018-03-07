@@ -18,18 +18,19 @@
 
 #import "OIDAuthState+IOS.h"
 
-#import "OIDExternalUserAgentUICoordinatorIOS.h"
+#import "OIDExternalUserAgentIOS.h"
 
 @implementation OIDAuthState (IOS)
 
-+ (id<OIDExternalUserAgentFlowSession, OIDAuthorizationFlowSession>)
++ (id<OIDExternalUserAgentSession, OIDAuthorizationFlowSession>)
     authStateByPresentingAuthorizationRequest:(OIDAuthorizationRequest *)authorizationRequest
                      presentingViewController:(UIViewController *)presentingViewController
                                      callback:(OIDAuthStateAuthorizationCallback)callback {
-    OIDExternalUserAgentUICoordinatorIOS *coordinator = [[OIDExternalUserAgentUICoordinatorIOS alloc]
-      initWithPresentingViewController:presentingViewController];
+    OIDExternalUserAgentIOS *externalUserAgent =
+        [[OIDExternalUserAgentIOS alloc]
+            initWithPresentingViewController:presentingViewController];
   return [self authStateByPresentingAuthorizationRequest:authorizationRequest
-                                           UICoordinator:coordinator
+                                           UICoordinator:externalUserAgent
                                                 callback:callback];
 }
 

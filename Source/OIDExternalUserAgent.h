@@ -1,4 +1,4 @@
-/*! @file OIDExternalUserAgentUICoordinator.h
+/*! @file OIDExternalUserAgent.h
     @brief AppAuth iOS SDK
     @copyright
         Copyright 2016 Google Inc. All Rights Reserved.
@@ -18,35 +18,35 @@
 
 #import <Foundation/Foundation.h>
 
-@protocol OIDExternalUserAgentFlowSession;
+@protocol OIDExternalUserAgentSession;
 @protocol OIDExternalUserAgentRequest;
 
 NS_ASSUME_NONNULL_BEGIN
 
-/*! @protocol OIDExternalUserAgentUICoordinator
+/*! @protocol OIDExternalUserAgent
     @brief An external user-agent UI coordinator that presents a request. Clients may provide custom
         implementations of an external UI coordinator to customize the way the requests are
         presented to the end user.
  */
-@protocol OIDExternalUserAgentUICoordinator<NSObject>
+@protocol OIDExternalUserAgent<NSObject>
 
-/*! @brief Presents the external user-agent request in the UI coordinator.
-    @param request The request to be presented in the UI.
-    @param session The @c OIDExternalUserAgentFlowSession instance that initiates presenting the UI.
-        Concrete implementations of a @c OIDExternalUserAgentUICoordinator may call
+/*! @brief Presents the request in the external user-agent.
+    @param request The request to be presented in the external user-agent.
+    @param session The @c OIDExternalUserAgentSession instance that initiates presenting the UI.
+        Concrete implementations of a @c OIDExternalUserAgent may call
         resumeExternalUserAgentFlowWithURL or failExternalUserAgentFlowWithError on session to either
         resume or fail the request.
     @return YES If the request UI was successfully presented to the user.
  */
 - (BOOL)presentExternalUserAgentRequest:(id<OIDExternalUserAgentRequest> )request
-                                session:(id<OIDExternalUserAgentFlowSession>)session;
+                                session:(id<OIDExternalUserAgentSession>)session;
 
-/*! @brief Dimisses the external user-agent UI and calls completion when the dismiss operation ends.
-    @param animated Wheter or not the dismiss operation should be animated.
+/*! @brief Dimisses the external user-agent and calls completion when the dismiss operation ends.
+    @param animated Whether or not the dismiss operation should be animated.
     @remarks Has no effect if no UI is presented.
     @param completion The block to be called when the dismiss operations ends
  */
-- (void)dismissExternalUserAgentUIAnimated:(BOOL)animated completion:(void (^)(void))completion;
+- (void)dismissExternalUserAgentAnimated:(BOOL)animated completion:(void (^)(void))completion;
 
 @end
 

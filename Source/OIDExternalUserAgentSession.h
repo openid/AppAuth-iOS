@@ -1,4 +1,4 @@
-/*! @file OIDExternalUserAgentFlowSession.h
+/*! @file OIDExternalUserAgentSession.h
     @brief AppAuth iOS SDK
     @copyright
         Copyright 2017 The AppAuth Authors. All Rights Reserved.
@@ -19,11 +19,11 @@
 
 /*! @brief Represents an in-flight external user-agent flow session.
  */
-@protocol OIDExternalUserAgentFlowSession <NSObject>
+@protocol OIDExternalUserAgentSession <NSObject>
 
 /*! @brief Cancels the code flow session, invoking the request's callback with a cancelled error.
     @remarks Has no effect if called more than once, or after a
-        @c OIDExternalUserAgentFlowSession.resumeExternalUserAgentFlowWithURL: message was received.
+        @c OIDExternalUserAgentSession.resumeExternalUserAgentFlowWithURL: message was received.
         Will cause an error with code: @c ::OIDErrorCodeProgramCanceledAuthorizationFlow to be
         passed to the @c callback block passed to
         @c OIDAuthorizationService.presentAuthorizationRequest:presentingViewController:callback:
@@ -42,7 +42,7 @@
  */
 - (BOOL)resumeExternalUserAgentFlowWithURL:(NSURL *)URL;
 
-/*! @brief @c OIDExternalUserAgentUICoordinator or clients should call this method when the
+/*! @brief @c OIDExternalUserAgent or clients should call this method when the
         external user-agent flow failed with a non-OAuth error.
     @param error The error that is the reason for the failure of this external flow.
     @remarks Has no effect if called more than once, or after a @c cancel message was received.

@@ -1,4 +1,4 @@
-/*! @file OIDExternalUserAgentUICoordinatorCustomBrowser.m
+/*! @file OIDExternalUserAgentIOSCustomBrowser.m
     @brief AppAuth iOS SDK
     @copyright
         Copyright 2018 Google LLC
@@ -16,7 +16,7 @@
         limitations under the License.
  */
 
-#import "OIDExternalUserAgentUICoordinatorCustomBrowser.h"
+#import "OIDExternalUserAgentIOSCustomBrowser.h"
 
 #import <UIKit/UIKit.h>
 
@@ -27,7 +27,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@implementation OIDExternalUserAgentUICoordinatorCustomBrowser {
+@implementation OIDExternalUserAgentIOSCustomBrowser {
   OIDCustomBrowserURLTransformation _URLTransformation;
   NSString *_canOpenURLScheme;
   NSURL *_appStoreURL;
@@ -72,7 +72,7 @@ NS_ASSUME_NONNULL_BEGIN
   OIDCustomBrowserURLTransformation transformNOP = ^NSURL *(NSURL *requestURL) {
     return requestURL;
   };
-  OIDExternalUserAgentUICoordinatorCustomBrowser *coordinator =
+  OIDExternalUserAgentIOSCustomBrowser *coordinator =
       [[[self class] alloc] initWithURLTransformation:transformNOP];
   return coordinator;
 }
@@ -133,7 +133,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (BOOL)presentExternalUserAgentRequest:(nonnull id<OIDExternalUserAgentRequest>)request
-                                session:(nonnull id<OIDExternalUserAgentFlowSession>)session {
+                                session:(nonnull id<OIDExternalUserAgentSession>)session {
   // If the app store URL is set, checks if the app is installed and if not opens the app store.
   if (_appStoreURL && _canOpenURLScheme) {
     // Verifies existence of LSApplicationQueriesSchemes Info.plist key.
@@ -159,7 +159,7 @@ NS_ASSUME_NONNULL_BEGIN
   return openedInBrowser;
 }
 
-- (void)dismissExternalUserAgentUIAnimated:(BOOL)animated
+- (void)dismissExternalUserAgentAnimated:(BOOL)animated
                                 completion:(nonnull void (^)(void))completion {
   completion();
 }
