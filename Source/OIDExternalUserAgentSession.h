@@ -17,7 +17,7 @@
  */
 
 
-/*! @brief Represents an in-flight external user-agent flow session.
+/*! @brief Represents an in-flight external user-agent session.
  */
 @protocol OIDExternalUserAgentSession <NSObject>
 

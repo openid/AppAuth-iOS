@@ -17,6 +17,7 @@
  */
 
 /*! @brief Represents an in-flight authorization flow session.
+    @deprecated Please use the more generic OIDExternalUserAgentSession instead.
  */
 @protocol OIDAuthorizationFlowSession <NSObject>
 

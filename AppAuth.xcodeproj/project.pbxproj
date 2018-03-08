@@ -380,7 +380,7 @@
 		A6DEAB9B2018E4AD0022AC32 /* OIDExternalUserAgent.h in Headers */ = {isa = PBXBuildFile; fileRef = A6DEAB982018E4A20022AC32 /* OIDExternalUserAgent.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A6DEAB9C2018E4AD0022AC32 /* OIDExternalUserAgent.h in Headers */ = {isa = PBXBuildFile; fileRef = A6DEAB982018E4A20022AC32 /* OIDExternalUserAgent.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A6DEAB9D2018E4AD0022AC32 /* OIDExternalUserAgent.h in Headers */ = {isa = PBXBuildFile; fileRef = A6DEAB982018E4A20022AC32 /* OIDExternalUserAgent.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		A6DEAB9E2018E4AE0022AC32 /* OIDExternalUserAgent.h in Headers */ = {isa = PBXBuildFile; fileRef = A6DEAB982018E4A20022AC32 /* OIDExternalUserAgent.h */; };
+		A6DEAB9E2018E4AE0022AC32 /* OIDExternalUserAgent.h in Headers */ = {isa = PBXBuildFile; fileRef = A6DEAB982018E4A20022AC32 /* OIDExternalUserAgent.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A6DEAB9F2018E4B00022AC32 /* OIDExternalUserAgentRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = A6DEAB9A2018E4A20022AC32 /* OIDExternalUserAgentRequest.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A6DEABA02018E4B00022AC32 /* OIDExternalUserAgentRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = A6DEAB9A2018E4A20022AC32 /* OIDExternalUserAgentRequest.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A6DEABA22018E4B60022AC32 /* OIDExternalUserAgentRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = A6DEAB9A2018E4A20022AC32 /* OIDExternalUserAgentRequest.h */; settings = {ATTRIBUTES = (Public, ); }; };
