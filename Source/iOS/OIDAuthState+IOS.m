@@ -30,7 +30,7 @@
         [[OIDExternalUserAgentIOS alloc]
             initWithPresentingViewController:presentingViewController];
   return [self authStateByPresentingAuthorizationRequest:authorizationRequest
-                                           UICoordinator:externalUserAgent
+                                       externalUserAgent:externalUserAgent
                                                 callback:callback];
 }
 

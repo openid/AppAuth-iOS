@@ -28,9 +28,9 @@ NS_ASSUME_NONNULL_BEGIN
     presentAuthorizationRequest:(OIDAuthorizationRequest *)request
        presentingViewController:(UIViewController *)presentingViewController
                        callback:(OIDAuthorizationCallback)callback {
-  OIDExternalUserAgentIOS *coordinator = [[OIDExternalUserAgentIOS alloc]
+  OIDExternalUserAgentIOS *externalUserAgent = [[OIDExternalUserAgentIOS alloc]
       initWithPresentingViewController:presentingViewController];
-  return [self presentAuthorizationRequest:request UICoordinator:coordinator callback:callback];
+  return [self presentAuthorizationRequest:request externalUserAgent:externalUserAgent callback:callback];
 }
 
 @end

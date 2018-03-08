@@ -45,7 +45,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface OIDAuthorizationFlowSessionImplementation : NSObject<OIDExternalUserAgentSession, OIDAuthorizationFlowSession> {
   // private variables
   OIDAuthorizationRequest *_request;
-  id<OIDExternalUserAgent> _UICoordinator;
+  id<OIDExternalUserAgent> _externalUserAgent;
   OIDAuthorizationCallback _pendingauthorizationFlowCallback;
 }
 
@@ -66,12 +66,12 @@ NS_ASSUME_NONNULL_BEGIN
   return self;
 }
 
-- (void)presentAuthorizationWithCoordinator:(id<OIDExternalUserAgent>)UICoordinator
-                                   callback:(OIDAuthorizationCallback)authorizationFlowCallback {
-  _UICoordinator = UICoordinator;
+- (void)presentAuthorizationWithExternalUserAgent:(id<OIDExternalUserAgent>)externalUserAgent
+                                         callback:(OIDAuthorizationCallback)authorizationFlowCallback {
+  _externalUserAgent = externalUserAgent;
   _pendingauthorizationFlowCallback = authorizationFlowCallback;
   BOOL authorizationFlowStarted =
-      [_UICoordinator presentExternalUserAgentRequest:_request session:self];
+      [_externalUserAgent presentExternalUserAgentRequest:_request session:self];
   if (!authorizationFlowStarted) {
     NSError *safariError = [OIDErrorUtilities errorWithCode:OIDErrorCodeSafariOpenError
                                             underlyingError:nil
@@ -81,7 +81,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)cancel {
-  [_UICoordinator dismissExternalUserAgentAnimated:YES completion:^{
+  [_externalUserAgent dismissExternalUserAgentAnimated:YES completion:^{
       NSError *error = [OIDErrorUtilities
                         errorWithCode:OIDErrorCodeUserCanceledAuthorizationFlow
                         underlyingError:nil
@@ -146,7 +146,7 @@ NS_ASSUME_NONNULL_BEGIN
       }
   }
 
-  [_UICoordinator dismissExternalUserAgentAnimated:YES completion:^{
+  [_externalUserAgent dismissExternalUserAgentAnimated:YES completion:^{
       [self didFinishWithResponse:response error:error];
   }];
 
@@ -165,7 +165,7 @@ NS_ASSUME_NONNULL_BEGIN
                         error:(nullable NSError *)error {
   OIDAuthorizationCallback callback = _pendingauthorizationFlowCallback;
   _pendingauthorizationFlowCallback = nil;
-  _UICoordinator = nil;
+  _externalUserAgent = nil;
   if (callback) {
     callback(response, error);
   }
@@ -255,11 +255,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (id<OIDExternalUserAgentSession, OIDAuthorizationFlowSession>)
     presentAuthorizationRequest:(OIDAuthorizationRequest *)request
-                  UICoordinator:(id<OIDExternalUserAgent>)externalUserAgent
+              externalUserAgent:(id<OIDExternalUserAgent>)externalUserAgent
                        callback:(OIDAuthorizationCallback)callback {
   OIDAuthorizationFlowSessionImplementation *flowSession =
       [[OIDAuthorizationFlowSessionImplementation alloc] initWithRequest:request];
-  [flowSession presentAuthorizationWithCoordinator:externalUserAgent callback:callback];
+  [flowSession presentAuthorizationWithExternalUserAgent:externalUserAgent callback:callback];
   return flowSession;
 }
 

@@ -36,8 +36,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-/*! @brief An iOS specific external user-agent UI Coordinator that uses a \SFSafariViewController to
-        present an user-agent request.
+/*! @brief An iOS specific external user-agent that uses the best possible user-agent available
+        depending on the version of iOS to present the request.
  */
 @interface OIDExternalUserAgentIOS : NSObject<OIDExternalUserAgent>
 
