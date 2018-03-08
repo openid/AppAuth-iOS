@@ -1,4 +1,4 @@
-/*! @file OIDAuthorizationUICoordinatorMac.m
+/*! @file OIDExternalUserAgentMac.m
     @brief AppAuth iOS SDK
     @copyright
         Copyright 2016 Google Inc. All Rights Reserved.
@@ -16,28 +16,28 @@
         limitations under the License.
  */
 
-#import "OIDAuthorizationUICoordinatorMac.h"
+#import "OIDExternalUserAgentMac.h"
 
 #import <Cocoa/Cocoa.h>
 
-#import "OIDAuthorizationRequest.h"
-#import "OIDAuthorizationService.h"
 #import "OIDErrorUtilities.h"
+#import "OIDExternalUserAgentSession.h"
+#import "OIDExternalUserAgentRequest.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@implementation OIDAuthorizationUICoordinatorMac
+@implementation OIDExternalUserAgentMac
 
-- (BOOL)presentAuthorizationRequest:(OIDAuthorizationRequest *)request
-                            session:(id<OIDAuthorizationFlowSession>)session {
-  if (_authorizationFlowInProgress) {
+- (BOOL)presentExternalUserAgentRequest:(id<OIDExternalUserAgentRequest>)request
+                                session:(id<OIDExternalUserAgentSession>)session {
+  if (_externalUserAgentFlowInProgress) {
     // TODO: Handle errors as authorization is already in progress.
     return NO;
   }
 
-  _authorizationFlowInProgress = YES;
+  _externalUserAgentFlowInProgress = YES;
   _session = session;
-  NSURL *requestURL = [request authorizationRequestURL];
+  NSURL *requestURL = [request externalUserAgentRequestURL];
 
   BOOL openedBrowser = [[NSWorkspace sharedWorkspace] openURL:requestURL];
   if (!openedBrowser) {
@@ -45,13 +45,13 @@ NS_ASSUME_NONNULL_BEGIN
     NSError *safariError = [OIDErrorUtilities errorWithCode:OIDErrorCodeBrowserOpenError
                                             underlyingError:nil
                                                 description:@"Unable to open the browser."];
-    [session failAuthorizationFlowWithError:safariError];
+    [session failExternalUserAgentFlowWithError:safariError];
   }
   return openedBrowser;
 }
 
-- (void)dismissAuthorizationAnimated:(BOOL)animated completion:(void (^)(void))completion {
-  if (!_authorizationFlowInProgress) {
+- (void)dismissExternalUserAgentAnimated:(BOOL)animated completion:(void (^)(void))completion {
+  if (!_externalUserAgentFlowInProgress) {
     // Ignore this call if there is no authorization flow in progress.
     return;
   }
@@ -63,7 +63,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)cleanUp {
   _session = nil;
-  _authorizationFlowInProgress = NO;
+  _externalUserAgentFlowInProgress = NO;
 }
 
 @end

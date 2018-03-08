@@ -20,9 +20,11 @@
 
 #import "OIDAuthorizationRequest.h"
 #import "OIDAuthorizationResponse.h"
-#import "OIDAuthorizationUICoordinator.h"
 #import "OIDDefines.h"
 #import "OIDErrorUtilities.h"
+#import "OIDAuthorizationFlowSession.h"
+#import "OIDExternalUserAgent.h"
+#import "OIDExternalUserAgentSession.h"
 #import "OIDRegistrationRequest.h"
 #import "OIDRegistrationResponse.h"
 #import "OIDServiceConfiguration.h"
@@ -40,10 +42,10 @@ static NSString *const kOpenIDConfigurationWellKnownPath = @".well-known/openid-
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface OIDAuthorizationFlowSessionImplementation : NSObject<OIDAuthorizationFlowSession> {
+@interface OIDAuthorizationFlowSessionImplementation : NSObject<OIDExternalUserAgentSession, OIDAuthorizationFlowSession> {
   // private variables
   OIDAuthorizationRequest *_request;
-  id<OIDAuthorizationUICoordinator> _UICoordinator;
+  id<OIDExternalUserAgent> _externalUserAgent;
   OIDAuthorizationCallback _pendingauthorizationFlowCallback;
 }
 
@@ -64,12 +66,12 @@ NS_ASSUME_NONNULL_BEGIN
   return self;
 }
 
-- (void)presentAuthorizationWithCoordinator:(id<OIDAuthorizationUICoordinator>)UICoordinator
-                                   callback:(OIDAuthorizationCallback)authorizationFlowCallback {
-  _UICoordinator = UICoordinator;
+- (void)presentAuthorizationWithExternalUserAgent:(id<OIDExternalUserAgent>)externalUserAgent
+                                         callback:(OIDAuthorizationCallback)authorizationFlowCallback {
+  _externalUserAgent = externalUserAgent;
   _pendingauthorizationFlowCallback = authorizationFlowCallback;
   BOOL authorizationFlowStarted =
-      [_UICoordinator presentAuthorizationRequest:_request session:self];
+      [_externalUserAgent presentExternalUserAgentRequest:_request session:self];
   if (!authorizationFlowStarted) {
     NSError *safariError = [OIDErrorUtilities errorWithCode:OIDErrorCodeSafariOpenError
                                             underlyingError:nil
@@ -79,14 +81,13 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)cancel {
-  [_UICoordinator dismissAuthorizationAnimated:YES
-                                    completion:^{
-                                      NSError *error = [OIDErrorUtilities
-                                            errorWithCode:OIDErrorCodeUserCanceledAuthorizationFlow
-                                          underlyingError:nil
-                                              description:nil];
-                                      [self didFinishWithResponse:nil error:error];
-                                    }];
+  [_externalUserAgent dismissExternalUserAgentAnimated:YES completion:^{
+      NSError *error = [OIDErrorUtilities
+                        errorWithCode:OIDErrorCodeUserCanceledAuthorizationFlow
+                        underlyingError:nil
+                        description:nil];
+      [self didFinishWithResponse:nil error:error];
+  }];
 }
 
 - (BOOL)shouldHandleURL:(NSURL *)URL {
@@ -101,7 +102,7 @@ NS_ASSUME_NONNULL_BEGIN
       OIDIsEqualIncludingNil(standardizedURL.path, standardizedRedirectURL.path);
 }
 
-- (BOOL)resumeAuthorizationFlowWithURL:(NSURL *)URL {
+- (BOOL)resumeExternalUserAgentFlowWithURL:(NSURL *)URL {
   // rejects URLs that don't match redirect (these may be completely unrelated to the authorization)
   if (![self shouldHandleURL:URL]) {
     return NO;
@@ -145,15 +146,14 @@ NS_ASSUME_NONNULL_BEGIN
       }
   }
 
-  [_UICoordinator dismissAuthorizationAnimated:YES
-                                    completion:^{
-                                      [self didFinishWithResponse:response error:error];
-                                    }];
+  [_externalUserAgent dismissExternalUserAgentAnimated:YES completion:^{
+      [self didFinishWithResponse:response error:error];
+  }];
 
   return YES;
 }
 
-- (void)failAuthorizationFlowWithError:(NSError *)error {
+- (void)failExternalUserAgentFlowWithError:(NSError *)error {
   [self didFinishWithResponse:nil error:error];
 }
 
@@ -165,10 +165,18 @@ NS_ASSUME_NONNULL_BEGIN
                         error:(nullable NSError *)error {
   OIDAuthorizationCallback callback = _pendingauthorizationFlowCallback;
   _pendingauthorizationFlowCallback = nil;
-  _UICoordinator = nil;
+  _externalUserAgent = nil;
   if (callback) {
     callback(response, error);
   }
+}
+
+- (void)failAuthorizationFlowWithError:(NSError *)error {
+  [self failExternalUserAgentFlowWithError:error];
+}
+
+- (BOOL)resumeAuthorizationFlowWithURL:(NSURL *)URL {
+  return [self resumeExternalUserAgentFlowWithURL:URL];
 }
 
 @end
@@ -245,13 +253,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - Authorization Endpoint
 
-+ (id<OIDAuthorizationFlowSession>)
++ (id<OIDExternalUserAgentSession, OIDAuthorizationFlowSession>)
     presentAuthorizationRequest:(OIDAuthorizationRequest *)request
-                  UICoordinator:(id<OIDAuthorizationUICoordinator>)UICoordinator
+              externalUserAgent:(id<OIDExternalUserAgent>)externalUserAgent
                        callback:(OIDAuthorizationCallback)callback {
   OIDAuthorizationFlowSessionImplementation *flowSession =
       [[OIDAuthorizationFlowSessionImplementation alloc] initWithRequest:request];
-  [flowSession presentAuthorizationWithCoordinator:UICoordinator callback:callback];
+  [flowSession presentAuthorizationWithExternalUserAgent:externalUserAgent callback:callback];
   return flowSession;
 }
 
