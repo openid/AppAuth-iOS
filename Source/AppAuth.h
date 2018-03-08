@@ -17,15 +17,16 @@
  */
 
 #import "OIDAuthState.h"
-#import "OIDAuthorizationFlowSession.h"
 #import "OIDAuthStateChangeDelegate.h"
 #import "OIDAuthStateErrorDelegate.h"
+#import "OIDAuthorizationFlowSession.h"
 #import "OIDAuthorizationRequest.h"
 #import "OIDAuthorizationResponse.h"
 #import "OIDAuthorizationService.h"
 #import "OIDError.h"
 #import "OIDErrorUtilities.h"
 #import "OIDExternalUserAgent.h"
+#import "OIDExternalUserAgentRequest.h"
 #import "OIDExternalUserAgentSession.h"
 #import "OIDGrantTypes.h"
 #import "OIDRegistrationRequest.h"
