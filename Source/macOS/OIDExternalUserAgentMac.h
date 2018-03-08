@@ -1,4 +1,4 @@
-/*! @file OIDAuthorizationUICoordinatorMac.h
+/*! @file OIDExternalUserAgentMac.h
     @brief AppAuth iOS SDK
     @copyright
         Copyright 2016 Google Inc. All Rights Reserved.
@@ -16,17 +16,17 @@
         limitations under the License.
  */
 
-#import "OIDAuthorizationUICoordinator.h"
+#import "OIDExternalUserAgent.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-/*! @brief An Mac specific authorization UI Coordinator that uses the default browser to
-        present an authorization request.
+/*! @brief A Mac-specific external user-agent UI Coordinator that uses the default browser to
+        present an external user-agent request.
  */
-@interface OIDAuthorizationUICoordinatorMac : NSObject <OIDAuthorizationUICoordinator> {
+@interface OIDExternalUserAgentMac : NSObject <OIDExternalUserAgent> {
   // private variables
-  BOOL _authorizationFlowInProgress;
-  __weak id<OIDAuthorizationFlowSession> _session;
+  BOOL _externalUserAgentFlowInProgress;
+  __weak id<OIDExternalUserAgentSession> _session;
 }
 
 @end
