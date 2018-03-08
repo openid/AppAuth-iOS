@@ -19,6 +19,7 @@
 #import "OIDTokenRequest.h"
 
 #import "OIDDefines.h"
+#import "OIDError.h"
 #import "OIDScopeUtilities.h"
 #import "OIDServiceConfiguration.h"
 #import "OIDURLQueryComponent.h"
@@ -96,7 +97,7 @@ static NSString *const kAdditionalParametersKey = @"additionalParameters";
 - (instancetype)initWithConfiguration:(OIDServiceConfiguration *)configuration
                grantType:(NSString *)grantType
        authorizationCode:(nullable NSString *)code
-             redirectURL:(NSURL *)redirectURL
+             redirectURL:(nullable NSURL *)redirectURL
                 clientID:(NSString *)clientID
             clientSecret:(nullable NSString *)clientSecret
                   scopes:(nullable NSArray<NSString *> *)scopes
@@ -118,7 +119,7 @@ static NSString *const kAdditionalParametersKey = @"additionalParameters";
 - (instancetype)initWithConfiguration:(OIDServiceConfiguration *)configuration
                grantType:(NSString *)grantType
        authorizationCode:(nullable NSString *)code
-             redirectURL:(NSURL *)redirectURL
+             redirectURL:(nullable NSURL *)redirectURL
                 clientID:(NSString *)clientID
             clientSecret:(nullable NSString *)clientSecret
                    scope:(nullable NSString *)scope
@@ -138,6 +139,16 @@ static NSString *const kAdditionalParametersKey = @"additionalParameters";
     _codeVerifier = [codeVerifier copy];
     _additionalParameters =
         [[NSDictionary alloc] initWithDictionary:additionalParameters copyItems:YES];
+    
+    // Additional validation for the authorization_code grant type
+    if ([_grantType isEqual:OIDGrantTypeAuthorizationCode]) {
+      // redirect URI must not be nil
+      if (!_redirectURL) {
+        [NSException raise:OIDOAuthExceptionInvalidTokenRequestNullRedirectURL
+                    format:@"%@", OIDOAuthExceptionInvalidTokenRequestNullRedirectURL, nil];
+
+      }
+    }
   }
   return self;
 }
