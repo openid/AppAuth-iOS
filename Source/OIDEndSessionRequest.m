@@ -157,9 +157,9 @@ static NSString *const OIDMissingEndSessionEndpointMessage =
     return [OIDTokenUtilities randomURLSafeStringWithSize:kStateSizeBytes];
 }
 
-#pragma mark -
+#pragma mark - OIDExternalUserAgentRequest
 
-- (NSURL *)endSessionRequestURL {
+- (NSURL *)externalUserAgentRequestURL {
     OIDURLQueryComponent *query = [[OIDURLQueryComponent alloc] init];
 
     // Add any additional parameters the client has specified.
@@ -182,6 +182,10 @@ static NSString *const OIDMissingEndSessionEndpointMessage =
 
     // Construct the URL:
     return [query URLByReplacingQueryInURL:_configuration.discoveryDocument.endSessionEndpoint];
+}
+
+- (NSString *)redirectScheme {
+    return self.postLogoutRedirectURL.scheme;
 }
 
 @end

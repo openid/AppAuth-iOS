@@ -17,12 +17,13 @@
  */
 
 #import <Foundation/Foundation.h>
+#import "OIDExternalUserAgentRequest.h"
 
 @class OIDServiceConfiguration;
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface OIDEndSessionRequest : NSObject <NSCopying, NSSecureCoding> {
+@interface OIDEndSessionRequest : NSObject <NSCopying, NSSecureCoding, OIDExternalUserAgentRequest> {
     OIDServiceConfiguration *_configuration;
     NSURL *_postLogoutRedirectURL;
     NSString *_idTokenHint;
