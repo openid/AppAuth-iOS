@@ -32,11 +32,11 @@ NS_ASSUME_NONNULL_BEGIN
     @param presentingViewController The view controller from which to present the
         @c SFSafariViewController.
     @param callback The method called when the request has completed or failed.
-    @return A @c OIDAuthorizationFlowSession instance which will terminate when it
-        receives a @c OIDAuthorizationFlowSession.cancel message, or after processing a
-        @c OIDAuthorizationFlowSession.resumeAuthorizationFlowWithURL: message.
+    @return A @c OIDExternalUserAgentFlowSession instance which will terminate when it
+        receives a @c OIDExternalUserAgentFlowSession.cancel message, or after processing a
+        @c OIDExternalUserAgentFlowSession.resumeExternalUserAgentFlowWithURL: message.
  */
-+ (id<OIDAuthorizationFlowSession>)
++ (id<OIDExternalUserAgentFlowSession, OIDAuthorizationFlowSession>)
     authStateByPresentingAuthorizationRequest:(OIDAuthorizationRequest *)authorizationRequest
                      presentingViewController:(UIViewController *)presentingViewController
                                      callback:(OIDAuthStateAuthorizationCallback)callback;

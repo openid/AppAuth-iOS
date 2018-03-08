@@ -27,7 +27,8 @@
 @class OIDTokenRequest;
 @class OIDTokenResponse;
 @protocol OIDAuthorizationFlowSession;
-@protocol OIDAuthorizationUICoordinator;
+@protocol OIDExternalUserAgentFlowSession;
+@protocol OIDExternalUserAgentUICoordinator;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -115,13 +116,13 @@ typedef void (^OIDRegistrationCompletion)(OIDRegistrationResponse *_Nullable reg
     @param UICoordinator Generic authorization UI coordinator that can present an authorization
         request.
     @param callback The method called when the request has completed or failed.
-    @return A @c OIDAuthorizationFlowSession instance which will terminate when it
-        receives a @c OIDAuthorizationFlowSession.cancel message, or after processing a
-        @c OIDAuthorizationFlowSession.resumeAuthorizationFlowWithURL: message.
+    @return A @c OIDExternalUserAgentFlowSession instance which will terminate when it
+        receives a @c OIDExternalUserAgentFlowSession.cancel message, or after processing a
+        @c OIDExternalUserAgentFlowSession.resumeExternalUserAgentFlowWithURL: message.
  */
-+ (id<OIDAuthorizationFlowSession>)
++ (id<OIDExternalUserAgentFlowSession, OIDAuthorizationFlowSession>)
     presentAuthorizationRequest:(OIDAuthorizationRequest *)request
-                  UICoordinator:(id<OIDAuthorizationUICoordinator>)UICoordinator
+                  UICoordinator:(id<OIDExternalUserAgentUICoordinator>)UICoordinator
                        callback:(OIDAuthorizationCallback)callback;
 
 /*! @brief Performs a token request.
@@ -136,40 +137,6 @@ typedef void (^OIDRegistrationCompletion)(OIDRegistrationResponse *_Nullable reg
  */
 + (void)performRegistrationRequest:(OIDRegistrationRequest *)request
                         completion:(OIDRegistrationCompletion)completion;
-
-@end
-
-/*! @brief Represents an in-flight authorization flow session.
- */
-@protocol OIDAuthorizationFlowSession <NSObject>
-
-/*! @brief Cancels the code flow session, invoking the request's callback with a cancelled error.
-    @remarks Has no effect if called more than once, or after a
-        @c OIDAuthorizationFlowSession.resumeAuthorizationFlowWithURL: message was received. Will
-        cause an error with code: @c ::OIDErrorCodeProgramCanceledAuthorizationFlow to be passed to
-        the @c callback block passed to
-        @c OIDAuthorizationService.presentAuthorizationRequest:presentingViewController:callback:
- */
-- (void)cancel;
-
-/*! @brief Clients should call this method with the result of the authorization code flow if it
-        becomes available.
-    @param URL The redirect URL invoked by the authorization server.
-    @discussion When the URL represented a valid authorization response, implementations
-        should clean up any left-over UI state from the authorization, for example by
-        closing the \SFSafariViewController or looback HTTP listener if those were used.
-        The completion block of the pending authorization request should then be invoked.
-    @remarks Has no effect if called more than once, or after a @c cancel message was received.
-    @return YES if the passed URL matches the expected redirect URL and was consumed, NO otherwise.
- */
-- (BOOL)resumeAuthorizationFlowWithURL:(NSURL *)URL;
-
-/*! @brief @c OIDAuthorizationUICoordinator or clients should call this method when the
-         authorization flow failed with a non-OAuth error.
-    @param error The error that is the reason for the failure of this authorization flow.
-    @remarks Has no effect if called more than once, or after a @c cancel message was received.
- */
-- (void)failAuthorizationFlowWithError:(NSError *)error;
 
 @end
 

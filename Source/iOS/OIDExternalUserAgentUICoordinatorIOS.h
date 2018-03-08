@@ -1,4 +1,4 @@
-/*! @file OIDAuthorizationUICoordinator.h
+/*! @file OIDExternalUserAgentUICoordinatorIOS.h
     @brief AppAuth iOS SDK
     @copyright
         Copyright 2016 Google Inc. All Rights Reserved.
@@ -18,7 +18,7 @@
 
 #import <UIKit/UIKit.h>
 
-#import "OIDAuthorizationUICoordinator.h"
+#import "OIDExternalUserAgentUICoordinator.h"
 
 @class SFSafariViewController;
 
@@ -36,10 +36,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-/*! @brief An iOS specific authorization UI Coordinator that uses a \SFSafariViewController to
-        present an authorization request.
+/*! @brief An iOS specific external user-agent UI Coordinator that uses a \SFSafariViewController to
+        present an user-agent request.
  */
-@interface OIDAuthorizationUICoordinatorIOS : NSObject<OIDAuthorizationUICoordinator>
+@interface OIDExternalUserAgentUICoordinatorIOS : NSObject<OIDExternalUserAgentUICoordinator>
 
 /*! @brief Allows library consumers to change the @c OIDSafariViewControllerFactory used to create
         new instances of @c SFSafariViewController.

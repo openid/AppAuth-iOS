@@ -28,11 +28,11 @@ NS_ASSUME_NONNULL_BEGIN
         and performing the authorization code exchange in the case of code flow requests.
     @param authorizationRequest The authorization request to present.
     @param callback The method called when the request has completed or failed.
-    @return A @c OIDAuthorizationFlowSession instance which will terminate when it
-        receives a @c OIDAuthorizationFlowSession.cancel message, or after processing a
-        @c OIDAuthorizationFlowSession.resumeAuthorizationFlowWithURL: message.
+    @return A @c OIDExternalUserAgentFlowSession instance which will terminate when it
+        receives a @c OIDExternalUserAgentFlowSession.cancel message, or after processing a
+        @c OIDExternalUserAgentFlowSession.resumeExternalUserAgentFlowWithURL: message.
  */
-+ (id<OIDAuthorizationFlowSession>)
++ (id<OIDExternalUserAgentFlowSession, OIDAuthorizationFlowSession>)
     authStateByPresentingAuthorizationRequest:(OIDAuthorizationRequest *)authorizationRequest
                                      callback:(OIDAuthStateAuthorizationCallback)callback;
 @end
