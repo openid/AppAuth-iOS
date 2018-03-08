@@ -72,9 +72,9 @@ NS_ASSUME_NONNULL_BEGIN
   OIDCustomBrowserURLTransformation transformNOP = ^NSURL *(NSURL *requestURL) {
     return requestURL;
   };
-  OIDExternalUserAgentIOSCustomBrowser *coordinator =
+  OIDExternalUserAgentIOSCustomBrowser *transform =
       [[[self class] alloc] initWithURLTransformation:transformNOP];
-  return coordinator;
+  return transform;
 }
 
 + (OIDCustomBrowserURLTransformation)

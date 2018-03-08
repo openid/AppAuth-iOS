@@ -24,9 +24,9 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /*! @protocol OIDExternalUserAgent
-    @brief An external user-agent UI coordinator that presents a request. Clients may provide custom
-        implementations of an external UI coordinator to customize the way the requests are
-        presented to the end user.
+    @brief An external user-agent UI that presents displays the request to the user. Clients may
+        provide custom implementations of an external user-agent to customize the way the requests
+        are presented to the end user.
  */
 @protocol OIDExternalUserAgent<NSObject>
 

@@ -113,7 +113,7 @@ typedef void (^OIDRegistrationCompletion)(OIDRegistrationResponse *_Nullable reg
 
 /*! @brief Perform an authorization flow using a generic flow shim.
     @param request The authorization request.
-    @param UICoordinator Generic authorization UI coordinator that can present an authorization
+    @param externalUserAgent Generic external user-agent that can present an authorization
         request.
     @param callback The method called when the request has completed or failed.
     @return A @c OIDExternalUserAgentSession instance which will terminate when it
@@ -122,7 +122,7 @@ typedef void (^OIDRegistrationCompletion)(OIDRegistrationResponse *_Nullable reg
  */
 + (id<OIDExternalUserAgentSession, OIDAuthorizationFlowSession>)
     presentAuthorizationRequest:(OIDAuthorizationRequest *)request
-                  UICoordinator:(id<OIDExternalUserAgent>)externalUserAgent
+              externalUserAgent:(id<OIDExternalUserAgent>)externalUserAgent
                        callback:(OIDAuthorizationCallback)callback;
 
 /*! @brief Performs a token request.

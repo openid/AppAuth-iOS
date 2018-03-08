@@ -27,8 +27,8 @@ NS_ASSUME_NONNULL_BEGIN
 + (id<OIDExternalUserAgentSession, OIDAuthorizationFlowSession>)
     presentAuthorizationRequest:(OIDAuthorizationRequest *)request
                        callback:(OIDAuthorizationCallback)callback {
-  OIDExternalUserAgentMac *coordinator = [[OIDExternalUserAgentMac alloc] init];
-  return [self presentAuthorizationRequest:request UICoordinator:coordinator callback:callback];
+  OIDExternalUserAgentMac *externalUserAgent = [[OIDExternalUserAgentMac alloc] init];
+  return [self presentAuthorizationRequest:request externalUserAgent:externalUserAgent callback:callback];
 }
 
 @end
