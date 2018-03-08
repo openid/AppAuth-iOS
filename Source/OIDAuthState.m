@@ -411,7 +411,7 @@ static const NSUInteger kExpiryTimeTolerance = 60;
       initWithConfiguration:_lastAuthorizationResponse.request.configuration
                   grantType:OIDGrantTypeRefreshToken
           authorizationCode:nil
-                redirectURL:_lastAuthorizationResponse.request.redirectURL
+                redirectURL:nil
                    clientID:_lastAuthorizationResponse.request.clientID
                clientSecret:_lastAuthorizationResponse.request.clientSecret
                       scope:_lastAuthorizationResponse.request.scope

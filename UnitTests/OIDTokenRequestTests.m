@@ -115,7 +115,7 @@ static NSString *const kTestAdditionalParameterValue = @"1";
       [[OIDTokenRequest alloc] initWithConfiguration:authResponse.request.configuration
                                            grantType:OIDGrantTypeAuthorizationCode
                                    authorizationCode:authResponse.authorizationCode
-                                         redirectURL:authResponse.request.redirectURL
+                                         redirectURL:nil
                                             clientID:authResponse.request.clientID
                                         clientSecret:authResponse.request.clientSecret
                                               scopes:scopesArray
@@ -235,6 +235,24 @@ static NSString *const kTestAdditionalParameterValue = @"1";
 
   id authorization = [urlRequest.allHTTPHeaderFields objectForKey:@"Authorization"];
   XCTAssertNotNil(authorization);
+}
+
+- (void)testAuthorizationCodeNullRedirectURL {
+  OIDAuthorizationResponse *authResponse = [OIDAuthorizationResponseTests testInstance];
+  NSArray<NSString *> *scopesArray =
+      [OIDScopeUtilities scopesArrayWithString:authResponse.request.scope];
+  NSDictionary *additionalParameters =
+      @{ kTestAdditionalParameterKey : kTestAdditionalParameterValue };
+  XCTAssertThrows([[OIDTokenRequest alloc] initWithConfiguration:authResponse.request.configuration
+                                                       grantType:OIDGrantTypeAuthorizationCode
+                                               authorizationCode:authResponse.authorizationCode
+                                                     redirectURL:nil
+                                                        clientID:authResponse.request.clientID
+                                                    clientSecret:authResponse.request.clientSecret
+                                                          scopes:scopesArray
+                                                    refreshToken:kRefreshTokenTestValue
+                                                    codeVerifier:authResponse.request.codeVerifier
+                                            additionalParameters:additionalParameters], @"");
 }
 
 @end
