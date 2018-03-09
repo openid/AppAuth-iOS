@@ -297,6 +297,7 @@ typedef void (^OIDEndSessionCallback)(OIDEndSessionResponse *_Nullable endSessio
 
 
 /*! @brief Presents a RP-initiated logout using the external user agent.
+ @remarks Invalidates the @c OIDAuthState on successful logout.
  @param endSessionRequest The end session request to present.
  @param externalUserAgent A external user agent that can present an external user-agent request.
  @param callback The method called when the request has completed or failed.

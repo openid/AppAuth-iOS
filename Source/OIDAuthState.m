@@ -313,12 +313,16 @@ static const NSUInteger kExpiryTimeTolerance = 60;
 
 - (void)updateWithRegistrationResponse:(OIDRegistrationResponse *)registrationResponse {
   _lastRegistrationResponse = registrationResponse;
+  [self resetState];
+  [self didChangeState];
+}
+
+- (void)resetState {
   _refreshToken = nil;
   _scope = nil;
   _lastAuthorizationResponse = nil;
   _lastTokenResponse = nil;
   _authorizationError = nil;
-  [self didChangeState];
 }
 
 - (void)updateWithAuthorizationResponse:(nullable OIDAuthorizationResponse *)authorizationResponse
@@ -543,6 +547,11 @@ static const NSUInteger kExpiryTimeTolerance = 60;
   OIDEndSessionFlowSession *session = [[OIDEndSessionFlowSession alloc] initWithRequest:endSessionRequest];
   OIDEndSessionCallback wrappedCallback = ^(OIDEndSessionResponse *_Nullable endSessionResponse,
                                              NSError *_Nullable error) {
+    if (!error) {
+      [self resetState];
+      [self didChangeState];
+    }
+
     callback(endSessionResponse, error);
   };
 
