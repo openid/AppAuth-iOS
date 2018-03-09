@@ -18,11 +18,11 @@
 
 #import <Foundation/Foundation.h>
 
-@protocol OIDExternalUserAgentSession;
 @protocol OIDExternalUserAgent;
+@protocol OIDExternalUserAgentSession;
 
-@class OIDEndSessionResponse;
 @class OIDEndSessionRequest;
+@class OIDEndSessionResponse;
 
 NS_ASSUME_NONNULL_BEGIN
 

@@ -18,12 +18,12 @@
 
 #import "OIDEndSessionFlowSession.h"
 
-#import "OIDEndSessionRequest.h"
-#import "OIDExternalUserAgent.h"
-#import "OIDErrorUtilities.h"
 #import "OIDDefines.h"
-#import "OIDURLQueryComponent.h"
+#import "OIDEndSessionRequest.h"
 #import "OIDEndSessionResponse.h"
+#import "OIDErrorUtilities.h"
+#import "OIDExternalUserAgent.h"
+#import "OIDURLQueryComponent.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
