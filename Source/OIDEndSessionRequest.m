@@ -150,7 +150,7 @@ static NSString *const OIDMissingEndSessionEndpointMessage =
     return [NSString stringWithFormat:@"<%@: %p, request: %@>",
             NSStringFromClass([self class]),
             self,
-            self.endSessionRequestURL];
+            self.externalUserAgentRequestURL];
 }
 
 + (nullable NSString *)generateState {

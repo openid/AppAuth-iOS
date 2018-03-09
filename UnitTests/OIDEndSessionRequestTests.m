@@ -105,7 +105,7 @@ static NSString *const kTestIdTokenHint = @"id-token-hint";
 
 - (void)testLogoutRequestURL {
     OIDEndSessionRequest *request = [[self class] testInstance];
-    NSURL *endSessionRequestURL = request.endSessionRequestURL;
+    NSURL *endSessionRequestURL = request.externalUserAgentRequestURL;
 
     NSURLComponents *components = [NSURLComponents componentsWithString:endSessionRequestURL.absoluteString];
 

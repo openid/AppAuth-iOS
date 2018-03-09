@@ -99,13 +99,6 @@ NS_ASSUME_NONNULL_BEGIN
      additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters
     NS_DESIGNATED_INITIALIZER;
 
-/*! @brief Constructs the request URI by adding the request parameters to the query component of the
-        authorization endpoint URI using the "application/x-www-form-urlencoded" format.
-    @return A URL representing the authorization request.
-    @see http://openid.net/specs/openid-connect-session-1_0.html#RPLogout
- */
-- (NSURL *)endSessionRequestURL;
-
 @end
 
 NS_ASSUME_NONNULL_END
