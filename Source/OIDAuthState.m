@@ -24,8 +24,11 @@
 #import "OIDAuthorizationResponse.h"
 #import "OIDAuthorizationService.h"
 #import "OIDDefines.h"
+#import "OIDEndSessionFlowSession.h"
+#import "OIDEndSessionRequest.h"
 #import "OIDError.h"
 #import "OIDErrorUtilities.h"
+#import "OIDExternalUserAgent.h"
 #import "OIDRegistrationResponse.h"
 #import "OIDTokenRequest.h"
 #import "OIDTokenResponse.h"
@@ -530,6 +533,23 @@ static const NSUInteger kExpiryTimeTolerance = 60;
   // has the token expired?
   BOOL tokenFresh = [self.accessTokenExpirationDate timeIntervalSinceNow] > kExpiryTimeTolerance;
   return tokenFresh;
+}
+
+#pragma mark - End session
+
+- (id<OIDExternalUserAgentSession>)presentEndSessionRequest:(OIDEndSessionRequest *)endSessionRequest
+                                        externalUserAgent:(id<OIDExternalUserAgent>)externalUserAgent
+                                                 callback:(OIDEndSessionCallback)callback {
+  OIDEndSessionFlowSession *session = [[OIDEndSessionFlowSession alloc] initWithRequest:endSessionRequest];
+  OIDEndSessionCallback wrappedCallback = ^(OIDEndSessionResponse *_Nullable endSessionResponse,
+                                             NSError *_Nullable error) {
+    callback(endSessionResponse, error);
+  };
+
+  // presents the end session request
+  [session presentEndSessionWithExternalUserAgent:externalUserAgent callback:wrappedCallback];
+
+  return session;
 }
 
 @end

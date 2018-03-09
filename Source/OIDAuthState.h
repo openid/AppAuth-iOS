@@ -20,6 +20,8 @@
 @class OIDAuthorizationRequest;
 @class OIDAuthorizationResponse;
 @class OIDAuthState;
+@class OIDEndSessionRequest;
+@class OIDEndSessionResponse;
 @class OIDRegistrationResponse;
 @class OIDTokenResponse;
 @class OIDTokenRequest;
@@ -41,13 +43,22 @@ typedef void (^OIDAuthStateAction)(NSString *_Nullable accessToken,
                                    NSError *_Nullable error);
 
 /*! @brief The method called when the @c
-        OIDAuthState.authStateByPresentingAuthorizationRequest:presentingViewController:callback:
+        OIDAuthState.authStateByPresentingAuthorizationRequest:externalUserAgent:callback:
         method has completed or failed.
     @param authState The auth state, if the authorization request succeeded.
     @param error The error if an error occurred.
  */
 typedef void (^OIDAuthStateAuthorizationCallback)(OIDAuthState *_Nullable authState,
                                                   NSError *_Nullable error);
+
+/*! @brief The method called when the @c OIDAuthState.presentEndSessionRequest:externalUserAgent:(id<OIDExternalUserAgent>)externalUserAgent
+ callback has completed or failed.
+ method has completed or failed.
+ @param endSessionResponse The response to the end session request from the OP.
+ @param error The error if an error occurred.
+ */
+typedef void (^OIDEndSessionCallback)(OIDEndSessionResponse *_Nullable endSessionResponse,
+                                      NSError *_Nullable error);
 
 /*! @brief A convenience class that retains the auth state between @c OIDAuthorizationResponse%s
         and @c OIDTokenResponse%s.
@@ -283,6 +294,19 @@ typedef void (^OIDAuthStateAuthorizationCallback)(OIDAuthState *_Nullable authSt
  */
 - (void)withFreshTokensPerformAction:(OIDAuthStateAction)action
     __deprecated_msg("Use OIDAuthState.performActionWithFreshTokens:");
+
+
+/*! @brief Presents a RP-initiated logout using the external user agent.
+ @param endSessionRequest The end session request to present.
+ @param externalUserAgent A external user agent that can present an external user-agent request.
+ @param callback The method called when the request has completed or failed.
+ @return A @c OIDExternalUserAgentSession instance which will terminate when it
+ receives a @c OIDExternalUserAgentSession.cancel message, or after processing a @c OIDExternalUserAgentSession.resumeExternalUserAgentFlowWithURL: message.
+ @see http://openid.net/specs/openid-connect-session-1_0.html#RPLogout
+ */
+- (id<OIDExternalUserAgentSession>)presentEndSessionRequest:(OIDEndSessionRequest *)endSessionRequest
+                                        externalUserAgent:(id<OIDExternalUserAgent>)externalUserAgent
+                                                 callback:(OIDEndSessionCallback)callback;
 
 @end
 

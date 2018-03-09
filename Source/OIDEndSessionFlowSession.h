@@ -16,7 +16,7 @@
         limitations under the License.
  */
 
-#import <Foundation/Foundation.h>
+#import "OIDAuthState.h"
 
 @protocol OIDExternalUserAgent;
 @protocol OIDExternalUserAgentSession;
@@ -25,8 +25,6 @@
 @class OIDEndSessionResponse;
 
 NS_ASSUME_NONNULL_BEGIN
-
-typedef void (^OIDEndSessionCallback)(OIDEndSessionResponse *_Nullable endSessionResponse, NSError *_Nullable error);
 
 @interface OIDEndSessionFlowSession : NSObject<OIDExternalUserAgentSession>
 
