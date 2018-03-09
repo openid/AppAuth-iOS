@@ -17,12 +17,26 @@
  */
 
 #import <Foundation/Foundation.h>
-#import "OIDExternalUserAgentFlowSession.h"
+
+@protocol OIDExternalUserAgentSession;
+@protocol OIDExternalUserAgent;
 
 @class OIDEndSessionResponse;
+@class OIDEndSessionRequest;
+
+NS_ASSUME_NONNULL_BEGIN
 
 typedef void (^OIDEndSessionCallback)(OIDEndSessionResponse *_Nullable endSessionResponse, NSError *_Nullable error);
 
-@interface OIDEndSessionFlowSession : NSObject<OIDExternalUserAgentFlowSession>
+@interface OIDEndSessionFlowSession : NSObject<OIDExternalUserAgentSession>
+
+- (instancetype)init NS_UNAVAILABLE;
+
+- (instancetype)initWithRequest:(OIDEndSessionRequest *)request NS_DESIGNATED_INITIALIZER;
+
+- (void)presentEndSessionWithExternalUserAgent:(id<OIDExternalUserAgent>)externalUserAgent
+                                      callback:(OIDEndSessionCallback)endSessionFlowCallback;
 
 @end
+
+NS_ASSUME_NONNULL_END
