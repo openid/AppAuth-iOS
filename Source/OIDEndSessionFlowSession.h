@@ -26,12 +26,25 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/*! @brief Flow handler for the @c OIDEndSessionRequest
+    @see http://openid.net/specs/openid-connect-session-1_0.html#RPLogout
+ */
 @interface OIDEndSessionFlowSession : NSObject<OIDExternalUserAgentSession>
 
+/*! @internal
+ @brief Unavailable. Please use @c initWithRequest:.
+ */
 - (instancetype)init NS_UNAVAILABLE;
 
+/*! @brief Create new end session flow
+    @param request The end session request
+ */
 - (instancetype)initWithRequest:(OIDEndSessionRequest *)request NS_DESIGNATED_INITIALIZER;
 
+/*! @brief Present the sesion request on the provided @c OIDExternalUserAgent.
+    @param externalUserAgent The user agent for presenting the request.
+    @param callback The callback that will be triggered after the session is completed.
+ */
 - (void)presentEndSessionWithExternalUserAgent:(id<OIDExternalUserAgent>)externalUserAgent
                                       callback:(OIDEndSessionCallback)endSessionFlowCallback;
 
