@@ -19,8 +19,8 @@
 
 #import "OIDAuthorizationResponseTests.h"
 #import "OIDTokenRequestTests.h"
-#import "Source/OIDTokenRequest.h"
-#import "Source/OIDTokenResponse.h"
+#import "Source/Core/OIDTokenRequest.h"
+#import "Source/Core/OIDTokenResponse.h"
 
 /*! @brief The key for the @c accessToken property in the incoming parameters and for
         @c NSSecureCoding.

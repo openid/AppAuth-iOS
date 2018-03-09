@@ -20,11 +20,11 @@
 
 #import "OIDAuthorizationResponseTests.h"
 #import "OIDServiceConfigurationTests.h"
-#import "Source/OIDAuthorizationRequest.h"
-#import "Source/OIDAuthorizationResponse.h"
-#import "Source/OIDScopeUtilities.h"
-#import "Source/OIDServiceConfiguration.h"
-#import "Source/OIDTokenRequest.h"
+#import "Source/Core/OIDAuthorizationRequest.h"
+#import "Source/Core/OIDAuthorizationResponse.h"
+#import "Source/Core/OIDScopeUtilities.h"
+#import "Source/Core/OIDServiceConfiguration.h"
+#import "Source/Core/OIDTokenRequest.h"
 
 /*! @brief Test value for the @c refreshToken property.
  */

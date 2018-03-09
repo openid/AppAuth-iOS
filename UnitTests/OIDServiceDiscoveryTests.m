@@ -18,8 +18,8 @@
 
 #import "OIDServiceDiscoveryTests.h"
 
-#import "Source/OIDError.h"
-#import "Source/OIDServiceDiscovery.h"
+#import "Source/Core/OIDError.h"
+#import "Source/Core/OIDServiceDiscovery.h"
 
 /*! Testing URL used when testing URL conversions. */
 static NSString *const kTestURL = @"http://www.google.com/";

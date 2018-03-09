@@ -34,15 +34,28 @@ It follows the OAuth 2.0 for Native Apps best current practice
 
   s.source       = { :git => "https://github.com/openid/AppAuth-iOS.git", :tag => s.version }
 
-  s.source_files = "Source/*.{h,m}"
   s.requires_arc = true
 
-  # iOS
-  s.ios.source_files      = "Source/iOS/**/*.{h,m}"
   s.ios.deployment_target = "7.0"
-  s.ios.framework         = "SafariServices"
-
-  # macOS
-  s.osx.source_files = "Source/macOS/**/*.{h,m}"
   s.osx.deployment_target = '10.9'
+
+  s.default_subspec = "Auth"
+
+  s.subspec 'Core' do |ss|
+    ss.source_files = "Source/Core/*.{h,m}"
+  end
+
+  s.subspec 'Auth' do |ss|
+    ss.dependency 'AppAuth/Core'
+
+    # Common
+    ss.source_files = "Source/Auth/*.{h,m}"
+
+    # iOS
+    ss.ios.source_files = "Source/Auth/iOS/**/*.{h,m}"
+    ss.ios.framework = "SafariServices"
+
+    # macOS
+    ss.osx.source_files = "Source/Auth/macOS/**/*.{h,m}"
+  end
 end

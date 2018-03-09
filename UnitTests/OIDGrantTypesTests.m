@@ -18,7 +18,7 @@
 
 #import <XCTest/XCTest.h>
 
-#import "Source/OIDGrantTypes.h"
+#import "Source/Core/OIDGrantTypes.h"
 
 /*! @brief Unit tests for constants in @c OIDGrantTypes.m.
     @remarks Arguably not worth tests for this file, but adding them for consistency, and so that

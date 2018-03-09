@@ -21,11 +21,11 @@
 #import "OIDAuthorizationResponseTests.h"
 #import "OIDRegistrationResponseTests.h"
 #import "OIDTokenResponseTests.h"
-#import "Source/OIDAuthState.h"
-#import "Source/OIDAuthorizationResponse.h"
-#import "Source/OIDErrorUtilities.h"
-#import "Source/OIDRegistrationResponse.h"
-#import "Source/OIDTokenResponse.h"
+#import "Source/Core/OIDAuthState.h"
+#import "Source/Core/OIDAuthorizationResponse.h"
+#import "Source/Core/OIDErrorUtilities.h"
+#import "Source/Core/OIDRegistrationResponse.h"
+#import "Source/Core/OIDTokenResponse.h"
 #import "OIDTokenRequestTests.h"
 
 @interface OIDAuthState (Testing)

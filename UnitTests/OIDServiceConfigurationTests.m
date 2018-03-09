@@ -21,10 +21,10 @@
 #import <objc/runtime.h>
 
 #import "OIDServiceDiscoveryTests.h"
-#import "Source/OIDAuthorizationService.h"
-#import "Source/OIDError.h"
-#import "Source/OIDServiceConfiguration.h"
-#import "Source/OIDServiceDiscovery.h"
+#import "Source/Core/OIDAuthorizationService.h"
+#import "Source/Core/OIDError.h"
+#import "Source/Core/OIDServiceConfiguration.h"
+#import "Source/Core/OIDServiceDiscovery.h"
 
 /*! @brief The callback signature for @c NSURLSession 's @c dataTaskWithURL:completionHandler:
         method, which we swizzle in @c testFetcher to fake the network response with an OpenID

@@ -19,9 +19,9 @@
 #import "OIDAuthorizationRequestTests.h"
 
 #import "OIDServiceConfigurationTests.h"
-#import "Source/OIDAuthorizationRequest.h"
-#import "Source/OIDScopeUtilities.h"
-#import "Source/OIDServiceConfiguration.h"
+#import "Source/Core/OIDAuthorizationRequest.h"
+#import "Source/Core/OIDScopeUtilities.h"
+#import "Source/Core/OIDServiceConfiguration.h"
 
 /*! @brief Test value for the @c responseType property.
  */

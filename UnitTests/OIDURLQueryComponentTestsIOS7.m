@@ -18,7 +18,7 @@
 
 #import "OIDURLQueryComponentTests.h"
 
-#import "Source/OIDURLQueryComponent.h"
+#import "Source/Core/OIDURLQueryComponent.h"
 
 @interface OIDURLQueryComponentTestsIOS7 : OIDURLQueryComponentTests
 @end

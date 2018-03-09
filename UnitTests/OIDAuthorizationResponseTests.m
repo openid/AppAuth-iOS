@@ -19,9 +19,9 @@
 #import "OIDAuthorizationResponseTests.h"
 
 #import "OIDAuthorizationRequestTests.h"
-#import "Source/OIDAuthorizationRequest.h"
-#import "Source/OIDAuthorizationResponse.h"
-#import "Source/OIDGrantTypes.h"
+#import "Source/Core/OIDAuthorizationRequest.h"
+#import "Source/Core/OIDAuthorizationResponse.h"
+#import "Source/Core/OIDGrantTypes.h"
 
 /*! @brief Test value for the @c authorizationCode property.
  */

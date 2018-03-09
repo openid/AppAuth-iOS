@@ -18,7 +18,7 @@
 
 #import <XCTest/XCTest.h>
 
-#import "Source/OIDResponseTypes.h"
+#import "Source/Core/OIDResponseTypes.h"
 
 /*! @brief Unit tests for constants in @c OIDResponseTypes.m.
     @remarks Arguably not worth tests for this file, but adding them for consistency, and so that

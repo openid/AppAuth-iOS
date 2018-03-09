@@ -20,8 +20,8 @@
 
 #import "OIDClientMetadataParameters.h"
 #import "OIDRegistrationRequestTests.h"
-#import "Source/OIDRegistrationRequest.h"
-#import "Source/OIDRegistrationResponse.h"
+#import "Source/Core/OIDRegistrationRequest.h"
+#import "Source/Core/OIDRegistrationResponse.h"
 
 /*! @brief The test value for the @c clientID property.
  */

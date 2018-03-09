@@ -18,7 +18,7 @@
 
 #import <XCTest/XCTest.h>
 
-#import "Source/OIDScopes.h"
+#import "Source/Core/OIDScopes.h"
 
 /*! @brief Unit tests for constants in @c OIDScopes.m.
     @remarks Arguably not worth tests for this file, but adding them for consistency, and so that

@@ -24,26 +24,7 @@ FOUNDATION_EXPORT double AppAuthVersionNumber;
 //! Project version string for AppAuthFramework-iOS.
 FOUNDATION_EXPORT const unsigned char AppAuthVersionString[];
 
-#import <AppAuth/OIDAuthState.h>
-#import <AppAuth/OIDAuthStateChangeDelegate.h>
-#import <AppAuth/OIDAuthStateErrorDelegate.h>
-#import <AppAuth/OIDAuthorizationRequest.h>
-#import <AppAuth/OIDAuthorizationResponse.h>
-#import <AppAuth/OIDAuthorizationService.h>
-#import <AppAuth/OIDExternalUserAgent.h>
-#import <AppAuth/OIDError.h>
-#import <AppAuth/OIDErrorUtilities.h>
-#import <AppAuth/OIDGrantTypes.h>
-#import <AppAuth/OIDRegistrationRequest.h>
-#import <AppAuth/OIDRegistrationResponse.h>
-#import <AppAuth/OIDResponseTypes.h>
-#import <AppAuth/OIDScopes.h>
-#import <AppAuth/OIDScopeUtilities.h>
-#import <AppAuth/OIDServiceConfiguration.h>
-#import <AppAuth/OIDServiceDiscovery.h>
-#import <AppAuth/OIDTokenRequest.h>
-#import <AppAuth/OIDTokenResponse.h>
-#import <AppAuth/OIDTokenUtilities.h>
+#import <AppAuthCore.h>
 
 #if TARGET_OS_TV
 #elif TARGET_OS_WATCH

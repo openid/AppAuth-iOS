@@ -16,29 +16,7 @@
         limitations under the License.
  */
 
-#import "OIDAuthState.h"
-#import "OIDAuthorizationFlowSession.h"
-#import "OIDAuthStateChangeDelegate.h"
-#import "OIDAuthStateErrorDelegate.h"
-#import "OIDAuthorizationRequest.h"
-#import "OIDAuthorizationResponse.h"
-#import "OIDAuthorizationService.h"
-#import "OIDError.h"
-#import "OIDErrorUtilities.h"
-#import "OIDExternalUserAgent.h"
-#import "OIDExternalUserAgentSession.h"
-#import "OIDGrantTypes.h"
-#import "OIDRegistrationRequest.h"
-#import "OIDRegistrationResponse.h"
-#import "OIDResponseTypes.h"
-#import "OIDScopes.h"
-#import "OIDScopeUtilities.h"
-#import "OIDServiceConfiguration.h"
-#import "OIDServiceDiscovery.h"
-#import "OIDTokenRequest.h"
-#import "OIDTokenResponse.h"
-#import "OIDTokenUtilities.h"
-#import "OIDURLSessionProvider.h"
+#import "AppAuthCore.h"
 
 #if TARGET_OS_TV
 #elif TARGET_OS_WATCH
