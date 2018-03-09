@@ -67,7 +67,7 @@ static id<OIDSafariViewControllerFactory> __nullable gSafariViewControllerFactor
   gSafariViewControllerFactory = factory;
 }
 
-- (nullable instancetype)initWithPresentingViewController:
+- (instancetype)initWithPresentingViewController:
         (UIViewController *)presentingViewController {
   self = [super init];
   if (self) {
