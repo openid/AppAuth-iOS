@@ -34,6 +34,10 @@
  */
 static NSString *const kRefreshTokenKey = @"refreshToken";
 
+/*! @brief Key used to encode the @c needsTokenRefresh property for @c NSSecureCoding.
+ */
+static NSString *const kNeedsTokenRefreshKey = @"needsTokenRefresh";
+
 /*! @brief Key used to encode the @c scope property for @c NSSecureCoding.
  */
 static NSString *const kScopeKey = @"scope";
@@ -100,14 +104,14 @@ static const NSUInteger kExpiryTimeTolerance = 60;
 
 #pragma mark - Convenience initializers
 
-+ (id<OIDAuthorizationFlowSession>)
++ (id<OIDExternalUserAgentSession, OIDAuthorizationFlowSession>)
     authStateByPresentingAuthorizationRequest:(OIDAuthorizationRequest *)authorizationRequest
-                                UICoordinator:(id<OIDAuthorizationUICoordinator>)UICoordinator
+                            externalUserAgent:(id<OIDExternalUserAgent>)externalUserAgent
                                      callback:(OIDAuthStateAuthorizationCallback)callback {
   // presents the authorization request
-  id<OIDAuthorizationFlowSession> authFlowSession = [OIDAuthorizationService
+  id<OIDExternalUserAgentSession, OIDAuthorizationFlowSession> authFlowSession = [OIDAuthorizationService
       presentAuthorizationRequest:authorizationRequest
-                    UICoordinator:UICoordinator
+                externalUserAgent:externalUserAgent
                          callback:^(OIDAuthorizationResponse *_Nullable authorizationResponse,
                                     NSError *_Nullable authorizationError) {
                            // inspects response and processes further if needed (e.g. authorization
@@ -153,7 +157,7 @@ static const NSUInteger kExpiryTimeTolerance = 60;
     OID_UNAVAILABLE_USE_INITIALIZER(@selector(initWithAuthorizationResponse:tokenResponse:));
 
 /*! @brief Creates an auth state from an authorization response.
-    @param response The authorization response.
+    @param authorizationResponse The authorization response.
  */
 - (instancetype)initWithAuthorizationResponse:(OIDAuthorizationResponse *)authorizationResponse {
   return [self initWithAuthorizationResponse:authorizationResponse tokenResponse:nil];
@@ -161,7 +165,7 @@ static const NSUInteger kExpiryTimeTolerance = 60;
 
 
 /*! @brief Designated initializer.
-    @param response The authorization response.
+    @param authorizationResponse The authorization response.
     @discussion Creates an auth state from an authorization response and token response.
  */
 - (instancetype)initWithAuthorizationResponse:(OIDAuthorizationResponse *)authorizationResponse
@@ -243,6 +247,7 @@ static const NSUInteger kExpiryTimeTolerance = 60;
         [aDecoder decodeObjectOfClass:[NSError class] forKey:kAuthorizationErrorKey];
     _scope = [aDecoder decodeObjectOfClass:[NSString class] forKey:kScopeKey];
     _refreshToken = [aDecoder decodeObjectOfClass:[NSString class] forKey:kRefreshTokenKey];
+    _needsTokenRefresh = [aDecoder decodeBoolForKey:kNeedsTokenRefreshKey];
   }
   return self;
 }
@@ -258,6 +263,7 @@ static const NSUInteger kExpiryTimeTolerance = 60;
   }
   [aCoder encodeObject:_scope forKey:kScopeKey];
   [aCoder encodeObject:_refreshToken forKey:kRefreshTokenKey];
+  [aCoder encodeBool:_needsTokenRefresh forKey:kNeedsTokenRefreshKey];
 }
 
 #pragma mark - Private convenience getters

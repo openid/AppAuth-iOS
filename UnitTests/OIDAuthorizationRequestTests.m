@@ -471,4 +471,10 @@ static int const kCodeVerifierRecommendedLength = 43;
 
 }
 
+- (void)testExternalUserAgentMethods {
+  OIDAuthorizationRequest *request = [[self class] testInstance];
+  XCTAssertEqualObjects([request externalUserAgentRequestURL], [request authorizationRequestURL]);
+  XCTAssert([[request redirectScheme] isEqualToString:request.redirectURL.scheme]);
+}
+
 @end

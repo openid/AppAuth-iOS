@@ -1,4 +1,4 @@
-/*! @file OIDAuthorizationUICoordinatorIOS.m
+/*! @file OIDExternalUserAgentIOS.m
     @brief AppAuth iOS SDK
     @copyright
         Copyright 2016 Google Inc. All Rights Reserved.
@@ -16,13 +16,14 @@
         limitations under the License.
  */
 
-#import "OIDAuthorizationUICoordinatorIOS.h"
+#import "OIDExternalUserAgentIOS.h"
 
 #import <SafariServices/SafariServices.h>
 #import <objc/message.h>
 
-#import "OIDAuthorizationService.h"
 #import "OIDErrorUtilities.h"
+#import "OIDExternalUserAgentSession.h"
+#import "OIDExternalUserAgentRequest.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -37,15 +38,19 @@ static id<OIDSafariViewControllerFactory> __nullable gSafariViewControllerFactor
 @interface OIDDefaultSafariViewControllerFactory : NSObject<OIDSafariViewControllerFactory>
 @end
 
-@interface OIDAuthorizationUICoordinatorIOS ()<SFSafariViewControllerDelegate>
+@interface OIDExternalUserAgentIOS ()<SFSafariViewControllerDelegate>
 @end
 
-@implementation OIDAuthorizationUICoordinatorIOS {
+@implementation OIDExternalUserAgentIOS {
   UIViewController *_presentingViewController;
 
-  BOOL _authorizationFlowInProgress;
-  __weak id<OIDAuthorizationFlowSession> _session;
+  BOOL _externalUserAgentFlowInProgress;
+  __weak id<OIDExternalUserAgentSession> _session;
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wpartial-availability"
   __weak SFSafariViewController *_safariVC;
+  SFAuthenticationSession *_authenticationVC;
+#pragma clang diagnostic pop
 }
 
 /** @brief Obtains the current @c OIDSafariViewControllerFactory; creating a new default instance if
@@ -78,32 +83,57 @@ static id<OIDSafariViewControllerFactory> __nullable gSafariViewControllerFactor
   return self;
 }
 
-- (BOOL)presentAuthorizationWithURL:(NSURL *)URL session:(id<OIDAuthorizationFlowSession>)session {
-  if (_authorizationFlowInProgress) {
+- (BOOL)presentExternalUserAgentRequest:(id<OIDExternalUserAgentRequest>)request
+                                session:(id<OIDExternalUserAgentSession>)session {
+  if (_externalUserAgentFlowInProgress) {
     // TODO: Handle errors as authorization is already in progress.
     return NO;
   }
 
-  _authorizationFlowInProgress = YES;
+  _externalUserAgentFlowInProgress = YES;
   _session = session;
-  if ([SFSafariViewController class]) {
-    SFSafariViewController *safariVC =
-        [[[self class] safariViewControllerFactory] safariViewControllerWithURL:URL];
-    safariVC.delegate = self;
-    _safariVC = safariVC;
-    [_presentingViewController presentViewController:safariVC animated:YES completion:nil];
-    return YES;
-  }
   BOOL openedSafari = NO;
-  if ([[self class] mayUseNonAppExtensionSafeAPI]) {
-    // +[UIApplication sharedApplication] must not be called from app extensions
-    // +mayUseNonAppExtensionSafeAPI returns YES only when called from the main app
-    // Calling +sharedApplication directly will cause a compiler error, so objc_msgSend is used instead
+  NSURL *requestURL = [request externalUserAgentRequestURL];
+
+  if (@available(iOS 11.0, *)) {
+    NSString *redirectScheme = request.redirectScheme;
+    SFAuthenticationSession* authenticationVC =
+        [[SFAuthenticationSession alloc] initWithURL:requestURL
+                                   callbackURLScheme:redirectScheme
+                                   completionHandler:^(NSURL * _Nullable callbackURL,
+                                                       NSError * _Nullable error) {
+      _authenticationVC = nil;
+      if (callbackURL) {
+        [_session resumeExternalUserAgentFlowWithURL:callbackURL];
+      } else {
+        NSError *safariError =
+            [OIDErrorUtilities errorWithCode:OIDErrorCodeUserCanceledAuthorizationFlow
+                             underlyingError:error
+                                 description:nil];
+        [_session failExternalUserAgentFlowWithError:safariError];
+      }
+    }];
+    _authenticationVC = authenticationVC;
+    openedSafari = [authenticationVC start];
+  } else if (@available(iOS 9.0, *)) {
+      SFSafariViewController *safariVC =
+          [[[self class] safariViewControllerFactory] safariViewControllerWithURL:requestURL];
+      safariVC.delegate = self;
+      _safariVC = safariVC;
+      [_presentingViewController presentViewController:safariVC animated:YES completion:nil];
+      openedSafari = YES;
+  } else {
+    openedSafari = NO;
+    if ([[self class] mayUseNonAppExtensionSafeAPI]) {
+        // +[UIApplication sharedApplication] must not be called from app extensions
+        // +mayUseNonAppExtensionSafeAPI returns YES only when called from the main app
+        // Calling +sharedApplication directly will cause a compiler error, so objc_msgSend is used instead
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-    UIApplication *sharedApplication = ((UIApplication * (*)(id, SEL, ...))objc_msgSend)([UIApplication class], NSSelectorFromString(@"sharedApplication"));
-    openedSafari = ((BOOL (*)(id, SEL, NSURL *, ...))objc_msgSend)(sharedApplication, NSSelectorFromString(@"openURL:"), URL);
+        UIApplication *sharedApplication = ((UIApplication * (*)(id, SEL, ...))objc_msgSend)([UIApplication class], NSSelectorFromString(@"sharedApplication"));
+        openedSafari = ((BOOL (*)(id, SEL, NSURL *, ...))objc_msgSend)(sharedApplication, NSSelectorFromString(@"openURL:"), URL);
 #pragma clang diagnostic pop
+    }
   }
 
   if (!openedSafari) {
@@ -111,20 +141,34 @@ static id<OIDSafariViewControllerFactory> __nullable gSafariViewControllerFactor
     NSError *safariError = [OIDErrorUtilities errorWithCode:OIDErrorCodeSafariOpenError
                                             underlyingError:nil
                                                 description:@"Unable to open Safari."];
-    [session failAuthorizationFlowWithError:safariError];
+    [session failExternalUserAgentFlowWithError:safariError];
   }
   return openedSafari;
 }
 
-- (void)dismissAuthorizationAnimated:(BOOL)animated completion:(void (^)(void))completion {
-  if (!_authorizationFlowInProgress) {
+- (void)dismissExternalUserAgentAnimated:(BOOL)animated completion:(void (^)(void))completion {
+  if (!_externalUserAgentFlowInProgress) {
     // Ignore this call if there is no authorization flow in progress.
     return;
   }
+  
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wpartial-availability"
   SFSafariViewController *safariVC = _safariVC;
+  SFAuthenticationSession *authenticationVC = _authenticationVC;
+#pragma clang diagnostic pop
+  
   [self cleanUp];
-  if (safariVC) {
-    [safariVC dismissViewControllerAnimated:YES completion:completion];
+  
+  if (@available(iOS 11.0, *)) {
+    [authenticationVC cancel];
+    if (completion) completion();
+  } else if (@available(iOS 9.0, *)) {
+    if (safariVC) {
+      [safariVC dismissViewControllerAnimated:YES completion:completion];
+    } else {
+      if (completion) completion();
+    }
   } else {
     if (completion) completion();
   }
@@ -134,34 +178,35 @@ static id<OIDSafariViewControllerFactory> __nullable gSafariViewControllerFactor
   // The weak references to |_safariVC| and |_session| are set to nil to avoid accidentally using
   // them while not in an authorization flow.
   _safariVC = nil;
+  _authenticationVC = nil;
   _session = nil;
-  _authorizationFlowInProgress = NO;
+  _externalUserAgentFlowInProgress = NO;
 }
 
 #pragma mark - SFSafariViewControllerDelegate
 
-- (void)safariViewControllerDidFinish:(SFSafariViewController *)controller {
+- (void)safariViewControllerDidFinish:(SFSafariViewController *)controller NS_AVAILABLE_IOS(9.0) {
   if (controller != _safariVC) {
     // Ignore this call if the safari view controller do not match.
     return;
   }
-  if (!_authorizationFlowInProgress) {
+  if (!_externalUserAgentFlowInProgress) {
     // Ignore this call if there is no authorization flow in progress.
     return;
   }
-  id<OIDAuthorizationFlowSession> session = _session;
+  id<OIDExternalUserAgentSession> session = _session;
   [self cleanUp];
   NSError *error = [OIDErrorUtilities errorWithCode:OIDErrorCodeProgramCanceledAuthorizationFlow
                                     underlyingError:nil
                                         description:nil];
-  [session failAuthorizationFlowWithError:error];
+  [session failExternalUserAgentFlowWithError:error];
 }
 
 @end
 
 @implementation OIDDefaultSafariViewControllerFactory
 
-- (SFSafariViewController *)safariViewControllerWithURL:(NSURL *)URL {
+- (SFSafariViewController *)safariViewControllerWithURL:(NSURL *)URL NS_AVAILABLE_IOS(9.0) {
   SFSafariViewController *safariViewController =
       [[SFSafariViewController alloc] initWithURL:URL entersReaderIfAvailable:NO];
   return safariViewController;

@@ -18,8 +18,10 @@
 
 #import "OIDRedirectHTTPHandler.h"
 
+#import "OIDAuthorizationFlowSession.h"
 #import "OIDAuthorizationService.h"
 #import "OIDErrorUtilities.h"
+#import "OIDExternalUserAgentSession.h"
 #import "OIDLoopbackHTTPServer.h"
 
 /*! @brief Page that is returned following a completed authorization. Show your own page instead by
@@ -97,7 +99,7 @@ static NSString *const kHTMLErrorRedirectNotValid =
       [OIDErrorUtilities errorWithCode:OIDErrorCodeProgramCanceledAuthorizationFlow
                        underlyingError:nil
                            description:@"The HTTP listener was cancelled programmatically."];
-  [_currentAuthorizationFlow failAuthorizationFlowWithError:cancelledError];
+  [_currentAuthorizationFlow failExternalUserAgentFlowWithError:cancelledError];
   _currentAuthorizationFlow = nil;
 }
 
@@ -114,7 +116,7 @@ static NSString *const kHTMLErrorRedirectNotValid =
 - (void)HTTPConnection:(HTTPConnection *)conn didReceiveRequest:(HTTPServerRequest *)mess {
   // Sends URL to AppAuth.
   CFURLRef url = CFHTTPMessageCopyRequestURL(mess.request);
-  BOOL handled = [_currentAuthorizationFlow resumeAuthorizationFlowWithURL:(__bridge NSURL *)url];
+  BOOL handled = [_currentAuthorizationFlow resumeExternalUserAgentFlowWithURL:(__bridge NSURL *)url];
 
   // Stops listening to further requests after the first valid authorization response.
   if (handled) {

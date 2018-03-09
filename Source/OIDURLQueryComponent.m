@@ -39,30 +39,34 @@ static NSString *const kQueryStringParamAdditionalDisallowedCharacters = @"=&+";
 - (nullable instancetype)initWithURL:(NSURL *)URL {
   self = [self init];
   if (self) {
-    if (!gOIDURLQueryComponentForceIOS7Handling && [NSURLQueryItem class]) {
+    if (@available(iOS 8.0, macOS 10.10, *)) {
       // If NSURLQueryItem is available, use it for deconstructing the new URL. (iOS 8+)
-      NSURLComponents *components =
-          [NSURLComponents componentsWithURL:URL resolvingAgainstBaseURL:NO];
-      NSArray<NSURLQueryItem *> *queryItems = components.queryItems;
-      for (NSURLQueryItem *queryItem in queryItems) {
-        [self addParameter:queryItem.name value:queryItem.value];
-      }
-    } else {
-      // Fallback for iOS 7
-      NSString *query = URL.query;
-      NSArray<NSString *> *queryParts = [query componentsSeparatedByString:@"&"];
-      for (NSString *queryPart in queryParts) {
-        NSRange equalsRange = [queryPart rangeOfString:@"="];
-        if (equalsRange.location == NSNotFound) {
-          continue;
+      if (!gOIDURLQueryComponentForceIOS7Handling) {
+        NSURLComponents *components =
+            [NSURLComponents componentsWithURL:URL resolvingAgainstBaseURL:NO];
+        NSArray<NSURLQueryItem *> *queryItems = components.queryItems;
+        for (NSURLQueryItem *queryItem in queryItems) {
+          [self addParameter:queryItem.name value:queryItem.value];
         }
-        NSString *name = [queryPart substringToIndex:equalsRange.location];
-        name = name.stringByRemovingPercentEncoding;
-        NSString *value = [queryPart substringFromIndex:equalsRange.location + equalsRange.length];
-        value = value.stringByRemovingPercentEncoding;
-        [self addParameter:name value:value];
+        return self;
       }
     }
+    
+    // Fallback for iOS 7
+    NSString *query = URL.query;
+    NSArray<NSString *> *queryParts = [query componentsSeparatedByString:@"&"];
+    for (NSString *queryPart in queryParts) {
+      NSRange equalsRange = [queryPart rangeOfString:@"="];
+      if (equalsRange.location == NSNotFound) {
+        continue;
+      }
+      NSString *name = [queryPart substringToIndex:equalsRange.location];
+      name = name.stringByRemovingPercentEncoding;
+      NSString *value = [queryPart substringFromIndex:equalsRange.location + equalsRange.length];
+      value = value.stringByRemovingPercentEncoding;
+      [self addParameter:name value:value];
+    }
+    return self;
   }
   return self;
 }
@@ -108,7 +112,7 @@ static NSString *const kQueryStringParamAdditionalDisallowedCharacters = @"=&+";
     @discussion The parameter names and values are NOT URL encoded.
     @return An array of unencoded @c NSURLQueryItem objects.
  */
-- (NSMutableArray<NSURLQueryItem *> *)queryItems {
+- (NSMutableArray<NSURLQueryItem *> *)queryItems NS_AVAILABLE(10.10, 8.0) {
   NSMutableArray<NSURLQueryItem *> *queryParameters = [NSMutableArray array];
   for (NSString *parameterName in _parameters.allKeys) {
     NSArray<NSString *> *values = _parameters[parameterName];
@@ -120,6 +124,15 @@ static NSString *const kQueryStringParamAdditionalDisallowedCharacters = @"=&+";
   return queryParameters;
 }
 
++ (NSMutableCharacterSet *)URLParamValueAllowedCharacters {
+  // Starts with the standard URL-allowed character set.
+  NSMutableCharacterSet *allowedParamCharacters =
+      [[NSCharacterSet URLQueryAllowedCharacterSet] mutableCopy];
+  // Removes additional characters we don't want to see in the query component.
+  [allowedParamCharacters removeCharactersInString:kQueryStringParamAdditionalDisallowedCharacters];
+  return allowedParamCharacters;
+}
+
 /*! @brief Builds a query string that can be set to @c NSURLComponents.percentEncodedQuery
     @discussion This string is percent encoded, and shouldn't be used with
         @c NSURLComponents.query.
@@ -129,10 +142,7 @@ static NSString *const kQueryStringParamAdditionalDisallowedCharacters = @"=&+";
   NSMutableArray<NSString *> *parameterizedValues = [NSMutableArray array];
 
   // Starts with the standard URL-allowed character set.
-  NSMutableCharacterSet *allowedParamCharacters =
-      [[NSCharacterSet URLQueryAllowedCharacterSet] mutableCopy];
-  // Removes additional characters we don't want to see in the query component.
-  [allowedParamCharacters removeCharactersInString:kQueryStringParamAdditionalDisallowedCharacters];
+  NSMutableCharacterSet *allowedParamCharacters = [[self class] URLParamValueAllowedCharacters];
 
   for (NSString *parameterName in _parameters.allKeys) {
     NSString *encodedParameterName =
@@ -154,15 +164,17 @@ static NSString *const kQueryStringParamAdditionalDisallowedCharacters = @"=&+";
 
 - (NSString *)URLEncodedParameters {
   // If NSURLQueryItem is available, uses it for constructing the encoded parameters. (iOS 8+)
-  if (!gOIDURLQueryComponentForceIOS7Handling && [NSURLQueryItem class]) {
-    NSURLComponents *components = [[NSURLComponents alloc] init];
-    components.queryItems = [self queryItems];
-    NSString *encodedQuery = components.percentEncodedQuery;
-    // NSURLComponents.percentEncodedQuery creates a validly escaped URL query component, but
-    // doesn't encode the '+' leading to potential ambiguity with application/x-www-form-urlencoded
-    // encoding. Percent encodes '+' to avoid this ambiguity.
-    encodedQuery = [encodedQuery stringByReplacingOccurrencesOfString:@"+" withString:@"%2B"];
-    return encodedQuery;
+  if (@available(iOS 8.0, macOS 10.10, *)) {
+    if (!gOIDURLQueryComponentForceIOS7Handling) {
+      NSURLComponents *components = [[NSURLComponents alloc] init];
+      components.queryItems = [self queryItems];
+      NSString *encodedQuery = components.percentEncodedQuery;
+      // NSURLComponents.percentEncodedQuery creates a validly escaped URL query component, but
+      // doesn't encode the '+' leading to potential ambiguity with application/x-www-form-urlencoded
+      // encoding. Percent encodes '+' to avoid this ambiguity.
+      encodedQuery = [encodedQuery stringByReplacingOccurrencesOfString:@"+" withString:@"%2B"];
+      return encodedQuery;
+    }
   }
 
   // else, falls back to building query string manually (iOS 7)
