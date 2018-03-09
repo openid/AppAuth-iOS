@@ -7,8 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <AppAuthCore.h>
 
 @interface TodayViewController : UIViewController
-
+    
 @end
