@@ -18,7 +18,7 @@
 
 #import "OIDEndSessionFlowSession.h"
 #import "OIDEndSessionRequest.h"
-#import "OIDExternalUserAgentUICoordinator.h"
+#import "OIDExternalUserAgent.h"
 #import "OIDErrorUtilities.h"
 #import "OIDDefines.h"
 #import "OIDURLQueryComponent.h"
@@ -27,7 +27,7 @@
 @interface OIDEndSessionFlowSession() {
     // private variables
     OIDEndSessionRequest *_request;
-    id<OIDExternalUserAgentUICoordinator> _UICoordinator;
+    id<OIDExternalUserAgent> _externalUserAgent;
     OIDEndSessionCallback _pendingEndSessionFlowCallback;
 }
 @end
@@ -42,12 +42,12 @@
     return self;
 }
 
-- (void)presentEndSessionWithCoordinator:(id<OIDExternalUserAgentUICoordinator>)UICoordinator
+- (void)presentEndSessionWithExternalUserAgent:(id<OIDExternalUserAgent>)externalUserAgent
                                    callback:(OIDEndSessionCallback)endSessionFlowCallback {
-    _UICoordinator = UICoordinator;
+    _externalUserAgent = externalUserAgent;
     _pendingEndSessionFlowCallback = endSessionFlowCallback;
     BOOL authorizationFlowStarted =
-            [_UICoordinator presentExternalUserAgentRequest:_request session:self];
+            [_externalUserAgent presentExternalUserAgentRequest:_request session:self];
     if (!authorizationFlowStarted) {
         NSError *safariError = [OIDErrorUtilities errorWithCode:OIDErrorCodeSafariOpenError
                                                 underlyingError:nil
@@ -57,7 +57,7 @@
 }
 
 - (void)cancel {
-    [_UICoordinator dismissExternalUserAgentUIAnimated:YES completion:^{
+    [_externalUserAgent dismissExternalUserAgentAnimated:YES completion:^{
         NSError *error = [OIDErrorUtilities
                 errorWithCode:OIDErrorCodeUserCanceledAuthorizationFlow
               underlyingError:nil
@@ -122,7 +122,7 @@
         }
     }
 
-    [_UICoordinator dismissExternalUserAgentUIAnimated:YES completion:^{
+    [_externalUserAgent dismissExternalUserAgentAnimated:YES completion:^{
         [self didFinishWithResponse:response error:error];
     }];
 
@@ -141,7 +141,7 @@
                         error:(nullable NSError *)error {
     OIDEndSessionCallback callback = _pendingEndSessionFlowCallback;
     _pendingEndSessionFlowCallback = nil;
-    _UICoordinator = nil;
+    _externalUserAgent = nil;
     if (callback) {
         callback(response, error);
     }
