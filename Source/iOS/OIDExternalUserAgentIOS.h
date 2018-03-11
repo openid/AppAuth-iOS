@@ -49,6 +49,18 @@ NS_ASSUME_NONNULL_BEGIN
  */
 + (void)setSafariViewControllerFactory:(id<OIDSafariViewControllerFactory>)factory;
 
+/*! @brief Call the openURL method of UIApplication if accessible.
+        Returns YES if the URL was opened, NO otherwise.
+    @param url The URL to open.
+ */
++ (BOOL)openURL:(NSURL*)url;
+
+/*! @brief Call the canOpenURL method of UIApplication if accessible.
+        Returns YES if the URL can be opened, NO otherwise.
+ @param url The URL to open.
+ */
++ (BOOL)canOpenURL:(NSURL*)url;
+
 /*! @internal
     @brief Unavailable. Please use @c initWithPresentingViewController:
  */
