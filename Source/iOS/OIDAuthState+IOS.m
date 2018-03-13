@@ -34,4 +34,14 @@
                                                 callback:callback];
 }
 
+- (id<OIDExternalUserAgentSession>)presentEndSessionRequest:(OIDEndSessionRequest *)endSessionRequest
+                                   presentingViewController:(UIViewController *)presentingViewController
+                                                   callback:(OIDEndSessionCallback)callback {
+  OIDExternalUserAgentIOS *externalUserAgent = [[OIDExternalUserAgentIOS alloc]
+                                                initWithPresentingViewController:presentingViewController];
+  return [self presentEndSessionRequest:endSessionRequest
+                      externalUserAgent:externalUserAgent
+                               callback:callback];
+}
+
 @end
