@@ -31,4 +31,12 @@
                                                 callback:callback];
 }
 
+- (id<OIDExternalUserAgentSession>)presentEndSessionRequest:(OIDEndSessionRequest *)endSessionRequest
+                                                   callback:(OIDEndSessionCallback)callback {
+  OIDExternalUserAgentMac *externalUserAgent = [[OIDExternalUserAgentMac alloc] init];
+  return [self presentEndSessionRequest:endSessionRequest
+                      externaluserAgent:externalUserAgent
+                               callback:callback];
+}
+
 @end

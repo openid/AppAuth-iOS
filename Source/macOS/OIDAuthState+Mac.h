@@ -35,6 +35,21 @@ NS_ASSUME_NONNULL_BEGIN
 + (id<OIDExternalUserAgentSession, OIDAuthorizationFlowSession>)
     authStateByPresentingAuthorizationRequest:(OIDAuthorizationRequest *)authorizationRequest
                                      callback:(OIDAuthStateAuthorizationCallback)callback;
+
+/*! @brief Presents a RP-initiated logout using the external user agent.
+    @param endSessionRequest The end session request to present.
+    @param callback The method called when the request has completed or failed.
+    @return A @c OIDExternalUserAgentSession instance which will terminate when it receives a
+        @c OIDExternalUserAgentSession.cancel message, or after processing a
+        @c OIDExternalUserAgentSession.resumeExternalUserAgentFlowWithURL: message.
+    @discussion Afer a successful ending of the session, it invalidates the @c OIDAuthState.
+        Remove references to this instance. Hence, a new authorization flow is required
+        to retrieve a new instance of @c OIDAuthState.
+    @see http://openid.net/specs/openid-connect-session-1_0.html#RPLogout
+ */
+- (id<OIDExternalUserAgentSession>)presentEndSessionRequest:(OIDEndSessionRequest *)endSessionRequest
+                                                   callback:(OIDEndSessionCallback)callback;
+
 @end
 
 NS_ASSUME_NONNULL_END
