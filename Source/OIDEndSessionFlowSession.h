@@ -43,7 +43,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /*! @brief Present the sesion request on the provided @c OIDExternalUserAgent.
     @param externalUserAgent The user agent for presenting the request.
-    @param callback The callback that will be triggered after the session is completed.
+    @param endSessionFlowCallback The callback that will be triggered after the session is completed.
  */
 - (void)presentEndSessionWithExternalUserAgent:(id<OIDExternalUserAgent>)externalUserAgent
                                       callback:(OIDEndSessionCallback)endSessionFlowCallback;
