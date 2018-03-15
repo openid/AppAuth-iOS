@@ -109,12 +109,12 @@ static id<OIDSafariViewControllerFactory> __nullable gSafariViewControllerFactor
     _authenticationVC = authenticationVC;
     openedSafari = [authenticationVC start];
   } else if (@available(iOS 9.0, *)) {
-      SFSafariViewController *safariVC =
-          [[[self class] safariViewControllerFactory] safariViewControllerWithURL:requestURL];
-      safariVC.delegate = self;
-      _safariVC = safariVC;
-      [_presentingViewController presentViewController:safariVC animated:YES completion:nil];
-      openedSafari = YES;
+    SFSafariViewController *safariVC =
+        [[[self class] safariViewControllerFactory] safariViewControllerWithURL:requestURL];
+    safariVC.delegate = self;
+    _safariVC = safariVC;
+    [_presentingViewController presentViewController:safariVC animated:YES completion:nil];
+    openedSafari = YES;
   } else {
     openedSafari = [[UIApplication sharedApplication] openURL:requestURL];
   }
@@ -179,7 +179,7 @@ static id<OIDSafariViewControllerFactory> __nullable gSafariViewControllerFactor
   }
   id<OIDExternalUserAgentSession> session = _session;
   [self cleanUp];
-  NSError *error = [OIDErrorUtilities errorWithCode:OIDErrorCodeProgramCanceledAuthorizationFlow
+  NSError *error = [OIDErrorUtilities errorWithCode:OIDErrorCodeUserCanceledAuthorizationFlow
                                     underlyingError:nil
                                         description:nil];
   [session failExternalUserAgentFlowWithError:error];
