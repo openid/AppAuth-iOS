@@ -34,10 +34,10 @@ class TodayViewController: UIViewController, NCWidgetProviding {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if let extensionContext = self.extensionContext, extensionContext.responds(to: #selector(setter: NSExtensionContext.widgetLargestAvailableDisplayMode)) { // iOS 10+
-            extensionContext.widgetLargestAvailableDisplayMode = .expanded
+        if #available(iOS 10.0, *) {
+            self.extensionContext?.widgetLargestAvailableDisplayMode = .expanded
         } else {
-            preferredContentSize = CGSize(width: 0, height: 600.0) // iOS 10-
+            self.preferredContentSize = CGSize(width: 0, height: 600.0)
         }
         
         self.loadState()
