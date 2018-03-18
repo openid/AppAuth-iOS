@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="M4Y-Lb-cyx">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Today View Controller-->
+        <scene sceneID="cwh-vc-ff4">
+            <objects>
+                <viewController id="M4Y-Lb-cyx" customClass="TodayViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" simulatedAppContext="notificationCenter" id="S3S-Oj-5AN">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wrl-gw-XJK">
+                                <rect key="frame" x="107" y="12" width="106" height="30"/>
+                                <state key="normal" title="Get user profile"/>
+                                <connections>
+                                    <action selector="getUserInfo:" destination="M4Y-Lb-cyx" eventType="touchUpInside" id="phE-gy-oaq"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="66l-TF-F1n">
+                                <rect key="frame" x="8" y="50" width="36" height="30"/>
+                                <state key="normal" title="Clear"/>
+                                <connections>
+                                    <action selector="clearLogTextView:" destination="M4Y-Lb-cyx" eventType="touchUpInside" id="iCp-J9-JX9"/>
+                                </connections>
+                            </button>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="ayH-z8-Pku">
+                                <rect key="frame" x="8" y="88" width="304" height="504"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="ssy-KU-ocm" firstAttribute="trailing" secondItem="ayH-z8-Pku" secondAttribute="trailing" constant="8" id="IUF-8D-Y0o"/>
+                            <constraint firstItem="ssy-KU-ocm" firstAttribute="bottom" secondItem="ayH-z8-Pku" secondAttribute="bottom" constant="8" id="QZ2-rp-2Om"/>
+                            <constraint firstItem="66l-TF-F1n" firstAttribute="top" secondItem="Wrl-gw-XJK" secondAttribute="bottom" constant="8" id="TPg-P8-h47"/>
+                            <constraint firstItem="ayH-z8-Pku" firstAttribute="top" secondItem="66l-TF-F1n" secondAttribute="bottom" constant="8" id="TRo-kO-AZz"/>
+                            <constraint firstItem="66l-TF-F1n" firstAttribute="leading" secondItem="ssy-KU-ocm" secondAttribute="leading" constant="8" id="Wd5-Dp-LJF"/>
+                            <constraint firstItem="ayH-z8-Pku" firstAttribute="leading" secondItem="66l-TF-F1n" secondAttribute="leading" id="bq9-CH-Qvg"/>
+                            <constraint firstItem="ssy-KU-ocm" firstAttribute="top" secondItem="Wrl-gw-XJK" secondAttribute="top" constant="8" id="lad-4e-RTz"/>
+                            <constraint firstItem="Wrl-gw-XJK" firstAttribute="centerX" secondItem="S3S-Oj-5AN" secondAttribute="centerX" id="nHH-7M-rI5"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="ssy-KU-ocm"/>
+                    </view>
+                    <extendedEdge key="edgesForExtendedLayout"/>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="320" height="600"/>
+                    <connections>
+                        <outlet property="logTextView" destination="ayH-z8-Pku" id="3bk-q8-qpQ"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="vXp-U4-Rya" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+        </scene>
+    </scenes>
+</document>
