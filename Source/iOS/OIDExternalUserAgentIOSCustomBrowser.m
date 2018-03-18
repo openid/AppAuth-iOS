@@ -24,7 +24,7 @@
 #import "OIDAuthorizationService.h"
 #import "OIDErrorUtilities.h"
 #import "OIDURLQueryComponent.h"
-#import "OIDExternalUserAgentIOS.h"
+#import "UIApplication+openURL.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -147,8 +147,8 @@ NS_ASSUME_NONNULL_BEGIN
     // Opens AppStore if app isn't installed
     NSString *testURLString = [NSString stringWithFormat:@"%@://example.com", _canOpenURLScheme];
     NSURL *testURL = [NSURL URLWithString:testURLString];
-    if (![OIDExternalUserAgentIOS canOpenURL:testURL]) {
-      [OIDExternalUserAgentIOS openURL:_appStoreURL];
+    if (![UIApplication canOpenURL:testURL]) {
+      [UIApplication openURL:_appStoreURL];
       return NO;
     }
   }
@@ -156,7 +156,7 @@ NS_ASSUME_NONNULL_BEGIN
   // Transforms the request URL and opens it.
   NSURL *requestURL = [request externalUserAgentRequestURL];
   requestURL = _URLTransformation(requestURL);
-  BOOL openedInBrowser = [OIDExternalUserAgentIOS openURL:requestURL];
+  BOOL openedInBrowser = [UIApplication openURL:requestURL];
   return openedInBrowser;
 }
 
