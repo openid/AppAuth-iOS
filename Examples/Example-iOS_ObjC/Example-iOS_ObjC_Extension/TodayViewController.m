@@ -67,8 +67,8 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
  */
 - (void)loadState {
     // loads OIDAuthState from NSUSerDefaults
-    NSData *archivedAuthState =
-    [[NSUserDefaults standardUserDefaults] objectForKey:kAppAuthExampleAuthStateKey];
+    NSUserDefaults* userDefaults = [[NSUserDefaults alloc] initWithSuiteName:@"group.net.openid.appauth.Example"];
+    NSData *archivedAuthState = [userDefaults objectForKey:kAppAuthExampleAuthStateKey];
     OIDAuthState *authState = [NSKeyedUnarchiver unarchiveObjectWithData:archivedAuthState];
     [self setAuthState:authState];
 }
@@ -77,10 +77,11 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
  */
 - (void)saveState {
     // for production usage consider using the OS Keychain instead
-    NSData *archivedAuthState = [ NSKeyedArchiver archivedDataWithRootObject:_authState];
-    [[NSUserDefaults standardUserDefaults] setObject:archivedAuthState
-                                              forKey:kAppAuthExampleAuthStateKey];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    NSUserDefaults* userDefaults = [[NSUserDefaults alloc] initWithSuiteName:@"group.net.openid.appauth.Example"];
+    NSData *archivedAuthState = [NSKeyedArchiver archivedDataWithRootObject:_authState];
+    [userDefaults setObject:archivedAuthState
+                     forKey:kAppAuthExampleAuthStateKey];
+    [userDefaults synchronize];
 }
 
 - (void)setAuthState:(nullable OIDAuthState *)authState {
