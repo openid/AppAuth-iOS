@@ -55,6 +55,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		06462428205EB35400072191 /* Example-iOS_ObjC.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Example-iOS_ObjC.entitlements"; sourceTree = "<group>"; };
+		06462429205EB37A00072191 /* Example-iOS_ObjC_Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Example-iOS_ObjC_Extension.entitlements"; sourceTree = "<group>"; };
 		06D4812D2055C3D400D9DC32 /* Example-iOS_ObjC_Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Example-iOS_ObjC_Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		06D4812E2055C3D400D9DC32 /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
 		06D481312055C3D400D9DC32 /* TodayViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TodayViewController.h; sourceTree = "<group>"; };
@@ -123,6 +125,7 @@
 				06D481322055C3D400D9DC32 /* TodayViewController.m */,
 				06D481342055C3D400D9DC32 /* MainInterface.storyboard */,
 				06D481372055C3D400D9DC32 /* Info.plist */,
+				06462429205EB37A00072191 /* Example-iOS_ObjC_Extension.entitlements */,
 			);
 			path = "Example-iOS_ObjC_Extension";
 			sourceTree = "<group>";
@@ -183,6 +186,7 @@
 				346E91781C29D42800D3620B /* Assets.xcassets */,
 				346E917A1C29D42800D3620B /* LaunchScreen.storyboard */,
 				346E917D1C29D42800D3620B /* Info.plist */,
+				06462428205EB35400072191 /* Example-iOS_ObjC.entitlements */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -274,6 +278,11 @@
 					06D4812C2055C3D400D9DC32 = {
 						CreatedOnToolsVersion = 9.2;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
+						};
 					};
 					341310A61E6DEF7000D5DEE5 = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -282,6 +291,11 @@
 					};
 					346E91681C29D42800D3620B = {
 						CreatedOnToolsVersion = 7.2;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -496,8 +510,10 @@
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = "Example-iOS_ObjC_Extension/Example-iOS_ObjC_Extension.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = "Example-iOS_ObjC_Extension/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
@@ -526,8 +542,10 @@
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = "Example-iOS_ObjC_Extension/Example-iOS_ObjC_Extension.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = "Example-iOS_ObjC_Extension/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
@@ -668,7 +686,9 @@
 			baseConfigurationReference = 0D29B2A58C931A5D41332144 /* Pods-Example-iOS_ObjC.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "Source/Example-iOS_ObjC.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = Source/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -682,7 +702,9 @@
 			baseConfigurationReference = ECBCCC4A1A779C83C72044F2 /* Pods-Example-iOS_ObjC.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "Source/Example-iOS_ObjC.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = Source/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
