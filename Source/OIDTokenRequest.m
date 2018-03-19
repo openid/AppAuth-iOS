@@ -275,11 +275,7 @@ static NSString *const kAdditionalParametersKey = @"additionalParameters";
   OIDURLQueryComponent *bodyParameters = [self tokenRequestBody];
   NSMutableDictionary *httpHeaders = [[NSMutableDictionary alloc] init];
 
-  /**
-   * GitHub will only return a spec-compliant response if JSON is explicitly defined
-   * as an acceptable response type. This is essentially harmless for all other
-   * spec-compliant IDPs.
-   */
+  // Response should be in JSON (not e.g. XML)
   [httpHeaders setObject:kHTTPAcceptHeaderValue forKey:kHTTPAcceptHeaderKey];
 
   if (_clientSecret) {
