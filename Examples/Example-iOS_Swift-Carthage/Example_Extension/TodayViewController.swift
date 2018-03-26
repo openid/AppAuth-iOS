@@ -37,15 +37,16 @@ class TodayViewController: UIViewController, NCWidgetProviding {
         if #available(iOS 10.0, *) {
             self.extensionContext?.widgetLargestAvailableDisplayMode = .expanded
         } else {
-            self.preferredContentSize = CGSize(width: 0, height: 600.0)
+            self.preferredContentSize = CGSize(width: 0, height: 400.0)
         }
         
         self.loadState()
     }
     
+    @available(iOSApplicationExtension 10.0, *)
     func widgetActiveDisplayModeDidChange(_ activeDisplayMode: NCWidgetDisplayMode, withMaximumSize maxSize: CGSize) {
         if activeDisplayMode == .expanded {
-            preferredContentSize = CGSize(width: maxSize.width, height: 600.0)
+            preferredContentSize = CGSize(width: maxSize.width, height: 400.0)
         } else if activeDisplayMode == .compact {
             preferredContentSize = maxSize
         }
