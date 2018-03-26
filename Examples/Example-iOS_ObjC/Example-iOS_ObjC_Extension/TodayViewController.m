@@ -34,24 +34,27 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    if ([self.extensionContext respondsToSelector:@selector(setWidgetLargestAvailableDisplayMode:)]) { // iOS 10+
+    if (@available(iOS 10, *)) {
         [self.extensionContext setWidgetLargestAvailableDisplayMode:NCWidgetDisplayModeExpanded];
     } else {
-        self.preferredContentSize = CGSizeMake(0, 600.0); // iOS 10-
+        self.preferredContentSize = CGSizeMake(0, 400.0);
     }
     
     [self loadState];
 }
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wpartial-availability"
 - (void)widgetActiveDisplayModeDidChange:(NCWidgetDisplayMode)activeDisplayMode
                          withMaximumSize:(CGSize)maxSize {
     
     if (activeDisplayMode == NCWidgetDisplayModeExpanded) {
-        self.preferredContentSize = CGSizeMake(maxSize.width, 600.0);
+        self.preferredContentSize = CGSizeMake(maxSize.width, 400.0);
     } else if (activeDisplayMode == NCWidgetDisplayModeCompact) {
         self.preferredContentSize = maxSize;
     }
 }
+#pragma clang diagnostic pop
 
 - (void)widgetPerformUpdateWithCompletionHandler:(void (^)(NCUpdateResult))completionHandler {
     // Perform any setup necessary in order to update the view.
