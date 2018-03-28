@@ -43,10 +43,8 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
     [self loadState];
 }
 
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wpartial-availability"
 - (void)widgetActiveDisplayModeDidChange:(NCWidgetDisplayMode)activeDisplayMode
-                         withMaximumSize:(CGSize)maxSize {
+                         withMaximumSize:(CGSize)maxSize NS_AVAILABLE_IOS(10.0) {
     
     if (activeDisplayMode == NCWidgetDisplayModeExpanded) {
         self.preferredContentSize = CGSizeMake(maxSize.width, 400.0);
@@ -54,7 +52,6 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
         self.preferredContentSize = maxSize;
     }
 }
-#pragma clang diagnostic pop
 
 - (void)widgetPerformUpdateWithCompletionHandler:(void (^)(NCUpdateResult))completionHandler {
     // Perform any setup necessary in order to update the view.
