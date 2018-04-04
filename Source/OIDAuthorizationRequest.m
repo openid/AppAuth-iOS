@@ -329,4 +329,14 @@ NSString *const OIDOAuthorizationRequestCodeChallengeMethodS256 = @"S256";
   return [query URLByReplacingQueryInURL:_configuration.authorizationEndpoint];
 }
 
+#pragma mark - OIDExternalUserAgentRequest
+
+- (NSURL *)externalUserAgentRequestURL {
+  return [self authorizationRequestURL];
+}
+
+- (NSString *)redirectScheme {
+  return [[self redirectURL] scheme];
+}
+
 @end

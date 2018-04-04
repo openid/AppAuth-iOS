@@ -18,16 +18,16 @@
 
 #import "OIDAuthState+Mac.h"
 
-#import "OIDAuthorizationUICoordinatorMac.h"
+#import "OIDExternalUserAgentMac.h"
 
 @implementation OIDAuthState (Mac)
 
-+ (id<OIDAuthorizationFlowSession>)
++ (id<OIDExternalUserAgentSession, OIDAuthorizationFlowSession>)
     authStateByPresentingAuthorizationRequest:(OIDAuthorizationRequest *)authorizationRequest
                                      callback:(OIDAuthStateAuthorizationCallback)callback {
-  OIDAuthorizationUICoordinatorMac *coordinator = [[OIDAuthorizationUICoordinatorMac alloc] init];
+  OIDExternalUserAgentMac *externalUserAgent = [[OIDExternalUserAgentMac alloc] init];
   return [self authStateByPresentingAuthorizationRequest:authorizationRequest
-                                           UICoordinator:coordinator
+                                       externalUserAgent:externalUserAgent
                                                 callback:callback];
 }
 

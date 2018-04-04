@@ -18,11 +18,12 @@ may view the IdP-specific information in the next section.
 ## OpenID Certified Providers
 
 All [Certified OpenID providers](http://openid.net/certification/) that support
-[RFC 8252](https://tools.ietf.org/html/rfc8252-08#appendix-A)
+[RFC 8252](https://tools.ietf.org/html/rfc8252#appendix-A)
 are welcome to submit a README with IdP information.
 
 Those with instructions on file:
 
 * [Google](README-Google.md)
 * [IdentityServer](README-IdentityServer.md)
+* [Okta](README-Okta.md)
 * [PingFederate](README-PingFederate.md)
