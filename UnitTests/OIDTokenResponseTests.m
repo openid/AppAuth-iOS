@@ -184,4 +184,21 @@ static NSString *const kTestAdditionalParameterValue = @"example_value";
                         kTestAdditionalParameterValue);
 }
 
+- (void)testDecodingExpiresInAsString {
+    OIDTokenRequest *request = [OIDTokenRequestTests testInstance];
+    OIDTokenResponse *response =
+    [[OIDTokenResponse alloc] initWithRequest:request
+                                   parameters:@{
+                                                kAccessTokenKey : kAccessTokenTestValue,
+                                                kExpiresInKey : [NSString stringWithFormat:@"%lld", kExpiresInTestValue],
+                                                kTokenTypeKey : kTokenTypeTestValue,
+                                                kIDTokenKey : kIDTokenTestValue,
+                                                kRefreshTokenKey : kRefreshTokenTestValue,
+                                                kScopesKey : kScopesTestValue,
+                                                kTestAdditionalParameterKey : kTestAdditionalParameterValue
+                                                }];
+    NSTimeInterval expiration = [response.accessTokenExpirationDate timeIntervalSinceNow];
+    XCTAssert(expiration > kExpiresInTestValue - 5 && expiration <= kExpiresInTestValue);
+}
+
 @end
