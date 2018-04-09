@@ -115,20 +115,19 @@
 
 + (OIDFieldMappingConversionFunction)dateSinceNowConversion {
   return ^id _Nullable(NSObject *_Nullable value) {
-    long long timeInterval = 0;
-    BOOL valueMapped = NO;
+    NSNumber *valueAsNumber = nil;
     if ([value isKindOfClass:[NSNumber class]]) {
-      timeInterval = [(NSNumber *)value longLongValue];
-      valueMapped = YES;
+      valueAsNumber = (NSNumber *)value;
     } else if ([value isKindOfClass:[NSString class]]) {
-      timeInterval = [(NSString *)value longLongValue];
-      valueMapped = YES;
+      NSNumberFormatter *numberFormatter = [NSNumberFormatter new];
+      numberFormatter.numberStyle = NSNumberFormatterDecimalStyle;
+      valueAsNumber = [numberFormatter numberFromString:(NSString *)value];
     }
-    if (!valueMapped) {
+    if (!valueAsNumber) {
       return value;
     }
 
-    return [NSDate dateWithTimeIntervalSinceNow:timeInterval];
+    return [NSDate dateWithTimeIntervalSinceNow:[valueAsNumber longLongValue]];
   };
 }
 
