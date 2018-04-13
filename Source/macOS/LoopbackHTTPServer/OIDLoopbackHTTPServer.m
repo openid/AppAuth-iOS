@@ -174,7 +174,7 @@
         // the delegate may choose to stop and dealloc the listener – so we need queue the messages
         // and process them separately.
         dispatch_async(dispatch_get_main_queue(), ^() {
-          [delegate HTTPConnection:self didReceiveRequest:request];
+          [self->delegate HTTPConnection:self didReceiveRequest:request];
         });
     } else {
         [self performDefaultRequestHandling:request];

@@ -95,15 +95,15 @@ static id<OIDSafariViewControllerFactory> __nullable gSafariViewControllerFactor
                                    callbackURLScheme:redirectScheme
                                    completionHandler:^(NSURL * _Nullable callbackURL,
                                                        NSError * _Nullable error) {
-      _authenticationVC = nil;
+      self->_authenticationVC = nil;
       if (callbackURL) {
-        [_session resumeExternalUserAgentFlowWithURL:callbackURL];
+        [self->_session resumeExternalUserAgentFlowWithURL:callbackURL];
       } else {
         NSError *safariError =
             [OIDErrorUtilities errorWithCode:OIDErrorCodeUserCanceledAuthorizationFlow
                              underlyingError:error
                                  description:nil];
-        [_session failExternalUserAgentFlowWithError:safariError];
+        [self->_session failExternalUserAgentFlowWithError:safariError];
       }
     }];
     _authenticationVC = authenticationVC;
