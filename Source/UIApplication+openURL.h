@@ -21,14 +21,14 @@
 @interface UIApplication (openURL)
 
 /*! @brief Call the openURL method of UIApplication if accessible.
- Returns YES if the URL was opened, NO otherwise.
- @param url The URL to open.
+        Returns YES if the URL was opened, NO otherwise.
+    @param url The URL to open.
  */
 + (BOOL)openURL:(NSURL*)url;
 
 /*! @brief Call the canOpenURL method of UIApplication if accessible.
- Returns YES if the URL can be opened, NO otherwise.
- @param url The URL to open.
+        Returns YES if the URL can be opened, NO otherwise.
+    @param url The URL to open.
  */
 + (BOOL)canOpenURL:(NSURL*)url;
 
