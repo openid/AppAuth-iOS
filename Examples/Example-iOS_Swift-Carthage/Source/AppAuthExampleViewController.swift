@@ -210,6 +210,7 @@ extension AppAuthExampleViewController {
 
             if let tokenResponse = response {
                 self.logMessage("Received token response with accessToken: \(tokenResponse.accessToken ?? "DEFAULT_TOKEN")")
+                self.logMessage("Received token response with id_token: \(tokenResponse.idToken ?? "DEFAULT_TOKEN")")
             } else {
                 self.logMessage("Token exchange error: \(error?.localizedDescription ?? "DEFAULT_ERROR")")
             }
@@ -396,6 +397,7 @@ extension AppAuthExampleViewController {
             if let authState = authState {
                 self.setAuthState(authState)
                 self.logMessage("Got authorization tokens. Access token: \(authState.lastTokenResponse?.accessToken ?? "DEFAULT_TOKEN")")
+                self.logMessage("Got id_token token. id_token: \(authState.lastTokenResponse?.idToken ?? "DEFAULT_TOKEN")")
             } else {
                 self.logMessage("Authorization error: \(error?.localizedDescription ?? "DEFAULT_ERROR")")
                 self.setAuthState(nil)
