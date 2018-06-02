@@ -124,9 +124,9 @@ static const NSUInteger kExpiryTimeTolerance = 60;
                                // code exchange
                                OIDTokenRequest *tokenExchangeRequest =
                                    [authorizationResponse tokenExchangeRequest];
-                               [OIDAuthorizationService
-                                   performTokenRequest:tokenExchangeRequest
-                                              callback:^(OIDTokenResponse *_Nullable tokenResponse,
+                               [OIDAuthorizationService performTokenRequest:tokenExchangeRequest
+                                              originalAuthorizationResponse:authorizationResponse
+                                   callback:^(OIDTokenResponse *_Nullable tokenResponse,
                                                          NSError *_Nullable tokenError) {
                                                 OIDAuthState *authState;
                                                 if (tokenResponse) {
@@ -136,7 +136,7 @@ static const NSUInteger kExpiryTimeTolerance = 60;
                                                                       tokenResponse:tokenResponse];
                                                 }
                                                 callback(authState, tokenError);
-                                              }];
+                               }];
                              } else {
                                // implicit or hybrid flow (hybrid flow assumes code is not for this
                                // client)
@@ -473,6 +473,7 @@ static const NSUInteger kExpiryTimeTolerance = 60;
   OIDTokenRequest *tokenRefreshRequest =
       [self tokenRefreshRequestWithAdditionalParameters:additionalParameters];
   [OIDAuthorizationService performTokenRequest:tokenRefreshRequest
+                 originalAuthorizationResponse:_lastAuthorizationResponse
                                       callback:^(OIDTokenResponse *_Nullable response,
                                                  NSError *_Nullable error) {
     dispatch_async(dispatch_get_main_queue(), ^() {

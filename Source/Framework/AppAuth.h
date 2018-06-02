@@ -37,6 +37,7 @@ FOUNDATION_EXPORT const unsigned char AppAuthVersionString[];
 #import <AppAuth/OIDExternalUserAgentRequest.h>
 #import <AppAuth/OIDExternalUserAgentSession.h>
 #import <AppAuth/OIDGrantTypes.h>
+#import <AppAuth/OIDIDToken.h>
 #import <AppAuth/OIDRegistrationRequest.h>
 #import <AppAuth/OIDRegistrationResponse.h>
 #import <AppAuth/OIDResponseTypes.h>
