@@ -81,32 +81,32 @@ static NSString *const kTestAdditionalParameterValue = @"example_value";
  */
 - (void)testCopying {
   OIDRegistrationResponse *response = [[self class] testInstance];
-  XCTAssertNotNil(response.request);
-  XCTAssertEqualObjects(response.clientID, kClientIDTestValue);
+  XCTAssertNotNil(response.request, @"");
+  XCTAssertEqualObjects(response.clientID, kClientIDTestValue, @"");
   XCTAssertEqualObjects(response.clientIDIssuedAt,
-                        [NSDate dateWithTimeIntervalSince1970:kClientIDIssuedAtTestValue]);
-  XCTAssertEqualObjects(response.clientSecret, kClientSecretTestValue);
+                        [NSDate dateWithTimeIntervalSince1970:kClientIDIssuedAtTestValue], @"");
+  XCTAssertEqualObjects(response.clientSecret, kClientSecretTestValue, @"");
   XCTAssertEqualObjects(response.clientSecretExpiresAt,
-                        [NSDate dateWithTimeIntervalSince1970:kClientSecretExpiresAtTestValue]);
-  XCTAssertEqualObjects(response.registrationAccessToken, kClientRegistrationAccessTokenTestValue);
+                        [NSDate dateWithTimeIntervalSince1970:kClientSecretExpiresAtTestValue], @"");
+  XCTAssertEqualObjects(response.registrationAccessToken, kClientRegistrationAccessTokenTestValue, @"");
   XCTAssertEqualObjects(response.registrationClientURI,
-                        [NSURL URLWithString:kRegistrationClientURITestValue]);
+                        [NSURL URLWithString:kRegistrationClientURITestValue], @"");
   XCTAssertEqualObjects(response.tokenEndpointAuthenticationMethod,
-                        kTokenEndpointAuthMethodTestValue);
+                        kTokenEndpointAuthMethodTestValue, @"");
   XCTAssertEqualObjects(response.additionalParameters[kTestAdditionalParameterKey],
-                        kTestAdditionalParameterValue);
+                        kTestAdditionalParameterValue, @"");
 
   OIDRegistrationResponse *responseCopy = [response copy];
 
-  XCTAssertNotNil(responseCopy.request);
-  XCTAssertEqualObjects(responseCopy.clientID, response.clientID);
-  XCTAssertEqualObjects(responseCopy.clientIDIssuedAt, response.clientIDIssuedAt);
-  XCTAssertEqualObjects(responseCopy.clientSecret, response.clientSecret);
-  XCTAssertEqualObjects(responseCopy.clientSecretExpiresAt, response.clientSecretExpiresAt);
-  XCTAssertEqualObjects(responseCopy.registrationAccessToken, response.registrationAccessToken);
-  XCTAssertEqualObjects(responseCopy.registrationClientURI, response.registrationClientURI);
+  XCTAssertNotNil(responseCopy.request, @"");
+  XCTAssertEqualObjects(responseCopy.clientID, response.clientID, @"");
+  XCTAssertEqualObjects(responseCopy.clientIDIssuedAt, response.clientIDIssuedAt, @"");
+  XCTAssertEqualObjects(responseCopy.clientSecret, response.clientSecret, @"");
+  XCTAssertEqualObjects(responseCopy.clientSecretExpiresAt, response.clientSecretExpiresAt, @"");
+  XCTAssertEqualObjects(responseCopy.registrationAccessToken, response.registrationAccessToken, @"");
+  XCTAssertEqualObjects(responseCopy.registrationClientURI, response.registrationClientURI, @"");
   XCTAssertEqualObjects(responseCopy.additionalParameters[kTestAdditionalParameterKey],
-                        kTestAdditionalParameterValue);
+                        kTestAdditionalParameterValue, @"");
 }
 
 /*! @brief Tests the @c NSSecureCoding by round-tripping an instance through the coding process and
@@ -121,19 +121,19 @@ static NSString *const kTestAdditionalParameterValue = @"example_value";
   // to make sure the request IS actually getting serialized and deserialized in the
   // NSSecureCoding implementation. We'll leave it up to the OIDAuthorizationRequest tests to make
   // sure the NSSecureCoding implementation of that class is correct.
-  XCTAssertNotNil(responseCopy.request);
-  XCTAssertEqualObjects(responseCopy.request.applicationType, response.request.applicationType);
+  XCTAssertNotNil(responseCopy.request, @"");
+  XCTAssertEqualObjects(responseCopy.request.applicationType, response.request.applicationType, @"");
 
-  XCTAssertEqualObjects(responseCopy.clientID, response.clientID);
-  XCTAssertEqualObjects(responseCopy.clientIDIssuedAt, response.clientIDIssuedAt);
-  XCTAssertEqualObjects(responseCopy.clientSecret, response.clientSecret);
-  XCTAssertEqualObjects(responseCopy.clientSecretExpiresAt, response.clientSecretExpiresAt);
-  XCTAssertEqualObjects(responseCopy.registrationAccessToken, response.registrationAccessToken);
-  XCTAssertEqualObjects(responseCopy.registrationClientURI, response.registrationClientURI);
+  XCTAssertEqualObjects(responseCopy.clientID, response.clientID, @"");
+  XCTAssertEqualObjects(responseCopy.clientIDIssuedAt, response.clientIDIssuedAt, @"");
+  XCTAssertEqualObjects(responseCopy.clientSecret, response.clientSecret, @"");
+  XCTAssertEqualObjects(responseCopy.clientSecretExpiresAt, response.clientSecretExpiresAt, @"");
+  XCTAssertEqualObjects(responseCopy.registrationAccessToken, response.registrationAccessToken, @"");
+  XCTAssertEqualObjects(responseCopy.registrationClientURI, response.registrationClientURI, @"");
   XCTAssertEqualObjects(responseCopy.tokenEndpointAuthenticationMethod,
-                        response.tokenEndpointAuthenticationMethod);
+                        response.tokenEndpointAuthenticationMethod, @"");
   XCTAssertEqualObjects(responseCopy.additionalParameters[kTestAdditionalParameterKey],
-                        kTestAdditionalParameterValue);
+                        kTestAdditionalParameterValue, @"");
 }
 
 /*! @brief Make sure the registration response is verified to ensure the 'client_secret_expires_at'
@@ -147,7 +147,7 @@ static NSString *const kTestAdditionalParameterValue = @"example_value";
           OIDClientIDParam : kClientIDTestValue,
           OIDClientSecretParam : kClientSecretTestValue,
       }];
-  XCTAssertNil(response);
+  XCTAssertNil(response, @"");
 }
 
 /*! @brief Make sure the registration response missing 'registration_access_token' is detected when
@@ -161,7 +161,7 @@ static NSString *const kTestAdditionalParameterValue = @"example_value";
           OIDClientIDParam : kClientIDTestValue,
           OIDRegistrationClientURIParam : [NSURL URLWithString:kRegistrationClientURITestValue]
       }];
-  XCTAssertNil(response);
+  XCTAssertNil(response, @"");
 }
 
 /*! @brief Make sure the registration response missing 'client_registration_uri' is detected when
@@ -175,7 +175,7 @@ static NSString *const kTestAdditionalParameterValue = @"example_value";
           OIDClientIDParam : kClientIDTestValue,
           OIDRegistrationAccessTokenParam : kClientRegistrationAccessTokenTestValue
       }];
-  XCTAssertNil(response);
+  XCTAssertNil(response, @"");
 }
 
 @end

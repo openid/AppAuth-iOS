@@ -17,8 +17,9 @@
  */
 
 /*! @brief Represents an in-flight authorization flow session.
-    @deprecated Please use the more generic OIDExternalUserAgentSession instead.
+    @deprecated Use the more generic OIDExternalUserAgentSession instead.
  */
+__attribute__((deprecated("Use the more generic OIDExternalUserAgentSession instead.")))
 @protocol OIDAuthorizationFlowSession <NSObject>
 
 /*! @brief Clients should call this method with the result of the authorization code flow if it

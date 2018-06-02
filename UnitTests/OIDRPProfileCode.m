@@ -190,7 +190,7 @@ typedef void (^UserInfoCompletion)(OIDAuthState *_Nullable authState,
   [self expectationWithDescription:@"Token Exchange should complete."];
 
   NSURL *issuer = [NSURL URLWithString:issuerString];
-
+  
   [self doRegistrationWithIssuer:issuer callback:^(OIDServiceConfiguration *configuration,
                                                    OIDRegistrationResponse *registrationResponse,
                                                    NSError *error) {
@@ -214,13 +214,13 @@ typedef void (^UserInfoCompletion)(OIDAuthState *_Nullable authState,
                                               responseType:OIDResponseTypeCode
                                       additionalParameters:nil];
 
-    _coordinator = [[OIDAuthorizationUICoordinatorNonInteractive alloc] init];
+    self->_coordinator = [[OIDAuthorizationUICoordinatorNonInteractive alloc] init];
 
     [self certificationLog:@"Initiating authorization request: %@",
      [request authorizationRequestURL]];
 
     [OIDAuthorizationService presentAuthorizationRequest:request
-                                       externalUserAgent:_coordinator
+                                       externalUserAgent:self->_coordinator
         callback:^(OIDAuthorizationResponse *_Nullable authorizationResponse,
                    NSError *error) {
       [auth_complete fulfill];
