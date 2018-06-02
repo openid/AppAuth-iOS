@@ -264,6 +264,8 @@ static NSString *const kAdditionalParametersKey = @"additionalParameters";
   static NSString *const kHTTPContentTypeHeaderKey = @"Content-Type";
   static NSString *const kHTTPContentTypeHeaderValue =
       @"application/x-www-form-urlencoded; charset=UTF-8";
+  static NSString *const kHTTPAcceptHeaderKey = @"Accept";
+  static NSString *const kHTTPAcceptHeaderValue = @"application/json";
 
   NSURL *tokenRequestURL = [self tokenRequestURL];
   NSMutableURLRequest *URLRequest = [[NSURLRequest requestWithURL:tokenRequestURL] mutableCopy];
@@ -272,6 +274,9 @@ static NSString *const kAdditionalParametersKey = @"additionalParameters";
 
   OIDURLQueryComponent *bodyParameters = [self tokenRequestBody];
   NSMutableDictionary *httpHeaders = [[NSMutableDictionary alloc] init];
+
+  // Response should be in JSON (not e.g. XML)
+  [httpHeaders setObject:kHTTPAcceptHeaderValue forKey:kHTTPAcceptHeaderKey];
 
   if (_clientSecret) {
     NSString *credentials = [NSString stringWithFormat:@"%@:%@", _clientID, _clientSecret];
