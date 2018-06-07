@@ -147,7 +147,7 @@ static id<OIDSafariViewControllerFactory> __nullable gSafariViewControllerFactor
     }];
     _authenticationVC = authenticationVC;
     openedSafari = [authenticationVC start];
-  // iOS 9 and 10, use SFAuthenticationSession
+  // iOS 9 and 10, use SFSafariViewController
   } else if (@available(iOS 9.0, *)) {
     SFSafariViewController *safariVC =
         [[[self class] safariViewControllerFactory] safariViewControllerWithURL:requestURL];
