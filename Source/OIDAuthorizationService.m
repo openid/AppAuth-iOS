@@ -311,16 +311,14 @@ NS_ASSUME_NONNULL_BEGIN
       NSError *serverError =
           [OIDErrorUtilities HTTPErrorWithHTTPResponse:HTTPURLResponse data:data];
 
-      // HTTP 400 may indicate an RFC6749 Section 5.2 error response.
-      // HTTP 429 may occur during polling for device-flow requests for the slow_down error
-      // https://tools.ietf.org/html/draft-ietf-oauth-device-flow-03#section-3.5
-      if (statusCode == 400 || statusCode == 429) {
+      // HTTP 4xx may indicate an RFC6749 Section 5.2 error response, attempts to parse as such.
+      if (statusCode >= 400 && statusCode < 500) {
         NSError *jsonDeserializationError;
         NSDictionary<NSString *, NSObject<NSCopying> *> *json =
             [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonDeserializationError];
 
-        // if the HTTP 400 response parses as JSON and has an 'error' key, it's an OAuth error
-        // these errors are special as they indicate a problem with the authorization grant
+        // If the HTTP 4xx response parses as JSON and has an 'error' key, it's an OAuth error.
+        // These errors are special as they indicate a problem with the authorization grant.
         if (json[OIDOAuthErrorFieldError]) {
           NSError *oauthError =
             [OIDErrorUtilities OAuthErrorWithDomain:OIDOAuthTokenErrorDomain
