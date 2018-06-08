@@ -43,12 +43,17 @@ static NSString *const kOpenIDConfigurationWellKnownPath = @".well-known/openid-
 
 NS_ASSUME_NONNULL_BEGIN
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+
 @interface OIDAuthorizationFlowSessionImplementation : NSObject<OIDExternalUserAgentSession, OIDAuthorizationFlowSession> {
   // private variables
   OIDAuthorizationRequest *_request;
   id<OIDExternalUserAgent> _externalUserAgent;
   OIDAuthorizationCallback _pendingauthorizationFlowCallback;
 }
+
+#pragma GCC diagnostic pop
 
 - (instancetype)init NS_UNAVAILABLE;
 
@@ -191,8 +196,8 @@ NS_ASSUME_NONNULL_BEGIN
   NSURL *fullDiscoveryURL =
       [issuerURL URLByAppendingPathComponent:kOpenIDConfigurationWellKnownPath];
 
-  return [[self class] discoverServiceConfigurationForDiscoveryURL:fullDiscoveryURL
-                                                        completion:completion];
+  [[self class] discoverServiceConfigurationForDiscoveryURL:fullDiscoveryURL
+                                                 completion:completion];
 }
 
 + (void)discoverServiceConfigurationForDiscoveryURL:(NSURL *)discoveryURL
@@ -254,6 +259,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - Authorization Endpoint
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+
 + (id<OIDExternalUserAgentSession, OIDAuthorizationFlowSession>)
     presentAuthorizationRequest:(OIDAuthorizationRequest *)request
               externalUserAgent:(id<OIDExternalUserAgent>)externalUserAgent
@@ -264,12 +272,14 @@ NS_ASSUME_NONNULL_BEGIN
   return flowSession;
 }
 
+#pragma GCC diagnostic pop
+
 #pragma mark - Token Endpoint
 
 + (void)performTokenRequest:(OIDTokenRequest *)request callback:(OIDTokenCallback)callback {
-  return [[self class] performTokenRequest:request
-             originalAuthorizationResponse:nil
-                                  callback:callback];
+  [[self class] performTokenRequest:request
+      originalAuthorizationResponse:nil
+                           callback:callback];
 }
 
 + (void)performTokenRequest:(OIDTokenRequest *)request

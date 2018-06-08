@@ -23,6 +23,11 @@
 #import "Source/OIDAuthorizationResponse.h"
 #import "Source/OIDGrantTypes.h"
 
+// Ignore warnings about "Use of GNU statement expression extension" which is raised by our use of
+// the XCTAssert___ macros.
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wgnu"
+
 /*! @brief Test value for the @c authorizationCode property.
  */
 static NSString *const kTestAuthorizationCode = @"Code";
@@ -113,33 +118,34 @@ static NSString *const kTestScope = @"Scope";
  */
 - (void)testCopying {
   OIDAuthorizationResponse *response = [[self class] testInstance];
-  XCTAssertEqualObjects(response.authorizationCode, kTestAuthorizationCode);
-  XCTAssertEqualObjects(response.state, kTestState);
-  XCTAssertEqualObjects(response.accessToken, kTestAccessToken);
-  XCTAssertEqualObjects(response.idToken, kTestIDToken);
-  XCTAssertEqualObjects(response.tokenType, kTestTokenType);
-  XCTAssertEqualObjects(response.scope, kTestScope);
+  XCTAssertEqualObjects(response.authorizationCode, kTestAuthorizationCode, @"");
+  XCTAssertEqualObjects(response.state, kTestState, @"");
+  XCTAssertEqualObjects(response.accessToken, kTestAccessToken, @"");
+  XCTAssertEqualObjects(response.idToken, kTestIDToken, @"");
+  XCTAssertEqualObjects(response.tokenType, kTestTokenType, @"");
+  XCTAssertEqualObjects(response.scope, kTestScope, @"");
   XCTAssertEqualObjects(response.additionalParameters[kTestAdditionalParameterKey],
-                        kTestAdditionalParameterValue);
+                        kTestAdditionalParameterValue, @"");
 
   // Should be ~ kTestExpirationSeconds seconds. Avoiding swizzling NSDate here for certainty
   // to keep dependencies down, and simply making an assumption that this check will be executed
   // relatively quickly after the initialization above (less than 5 seconds.)
   NSTimeInterval expiration = [response.accessTokenExpirationDate timeIntervalSinceNow];
-  XCTAssert(expiration > kTestExpirationSeconds - 5 && expiration <= kTestExpirationSeconds);
+  XCTAssert(expiration > kTestExpirationSeconds - 5 && expiration <= kTestExpirationSeconds, @"");
 
   OIDAuthorizationResponse *responseCopy = [response copy];
 
-  XCTAssertEqualObjects(responseCopy.request, response.request);
-  XCTAssertEqualObjects(responseCopy.authorizationCode, response.authorizationCode);
-  XCTAssertEqualObjects(responseCopy.state, response.state);
-  XCTAssertEqualObjects(responseCopy.accessToken, response.accessToken);
-  XCTAssertEqualObjects(responseCopy.accessTokenExpirationDate, response.accessTokenExpirationDate);
-  XCTAssertEqualObjects(responseCopy.idToken, response.idToken);
-  XCTAssertEqualObjects(responseCopy.tokenType, response.tokenType);
-  XCTAssertEqualObjects(responseCopy.scope, response.scope);
+  XCTAssertEqualObjects(responseCopy.request, response.request, @"");
+  XCTAssertEqualObjects(responseCopy.authorizationCode, response.authorizationCode, @"");
+  XCTAssertEqualObjects(responseCopy.state, response.state, @"");
+  XCTAssertEqualObjects(responseCopy.accessToken, response.accessToken, @"");
+  XCTAssertEqualObjects(responseCopy.accessTokenExpirationDate,
+                        response.accessTokenExpirationDate, @"");
+  XCTAssertEqualObjects(responseCopy.idToken, response.idToken, @"");
+  XCTAssertEqualObjects(responseCopy.tokenType, response.tokenType, @"");
+  XCTAssertEqualObjects(responseCopy.scope, response.scope, @"");
   XCTAssertEqualObjects(responseCopy.additionalParameters,
-                        response.additionalParameters);
+                        response.additionalParameters, @"");
 }
 
 /*! @brief Tests the @c NSSecureCoding by round-tripping an instance through the coding process and
@@ -154,18 +160,21 @@ static NSString *const kTestScope = @"Scope";
   // to make sure the request IS actually getting serialized and deserialized in the
   // NSSecureCoding implementation. We'll leave it up to the OIDAuthorizationRequest tests to make
   // sure the NSSecureCoding implementation of that class is correct.
-  XCTAssertNotNil(responseCopy.request);
-  XCTAssertEqualObjects(responseCopy.request.clientID, response.request.clientID);
+  XCTAssertNotNil(responseCopy.request, @"");
+  XCTAssertEqualObjects(responseCopy.request.clientID, response.request.clientID, @"");
 
-  XCTAssertEqualObjects(responseCopy.authorizationCode, kTestAuthorizationCode);
-  XCTAssertEqualObjects(responseCopy.state, kTestState);
-  XCTAssertEqualObjects(responseCopy.accessToken, kTestAccessToken);
-  XCTAssertEqualObjects(responseCopy.idToken, kTestIDToken);
-  XCTAssertEqualObjects(responseCopy.tokenType, kTestTokenType);
-  XCTAssertEqualObjects(responseCopy.scope, kTestScope);
-  XCTAssertEqualObjects(responseCopy.accessTokenExpirationDate, response.accessTokenExpirationDate);
+  XCTAssertEqualObjects(responseCopy.authorizationCode, kTestAuthorizationCode, @"");
+  XCTAssertEqualObjects(responseCopy.state, kTestState, @"");
+  XCTAssertEqualObjects(responseCopy.accessToken, kTestAccessToken, @"");
+  XCTAssertEqualObjects(responseCopy.idToken, kTestIDToken, @"");
+  XCTAssertEqualObjects(responseCopy.tokenType, kTestTokenType, @"");
+  XCTAssertEqualObjects(responseCopy.scope, kTestScope, @"");
+  XCTAssertEqualObjects(responseCopy.accessTokenExpirationDate, response.accessTokenExpirationDate,
+                        @"");
   XCTAssertEqualObjects(responseCopy.additionalParameters[kTestAdditionalParameterKey],
-                        kTestAdditionalParameterValue);
+                        kTestAdditionalParameterValue, @"");
 }
 
 @end
+
+#pragma GCC diagnostic pop

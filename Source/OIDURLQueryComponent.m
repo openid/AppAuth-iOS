@@ -198,7 +198,7 @@ static NSString *const kQueryStringParamAdditionalDisallowedCharacters = @"=&+";
 - (NSString *)description {
   return [NSString stringWithFormat:@"<%@: %p, parameters: %@>",
                                     NSStringFromClass([self class]),
-                                    self,
+                                    (void *)self,
                                     _parameters];
 }
 

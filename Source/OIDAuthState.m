@@ -154,7 +154,7 @@ static const NSUInteger kExpiryTimeTolerance = 60;
 #pragma mark - Initializers
 
 - (nonnull instancetype)init
-    OID_UNAVAILABLE_USE_INITIALIZER(@selector(initWithAuthorizationResponse:tokenResponse:));
+    OID_UNAVAILABLE_USE_INITIALIZER(@selector(initWithAuthorizationResponse:tokenResponse:))
 
 /*! @brief Creates an auth state from an authorization response.
     @param authorizationResponse The authorization response.
@@ -216,7 +216,7 @@ static const NSUInteger kExpiryTimeTolerance = 60;
                                      "lastAuthorizationResponse: %@, lastTokenResponse: %@, "
                                      "lastRegistrationResponse: %@, authorizationError: %@>",
                                     NSStringFromClass([self class]),
-                                    self,
+                                    (void *)self,
                                     (self.isAuthorized) ? @"YES" : @"NO",
                                     _refreshToken,
                                     _scope,
@@ -457,7 +457,7 @@ static const NSUInteger kExpiryTimeTolerance = 60;
   }
 
   // access token is expired, first refresh the token, then perform action
-  NSAssert(_pendingActionsSyncObject, @"_pendingActionsSyncObject cannot be nil");
+  NSAssert(_pendingActionsSyncObject, @"_pendingActionsSyncObject cannot be nil", @"");
   @synchronized(_pendingActionsSyncObject) {
     // if a token is already in the process of being refreshed, adds to pending actions
     if (_pendingActions) {
