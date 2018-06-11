@@ -1,0 +1,46 @@
+/*! @file OIDTokenUtilities.m
+ @brief AppAuth iOS SDK
+ @copyright
+        Copyright 2018 The AppAuth for iOS Authors. All Rights Reserved.
+ @copydetails
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+ http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+ */
+
+#import <XCTest/XCTest.h>
+
+#import "Source/OIDTokenUtilities.h"
+
+// Ignore warnings about "Use of GNU statement expression extension" which is raised by our use of
+// the XCTAssert___ macros.
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wgnu"
+
+@interface OIDTokenUtilitiesTests : XCTestCase
+@end
+@implementation OIDTokenUtilitiesTests
+
+- (void)testTruncate {
+    XCTAssertEqualObjects([OIDTokenUtilities truncate:@"012345"], @"012345...", @"");
+}
+
+- (void)testTruncateWithNilParamater {
+    XCTAssertEqualObjects([OIDTokenUtilities truncate:nil], @"...", @"");
+}
+
+- (void)testTruncateWithShortInput {
+    XCTAssertEqualObjects([OIDTokenUtilities truncate:@"01234"], @"...", @"");
+}
+
+@end
+
+#pragma GCC diagnostic pop

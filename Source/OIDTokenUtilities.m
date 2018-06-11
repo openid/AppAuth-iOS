@@ -48,4 +48,8 @@
   return sha256Verifier;
 }
 
++ (NSString *)truncate:(NSString *)inputString {
+    return [inputString length] >= 6 ? [[inputString substringToIndex:6] stringByAppendingString:@"..."] : @"...";
+}
+
 @end
