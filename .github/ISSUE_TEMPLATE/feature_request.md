@@ -5,7 +5,7 @@ about: Suggest an idea for this project
 ---
 
 **Are you filing an issue about iOS 12?**
-Please see preliminary support for iOS 12 from PR: https://github.com/openid/AppAuth-iOS/pull/246 before filing iOS 12 issues. Thanks.
+You can find preliminary support for iOS 12 in the (ios12beta branch)[https://github.com/openid/AppAuth-iOS/tree/ios12beta] and background information in (the associated pull request)[https://github.com/openid/AppAuth-iOS/pull/246]. Please review these materials before filing iOS 12 issues. Thanks.
 
 **Is your feature request related to a problem? Please describe.**
 A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
