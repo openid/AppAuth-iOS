@@ -20,27 +20,21 @@
 
 #import "Source/OIDTokenUtilities.h"
 
-// Ignore warnings about "Use of GNU statement expression extension" which is raised by our use of
-// the XCTAssert___ macros.
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wgnu"
 
 @interface OIDTokenUtilitiesTests : XCTestCase
 @end
 @implementation OIDTokenUtilitiesTests
 
 - (void)testTruncate {
-    XCTAssertEqualObjects([OIDTokenUtilities truncate:@"012345"], @"012345...", @"");
+    XCTAssertEqualObjects([OIDTokenUtilities truncate:@"0123456789"], @"012345...", @"");
 }
 
 - (void)testTruncateWithNilParamater {
-    XCTAssertEqualObjects([OIDTokenUtilities truncate:nil], @"...", @"");
+    XCTAssertEqualObjects([OIDTokenUtilities truncate:nil], @"[redacted]", @"");
 }
 
 - (void)testTruncateWithShortInput {
-    XCTAssertEqualObjects([OIDTokenUtilities truncate:@"01234"], @"...", @"");
+    XCTAssertEqualObjects([OIDTokenUtilities truncate:@"01234"], @"[redacted]", @"");
 }
 
 @end
-
-#pragma GCC diagnostic pop
