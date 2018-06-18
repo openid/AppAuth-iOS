@@ -5,7 +5,7 @@ about: Create a report to help us improve
 ---
 
 **Are you filing an issue about iOS 12?**
-Please see preliminary support for iOS 12 from PR: https://github.com/openid/AppAuth-iOS/pull/246 before filing iOS 12 issues. Thanks.
+You can find preliminary support for iOS 12 in the (ios12beta branch)[https://github.com/openid/AppAuth-iOS/tree/ios12beta] and background information in (the associated pull request)[https://github.com/openid/AppAuth-iOS/pull/246]. Please review these materials before filing iOS 12 issues. Thanks.
 
 **Describe the bug**
 A clear and concise description of what the bug is.
