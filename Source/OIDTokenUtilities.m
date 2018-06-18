@@ -49,7 +49,8 @@
 }
 
 + (NSString *)truncate:(NSString *)inputString {
-    return [inputString length] >= 9 ? [[inputString substringToIndex:6] stringByAppendingString:@"..."] : @"[redacted]";
+  return inputString.length >= 9
+    ? [[inputString substringToIndex:6] stringByAppendingString:@"..."] : @"[redacted]";
 }
 
 @end

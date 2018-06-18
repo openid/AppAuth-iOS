@@ -26,15 +26,15 @@
 @implementation OIDTokenUtilitiesTests
 
 - (void)testTruncate {
-    XCTAssertEqualObjects([OIDTokenUtilities truncate:@"0123456789"], @"012345...", @"");
+  XCTAssertEqualObjects([OIDTokenUtilities truncate:@"0123456789"], @"012345...", @"");
 }
 
 - (void)testTruncateWithNilParamater {
-    XCTAssertEqualObjects([OIDTokenUtilities truncate:nil], @"[redacted]", @"");
+  XCTAssertEqualObjects([OIDTokenUtilities truncate:nil], @"[redacted]", @"");
 }
 
 - (void)testTruncateWithShortInput {
-    XCTAssertEqualObjects([OIDTokenUtilities truncate:@"01234"], @"[redacted]", @"");
+  XCTAssertEqualObjects([OIDTokenUtilities truncate:@"01234"], @"[redacted]", @"");
 }
 
 @end
