@@ -18,16 +18,19 @@
 
 #import <Foundation/Foundation.h>
 
+#import "OIDExternalUserAgentRequest.h"
+
 @class OIDServiceConfiguration;
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface OIDEndSessionRequest : NSObject <NSCopying, NSSecureCoding> {
-    OIDServiceConfiguration *_configuration;
-    NSURL *_postLogoutRedirectURL;
-    NSString *_idTokenHint;
-    NSString *_state;
-    NSDictionary<NSString *, NSString *> *_additionalParameters;
+@interface OIDEndSessionRequest : NSObject
+    <NSCopying, NSSecureCoding, OIDExternalUserAgentRequest> {
+  OIDServiceConfiguration *_configuration;
+  NSURL *_postLogoutRedirectURL;
+  NSString *_idTokenHint;
+  NSString *_state;
+  NSDictionary<NSString *, NSString *> *_additionalParameters;
 }
 
 /*! @brief The service's configuration.
@@ -42,7 +45,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property(nonatomic, readonly, nullable) NSURL *postLogoutRedirectURL;
 
-/*! @brief  Previously issued ID Token passed to the end session endpoint as a hint about the End-User's current authenticated
+/*! @brief Previously issued ID Token passed to the end session endpoint as a hint about the End-User's current authenticated
         session with the Client
     @remarks id_token_hint
     @see http://openid.net/specs/openid-connect-session-1_0.html#RPLogout
