@@ -26,6 +26,9 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @interface OIDAuthState (IOS)
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+
 /*! @brief Convenience method to create a @c OIDAuthState by presenting an authorization request
         and performing the authorization code exchange in the case of code flow requests.
     @param authorizationRequest The authorization request to present.
@@ -40,6 +43,8 @@ NS_ASSUME_NONNULL_BEGIN
     authStateByPresentingAuthorizationRequest:(OIDAuthorizationRequest *)authorizationRequest
                      presentingViewController:(UIViewController *)presentingViewController
                                      callback:(OIDAuthStateAuthorizationCallback)callback;
+
+#pragma GCC diagnostic pop
 
 @end
 

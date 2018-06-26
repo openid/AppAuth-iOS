@@ -24,6 +24,9 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol OIDAuthorizationFlowSession;
 @protocol OIDExternalUserAgentSession;
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+
 /*! @brief Start a HTTP server on the loopback interface (i.e. @c 127.0.0.1) to receive the OAuth
         response redirects on macOS.
  */
@@ -43,6 +46,8 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property(nonatomic, strong, nullable) id<OIDExternalUserAgentSession,
     OIDAuthorizationFlowSession> currentAuthorizationFlow;
+
+#pragma GCC diagnostic pop
 
 /*! @brief Creates an a loopback HTTP redirect URI handler with the given success URL.
     @param successURL The URL that the user is redirected to after the external user-agent request flow completes

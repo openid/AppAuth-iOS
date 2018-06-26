@@ -24,6 +24,9 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @interface OIDAuthorizationService (Mac)
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+
 /*! @brief Perform an authorization flow using the default browser.
     @param request The authorization request.
     @param callback The method called when the request has completed or failed.
@@ -34,6 +37,9 @@ NS_ASSUME_NONNULL_BEGIN
 + (id<OIDExternalUserAgentSession, OIDAuthorizationFlowSession>)
     presentAuthorizationRequest:(OIDAuthorizationRequest *)request
                        callback:(OIDAuthorizationCallback)callback;
+
+#pragma GCC diagnostic pop
+
 @end
 
 NS_ASSUME_NONNULL_END
