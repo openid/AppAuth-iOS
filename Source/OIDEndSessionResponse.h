@@ -23,23 +23,29 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /*! @brief Represents the response to an End Session request.
-    @see http://openid.net/specs/openid-connect-frontchannel-1_0.html
+    @see http://openid.net/specs/openid-connect-session-1_0.html#RPLogout
  */
 
 @interface OIDEndSessionResponse : NSObject <NSCopying, NSSecureCoding> {
-    OIDEndSessionRequest *_request;
-    NSString *_state;
+  OIDEndSessionRequest *_request;
+  NSString *_state;
+  NSDictionary<NSString *, NSObject<NSCopying> *> *additionalParameters;
 }
 
 /*! @brief The request which was serviced.
  */
 @property(nonatomic, readonly) OIDEndSessionRequest *request;
 
-/*! @brief REQUIRED if the "state" parameter was present in the client authorization request. The
+/*! @brief REQUIRED if the "state" parameter was present in the client end-session request. The
         exact value received from the client.
     @remarks state
  */
 @property(nonatomic, readonly, nullable) NSString *state;
+
+/*! @brief Additional parameters returned from the end session endpoint.
+ */
+@property(nonatomic, readonly, nullable)
+    NSDictionary<NSString *, NSObject<NSCopying> *> *additionalParameters;
 
 /*! @internal
     @brief Unavailable. Please use initWithParameters:.
@@ -55,7 +61,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (instancetype)initWithRequest:(OIDEndSessionRequest *)request
                      parameters:(NSDictionary<NSString *, NSObject<NSCopying> *> *)parameters
-NS_DESIGNATED_INITIALIZER;
+    NS_DESIGNATED_INITIALIZER;
 
 @end
 
