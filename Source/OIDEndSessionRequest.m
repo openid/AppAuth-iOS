@@ -187,10 +187,10 @@ static NSString *const OIDMissingEndSessionEndpointMessage =
     [query addParameter:kStateKey value:_state];
   }
 
-  NSAssert(_configuration.discoveryDocument.endSessionEndpoint, OIDMissingEndSessionEndpointMessage);
+  NSAssert(_configuration.endSessionEndpoint, OIDMissingEndSessionEndpointMessage);
 
   // Construct the URL
-  return [query URLByReplacingQueryInURL:_configuration.discoveryDocument.endSessionEndpoint];
+  return [query URLByReplacingQueryInURL:_configuration.endSessionEndpoint];
 }
 
 @end
