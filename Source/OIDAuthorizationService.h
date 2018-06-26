@@ -21,6 +21,8 @@
 @class OIDAuthorization;
 @class OIDAuthorizationRequest;
 @class OIDAuthorizationResponse;
+@class OIDEndSessionRequest;
+@class OIDEndSessionResponse;
 @class OIDRegistrationRequest;
 @class OIDRegistrationResponse;
 @class OIDServiceConfiguration;
@@ -47,6 +49,13 @@ typedef void (^OIDDiscoveryCallback)(OIDServiceConfiguration *_Nullable configur
  */
 typedef void (^OIDAuthorizationCallback)(OIDAuthorizationResponse *_Nullable authorizationResponse,
                                          NSError *_Nullable error);
+
+/*! @brief Block used as a callback for the end-session request of @c OIDAuthorizationService.
+    @param endSessionResponse The end-session response, if available.
+    @param error The error if an error occurred.
+ */
+typedef void (^OIDEndSessionCallback)(OIDEndSessionResponse *_Nullable endSessionResponse,
+                                      NSError *_Nullable error);
 
 /*! @brief Represents the type of block used as a callback for various methods of
         @c OIDAuthorizationService.
@@ -127,6 +136,20 @@ typedef void (^OIDRegistrationCompletion)(OIDRegistrationResponse *_Nullable reg
     presentAuthorizationRequest:(OIDAuthorizationRequest *)request
               externalUserAgent:(id<OIDExternalUserAgent>)externalUserAgent
                        callback:(OIDAuthorizationCallback)callback;
+
+/*! @brief Perform a logout request.
+    @param request The end-session logout request.
+    @param externalUserAgent Generic external user-agent that can present user-agent requests.
+    @param callback The method called when the request has completed or failed.
+    @return A @c OIDExternalUserAgentSession instance which will terminate when it
+        receives a @c OIDExternalUserAgentSession.cancel message, or after processing a
+        @c OIDExternalUserAgentSession.resumeExternalUserAgentFlowWithURL: message.
+    @see http://openid.net/specs/openid-connect-session-1_0.html#RPLogout
+ */
++ (id<OIDExternalUserAgentSession>)
+    presentEndSessionRequest:(OIDEndSessionRequest *)request
+           externalUserAgent:(id<OIDExternalUserAgent>)externalUserAgent
+                    callback:(OIDEndSessionCallback)callback;
 
 #pragma GCC diagnostic pop
 

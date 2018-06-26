@@ -21,6 +21,8 @@
 #import "OIDAuthorizationRequest.h"
 #import "OIDAuthorizationResponse.h"
 #import "OIDDefines.h"
+#import "OIDEndSessionRequest.h"
+#import "OIDEndSessionResponse.h"
 #import "OIDErrorUtilities.h"
 #import "OIDAuthorizationFlowSession.h"
 #import "OIDExternalUserAgent.h"
@@ -95,16 +97,25 @@ NS_ASSUME_NONNULL_BEGIN
   }];
 }
 
-- (BOOL)shouldHandleURL:(NSURL *)URL {
+/*! @brief Does the redirection URL equal another URL down to the path component?
+    @param URL The first redirect URI to compare.
+    @param redirectonURL The second redirect URI to compare.
+    @return YES if the URLs match down to the path level (query params are ignored).
+ */
++ (BOOL)URL:(NSURL *)URL matchesRedirectonURL:(NSURL *)redirectonURL {
   NSURL *standardizedURL = [URL standardizedURL];
-  NSURL *standardizedRedirectURL = [_request.redirectURL standardizedURL];
+  NSURL *standardizedRedirectURL = [redirectonURL standardizedURL];
+  
+  return OIDIsEqualIncludingNil(standardizedURL.scheme, standardizedRedirectURL.scheme)
+      && OIDIsEqualIncludingNil(standardizedURL.user, standardizedRedirectURL.user)
+      && OIDIsEqualIncludingNil(standardizedURL.password, standardizedRedirectURL.password)
+      && OIDIsEqualIncludingNil(standardizedURL.host, standardizedRedirectURL.host)
+      && OIDIsEqualIncludingNil(standardizedURL.port, standardizedRedirectURL.port)
+      && OIDIsEqualIncludingNil(standardizedURL.path, standardizedRedirectURL.path);
+}
 
-  return OIDIsEqualIncludingNil(standardizedURL.scheme, standardizedRedirectURL.scheme) &&
-      OIDIsEqualIncludingNil(standardizedURL.user, standardizedRedirectURL.user) &&
-      OIDIsEqualIncludingNil(standardizedURL.password, standardizedRedirectURL.password) &&
-      OIDIsEqualIncludingNil(standardizedURL.host, standardizedRedirectURL.host) &&
-      OIDIsEqualIncludingNil(standardizedURL.port, standardizedRedirectURL.port) &&
-      OIDIsEqualIncludingNil(standardizedURL.path, standardizedRedirectURL.path);
+- (BOOL)shouldHandleURL:(NSURL *)URL {
+  return [[self class] URL:URL matchesRedirectonURL:_request.redirectURL];
 }
 
 - (BOOL)resumeExternalUserAgentFlowWithURL:(NSURL *)URL {
@@ -185,6 +196,121 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (BOOL)resumeAuthorizationFlowWithURL:(NSURL *)URL {
   return [self resumeExternalUserAgentFlowWithURL:URL];
+}
+
+@end
+
+@interface OIDEndSessionImplementation : NSObject<OIDExternalUserAgentSession> {
+  // private variables
+  OIDEndSessionRequest *_request;
+  id<OIDExternalUserAgent> _externalUserAgent;
+  OIDEndSessionCallback _pendingEndSessionCallback;
+}
+- (instancetype)init NS_UNAVAILABLE;
+
+- (instancetype)initWithRequest:(OIDEndSessionRequest *)request
+    NS_DESIGNATED_INITIALIZER;
+@end
+
+
+@implementation OIDEndSessionImplementation
+
+- (instancetype)initWithRequest:(OIDEndSessionRequest *)request {
+  self = [super init];
+  if (self) {
+    _request = [request copy];
+  }
+  return self;
+}
+
+- (void)presentAuthorizationWithExternalUserAgent:(id<OIDExternalUserAgent>)externalUserAgent
+                                         callback:(OIDEndSessionCallback)authorizationFlowCallback {
+  _externalUserAgent = externalUserAgent;
+  _pendingEndSessionCallback = authorizationFlowCallback;
+  BOOL authorizationFlowStarted =
+      [_externalUserAgent presentExternalUserAgentRequest:_request session:self];
+  if (!authorizationFlowStarted) {
+    NSError *safariError = [OIDErrorUtilities errorWithCode:OIDErrorCodeSafariOpenError
+                                            underlyingError:nil
+                                                description:@"Unable to open Safari."];
+    [self didFinishWithResponse:nil error:safariError];
+  }
+}
+
+- (void)cancel {
+  [_externalUserAgent dismissExternalUserAgentAnimated:YES completion:^{
+    NSError *error = [OIDErrorUtilities
+                      errorWithCode:OIDErrorCodeUserCanceledAuthorizationFlow
+                      underlyingError:nil
+                      description:nil];
+    [self didFinishWithResponse:nil error:error];
+  }];
+}
+
+- (BOOL)shouldHandleURL:(NSURL *)URL {
+  // The logic of when to handle the URL is the same as for authorization requests: should match
+  // down to the path component.
+  return [[OIDAuthorizationFlowSessionImplementation class] URL:URL
+                                           matchesRedirectonURL:_request.endSessionRequestURL];
+}
+
+- (BOOL)resumeExternalUserAgentFlowWithURL:(NSURL *)URL {
+  // rejects URLs that don't match redirect (these may be completely unrelated to the authorization)
+  if (![self shouldHandleURL:URL]) {
+    return NO;
+  }
+  // checks for an invalid state
+  if (!_pendingEndSessionCallback) {
+    [NSException raise:OIDOAuthExceptionInvalidAuthorizationFlow
+                format:@"%@", OIDOAuthExceptionInvalidAuthorizationFlow, nil];
+  }
+  
+  
+  NSError *error;
+  OIDEndSessionResponse *response = nil;
+
+  OIDURLQueryComponent *query = [[OIDURLQueryComponent alloc] initWithURL:URL];
+  response = [[OIDEndSessionResponse alloc] initWithRequest:_request
+                                                 parameters:query.dictionaryValue];
+  
+  // verifies that the state in the response matches the state in the request, or both are nil
+  if (!OIDIsEqualIncludingNil(_request.state, response.state)) {
+    NSMutableDictionary *userInfo = [query.dictionaryValue mutableCopy];
+    userInfo[NSLocalizedDescriptionKey] =
+    [NSString stringWithFormat:@"State mismatch, expecting %@ but got %@ in authorization "
+     "response %@",
+     _request.state,
+     response.state,
+     response];
+    response = nil;
+    error = [NSError errorWithDomain:OIDOAuthAuthorizationErrorDomain
+                                code:OIDErrorCodeOAuthAuthorizationClientError
+                            userInfo:userInfo];
+  }
+  
+  [_externalUserAgent dismissExternalUserAgentAnimated:YES completion:^{
+    [self didFinishWithResponse:response error:error];
+  }];
+  
+  return YES;
+}
+
+- (void)failExternalUserAgentFlowWithError:(NSError *)error {
+  [self didFinishWithResponse:nil error:error];
+}
+
+/*! @brief Invokes the pending callback and performs cleanup.
+ @param response The authorization response, if any to return to the callback.
+ @param error The error, if any, to return to the callback.
+ */
+- (void)didFinishWithResponse:(nullable OIDEndSessionResponse *)response
+                        error:(nullable NSError *)error {
+  OIDEndSessionCallback callback = _pendingEndSessionCallback;
+  _pendingEndSessionCallback = nil;
+  _externalUserAgent = nil;
+  if (callback) {
+    callback(response, error);
+  }
 }
 
 @end
@@ -291,6 +417,16 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 #pragma GCC diagnostic pop
+
++ (id<OIDExternalUserAgentSession>)
+    presentEndSessionRequest:(OIDEndSessionRequest *)request
+           externalUserAgent:(id<OIDExternalUserAgent>)externalUserAgent
+                    callback:(OIDEndSessionCallback)callback {
+  OIDEndSessionImplementation *flowSession =
+      [[OIDEndSessionImplementation alloc] initWithRequest:request];
+  [flowSession presentAuthorizationWithExternalUserAgent:externalUserAgent callback:callback];
+  return flowSession;
+}
 
 #pragma mark - Token Endpoint
 
