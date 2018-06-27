@@ -54,7 +54,7 @@ NS_ASSUME_NONNULL_BEGIN
     @param inputString The input string.
     @return Truncated string.
  */
-+ (NSString *)truncate:(nullable NSString *)inputString;
++ (nullable NSString *)redact:(nullable NSString *)inputString;
 
 @end
 

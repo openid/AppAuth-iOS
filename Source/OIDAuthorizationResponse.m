@@ -182,10 +182,10 @@ static NSString *const kTokenExchangeRequestException =
                                     (void *)self,
                                     _authorizationCode,
                                     _state,
-                                    [OIDTokenUtilities truncate:_accessToken],
+                                    [OIDTokenUtilities redact:_accessToken],
                                     _accessTokenExpirationDate,
                                     _tokenType,
-                                    [OIDTokenUtilities truncate:_idToken],
+                                    [OIDTokenUtilities redact:_idToken],
                                     _scope,
                                     _additionalParameters,
                                     _request];

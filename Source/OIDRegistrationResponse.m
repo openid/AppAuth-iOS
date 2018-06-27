@@ -163,9 +163,9 @@ static NSString *const kAdditionalParametersKey = @"additionalParameters";
           (void *)self,
           _clientID,
           _clientIDIssuedAt,
-          [OIDTokenUtilities truncate:_clientSecret],
+          [OIDTokenUtilities redact:_clientSecret],
           _clientSecretExpiresAt,
-          [OIDTokenUtilities truncate:_registrationAccessToken],
+          [OIDTokenUtilities redact:_registrationAccessToken],
           _registrationClientURI,
           _additionalParameters,
           _request];

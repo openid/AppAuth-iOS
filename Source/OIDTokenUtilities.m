@@ -48,11 +48,18 @@
   return sha256Verifier;
 }
 
-+ (NSString *)truncate:(NSString *)inputString {
-  if (inputString.length >= 9) {
-    return [[inputString substringToIndex:6] stringByAppendingString:@"..."];
-  } else {
-    return @"[redacted]";
++ (NSString *)redact:(NSString *)inputString {
+  if (inputString == nil) {
+    return nil;
+  }
+  switch(inputString.length){
+    case 0:
+      return @"";
+    case 1 ... 8:
+      return @"[redacted]";
+    case 9:
+    default:
+      return [[inputString substringToIndex:6] stringByAppendingString:@"...[redacted]"];
   }
 }
 
