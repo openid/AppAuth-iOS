@@ -29,6 +29,7 @@
 #import "OIDRegistrationResponse.h"
 #import "OIDTokenRequest.h"
 #import "OIDTokenResponse.h"
+#import "OIDTokenUtilities.h"
 
 /*! @brief Key used to encode the @c refreshToken property for @c NSSecureCoding.
  */
@@ -218,11 +219,11 @@ static const NSUInteger kExpiryTimeTolerance = 60;
                                     NSStringFromClass([self class]),
                                     (void *)self,
                                     (self.isAuthorized) ? @"YES" : @"NO",
-                                    _refreshToken,
+                                    [OIDTokenUtilities redact:_refreshToken],
                                     _scope,
-                                    self.accessToken,
+                                    [OIDTokenUtilities redact:self.accessToken],
                                     self.accessTokenExpirationDate,
-                                    self.idToken,
+                                    [OIDTokenUtilities redact:self.idToken],
                                     _lastAuthorizationResponse,
                                     _lastTokenResponse,
                                     _lastRegistrationResponse,

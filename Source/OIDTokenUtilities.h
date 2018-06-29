@@ -50,6 +50,12 @@ NS_ASSUME_NONNULL_BEGIN
  */
 + (NSData *)sha265:(NSString *)inputString;
 
+/*! @brief Truncated intput string after first 6 characters followed by ellipses
+    @param inputString The input string.
+    @return Truncated string.
+ */
++ (nullable NSString *)redact:(nullable NSString *)inputString;
+
 @end
 
 NS_ASSUME_NONNULL_END
