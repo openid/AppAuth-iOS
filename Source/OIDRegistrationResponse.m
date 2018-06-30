@@ -22,6 +22,7 @@
 #import "OIDDefines.h"
 #import "OIDFieldMapping.h"
 #import "OIDRegistrationRequest.h"
+#import "OIDTokenUtilities.h"
 
 NSString *const OIDClientIDParam = @"client_id";
 NSString *const OIDClientIDIssuedAtParam = @"client_id_issued_at";
@@ -89,7 +90,7 @@ static NSString *const kAdditionalParametersKey = @"additionalParameters";
 #pragma mark - Initializers
 
 - (nonnull instancetype)init
-  OID_UNAVAILABLE_USE_INITIALIZER(@selector(initWithRequest:parameters:));
+  OID_UNAVAILABLE_USE_INITIALIZER(@selector(initWithRequest:parameters:))
 
 - (instancetype)initWithRequest:(OIDRegistrationRequest *)request
                               parameters:(NSDictionary<NSString *, NSObject <NSCopying> *> *)parameters {
@@ -159,12 +160,12 @@ static NSString *const kAdditionalParametersKey = @"additionalParameters";
           "registrationClientURI: \"%@\", "
           "additionalParameters: %@, request: %@>",
           NSStringFromClass([self class]),
-          self,
+          (void *)self,
           _clientID,
           _clientIDIssuedAt,
-          _clientSecret,
+          [OIDTokenUtilities redact:_clientSecret],
           _clientSecretExpiresAt,
-          _registrationAccessToken,
+          [OIDTokenUtilities redact:_registrationAccessToken],
           _registrationClientURI,
           _additionalParameters,
           _request];

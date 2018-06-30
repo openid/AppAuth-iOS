@@ -21,6 +21,10 @@
 #include <netinet/in.h>
 #include <unistd.h>
 
+// We'll ignore the pointer arithmetic warnings for now.
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wpointer-arith"
+
 @implementation HTTPServer
 
 - (id)init {
@@ -99,14 +103,12 @@
 }
 
 - (HTTPServerRequest *)nextRequest {
-    NSUInteger idx, cnt = requests ? [requests count] : 0;
-    for (idx = 0; idx < cnt; idx++) {
-        id obj = [requests objectAtIndex:idx];
-        if ([obj response] == nil) {
-            return obj;
-        }
+  for (HTTPServerRequest *request in requests) {
+    if (![request response]) {
+      return request;
     }
-    return nil;
+  }
+  return nil;
 }
 
 - (BOOL)isValid {
@@ -173,8 +175,9 @@
         // directly as this method is called in a loop in order to process multiple messages, and
         // the delegate may choose to stop and dealloc the listener – so we need queue the messages
         // and process them separately.
+        id myDelegate = delegate;
         dispatch_async(dispatch_get_main_queue(), ^() {
-          [delegate HTTPConnection:self didReceiveRequest:request];
+          [myDelegate HTTPConnection:self didReceiveRequest:request];
         });
     } else {
         [self performDefaultRequestHandling:request];
@@ -605,3 +608,5 @@ static void TCPServerAcceptCallBack(CFSocketRef socket, CFSocketCallBackType typ
 }
 
 @end
+
+#pragma GCC diagnostic pop

@@ -29,6 +29,7 @@
 #import "OIDExternalUserAgentRequest.h"
 #import "OIDExternalUserAgentSession.h"
 #import "OIDGrantTypes.h"
+#import "OIDIDToken.h"
 #import "OIDRegistrationRequest.h"
 #import "OIDRegistrationResponse.h"
 #import "OIDResponseTypes.h"

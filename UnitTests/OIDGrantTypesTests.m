@@ -20,6 +20,11 @@
 
 #import "Source/OIDGrantTypes.h"
 
+// Ignore warnings about "Use of GNU statement expression extension" which is raised by our use of
+// the XCTAssert___ macros.
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wgnu"
+
 /*! @brief Unit tests for constants in @c OIDGrantTypes.m.
     @remarks Arguably not worth tests for this file, but adding them for consistency, and so that
         any future enhancements have a place to add tests if need be.
@@ -45,3 +50,5 @@
 }
 
 @end
+
+#pragma GCC diagnostic pop

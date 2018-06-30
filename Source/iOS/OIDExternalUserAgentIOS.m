@@ -90,32 +90,36 @@ static id<OIDSafariViewControllerFactory> __nullable gSafariViewControllerFactor
   NSURL *requestURL = [request externalUserAgentRequestURL];
 
   if (@available(iOS 11.0, *)) {
+    __weak OIDExternalUserAgentIOS *weakSelf = self;
     NSString *redirectScheme = request.redirectScheme;
-    SFAuthenticationSession* authenticationVC =
+    SFAuthenticationSession *authenticationVC =
         [[SFAuthenticationSession alloc] initWithURL:requestURL
                                    callbackURLScheme:redirectScheme
                                    completionHandler:^(NSURL * _Nullable callbackURL,
                                                        NSError * _Nullable error) {
-      _authenticationVC = nil;
+      __strong OIDExternalUserAgentIOS *strongSelf = weakSelf;
+      if (!strongSelf)
+          return;
+      strongSelf->_authenticationVC = nil;
       if (callbackURL) {
-        [_session resumeExternalUserAgentFlowWithURL:callbackURL];
+        [strongSelf->_session resumeExternalUserAgentFlowWithURL:callbackURL];
       } else {
         NSError *safariError =
             [OIDErrorUtilities errorWithCode:OIDErrorCodeUserCanceledAuthorizationFlow
                              underlyingError:error
-                                 description:nil];
-        [_session failExternalUserAgentFlowWithError:safariError];
+                                 description:@"User cancelled."];
+        [strongSelf->_session failExternalUserAgentFlowWithError:safariError];
       }
     }];
     _authenticationVC = authenticationVC;
     openedSafari = [authenticationVC start];
   } else if (@available(iOS 9.0, *)) {
-      SFSafariViewController *safariVC =
-          [[[self class] safariViewControllerFactory] safariViewControllerWithURL:requestURL];
-      safariVC.delegate = self;
-      _safariVC = safariVC;
-      [_presentingViewController presentViewController:safariVC animated:YES completion:nil];
-      openedSafari = YES;
+    SFSafariViewController *safariVC =
+        [[[self class] safariViewControllerFactory] safariViewControllerWithURL:requestURL];
+    safariVC.delegate = self;
+    _safariVC = safariVC;
+    [_presentingViewController presentViewController:safariVC animated:YES completion:nil];
+    openedSafari = YES;
   } else {
     openedSafari = [UIApplication openURL:requestURL];
   }
@@ -180,9 +184,9 @@ static id<OIDSafariViewControllerFactory> __nullable gSafariViewControllerFactor
   }
   id<OIDExternalUserAgentSession> session = _session;
   [self cleanUp];
-  NSError *error = [OIDErrorUtilities errorWithCode:OIDErrorCodeProgramCanceledAuthorizationFlow
+  NSError *error = [OIDErrorUtilities errorWithCode:OIDErrorCodeUserCanceledAuthorizationFlow
                                     underlyingError:nil
-                                        description:nil];
+                                        description:@"No external user agent flow in progress."];
   [session failExternalUserAgentFlowWithError:error];
 }
 

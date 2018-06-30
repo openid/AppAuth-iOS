@@ -111,6 +111,9 @@ typedef void (^OIDRegistrationCompletion)(OIDRegistrationResponse *_Nullable reg
 + (void)discoverServiceConfigurationForDiscoveryURL:(NSURL *)discoveryURL
                                          completion:(OIDDiscoveryCallback)completion;
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+
 /*! @brief Perform an authorization flow using a generic flow shim.
     @param request The authorization request.
     @param externalUserAgent Generic external user-agent that can present an authorization
@@ -125,11 +128,22 @@ typedef void (^OIDRegistrationCompletion)(OIDRegistrationResponse *_Nullable reg
               externalUserAgent:(id<OIDExternalUserAgent>)externalUserAgent
                        callback:(OIDAuthorizationCallback)callback;
 
+#pragma GCC diagnostic pop
+
 /*! @brief Performs a token request.
     @param request The token request.
     @param callback The method called when the request has completed or failed.
  */
 + (void)performTokenRequest:(OIDTokenRequest *)request callback:(OIDTokenCallback)callback;
+
+/*! @brief Performs a token request.
+    @param request The token request.
+    @param authorizationResponse The original authorization response related to this token request.
+    @param callback The method called when the request has completed or failed.
+ */
++ (void)performTokenRequest:(OIDTokenRequest *)request
+    originalAuthorizationResponse:(OIDAuthorizationResponse *_Nullable)authorizationResponse
+                         callback:(OIDTokenCallback)callback;
 
 /*! @brief Performs a registration request.
     @param request The registration request.

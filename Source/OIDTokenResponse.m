@@ -21,6 +21,7 @@
 #import "OIDDefines.h"
 #import "OIDFieldMapping.h"
 #import "OIDTokenRequest.h"
+#import "OIDTokenUtilities.h"
 
 /*! @brief Key used to encode the @c request property for @c NSSecureCoding
  */
@@ -98,7 +99,7 @@ static NSString *const kAdditionalParametersKey = @"additionalParameters";
 #pragma mark - Initializers
 
 - (instancetype)init
-    OID_UNAVAILABLE_USE_INITIALIZER(@selector(initWithRequest:parameters:));
+    OID_UNAVAILABLE_USE_INITIALIZER(@selector(initWithRequest:parameters:))
 
 - (instancetype)initWithRequest:(OIDTokenRequest *)request
     parameters:(NSDictionary<NSString *, NSObject<NSCopying> *> *)parameters {
@@ -155,12 +156,12 @@ static NSString *const kAdditionalParametersKey = @"additionalParameters";
                                      "tokenType: %@, idToken: \"%@\", refreshToken: \"%@\", "
                                      "scope: \"%@\", additionalParameters: %@, request: %@>",
                                     NSStringFromClass([self class]),
-                                    self,
-                                    _accessToken,
+                                    (void *)self,
+                                    [OIDTokenUtilities redact:_accessToken],
                                     _accessTokenExpirationDate,
                                     _tokenType,
-                                    _idToken,
-                                    _refreshToken,
+                                    [OIDTokenUtilities redact:_idToken],
+                                    [OIDTokenUtilities redact:_refreshToken],
                                     _scope,
                                     _additionalParameters,
                                     _request];

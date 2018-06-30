@@ -25,6 +25,7 @@
 #import "OIDAuthorizationFlowSession.h"
 #import "OIDExternalUserAgent.h"
 #import "OIDExternalUserAgentSession.h"
+#import "OIDIDToken.h"
 #import "OIDRegistrationRequest.h"
 #import "OIDRegistrationResponse.h"
 #import "OIDServiceConfiguration.h"
@@ -42,12 +43,17 @@ static NSString *const kOpenIDConfigurationWellKnownPath = @".well-known/openid-
 
 NS_ASSUME_NONNULL_BEGIN
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+
 @interface OIDAuthorizationFlowSessionImplementation : NSObject<OIDExternalUserAgentSession, OIDAuthorizationFlowSession> {
   // private variables
   OIDAuthorizationRequest *_request;
   id<OIDExternalUserAgent> _externalUserAgent;
   OIDAuthorizationCallback _pendingauthorizationFlowCallback;
 }
+
+#pragma GCC diagnostic pop
 
 - (instancetype)init NS_UNAVAILABLE;
 
@@ -82,10 +88,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)cancel {
   [_externalUserAgent dismissExternalUserAgentAnimated:YES completion:^{
-      NSError *error = [OIDErrorUtilities
-                        errorWithCode:OIDErrorCodeUserCanceledAuthorizationFlow
-                        underlyingError:nil
-                        description:nil];
+      NSError *error = [OIDErrorUtilities errorWithCode:OIDErrorCodeUserCanceledAuthorizationFlow
+                                        underlyingError:nil
+                                            description:@"Authorization flow was cancelled."];
       [self didFinishWithResponse:nil error:error];
   }];
 }
@@ -190,8 +195,8 @@ NS_ASSUME_NONNULL_BEGIN
   NSURL *fullDiscoveryURL =
       [issuerURL URLByAppendingPathComponent:kOpenIDConfigurationWellKnownPath];
 
-  return [[self class] discoverServiceConfigurationForDiscoveryURL:fullDiscoveryURL
-                                                        completion:completion];
+  [[self class] discoverServiceConfigurationForDiscoveryURL:fullDiscoveryURL
+                                                 completion:completion];
 }
 
 + (void)discoverServiceConfigurationForDiscoveryURL:(NSURL *)discoveryURL
@@ -203,9 +208,13 @@ NS_ASSUME_NONNULL_BEGIN
              completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
     // If we got any sort of error, just report it.
     if (error || !data) {
+      NSString *errorDescription =
+          [NSString stringWithFormat:@"Connection error fetching discovery document '%@': %@.",
+                                     discoveryURL,
+                                     error.localizedDescription];
       error = [OIDErrorUtilities errorWithCode:OIDErrorCodeNetworkError
                                underlyingError:error
-                                   description:error.localizedDescription];
+                                   description:errorDescription];
       dispatch_async(dispatch_get_main_queue(), ^{
         completion(nil, error);
       });
@@ -219,9 +228,14 @@ NS_ASSUME_NONNULL_BEGIN
     if (urlResponse.statusCode != 200) {
       NSError *URLResponseError = [OIDErrorUtilities HTTPErrorWithHTTPResponse:urlResponse
                                                                           data:data];
+      NSString *errorDescription =
+          [NSString stringWithFormat:@"Non-200 HTTP response (%d) fetching discovery document "
+                                     "'%@'.",
+                                     (int)urlResponse.statusCode,
+                                     discoveryURL];
       error = [OIDErrorUtilities errorWithCode:OIDErrorCodeNetworkError
                                underlyingError:URLResponseError
-                                   description:nil];
+                                   description:errorDescription];
       dispatch_async(dispatch_get_main_queue(), ^{
         completion(nil, error);
       });
@@ -232,9 +246,13 @@ NS_ASSUME_NONNULL_BEGIN
     OIDServiceDiscovery *discovery =
         [[OIDServiceDiscovery alloc] initWithJSONData:data error:&error];
     if (error || !discovery) {
+      NSString *errorDescription =
+          [NSString stringWithFormat:@"JSON error parsing document at '%@': %@",
+                                     discoveryURL,
+                                     error.localizedDescription];
       error = [OIDErrorUtilities errorWithCode:OIDErrorCodeNetworkError
                                underlyingError:error
-                                   description:nil];
+                                   description:errorDescription];
       dispatch_async(dispatch_get_main_queue(), ^{
         completion(nil, error);
       });
@@ -253,6 +271,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - Authorization Endpoint
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+
 + (id<OIDExternalUserAgentSession, OIDAuthorizationFlowSession>)
     presentAuthorizationRequest:(OIDAuthorizationRequest *)request
               externalUserAgent:(id<OIDExternalUserAgent>)externalUserAgent
@@ -263,9 +284,20 @@ NS_ASSUME_NONNULL_BEGIN
   return flowSession;
 }
 
+#pragma GCC diagnostic pop
+
 #pragma mark - Token Endpoint
 
 + (void)performTokenRequest:(OIDTokenRequest *)request callback:(OIDTokenCallback)callback {
+  [[self class] performTokenRequest:request
+      originalAuthorizationResponse:nil
+                           callback:callback];
+}
+
++ (void)performTokenRequest:(OIDTokenRequest *)request
+    originalAuthorizationResponse:(OIDAuthorizationResponse *_Nullable)authorizationResponse
+                         callback:(OIDTokenCallback)callback {
+
   NSURLRequest *URLRequest = [request URLRequest];
   NSURLSession *session = [OIDURLSessionProvider session];
   [[session dataTaskWithRequest:URLRequest
@@ -274,10 +306,14 @@ NS_ASSUME_NONNULL_BEGIN
                                   NSError *_Nullable error) {
     if (error) {
       // A network error or server error occurred.
+      NSString *errorDescription =
+          [NSString stringWithFormat:@"Connection error making token request to '%@': %@.",
+                                     URLRequest.URL,
+                                     error.localizedDescription];
       NSError *returnedError =
           [OIDErrorUtilities errorWithCode:OIDErrorCodeNetworkError
                            underlyingError:error
-                               description:nil];
+                               description:errorDescription];
       dispatch_async(dispatch_get_main_queue(), ^{
         callback(nil, returnedError);
       });
@@ -291,16 +327,14 @@ NS_ASSUME_NONNULL_BEGIN
       NSError *serverError =
           [OIDErrorUtilities HTTPErrorWithHTTPResponse:HTTPURLResponse data:data];
 
-      // HTTP 400 may indicate an RFC6749 Section 5.2 error response.
-      // HTTP 429 may occur during polling for device-flow requests for the slow_down error
-      // https://tools.ietf.org/html/draft-ietf-oauth-device-flow-03#section-3.5
-      if (statusCode == 400 || statusCode == 429) {
+      // HTTP 4xx may indicate an RFC6749 Section 5.2 error response, attempts to parse as such.
+      if (statusCode >= 400 && statusCode < 500) {
         NSError *jsonDeserializationError;
         NSDictionary<NSString *, NSObject<NSCopying> *> *json =
             [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonDeserializationError];
 
-        // if the HTTP 400 response parses as JSON and has an 'error' key, it's an OAuth error
-        // these errors are special as they indicate a problem with the authorization grant
+        // If the HTTP 4xx response parses as JSON and has an 'error' key, it's an OAuth error.
+        // These errors are special as they indicate a problem with the authorization grant.
         if (json[OIDOAuthErrorFieldError]) {
           NSError *oauthError =
             [OIDErrorUtilities OAuthErrorWithDomain:OIDOAuthTokenErrorDomain
@@ -313,11 +347,15 @@ NS_ASSUME_NONNULL_BEGIN
         }
       }
 
-      // not an OAuth error, just a generic server error
+      // Status code indicates this is an error, but not an RFC6749 Section 5.2 error.
+      NSString *errorDescription =
+          [NSString stringWithFormat:@"Non-200 HTTP response (%d) making token request to '%@'.",
+                                     (int)statusCode,
+                                      URLRequest.URL];
       NSError *returnedError =
           [OIDErrorUtilities errorWithCode:OIDErrorCodeServerError
                            underlyingError:serverError
-                               description:nil];
+                               description:errorDescription];
       dispatch_async(dispatch_get_main_queue(), ^{
         callback(nil, returnedError);
       });
@@ -329,10 +367,13 @@ NS_ASSUME_NONNULL_BEGIN
         [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonDeserializationError];
     if (jsonDeserializationError) {
       // A problem occurred deserializing the response/JSON.
+      NSString *errorDescription =
+          [NSString stringWithFormat:@"JSON error parsing token response: %@",
+                                     jsonDeserializationError.localizedDescription];
       NSError *returnedError =
           [OIDErrorUtilities errorWithCode:OIDErrorCodeJSONDeserializationError
                            underlyingError:jsonDeserializationError
-                               description:nil];
+                               description:errorDescription];
       dispatch_async(dispatch_get_main_queue(), ^{
         callback(nil, returnedError);
       });
@@ -346,11 +387,128 @@ NS_ASSUME_NONNULL_BEGIN
       NSError *returnedError =
           [OIDErrorUtilities errorWithCode:OIDErrorCodeTokenResponseConstructionError
                            underlyingError:jsonDeserializationError
-                               description:nil];
+                               description:@"Token response invalid."];
       dispatch_async(dispatch_get_main_queue(), ^{
         callback(nil, returnedError);
       });
       return;
+    }
+
+    // If an ID Token is included in the response, validates the ID Token following the rules
+    // in OpenID Connect Core Section 3.1.3.7 for features that AppAuth directly supports
+    // (which excludes rules #1, #4, #5, #7, #8, #12, and #13). Regarding rule #6, ID Tokens
+    // received by this class are received via direct communication between the Client and the Token
+    // Endpoint, thus we are exercising the option to rely only on the TLS validation. AppAuth
+    // has a zero dependencies policy, and verifying the JWT signature would add a dependency.
+    // Users of the library are welcome to perform the JWT signature verification themselves should
+    // they wish.
+    if (tokenResponse.idToken) {
+      OIDIDToken *idToken = [[OIDIDToken alloc] initWithIDTokenString:tokenResponse.idToken];
+      if (!idToken) {
+        NSError *invalidIDToken =
+          [OIDErrorUtilities errorWithCode:OIDErrorCodeIDTokenParsingError
+                           underlyingError:nil
+                               description:@"ID Token parsing failed"];
+        dispatch_async(dispatch_get_main_queue(), ^{
+          callback(nil, invalidIDToken);
+        });
+        return;
+      }
+      
+      // OpenID Connect Core Section 3.1.3.7. rule #1
+      // Not supported: AppAuth does not support JWT encryption.
+
+      // OpenID Connect Core Section 3.1.3.7. rule #2
+      // Validates that the issuer in the ID Token matches that of the discovery document.
+      NSURL *issuer = tokenResponse.request.configuration.issuer;
+      if (issuer && ![idToken.issuer isEqual:issuer]) {
+        NSError *invalidIDToken =
+          [OIDErrorUtilities errorWithCode:OIDErrorCodeIDTokenFailedValidationError
+                           underlyingError:nil
+                               description:@"Issuer mismatch"];
+        dispatch_async(dispatch_get_main_queue(), ^{
+          callback(nil, invalidIDToken);
+        });
+        return;
+      }
+
+      // OpenID Connect Core Section 3.1.3.7. rule #3
+      // Validates that the audience of the ID Token matches the client ID.
+      NSString *clientID = tokenResponse.request.clientID;
+      if (![idToken.audience containsObject:clientID]) {
+        NSError *invalidIDToken =
+          [OIDErrorUtilities errorWithCode:OIDErrorCodeIDTokenFailedValidationError
+                           underlyingError:nil
+                               description:@"Audience mismatch"];
+        dispatch_async(dispatch_get_main_queue(), ^{
+          callback(nil, invalidIDToken);
+        });
+        return;
+      }
+      
+      // OpenID Connect Core Section 3.1.3.7. rules #4 & #5
+      // Not supported.
+
+      // OpenID Connect Core Section 3.1.3.7. rule #6
+      // As noted above, AppAuth only supports the code flow which results in direct communication
+      // of the ID Token from the Token Endpoint to the Client, and we are exercising the option to
+      // use TSL server validation instead of checking the token signature. Users may additionally
+      // check the token signature should they wish.
+
+      // OpenID Connect Core Section 3.1.3.7. rules #7 & #8
+      // Not applicable. See rule #6.
+
+      // OpenID Connect Core Section 3.1.3.7. rule #9
+      // Validates that the current time is before the expiry time.
+      NSTimeInterval expiresAtDifference = [idToken.expiresAt timeIntervalSinceNow];
+      if (expiresAtDifference < 0) {
+        NSError *invalidIDToken =
+            [OIDErrorUtilities errorWithCode:OIDErrorCodeIDTokenFailedValidationError
+                             underlyingError:nil
+                                 description:@"ID Token expired"];
+        dispatch_async(dispatch_get_main_queue(), ^{
+          callback(nil, invalidIDToken);
+        });
+        return;
+      }
+      
+      // OpenID Connect Core Section 3.1.3.7. rule #10
+      // Validates that the issued at time is not more than +/- 5 minutes on the current time.
+      NSTimeInterval issuedAtDifference = [idToken.issuedAt timeIntervalSinceNow];
+      if (fabs(issuedAtDifference) > 300) {
+        NSError *invalidIDToken =
+          [OIDErrorUtilities errorWithCode:OIDErrorCodeIDTokenFailedValidationError
+                           underlyingError:nil
+                               description:@"Issued at time is more than 5 minutes before or after "
+                                            "the current time"];
+        dispatch_async(dispatch_get_main_queue(), ^{
+          callback(nil, invalidIDToken);
+        });
+        return;
+      }
+
+      // Only relevant for the authorization_code response type
+      if ([tokenResponse.request.grantType isEqual:OIDGrantTypeAuthorizationCode]) {
+        // OpenID Connect Core Section 3.1.3.7. rule #11
+        // Validates the nonce.
+        NSString *nonce = authorizationResponse.request.nonce;
+        if (nonce && ![idToken.nonce isEqual:nonce]) {
+          NSError *invalidIDToken =
+          [OIDErrorUtilities errorWithCode:OIDErrorCodeIDTokenFailedValidationError
+                           underlyingError:nil
+                               description:@"Nonce mismatch"];
+          dispatch_async(dispatch_get_main_queue(), ^{
+            callback(nil, invalidIDToken);
+          });
+          return;
+        }
+      }
+      
+      // OpenID Connect Core Section 3.1.3.7. rules #12
+      // ACR is not directly supported by AppAuth.
+
+      // OpenID Connect Core Section 3.1.3.7. rules #12
+      // max_age is not directly supported by AppAuth.
     }
 
     // Success
@@ -385,9 +543,13 @@ NS_ASSUME_NONNULL_BEGIN
                                   NSError *_Nullable error) {
     if (error) {
       // A network error or server error occurred.
+      NSString *errorDescription =
+          [NSString stringWithFormat:@"Connection error making registration request to '%@': %@.",
+                                     URLRequest.URL,
+                                     error.localizedDescription];
       NSError *returnedError = [OIDErrorUtilities errorWithCode:OIDErrorCodeNetworkError
                                                 underlyingError:error
-                                                    description:nil];
+                                                    description:errorDescription];
       dispatch_async(dispatch_get_main_queue(), ^{
         completion(nil, returnedError);
       });
@@ -423,9 +585,14 @@ NS_ASSUME_NONNULL_BEGIN
       }
 
       // not an OAuth error, just a generic server error
+      NSString *errorDescription =
+          [NSString stringWithFormat:@"Non-200/201 HTTP response (%d) making registration request "
+                                     "to '%@'.",
+                                     (int)HTTPURLResponse.statusCode,
+                                     URLRequest.URL];
       NSError *returnedError = [OIDErrorUtilities errorWithCode:OIDErrorCodeServerError
                                                 underlyingError:serverError
-                                                    description:nil];
+                                                    description:errorDescription];
       dispatch_async(dispatch_get_main_queue(), ^{
         completion(nil, returnedError);
       });
@@ -437,9 +604,12 @@ NS_ASSUME_NONNULL_BEGIN
         [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonDeserializationError];
     if (jsonDeserializationError) {
       // A problem occurred deserializing the response/JSON.
+      NSString *errorDescription =
+          [NSString stringWithFormat:@"JSON error parsing registration response: %@",
+                                     jsonDeserializationError.localizedDescription];
       NSError *returnedError = [OIDErrorUtilities errorWithCode:OIDErrorCodeJSONDeserializationError
                                                 underlyingError:jsonDeserializationError
-                                                    description:nil];
+                                                    description:errorDescription];
       dispatch_async(dispatch_get_main_queue(), ^{
         completion(nil, returnedError);
       });
@@ -453,8 +623,8 @@ NS_ASSUME_NONNULL_BEGIN
       // A problem occurred constructing the registration response from the JSON.
       NSError *returnedError =
           [OIDErrorUtilities errorWithCode:OIDErrorCodeRegistrationResponseConstructionError
-                           underlyingError:jsonDeserializationError
-                               description:nil];
+                           underlyingError:nil
+                               description:@"Registration response invalid."];
       dispatch_async(dispatch_get_main_queue(), ^{
         completion(nil, returnedError);
       });
