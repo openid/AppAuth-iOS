@@ -27,6 +27,7 @@
 #import "OIDError.h"
 #import "OIDErrorUtilities.h"
 #import "OIDRegistrationResponse.h"
+#import "OIDServiceConfiguration.h"
 #import "OIDTokenRequest.h"
 #import "OIDTokenResponse.h"
 #import "OIDTokenUtilities.h"
@@ -110,45 +111,42 @@ static const NSUInteger kExpiryTimeTolerance = 60;
                             externalUserAgent:(id<OIDExternalUserAgent>)externalUserAgent
                                      callback:(OIDAuthStateAuthorizationCallback)callback {
   // presents the authorization request
-  id<OIDExternalUserAgentSession, OIDAuthorizationFlowSession> authFlowSession = [OIDAuthorizationService
+  id<OIDExternalUserAgentSession, OIDAuthorizationFlowSession> authFlowSession =[OIDAuthorizationService
       presentAuthorizationRequest:authorizationRequest
                 externalUserAgent:externalUserAgent
                          callback:^(OIDAuthorizationResponse *_Nullable authorizationResponse,
                                     NSError *_Nullable authorizationError) {
-                           // inspects response and processes further if needed (e.g. authorization
-                           // code exchange)
-                           if (authorizationResponse) {
-                             if ([authorizationRequest.responseType
-                                     isEqualToString:OIDResponseTypeCode]) {
-                               // if the request is for the code flow (NB. not hybrid), assumes the
-                               // code is intended for this client, and performs the authorization
-                               // code exchange
-                               OIDTokenRequest *tokenExchangeRequest =
-                                   [authorizationResponse tokenExchangeRequest];
-                               [OIDAuthorizationService performTokenRequest:tokenExchangeRequest
-                                              originalAuthorizationResponse:authorizationResponse
-                                   callback:^(OIDTokenResponse *_Nullable tokenResponse,
-                                                         NSError *_Nullable tokenError) {
-                                                OIDAuthState *authState;
-                                                if (tokenResponse) {
-                                                  authState = [[OIDAuthState alloc]
-                                                      initWithAuthorizationResponse:
-                                                          authorizationResponse
-                                                                      tokenResponse:tokenResponse];
-                                                }
-                                                callback(authState, tokenError);
-                               }];
-                             } else {
-                               // implicit or hybrid flow (hybrid flow assumes code is not for this
-                               // client)
-                               OIDAuthState *authState = [[OIDAuthState alloc]
-                                   initWithAuthorizationResponse:authorizationResponse];
-                               callback(authState, authorizationError);
-                             }
-                           } else {
-                             callback(nil, authorizationError);
-                           }
-                         }];
+    // inspects response and processes further if needed (e.g. authorization
+    // code exchange)
+    if (!authorizationResponse) {
+      callback(nil, authorizationError);
+      return;
+    }
+    
+    // non-code flow
+    if (![authorizationRequest.responseType isEqualToString:OIDResponseTypeCode]) {
+      // implicit or hybrid flow (hybrid flow assumes code (if any) is not for this client)
+      OIDAuthState *authState = [[OIDAuthState alloc]
+                                 initWithAuthorizationResponse:authorizationResponse];
+      callback(authState, authorizationError);
+      return;
+    }
+                           
+    // performs authorization code exchange
+    OIDTokenRequest *tokenExchangeRequest =
+        [authorizationResponse tokenExchangeRequest];
+    [OIDAuthorizationService performTokenRequest:tokenExchangeRequest
+                   originalAuthorizationResponse:authorizationResponse
+        callback:^(OIDTokenResponse *_Nullable tokenResponse,
+                              NSError *_Nullable tokenError) {
+      OIDAuthState *authState;
+      if (tokenResponse) {
+        authState = [[OIDAuthState alloc] initWithAuthorizationResponse:authorizationResponse
+                                                          tokenResponse:tokenResponse];
+      }
+      callback(authState, tokenError);
+    }];
+  }];
   return authFlowSession;
 }
 
@@ -418,6 +416,86 @@ static const NSUInteger kExpiryTimeTolerance = 60;
                refreshToken:_refreshToken
                codeVerifier:nil
        additionalParameters:additionalParameters];
+}
+
+#pragma mark Incremental Authorization
+
+- (nullable OIDAuthorizationRequest *)incrementalAuthorizationRequestWithScopes:
+    (NSArray<NSString *> *)scopes {
+  return [self incrementalAuthorizationRequestWithScopes:scopes additionalParameters:nil];
+}
+- (nullable OIDAuthorizationRequest *)incrementalAuthorizationRequestWithScopes:
+    (NSArray<NSString *> *)scopes
+    additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters {
+
+  OIDAuthorizationRequest *incrementalAuthorizationRequest =
+      [[OIDAuthorizationRequest alloc] initWithConfiguration:_lastAuthorizationResponse.request.configuration
+                                                    clientId:_lastAuthorizationResponse.request.clientID
+                                                clientSecret:_lastAuthorizationResponse.request.clientSecret
+                                                      scopes:scopes
+                                                 redirectURL:_lastAuthorizationResponse.request.redirectURL
+                                                responseType:OIDResponseTypeCode
+                                        additionalParameters:additionalParameters];
+  return incrementalAuthorizationRequest;
+}
+
+- (id<OIDExternalUserAgentSession, OIDAuthorizationFlowSession>)
+    presentIncrementalAuthorizationRequest:(OIDAuthorizationRequest *)incrementalAuthorizationRequest
+                         externalUserAgent:(id<OIDExternalUserAgent>)externalUserAgent
+                                  callback:(OIDAuthStateIncrementalAuthorizationCallback)callback {
+  NSString* refreshToken = [self refreshToken];
+  if (!refreshToken) {
+    NSError* error =
+        [OIDErrorUtilities errorWithCode:OIDErrorCodeIncrementalAuthorizationNotPossibleError
+                         underlyingError:nil
+                             description:@"No refresh token to use with incremental "
+                                         "authorization."];
+    callback(NO, error);
+    return nil;
+  }
+  
+  // presents the authorization request
+  id<OIDExternalUserAgentSession, OIDAuthorizationFlowSession> authFlowSession =
+      [OIDAuthorizationService presentAuthorizationRequest:incrementalAuthorizationRequest
+                                         externalUserAgent:externalUserAgent
+          callback:^(OIDAuthorizationResponse *_Nullable authorizationResponse,
+                     NSError *_Nullable authorizationError) {
+    if (!authorizationResponse) {
+      callback(NO, authorizationError);
+      return;
+    }
+    if (![incrementalAuthorizationRequest.responseType isEqualToString:OIDResponseTypeCode]) {
+      // only code flow is supported
+      NSError* error =
+          [OIDErrorUtilities errorWithCode:OIDErrorCodeIncrementalAuthorizationNotPossibleError
+                           underlyingError:nil
+                               description:@"Incremental authorization requires a code response "
+                                           "type"];
+      callback(NO, error);
+      return;
+    }
+
+    // Adds existing_grant param to code exchange request for incremental authorization
+    NSDictionary* additionalParameters = @{@"existing_grant": refreshToken};
+    OIDTokenRequest *tokenExchangeRequest =
+        [authorizationResponse
+            tokenExchangeRequestWithAdditionalParameters:additionalParameters];
+    // Perform authorization code exchange
+    [OIDAuthorizationService performTokenRequest:tokenExchangeRequest
+                   originalAuthorizationResponse:authorizationResponse
+        callback:^(OIDTokenResponse *_Nullable tokenResponse,
+                              NSError *_Nullable tokenError) {
+          BOOL success = !!tokenResponse;
+          // update both the authorization and responses at the same time (this avoids leaving
+          // the OIDAuthState in an error state if either fails)
+          if (success) {
+            [self updateWithAuthorizationResponse:authorizationResponse error:nil];
+            [self updateWithTokenResponse:tokenResponse error:nil];
+          }
+          callback(success, tokenError);
+    }];
+  }];
+  return authFlowSession;
 }
 
 #pragma mark - Stateful Actions

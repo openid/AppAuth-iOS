@@ -34,4 +34,16 @@
                                                 callback:callback];
 }
 
+- (id<OIDExternalUserAgentSession, OIDAuthorizationFlowSession>)
+    presentIncrementalAuthorizationRequest:(OIDAuthorizationRequest *)incrementalAuthorizationRequest
+                  presentingViewController:(UIViewController *)presentingViewController
+                                  callback:(OIDAuthStateIncrementalAuthorizationCallback)callback {
+    OIDExternalUserAgentIOS *externalUserAgent =
+        [[OIDExternalUserAgentIOS alloc]
+            initWithPresentingViewController:presentingViewController];
+  return [self presentIncrementalAuthorizationRequest:incrementalAuthorizationRequest
+                                       externalUserAgent:externalUserAgent
+                                                callback:callback];
+}
+
 @end

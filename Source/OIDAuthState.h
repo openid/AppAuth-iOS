@@ -49,6 +49,9 @@ typedef void (^OIDAuthStateAction)(NSString *_Nullable accessToken,
 typedef void (^OIDAuthStateAuthorizationCallback)(OIDAuthState *_Nullable authState,
                                                   NSError *_Nullable error);
 
+typedef void (^OIDAuthStateIncrementalAuthorizationCallback)(BOOL success,
+                                                  NSError *_Nullable error);
+
 /*! @brief A convenience class that retains the auth state between @c OIDAuthorizationResponse%s
         and @c OIDTokenResponse%s.
  */
@@ -273,6 +276,46 @@ typedef void (^OIDAuthStateAuthorizationCallback)(OIDAuthState *_Nullable authSt
  */
 - (nullable OIDTokenRequest *)tokenRefreshRequestWithAdditionalParameters:
     (nullable NSDictionary<NSString *, NSString *> *)additionalParameters;
+
+/*! @brief Creates an incremental authorization request for the given scopes.
+    @param scopes Scopes to be requested in the incremental authorization request.
+    @return A @c OIDAuthorizationRequest for use with incremental authorization requests.
+    @discussion The new incremental authorizaiton request is made with the same client configuraiton
+        as the last authorization request.
+    @see https://tools.ietf.org/html/draft-ietf-oauth-incremental-authz-00
+ */
+- (nullable OIDAuthorizationRequest *)incrementalAuthorizationRequestWithScopes:
+    (NSArray<NSString *> *)scopes;
+
+/*! @brief Creates an incremental authorization request for the given scopes.
+    @param scopes Scopes to be requested in the incremental authorization request.
+    @param additionalParameters Additional parameters to be sent on the incremental authorization
+        request.
+    @return A @c OIDAuthorizationRequest for use with incremental authorization requests.
+    @discussion The new incremental authorizaiton request is made with the same client configuraiton
+        as the last authorization request.
+    @see https://tools.ietf.org/html/draft-ietf-oauth-incremental-authz-00
+ */
+- (nullable OIDAuthorizationRequest *)incrementalAuthorizationRequestWithScopes:
+    (NSArray<NSString *> *)scopes
+    additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters;
+
+/*! @brief Performs an incremental authorization request.
+    @param incrementalAuthorizationRequest the incremental authorization request. Must use the same
+        OAuth client as the original request.
+    @param externalUserAgent A external user agent that can present an external user-agent request.
+    @return A @c OIDExternalUserAgentSession instance which will terminate when it receives a
+        @c OIDExternalUserAgentSession.cancel message, or after processing a
+    @discussion This method will automatically do an incremental authorization code exchange. If
+        any part of this fails, the last error is provided in the callback, and the @c OIDAuthState
+        object is not updated. You must ensure that the authorization server supports public client
+        incremental authorization otherwise, the OIDAuthState will just be overwritten with the
+        new authorization grant (and the previous grant will be lost).
+ */
+- (id<OIDExternalUserAgentSession, OIDAuthorizationFlowSession>)
+  presentIncrementalAuthorizationRequest:(OIDAuthorizationRequest *)incrementalAuthorizationRequest
+                       externalUserAgent:(id<OIDExternalUserAgent>)externalUserAgent
+                                callback:(OIDAuthStateIncrementalAuthorizationCallback)callback;
 
 /*! @brief Deprecated, use @c OIDAuthState.performActionWithFreshTokens:.
     @discussion Calls the block with a valid access token (refreshing it first, if needed), or if a

@@ -44,6 +44,23 @@ NS_ASSUME_NONNULL_BEGIN
                      presentingViewController:(UIViewController *)presentingViewController
                                      callback:(OIDAuthStateAuthorizationCallback)callback;
 
+/*! @brief Performs an incremental authorization request.
+    @param incrementalAuthorizationRequest the incremental authorization request. Must use the same
+        OAuth client as the original request.
+    @param presentingViewController The view controller which is presenting this request.
+    @return A @c OIDExternalUserAgentSession instance which will terminate when it receives a
+        @c OIDExternalUserAgentSession.cancel message, or after processing a
+    @discussion This method will automatically do an incremental authorization code exchange. If
+        any part of this fails, the last error is provided in the callback, and the @c OIDAuthState
+        object is not updated. You must ensure that the authorization server supports public client
+        incremental authorization otherwise, the OIDAuthState will just be overwritten with the
+        new authorization grant (and the previous grant will be lost).
+ */
+- (id<OIDExternalUserAgentSession, OIDAuthorizationFlowSession>)
+    presentIncrementalAuthorizationRequest:(OIDAuthorizationRequest *)incrementalAuthorizationRequest
+                  presentingViewController:(UIViewController *)presentingViewController
+                                  callback:(OIDAuthStateIncrementalAuthorizationCallback)callback;
+
 #pragma GCC diagnostic pop
 
 @end
