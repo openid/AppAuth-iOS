@@ -473,9 +473,9 @@ NS_ASSUME_NONNULL_BEGIN
       }
       
       // OpenID Connect Core Section 3.1.3.7. rule #10
-      // Validates that the issued at time is not more than +/- 5 minutes on the current time.
+      // Validates that the issued at time is not more than +/- 10 minutes on the current time.
       NSTimeInterval issuedAtDifference = [idToken.issuedAt timeIntervalSinceNow];
-      if (fabs(issuedAtDifference) > 300) {
+      if (fabs(issuedAtDifference) > 600) {
         NSError *invalidIDToken =
           [OIDErrorUtilities errorWithCode:OIDErrorCodeIDTokenFailedValidationError
                            underlyingError:nil
