@@ -274,7 +274,24 @@ static NSString *const kAdditionalParametersKey = @"additionalParameters";
   NSMutableDictionary *httpHeaders = [[NSMutableDictionary alloc] init];
 
   if (_clientSecret) {
-    NSString *credentials = [NSString stringWithFormat:@"%@:%@", _clientID, _clientSecret];
+    // https://tools.ietf.org/html/rfc6749#appendix-B
+    // Note: Space character is percent encoded, rather than as "+" as it's a valid encoding,
+    // and less ambiguous (and we don't need the "+"-encoding for aesthetic reasons)
+    
+    // Starts with the standard URL-allowed character set.
+    NSMutableCharacterSet *allowedCharacters =
+        [[NSCharacterSet URLQueryAllowedCharacterSet] mutableCopy];
+    // Keep only alphanumeric characters.
+    [allowedCharacters formIntersectionWithCharacterSet:[NSCharacterSet alphanumericCharacterSet]];
+    
+    // Percent encode all non-alphanumeric characters.
+    NSString *encodedClientID =
+        [_clientID stringByAddingPercentEncodingWithAllowedCharacters: allowedCharacters];
+    NSString *encodedClientSecret =
+        [_clientSecret stringByAddingPercentEncodingWithAllowedCharacters: allowedCharacters];
+
+    NSString *credentials =
+        [NSString stringWithFormat:@"%@:%@", encodedClientID, encodedClientSecret];
     NSData *plainData = [credentials dataUsingEncoding:NSUTF8StringEncoding];
     NSString *basicAuth = [plainData base64EncodedStringWithOptions:kNilOptions];
 
