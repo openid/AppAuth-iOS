@@ -45,15 +45,15 @@
 #if TARGET_OS_TV
 #elif TARGET_OS_WATCH
 #elif TARGET_OS_IOS
-#import "OIDAuthState+IOS.h"
-#import "OIDAuthorizationService+IOS.h"
-#import "OIDExternalUserAgentIOS.h"
-#import "OIDExternalUserAgentIOSCustomBrowser.h"
+#import "iOS/OIDAuthState+IOS.h"
+#import "iOS/OIDAuthorizationService+IOS.h"
+#import "iOS/OIDExternalUserAgentIOS.h"
+#import "iOS/OIDExternalUserAgentIOSCustomBrowser.h"
 #elif TARGET_OS_MAC
-#import "OIDAuthState+Mac.h"
-#import "OIDAuthorizationService+Mac.h"
-#import "OIDExternalUserAgentMac.h"
-#import "OIDRedirectHTTPHandler.h"
+#import "macOS/OIDAuthState+Mac.h"
+#import "macOS/OIDAuthorizationService+Mac.h"
+#import "macOS/OIDExternalUserAgentMac.h"
+#import "macOS/OIDRedirectHTTPHandler.h"
 #else
 #error "Platform Undefined"
 #endif
