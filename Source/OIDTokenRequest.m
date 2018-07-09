@@ -286,9 +286,9 @@ static NSString *const kAdditionalParametersKey = @"additionalParameters";
     
     // Percent encode all non-alphanumeric characters.
     NSString *encodedClientID =
-        [_clientID stringByAddingPercentEncodingWithAllowedCharacters: allowedCharacters];
+        [_clientID stringByAddingPercentEncodingWithAllowedCharacters:allowedCharacters];
     NSString *encodedClientSecret =
-        [_clientSecret stringByAddingPercentEncodingWithAllowedCharacters: allowedCharacters];
+        [_clientSecret stringByAddingPercentEncodingWithAllowedCharacters:allowedCharacters];
 
     NSString *credentials =
         [NSString stringWithFormat:@"%@:%@", encodedClientID, encodedClientSecret];
