@@ -20,6 +20,12 @@
 
 #import <CommonCrypto/CommonDigest.h>
 
+/*! @brief String representing the set of characters that are allowed as is for the
+        application/x-www-form-urlencoded encoding algorithm.
+ */
+static NSString *const kFormUrlEncodedAllowedCharacters =
+    @" *-._0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
 @implementation OIDTokenUtilities
 
 + (NSString *)encodeBase64urlNoPadding:(NSData *)data {
@@ -61,6 +67,23 @@
     default:
       return [[inputString substringToIndex:6] stringByAppendingString:@"...[redacted]"];
   }
+}
+
++ (NSString*)formUrlEncode:(NSString*)inputString {
+  // https://www.w3.org/TR/html5/sec-forms.html#application-x-www-form-urlencoded-encoding-algorithm
+  // Following the spec from the above link, application/x-www-form-urlencoded percent encode all
+  // the characters except *-._A-Za-z0-9
+  // Space character is replaced by + in the resulting bytes sequence
+  if (inputString.length == 0) {
+    return inputString;
+  }
+  NSCharacterSet *allowedCharacters =
+      [NSCharacterSet characterSetWithCharactersInString:kFormUrlEncodedAllowedCharacters];
+  // Percent encode all characters not present in the provided set.
+  NSString *encodedString =
+      [inputString stringByAddingPercentEncodingWithAllowedCharacters:allowedCharacters];
+  // Replace occurences of space by '+' character
+  return [encodedString stringByReplacingOccurrencesOfString:@" " withString:@"+"];
 }
 
 @end
