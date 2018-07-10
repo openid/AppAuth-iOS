@@ -275,6 +275,8 @@ static NSString *const kAdditionalParametersKey = @"additionalParameters";
   NSMutableDictionary *httpHeaders = [[NSMutableDictionary alloc] init];
 
   if (_clientSecret) {
+    // The client id and secret are encoded using the "application/x-www-form-urlencoded" 
+    // encoding algorithm per RFC 6749 Section 2.3.1.
     // https://tools.ietf.org/html/rfc6749#section-2.3.1
     NSString *encodedClientID = [OIDTokenUtilities formUrlEncode:_clientID];
     NSString *encodedClientSecret = [OIDTokenUtilities formUrlEncode:_clientSecret];
