@@ -112,6 +112,9 @@ NS_ASSUME_NONNULL_BEGIN
   if (![self shouldHandleURL:URL]) {
     return NO;
   }
+  
+  AppAuthRequestTrace(@"Authorization Response: %@", URL);
+  
   // checks for an invalid state
   if (!_pendingauthorizationFlowCallback) {
     [NSException raise:OIDOAuthExceptionInvalidAuthorizationFlow
@@ -278,6 +281,9 @@ NS_ASSUME_NONNULL_BEGIN
     presentAuthorizationRequest:(OIDAuthorizationRequest *)request
               externalUserAgent:(id<OIDExternalUserAgent>)externalUserAgent
                        callback:(OIDAuthorizationCallback)callback {
+  
+  AppAuthRequestTrace(@"Authorization Request: %@", request);
+  
   OIDAuthorizationFlowSessionImplementation *flowSession =
       [[OIDAuthorizationFlowSessionImplementation alloc] initWithRequest:request];
   [flowSession presentAuthorizationWithExternalUserAgent:externalUserAgent callback:callback];
@@ -299,6 +305,12 @@ NS_ASSUME_NONNULL_BEGIN
                          callback:(OIDTokenCallback)callback {
 
   NSURLRequest *URLRequest = [request URLRequest];
+  
+  AppAuthRequestTrace(@"Token Request: %@\nHTTPBody: %@",
+                      URLRequest.URL,
+                      [[NSString alloc] initWithData:URLRequest.HTTPBody
+                                            encoding:NSUTF8StringEncoding]);
+
   NSURLSession *session = [OIDURLSessionProvider session];
   [[session dataTaskWithRequest:URLRequest
               completionHandler:^(NSData *_Nullable data,
@@ -322,6 +334,9 @@ NS_ASSUME_NONNULL_BEGIN
 
     NSHTTPURLResponse *HTTPURLResponse = (NSHTTPURLResponse *)response;
     NSInteger statusCode = HTTPURLResponse.statusCode;
+    AppAuthRequestTrace(@"Token Response: HTTP Status %d\nHTTPBody: %@",
+                        (int)statusCode,
+                        [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
     if (statusCode != 200) {
       // A server error occurred.
       NSError *serverError =
