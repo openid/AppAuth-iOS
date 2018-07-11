@@ -56,6 +56,12 @@ NS_ASSUME_NONNULL_BEGIN
  */
 + (nullable NSString *)redact:(nullable NSString *)inputString;
 
+/*! @brief Form url encode the input string by applying application/x-www-form-urlencoded algorithm
+    @param inputString The input string.
+    @return The encoded string.
+ */
++ (NSString*)formUrlEncode:(NSString*)inputString;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -41,4 +41,13 @@
   XCTAssertEqualObjects([OIDTokenUtilities redact:@"01234"], @"[redacted]", @"");
 }
 
+- (void)testFormUrlEncode {
+  XCTAssertEqualObjects([OIDTokenUtilities formUrlEncode:@"t _9V-F*I+Z1Lk.u7:2/8L+w="],
+                        @"t+_9V-F*I%2BZ1Lk.u7%3A2%2F8L%2Bw%3D", @"");
+}
+
+- (void)testFormUrlEncodeEmptyString {
+  XCTAssertEqualObjects([OIDTokenUtilities formUrlEncode:@""], @"", @"");
+}
+
 @end
