@@ -23,7 +23,6 @@
 @class OIDRegistrationResponse;
 @class OIDTokenResponse;
 @class OIDTokenRequest;
-@protocol OIDAuthorizationFlowSession;
 @protocol OIDAuthStateChangeDelegate;
 @protocol OIDAuthStateErrorDelegate;
 @protocol OIDExternalUserAgent;
@@ -149,7 +148,7 @@ typedef void (^OIDAuthStateAuthorizationCallback)(OIDAuthState *_Nullable authSt
         receives a @c OIDExternalUserAgentSession.cancel message, or after processing a
         @c OIDExternalUserAgentSession.resumeExternalUserAgentFlowWithURL: message.
  */
-+ (id<OIDExternalUserAgentSession, OIDAuthorizationFlowSession>)
++ (id<OIDExternalUserAgentSession>)
     authStateByPresentingAuthorizationRequest:(OIDAuthorizationRequest *)authorizationRequest
                             externalUserAgent:(id<OIDExternalUserAgent>)externalUserAgent
                                      callback:(OIDAuthStateAuthorizationCallback)callback;
@@ -273,16 +272,6 @@ typedef void (^OIDAuthStateAuthorizationCallback)(OIDAuthState *_Nullable authSt
  */
 - (nullable OIDTokenRequest *)tokenRefreshRequestWithAdditionalParameters:
     (nullable NSDictionary<NSString *, NSString *> *)additionalParameters;
-
-/*! @brief Deprecated, use @c OIDAuthState.performActionWithFreshTokens:.
-    @discussion Calls the block with a valid access token (refreshing it first, if needed), or if a
-        refresh was needed and failed, with the error that caused it to fail.
-    @param action The block to execute with a fresh token. This block will be executed on the main
-        thread.
-    @deprecated Use @c OIDAuthState.performActionWithFreshTokens: which is equivalent.
- */
-- (void)withFreshTokensPerformAction:(OIDAuthStateAction)action
-    __deprecated_msg("Use OIDAuthState.performActionWithFreshTokens:");
 
 @end
 

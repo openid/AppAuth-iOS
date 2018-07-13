@@ -159,32 +159,6 @@ NSString *const OIDOAuthorizationRequestCodeChallengeMethodS256 = @"S256";
   return self;
 }
 
-// Deprecated
-- (instancetype)initWithConfiguration:(OIDServiceConfiguration *)configuration
-                             clientId:(NSString *)clientID
-                         clientSecret:(nullable NSString *)clientSecret
-                                scope:(nullable NSString *)scope
-                          redirectURL:(NSURL *)redirectURL
-                         responseType:(NSString *)responseType
-                                state:(nullable NSString *)state
-                         codeVerifier:(nullable NSString *)codeVerifier
-                        codeChallenge:(nullable NSString *)codeChallenge
-                  codeChallengeMethod:(nullable NSString *)codeChallengeMethod
-                 additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters {
-  return [self initWithConfiguration:configuration
-                            clientId:clientID
-                        clientSecret:clientSecret
-                               scope:scope
-                         redirectURL:redirectURL
-                        responseType:responseType
-                               state:state
-                               nonce:nil
-                        codeVerifier:codeVerifier
-                       codeChallenge:codeChallenge
-                 codeChallengeMethod:OIDOAuthorizationRequestCodeChallengeMethodS256
-                additionalParameters:additionalParameters];
-}
-
 - (instancetype)
    initWithConfiguration:(OIDServiceConfiguration *)configuration
                 clientId:(NSString *)clientID

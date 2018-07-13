@@ -27,7 +27,6 @@ FOUNDATION_EXPORT const unsigned char AppAuthVersionString[];
 #import <AppAuth/OIDAuthState.h>
 #import <AppAuth/OIDAuthStateChangeDelegate.h>
 #import <AppAuth/OIDAuthStateErrorDelegate.h>
-#import <AppAuth/OIDAuthorizationFlowSession.h>
 #import <AppAuth/OIDAuthorizationRequest.h>
 #import <AppAuth/OIDAuthorizationResponse.h>
 #import <AppAuth/OIDAuthorizationService.h>

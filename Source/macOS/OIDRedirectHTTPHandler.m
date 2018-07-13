@@ -18,7 +18,6 @@
 
 #import "OIDRedirectHTTPHandler.h"
 
-#import "OIDAuthorizationFlowSession.h"
 #import "OIDAuthorizationService.h"
 #import "OIDErrorUtilities.h"
 #import "OIDExternalUserAgentSession.h"
@@ -33,7 +32,7 @@ static NSString *const kHTMLAuthorizationComplete =
 /*! @brief Error warning that the @c currentAuthorizationFlow is not set on this object (likely a
         developer error, unless the user stumbled upon the loopback server before the authorization
         had started completely).
-    @description An object conforming to @c OIDAuthorizationFlowSession is returned when the 
+    @description An object conforming to @c OIDExternalUserAgentSession is returned when the
         authorization is presented with
         @c OIDAuthorizationService::presentAuthorizationRequest:callback:. It should be set to
         @c currentAuthorization when using a loopback redirect.

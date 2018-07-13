@@ -21,11 +21,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @class HTTPServer;
-@protocol OIDAuthorizationFlowSession;
 @protocol OIDExternalUserAgentSession;
-
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 
 /*! @brief Start a HTTP server on the loopback interface (i.e. @c 127.0.0.1) to receive the OAuth
         response redirects on macOS.
@@ -35,7 +31,7 @@ NS_ASSUME_NONNULL_BEGIN
   HTTPServer *_httpServ;
   NSURL *_successURL;
   // property variables
-  NSObject<OIDExternalUserAgentSession, OIDAuthorizationFlowSession> *_currentAuthorizationFlow;
+  NSObject<OIDExternalUserAgentSession> *_currentAuthorizationFlow;
 }
 
 /*! @brief The external user-agent request flow session which receives the return URL from the
@@ -44,10 +40,7 @@ NS_ASSUME_NONNULL_BEGIN
         redirect handler to continue the flow. This should be set while an external user-agent
         request flow is in progress.
  */
-@property(nonatomic, strong, nullable) id<OIDExternalUserAgentSession,
-    OIDAuthorizationFlowSession> currentAuthorizationFlow;
-
-#pragma GCC diagnostic pop
+@property(nonatomic, strong, nullable) id<OIDExternalUserAgentSession> currentAuthorizationFlow;
 
 /*! @brief Creates an a loopback HTTP redirect URI handler with the given success URL.
     @param successURL The URL that the user is redirected to after the external user-agent request flow completes

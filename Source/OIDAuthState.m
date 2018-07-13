@@ -105,12 +105,12 @@ static const NSUInteger kExpiryTimeTolerance = 60;
 
 #pragma mark - Convenience initializers
 
-+ (id<OIDExternalUserAgentSession, OIDAuthorizationFlowSession>)
++ (id<OIDExternalUserAgentSession>)
     authStateByPresentingAuthorizationRequest:(OIDAuthorizationRequest *)authorizationRequest
                             externalUserAgent:(id<OIDExternalUserAgent>)externalUserAgent
                                      callback:(OIDAuthStateAuthorizationCallback)callback {
   // presents the authorization request
-  id<OIDExternalUserAgentSession, OIDAuthorizationFlowSession> authFlowSession = [OIDAuthorizationService
+  id<OIDExternalUserAgentSession> authFlowSession = [OIDAuthorizationService
       presentAuthorizationRequest:authorizationRequest
                 externalUserAgent:externalUserAgent
                          callback:^(OIDAuthorizationResponse *_Nullable authorizationResponse,
@@ -505,12 +505,6 @@ static const NSUInteger kExpiryTimeTolerance = 60;
       }
     });
   }];
-}
-
-#pragma mark - Deprecated
-
-- (void)withFreshTokensPerformAction:(OIDAuthStateAction)action {
-  [self performActionWithFreshTokens:action additionalRefreshParameters:nil];
 }
 
 #pragma mark -

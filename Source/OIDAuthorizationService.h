@@ -26,7 +26,6 @@
 @class OIDServiceConfiguration;
 @class OIDTokenRequest;
 @class OIDTokenResponse;
-@protocol OIDAuthorizationFlowSession;
 @protocol OIDExternalUserAgent;
 @protocol OIDExternalUserAgentSession;
 
@@ -111,9 +110,6 @@ typedef void (^OIDRegistrationCompletion)(OIDRegistrationResponse *_Nullable reg
 + (void)discoverServiceConfigurationForDiscoveryURL:(NSURL *)discoveryURL
                                          completion:(OIDDiscoveryCallback)completion;
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
-
 /*! @brief Perform an authorization flow using a generic flow shim.
     @param request The authorization request.
     @param externalUserAgent Generic external user-agent that can present an authorization
@@ -123,12 +119,9 @@ typedef void (^OIDRegistrationCompletion)(OIDRegistrationResponse *_Nullable reg
         receives a @c OIDExternalUserAgentSession.cancel message, or after processing a
         @c OIDExternalUserAgentSession.resumeExternalUserAgentFlowWithURL: message.
  */
-+ (id<OIDExternalUserAgentSession, OIDAuthorizationFlowSession>)
-    presentAuthorizationRequest:(OIDAuthorizationRequest *)request
-              externalUserAgent:(id<OIDExternalUserAgent>)externalUserAgent
-                       callback:(OIDAuthorizationCallback)callback;
-
-#pragma GCC diagnostic pop
++ (id<OIDExternalUserAgentSession>) presentAuthorizationRequest:(OIDAuthorizationRequest *)request
+    externalUserAgent:(id<OIDExternalUserAgent>)externalUserAgent
+             callback:(OIDAuthorizationCallback)callback;
 
 /*! @brief Performs a token request.
     @param request The token request.

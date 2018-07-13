@@ -81,7 +81,7 @@ static NSString *const kTestURIBase =
 }
 @end
 
-@interface OIDAuthorizationFlowSessionImplementation : NSObject<OIDExternalUserAgentSession>
+@interface OIDAuthorizationSession : NSObject<OIDExternalUserAgentSession>
 
 - (instancetype)init NS_UNAVAILABLE;
 
