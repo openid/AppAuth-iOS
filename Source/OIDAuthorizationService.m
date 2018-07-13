@@ -42,12 +42,7 @@ static NSString *const kOpenIDConfigurationWellKnownPath = @".well-known/openid-
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface OIDAuthorizationSession : NSObject<OIDExternalUserAgentSession> {
-  // private variables
-  OIDAuthorizationRequest *_request;
-  id<OIDExternalUserAgent> _externalUserAgent;
-  OIDAuthorizationCallback _pendingauthorizationFlowCallback;
-}
+@interface OIDAuthorizationSession : NSObject<OIDExternalUserAgentSession>
 
 - (instancetype)init NS_UNAVAILABLE;
 
@@ -56,7 +51,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-@implementation OIDAuthorizationSession
+@implementation OIDAuthorizationSession {
+  OIDAuthorizationRequest *_request;
+  id<OIDExternalUserAgent> _externalUserAgent;
+  OIDAuthorizationCallback _pendingauthorizationFlowCallback;
+}
 
 - (instancetype)initWithRequest:(OIDAuthorizationRequest *)request {
   self = [super init];
@@ -176,8 +175,6 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 @implementation OIDAuthorizationService
-
-@synthesize configuration = _configuration;
 
 + (void)discoverServiceConfigurationForIssuer:(NSURL *)issuerURL
                                    completion:(OIDDiscoveryCallback)completion {

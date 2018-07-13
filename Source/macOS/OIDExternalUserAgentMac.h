@@ -23,11 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 /*! @brief A Mac-specific external user-agent UI Coordinator that uses the default browser to
         present an external user-agent request.
  */
-@interface OIDExternalUserAgentMac : NSObject <OIDExternalUserAgent> {
-  // private variables
-  BOOL _externalUserAgentFlowInProgress;
-  __weak id<OIDExternalUserAgentSession> _session;
-}
+@interface OIDExternalUserAgentMac : NSObject <OIDExternalUserAgent>
 
 @end
 

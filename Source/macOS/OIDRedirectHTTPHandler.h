@@ -20,19 +20,12 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class HTTPServer;
 @protocol OIDExternalUserAgentSession;
 
 /*! @brief Start a HTTP server on the loopback interface (i.e. @c 127.0.0.1) to receive the OAuth
         response redirects on macOS.
  */
-@interface OIDRedirectHTTPHandler : NSObject {
-  // private variables
-  HTTPServer *_httpServ;
-  NSURL *_successURL;
-  // property variables
-  NSObject<OIDExternalUserAgentSession> *_currentAuthorizationFlow;
-}
+@interface OIDRedirectHTTPHandler : NSObject
 
 /*! @brief The external user-agent request flow session which receives the return URL from the
         browser.

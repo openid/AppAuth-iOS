@@ -92,16 +92,19 @@ static const NSUInteger kExpiryTimeTolerance = 60;
 @end
 
 
-@implementation OIDAuthState
+@implementation OIDAuthState {
+  /*! @brief Array of pending actions (use @c _pendingActionsSyncObject to synchronize access).
+   */
+  NSMutableArray *_pendingActions;
 
-@synthesize refreshToken = _refreshToken;
-@synthesize scope = _scope;
-@synthesize lastAuthorizationResponse = _lastAuthorizationResponse;
-@synthesize lastTokenResponse = _lastTokenResponse;
-@synthesize lastRegistrationResponse = _lastRegistrationResponse;
-@synthesize authorizationError = _authorizationError;
-@synthesize stateChangeDelegate = _stateChangeDelegate;
-@synthesize errorDelegate = _errorDelegate;
+  /*! @brief Object for synchronizing access to @c pendingActions.
+   */
+  id _pendingActionsSyncObject;
+
+  /*! @brief If YES, tokens will be refreshed on the next API call regardless of expiry.
+   */
+  BOOL _needsTokenRefresh;
+}
 
 #pragma mark - Convenience initializers
 

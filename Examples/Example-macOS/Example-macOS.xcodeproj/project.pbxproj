@@ -442,7 +442,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7FF583C8F7036437BE8875B3 /* Pods-Example-macOS.debug.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/Source/Info.plist";
@@ -456,7 +455,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 60553B3AB5BA3E1BB259E487 /* Pods-Example-macOS.release.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/Source/Info.plist";
@@ -476,7 +474,6 @@
 				341AA4C81E7F2E5000FCA5C6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
 		};
 		F6016E6B1D2AC11E003497D7 /* Build configuration list for PBXProject "Example-macOS" */ = {
 			isa = XCConfigurationList;

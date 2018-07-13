@@ -26,7 +26,10 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@implementation OIDExternalUserAgentMac
+@implementation OIDExternalUserAgentMac {
+  BOOL _externalUserAgentFlowInProgress;
+  __weak id<OIDExternalUserAgentSession> _session;
+}
 
 - (BOOL)presentExternalUserAgentRequest:(id<OIDExternalUserAgentRequest>)request
                                 session:(id<OIDExternalUserAgentSession>)session {

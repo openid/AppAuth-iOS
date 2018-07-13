@@ -24,12 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /*! @brief Unit tests for @c OIDServiceConfiguration.
  */
-@interface OIDServiceConfigurationTests : XCTestCase {
-  // private variables
-  /*! @brief A list of tasks to perform during tearDown.
-   */
-  NSMutableArray *_teardownTasks;
-}
+@interface OIDServiceConfigurationTests : XCTestCase
 
 /*! @brief Creates a new @c OIDServiceConfiguration for testing.
  */
