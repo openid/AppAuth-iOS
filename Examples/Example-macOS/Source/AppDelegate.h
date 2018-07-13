@@ -20,7 +20,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@protocol OIDAuthorizationFlowSession;
+@protocol OIDExternalUserAgentSession;
 
 /*! @class AppDelegate
     @brief The example application's delegate.
@@ -28,7 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface AppDelegate : NSObject <NSApplicationDelegate> {
   // property variables
   NSWindow *_window;
-  id<OIDAuthorizationFlowSession> _currentAuthorizationFlow;
+  id<OIDExternalUserAgentSession> _currentAuthorizationFlow;
 }
 
 /*! @property currentAuthorizationFlow
@@ -36,7 +36,7 @@ NS_ASSUME_NONNULL_BEGIN
     @discussion We need to store this in the app delegate as it's that delegate which receives the
         incoming URL. This property will be nil, except when an authorization flow is in progress.
  */
-@property(nonatomic, strong, nullable) id<OIDAuthorizationFlowSession> currentAuthorizationFlow;
+@property(nonatomic, strong, nullable) id<OIDExternalUserAgentSession> currentAuthorizationFlow;
 
 @property(nullable) IBOutlet NSWindow *window;
 

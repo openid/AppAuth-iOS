@@ -17,7 +17,7 @@
  */
 #import <UIKit/UIKit.h>
 
-@protocol OIDAuthorizationFlowSession;
+@protocol OIDExternalUserAgentSession;
 
 /*! @brief The example application's delegate.
  */
@@ -32,7 +32,7 @@
         incoming URL on UIApplicationDelegate.application:openURL:options:. This property will be
         nil, except when an authorization flow is in progress.
  */
-@property(nonatomic, strong, nullable) id<OIDAuthorizationFlowSession> currentAuthorizationFlow;
+@property(nonatomic, strong, nullable) id<OIDExternalUserAgentSession> currentAuthorizationFlow;
 
 @end
 
