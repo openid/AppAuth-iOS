@@ -440,9 +440,19 @@ static const NSUInteger kExpiryTimeTolerance = 60;
 - (void)performActionWithFreshTokens:(OIDAuthStateAction)action
          additionalRefreshParameters:
     (nullable NSDictionary<NSString *, NSString *> *)additionalParameters {
+  [self performActionWithFreshTokens:action
+         additionalRefreshParameters:additionalParameters
+                       dispatchQueue:dispatch_get_main_queue()];
+}
+
+- (void)performActionWithFreshTokens:(OIDAuthStateAction)action
+         additionalRefreshParameters:
+    (nullable NSDictionary<NSString *, NSString *> *)additionalParameters
+                       dispatchQueue:(dispatch_queue_t)dispatchQueue {
+
   if ([self isTokenFresh]) {
     // access token is valid within tolerance levels, perform action
-    dispatch_async(dispatch_get_main_queue(), ^() {
+    dispatch_async(dispatchQueue, ^() {
       action(self.accessToken, self.idToken, nil);
     });
     return;
@@ -454,7 +464,7 @@ static const NSUInteger kExpiryTimeTolerance = 60;
       OIDErrorUtilities errorWithCode:OIDErrorCodeTokenRefreshError
                       underlyingError:nil
                           description:@"Unable to refresh expired token without a refresh token."];
-    dispatch_async(dispatch_get_main_queue(), ^() {
+    dispatch_async(dispatchQueue, ^() {
         action(nil, nil, tokenRefreshError);
     });
     return;
@@ -480,7 +490,7 @@ static const NSUInteger kExpiryTimeTolerance = 60;
                  originalAuthorizationResponse:_lastAuthorizationResponse
                                       callback:^(OIDTokenResponse *_Nullable response,
                                                  NSError *_Nullable error) {
-    dispatch_async(dispatch_get_main_queue(), ^() {
+    dispatch_async(dispatchQueue, ^() {
       // update OIDAuthState based on response
       if (response) {
         self->_needsTokenRefresh = NO;
