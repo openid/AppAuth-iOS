@@ -151,6 +151,10 @@ typedef NS_ENUM(NSInteger, OIDErrorCode) {
   /*! @brief The ID Token did not pass validation (e.g. issuer, audience checks).
    */
   OIDErrorCodeIDTokenFailedValidationError = -15,
+
+  /*! @brief Incremental authorization is not possible due to the lack of a refresh token.
+   */
+  OIDErrorCodeIncrementalAuthorizationNotPossibleError = -16,
 };
 
 /*! @brief Enum of all possible OAuth error codes as defined by RFC6749
