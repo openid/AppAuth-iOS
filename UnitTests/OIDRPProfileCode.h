@@ -22,19 +22,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface OIDAuthorizationUICoordinatorNonInteractive : NSObject <OIDExternalUserAgent> {
-  // private variables
-  NSURLSession *_urlSession;
-  __weak id<OIDExternalUserAgentSession> _session;
-}
-@end
 
-@interface OIDRPProfileCode : XCTestCase {
-  // private variables
-  OIDAuthorizationUICoordinatorNonInteractive *_coordinator;
-  FILE * _logFile;
-}
 
-@end
 
 NS_ASSUME_NONNULL_END

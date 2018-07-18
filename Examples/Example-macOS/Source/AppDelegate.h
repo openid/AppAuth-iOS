@@ -25,11 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 /*! @class AppDelegate
     @brief The example application's delegate.
  */
-@interface AppDelegate : NSObject <NSApplicationDelegate> {
-  // property variables
-  NSWindow *_window;
-  id<OIDExternalUserAgentSession> _currentAuthorizationFlow;
-}
+@interface AppDelegate : NSObject <NSApplicationDelegate>
 
 /*! @property currentAuthorizationFlow
     @brief The authorization flow session which receives the return URL from the browser.
@@ -37,8 +33,6 @@ NS_ASSUME_NONNULL_BEGIN
         incoming URL. This property will be nil, except when an authorization flow is in progress.
  */
 @property(nonatomic, strong, nullable) id<OIDExternalUserAgentSession> currentAuthorizationFlow;
-
-@property(nullable) IBOutlet NSWindow *window;
 
 @end
 

@@ -60,17 +60,9 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
 @interface AppAuthExampleViewController () <OIDAuthStateChangeDelegate, OIDAuthStateErrorDelegate>
 @end
 
-@implementation AppAuthExampleViewController
-
-@synthesize authAutoButton = _authAutoButton;
-@synthesize authManual = _authManual;
-@synthesize authAutoHTTPButton = _authAutoHTTPButton;
-@synthesize codeExchangeButton = _codeExchangeButton;
-@synthesize userinfoButton = _userinfoButton;
-@synthesize clearAuthStateButton = _clearAuthStateButton;
-@synthesize logTextView = _logTextView;
-@synthesize appDelegate = _appDelegate;
-@synthesize authState = _authState;
+@implementation AppAuthExampleViewController {
+  OIDRedirectHTTPHandler *_redirectHTTPHandler;
+}
 
 - (void)viewDidLoad {
   [super viewDidLoad];

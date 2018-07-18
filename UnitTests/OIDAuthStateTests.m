@@ -41,7 +41,21 @@
 @interface OIDAuthStateTests () <OIDAuthStateChangeDelegate, OIDAuthStateErrorDelegate>
 @end
 
-@implementation OIDAuthStateTests
+@implementation OIDAuthStateTests {
+  /*! @brief An expectation for tests waiting on OIDAuthStateChangeDelegate.didChangeState:.
+   */
+  XCTestExpectation *_didChangeStateExpectation;
+
+  /*! @brief An expectation for tests waiting on
+          OIDAuthStateErrorDelegate.didEncounterAuthorizationError:.
+   */
+  XCTestExpectation *_didEncounterAuthorizationErrorExpectation;
+
+  /*! @brief An expectation for tests waiting on
+          OIDAuthStateErrorDelegate.didEncounterTransientError:.
+   */
+  XCTestExpectation *_didEncounterTransientErrorExpectation;
+}
 
 + (OIDAuthState *)testInstance {
   OIDAuthorizationResponse *authorizationResponse =

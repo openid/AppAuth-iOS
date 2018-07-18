@@ -30,12 +30,7 @@ extern BOOL gOIDURLQueryComponentForceIOS7Handling;
 
 /*! @brief A utility class for creating and parsing URL query components.
  */
-@interface OIDURLQueryComponent : NSObject {
-  // private variables
-  /*! @brief A dictionary of parameter names and values representing the contents of the query.
-   */
-  NSMutableDictionary<NSString *, NSMutableArray<NSString *> *> *_parameters;
-}
+@interface OIDURLQueryComponent : NSObject
 
 /*! @brief The parameter names in the query.
  */

@@ -95,19 +95,6 @@ NSString *const OIDOAuthorizationRequestCodeChallengeMethodS256 = @"S256";
 
 @implementation OIDAuthorizationRequest
 
-@synthesize configuration = _configuration;
-@synthesize responseType = _responseType;
-@synthesize clientID = _clientID;
-@synthesize clientSecret = _clientSecret;
-@synthesize scope = _scope;
-@synthesize redirectURL = _redirectURL;
-@synthesize state = _state;
-@synthesize nonce = _nonce;
-@synthesize codeVerifier = _codeVerifier;
-@synthesize codeChallenge = _codeChallenge;
-@synthesize codeChallengeMethod = _codeChallengeMethod;
-@synthesize additionalParameters = _additionalParameters;
-
 - (instancetype)init
     OID_UNAVAILABLE_USE_INITIALIZER(
         @selector(initWithConfiguration:
@@ -157,32 +144,6 @@ NSString *const OIDOAuthorizationRequestCodeChallengeMethodS256 = @"S256";
         [[NSDictionary alloc] initWithDictionary:additionalParameters copyItems:YES];
   }
   return self;
-}
-
-// Deprecated
-- (instancetype)initWithConfiguration:(OIDServiceConfiguration *)configuration
-                             clientId:(NSString *)clientID
-                         clientSecret:(nullable NSString *)clientSecret
-                                scope:(nullable NSString *)scope
-                          redirectURL:(NSURL *)redirectURL
-                         responseType:(NSString *)responseType
-                                state:(nullable NSString *)state
-                         codeVerifier:(nullable NSString *)codeVerifier
-                        codeChallenge:(nullable NSString *)codeChallenge
-                  codeChallengeMethod:(nullable NSString *)codeChallengeMethod
-                 additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters {
-  return [self initWithConfiguration:configuration
-                            clientId:clientID
-                        clientSecret:clientSecret
-                               scope:scope
-                         redirectURL:redirectURL
-                        responseType:responseType
-                               state:state
-                               nonce:nil
-                        codeVerifier:codeVerifier
-                       codeChallenge:codeChallenge
-                 codeChallengeMethod:OIDOAuthorizationRequestCodeChallengeMethodS256
-                additionalParameters:additionalParameters];
 }
 
 - (instancetype)

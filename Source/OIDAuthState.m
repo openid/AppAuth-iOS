@@ -92,25 +92,28 @@ static const NSUInteger kExpiryTimeTolerance = 60;
 @end
 
 
-@implementation OIDAuthState
+@implementation OIDAuthState {
+  /*! @brief Array of pending actions (use @c _pendingActionsSyncObject to synchronize access).
+   */
+  NSMutableArray *_pendingActions;
 
-@synthesize refreshToken = _refreshToken;
-@synthesize scope = _scope;
-@synthesize lastAuthorizationResponse = _lastAuthorizationResponse;
-@synthesize lastTokenResponse = _lastTokenResponse;
-@synthesize lastRegistrationResponse = _lastRegistrationResponse;
-@synthesize authorizationError = _authorizationError;
-@synthesize stateChangeDelegate = _stateChangeDelegate;
-@synthesize errorDelegate = _errorDelegate;
+  /*! @brief Object for synchronizing access to @c pendingActions.
+   */
+  id _pendingActionsSyncObject;
+
+  /*! @brief If YES, tokens will be refreshed on the next API call regardless of expiry.
+   */
+  BOOL _needsTokenRefresh;
+}
 
 #pragma mark - Convenience initializers
 
-+ (id<OIDExternalUserAgentSession, OIDAuthorizationFlowSession>)
++ (id<OIDExternalUserAgentSession>)
     authStateByPresentingAuthorizationRequest:(OIDAuthorizationRequest *)authorizationRequest
                             externalUserAgent:(id<OIDExternalUserAgent>)externalUserAgent
                                      callback:(OIDAuthStateAuthorizationCallback)callback {
   // presents the authorization request
-  id<OIDExternalUserAgentSession, OIDAuthorizationFlowSession> authFlowSession = [OIDAuthorizationService
+  id<OIDExternalUserAgentSession> authFlowSession = [OIDAuthorizationService
       presentAuthorizationRequest:authorizationRequest
                 externalUserAgent:externalUserAgent
                          callback:^(OIDAuthorizationResponse *_Nullable authorizationResponse,
@@ -505,12 +508,6 @@ static const NSUInteger kExpiryTimeTolerance = 60;
       }
     });
   }];
-}
-
-#pragma mark - Deprecated
-
-- (void)withFreshTokensPerformAction:(OIDAuthStateAction)action {
-  [self performActionWithFreshTokens:action additionalRefreshParameters:nil];
 }
 
 #pragma mark -
