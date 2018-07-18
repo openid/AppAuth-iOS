@@ -490,23 +490,23 @@ static const NSUInteger kExpiryTimeTolerance = 60;
                  originalAuthorizationResponse:_lastAuthorizationResponse
                                       callback:^(OIDTokenResponse *_Nullable response,
                                                  NSError *_Nullable error) {
-    dispatch_async(dispatchQueue, ^() {
-      // update OIDAuthState based on response
-      if (response) {
+    // update OIDAuthState based on response
+    if (response) {
+      self->_needsTokenRefresh = NO;
+      [self updateWithTokenResponse:response error:nil];
+    } else {
+      if (error.domain == OIDOAuthTokenErrorDomain) {
         self->_needsTokenRefresh = NO;
-        [self updateWithTokenResponse:response error:nil];
+        [self updateWithAuthorizationError:error];
       } else {
-        if (error.domain == OIDOAuthTokenErrorDomain) {
-          self->_needsTokenRefresh = NO;
-          [self updateWithAuthorizationError:error];
-        } else {
-          if ([self->_errorDelegate respondsToSelector:
-              @selector(authState:didEncounterTransientError:)]) {
-            [self->_errorDelegate authState:self didEncounterTransientError:error];
-          }
+        if ([self->_errorDelegate respondsToSelector:
+            @selector(authState:didEncounterTransientError:)]) {
+          [self->_errorDelegate authState:self didEncounterTransientError:error];
         }
       }
+    }
 
+    dispatch_async(dispatchQueue, ^() {
       // nil the pending queue and process everything that was queued up
       NSArray *actionsToProcess;
       @synchronized(self->_pendingActionsSyncObject) {
