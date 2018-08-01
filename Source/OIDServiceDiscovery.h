@@ -23,10 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 /*! @brief Represents an OpenID Connect 1.0 Discovery Document
     @see https://openid.net/specs/openid-connect-discovery-1_0.html#ProviderMetadata
  */
-@interface OIDServiceDiscovery : NSObject <NSCopying, NSSecureCoding> {
-  // private variables
-  NSDictionary *_discoveryDictionary;
-}
+@interface OIDServiceDiscovery : NSObject <NSCopying, NSSecureCoding>
 
 /*! @brief The decoded OpenID Connect 1.0 Discovery Document as a dictionary.
  */

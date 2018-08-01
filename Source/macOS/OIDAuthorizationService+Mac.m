@@ -24,11 +24,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation OIDAuthorizationService (Mac)
 
-+ (id<OIDExternalUserAgentSession, OIDAuthorizationFlowSession>)
-    presentAuthorizationRequest:(OIDAuthorizationRequest *)request
-                       callback:(OIDAuthorizationCallback)callback {
++ (id<OIDExternalUserAgentSession>) presentAuthorizationRequest:(OIDAuthorizationRequest *)request
+                                                       callback:(OIDAuthorizationCallback)callback {
   OIDExternalUserAgentMac *externalUserAgent = [[OIDExternalUserAgentMac alloc] init];
-  return [self presentAuthorizationRequest:request externalUserAgent:externalUserAgent callback:callback];
+  return [self presentAuthorizationRequest:request
+                         externalUserAgent:externalUserAgent
+                                  callback:callback];
 }
 
 @end

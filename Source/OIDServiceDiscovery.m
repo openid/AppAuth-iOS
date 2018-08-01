@@ -71,7 +71,9 @@ static NSString *const kRequireRequestURIRegistrationKey = @"require_request_uri
 static NSString *const kOPPolicyURIKey = @"op_policy_uri";
 static NSString *const kOPTosURIKey = @"op_tos_uri";
 
-@implementation OIDServiceDiscovery
+@implementation OIDServiceDiscovery {
+  NSDictionary *_discoveryDictionary;
+}
 
 - (nonnull instancetype)init OID_UNAVAILABLE_USE_INITIALIZER(@selector(initWithDictionary:error:))
 

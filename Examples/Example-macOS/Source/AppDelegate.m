@@ -24,10 +24,11 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@implementation AppDelegate
+@interface AppDelegate ()
+@property(nullable) IBOutlet NSWindow *window;
+@end
 
-@synthesize window = _window;
-@synthesize currentAuthorizationFlow = _currentAuthorizationFlow;
+@implementation AppDelegate
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
   _window.title = @"AppAuth Example for macOS";
@@ -48,7 +49,7 @@ NS_ASSUME_NONNULL_BEGIN
            withReplyEvent:(NSAppleEventDescriptor *)replyEvent {
   NSString *URLString = [[event paramDescriptorForKeyword:keyDirectObject] stringValue];
   NSURL *URL = [NSURL URLWithString:URLString];
-  [_currentAuthorizationFlow resumeAuthorizationFlowWithURL:URL];
+  [_currentAuthorizationFlow resumeExternalUserAgentFlowWithURL:URL];
 }
 
 @end

@@ -22,7 +22,6 @@
 #import "OIDAuthorizationResponse.h"
 #import "OIDDefines.h"
 #import "OIDErrorUtilities.h"
-#import "OIDAuthorizationFlowSession.h"
 #import "OIDExternalUserAgent.h"
 #import "OIDExternalUserAgentSession.h"
 #import "OIDIDToken.h"
@@ -43,17 +42,7 @@ static NSString *const kOpenIDConfigurationWellKnownPath = @".well-known/openid-
 
 NS_ASSUME_NONNULL_BEGIN
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
-
-@interface OIDAuthorizationFlowSessionImplementation : NSObject<OIDExternalUserAgentSession, OIDAuthorizationFlowSession> {
-  // private variables
-  OIDAuthorizationRequest *_request;
-  id<OIDExternalUserAgent> _externalUserAgent;
-  OIDAuthorizationCallback _pendingauthorizationFlowCallback;
-}
-
-#pragma GCC diagnostic pop
+@interface OIDAuthorizationSession : NSObject<OIDExternalUserAgentSession>
 
 - (instancetype)init NS_UNAVAILABLE;
 
@@ -62,7 +51,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-@implementation OIDAuthorizationFlowSessionImplementation
+@implementation OIDAuthorizationSession {
+  OIDAuthorizationRequest *_request;
+  id<OIDExternalUserAgent> _externalUserAgent;
+  OIDAuthorizationCallback _pendingauthorizationFlowCallback;
+}
 
 - (instancetype)initWithRequest:(OIDAuthorizationRequest *)request {
   self = [super init];
@@ -112,6 +105,9 @@ NS_ASSUME_NONNULL_BEGIN
   if (![self shouldHandleURL:URL]) {
     return NO;
   }
+  
+  AppAuthRequestTrace(@"Authorization Response: %@", URL);
+  
   // checks for an invalid state
   if (!_pendingauthorizationFlowCallback) {
     [NSException raise:OIDOAuthExceptionInvalidAuthorizationFlow
@@ -176,19 +172,9 @@ NS_ASSUME_NONNULL_BEGIN
   }
 }
 
-- (void)failAuthorizationFlowWithError:(NSError *)error {
-  [self failExternalUserAgentFlowWithError:error];
-}
-
-- (BOOL)resumeAuthorizationFlowWithURL:(NSURL *)URL {
-  return [self resumeExternalUserAgentFlowWithURL:URL];
-}
-
 @end
 
 @implementation OIDAuthorizationService
-
-@synthesize configuration = _configuration;
 
 + (void)discoverServiceConfigurationForIssuer:(NSURL *)issuerURL
                                    completion:(OIDDiscoveryCallback)completion {
@@ -271,20 +257,16 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - Authorization Endpoint
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
-
-+ (id<OIDExternalUserAgentSession, OIDAuthorizationFlowSession>)
-    presentAuthorizationRequest:(OIDAuthorizationRequest *)request
-              externalUserAgent:(id<OIDExternalUserAgent>)externalUserAgent
-                       callback:(OIDAuthorizationCallback)callback {
-  OIDAuthorizationFlowSessionImplementation *flowSession =
-      [[OIDAuthorizationFlowSessionImplementation alloc] initWithRequest:request];
++ (id<OIDExternalUserAgentSession>) presentAuthorizationRequest:(OIDAuthorizationRequest *)request
+    externalUserAgent:(id<OIDExternalUserAgent>)externalUserAgent
+             callback:(OIDAuthorizationCallback)callback {
+  
+  AppAuthRequestTrace(@"Authorization Request: %@", request);
+  
+  OIDAuthorizationSession *flowSession = [[OIDAuthorizationSession alloc] initWithRequest:request];
   [flowSession presentAuthorizationWithExternalUserAgent:externalUserAgent callback:callback];
   return flowSession;
 }
-
-#pragma GCC diagnostic pop
 
 #pragma mark - Token Endpoint
 
@@ -299,6 +281,12 @@ NS_ASSUME_NONNULL_BEGIN
                          callback:(OIDTokenCallback)callback {
 
   NSURLRequest *URLRequest = [request URLRequest];
+  
+  AppAuthRequestTrace(@"Token Request: %@\nHTTPBody: %@",
+                      URLRequest.URL,
+                      [[NSString alloc] initWithData:URLRequest.HTTPBody
+                                            encoding:NSUTF8StringEncoding]);
+
   NSURLSession *session = [OIDURLSessionProvider session];
   [[session dataTaskWithRequest:URLRequest
               completionHandler:^(NSData *_Nullable data,
@@ -322,6 +310,9 @@ NS_ASSUME_NONNULL_BEGIN
 
     NSHTTPURLResponse *HTTPURLResponse = (NSHTTPURLResponse *)response;
     NSInteger statusCode = HTTPURLResponse.statusCode;
+    AppAuthRequestTrace(@"Token Response: HTTP Status %d\nHTTPBody: %@",
+                        (int)statusCode,
+                        [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
     if (statusCode != 200) {
       // A server error occurred.
       NSError *serverError =
@@ -473,9 +464,9 @@ NS_ASSUME_NONNULL_BEGIN
       }
       
       // OpenID Connect Core Section 3.1.3.7. rule #10
-      // Validates that the issued at time is not more than +/- 5 minutes on the current time.
+      // Validates that the issued at time is not more than +/- 10 minutes on the current time.
       NSTimeInterval issuedAtDifference = [idToken.issuedAt timeIntervalSinceNow];
-      if (fabs(issuedAtDifference) > 300) {
+      if (fabs(issuedAtDifference) > 600) {
         NSError *invalidIDToken =
           [OIDErrorUtilities errorWithCode:OIDErrorCodeIDTokenFailedValidationError
                            underlyingError:nil

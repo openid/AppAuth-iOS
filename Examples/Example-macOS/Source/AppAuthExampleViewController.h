@@ -20,26 +20,12 @@
 @class AppDelegate;
 @class OIDAuthState;
 @class OIDServiceConfiguration;
-@class OIDRedirectHTTPHandler;
 
 NS_ASSUME_NONNULL_BEGIN
 
 /*! @brief The example application's view controller.
  */
-@interface AppAuthExampleViewController : NSViewController {
-  // private variables
-  OIDRedirectHTTPHandler *_redirectHTTPHandler;
-  // property variables
-  NSButton *_authAutoButton;
-  NSButton *_authManual;
-  NSButton *_authAutoHTTPButton;
-  NSButton *_codeExchangeButton;
-  NSButton *_userinfoButton;
-  NSButton *_clearAuthStateButton;
-  NSTextView *_logTextView;
-  __weak AppDelegate *_appDelegate;
-  OIDAuthState *_authState;
-}
+@interface AppAuthExampleViewController : NSViewController
 
 @property(nullable) IBOutlet NSButton *authAutoButton;
 @property(nullable) IBOutlet NSButton *authManual;

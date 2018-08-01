@@ -57,12 +57,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation OIDServiceConfiguration
 
-@synthesize authorizationEndpoint = _authorizationEndpoint;
-@synthesize tokenEndpoint = _tokenEndpoint;
-@synthesize issuer = _issuer;
-@synthesize registrationEndpoint = _registrationEndpoint;
-@synthesize discoveryDocument = _discoveryDocument;
-
 - (instancetype)init
     OID_UNAVAILABLE_USE_INITIALIZER(@selector(
         initWithAuthorizationEndpoint:

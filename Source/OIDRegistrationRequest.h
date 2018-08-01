@@ -26,17 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 /*! @brief Represents a registration request.
     @see https://openid.net/specs/openid-connect-registration-1_0.html#RegistrationRequest
  */
-@interface OIDRegistrationRequest : NSObject <NSCopying, NSSecureCoding> {
-  // property variables
-  OIDServiceConfiguration *_configuration;
-  NSString *_applicationType;
-  NSArray<NSURL *> *_redirectURIs;
-  NSArray<NSString *> *_responseTypes;
-  NSArray<NSString *> *_grantTypes;
-  NSString *_subjectType;
-  NSString *_tokenEndpointAuthenticationMethod;
-  NSDictionary<NSString *, NSString *> *_additionalParameters;
-}
+@interface OIDRegistrationRequest : NSObject <NSCopying, NSSecureCoding>
 
 /*! @brief The service's configuration.
     @remarks This configuration specifies how to connect to a particular OAuth provider.
