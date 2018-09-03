@@ -160,6 +160,30 @@ extern NSString *const OIDOAuthorizationRequestCodeChallengeMethodS256;
      additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters;
 
 /*! @brief Creates an authorization request with opinionated defaults (a secure @c state, @c nonce,
+ and PKCE with S256 as the @c code_challenge_method) and supports a useNonce param to stop the initializer
+ from generating automatically (useful for auth servers that don't support nonce like AWS Cognito).
+ @param configuration The service's configuration.
+ @param clientID The client identifier.
+ @param clientSecret The client secret.
+ @param scopes An array of scopes to combine into a single scope string per the OAuth2 spec.
+ @param useNonce A boolean to specify wether to autogenerate a nonce or not
+ @param redirectURL The client's redirect URI.
+ @param responseType The expected response type.
+ @param additionalParameters The client's additional authorization parameters.
+ @remarks This convenience initializer generates a state parameter and PKCE challenges
+ automatically and optionally a nonce parameter.
+ */
+- (instancetype)
+initWithConfiguration:(OIDServiceConfiguration *)configuration
+             clientId:(NSString *)clientID
+         clientSecret:(nullable NSString *)clientSecret
+               scopes:(nullable NSArray<NSString *> *)scopes
+             useNonce:(BOOL)useNonce
+          redirectURL:(NSURL *)redirectURL
+         responseType:(NSString *)responseType
+ additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters;
+
+/*! @brief Creates an authorization request with opinionated defaults (a secure @c state, @c nonce,
         and PKCE with S256 as the @c code_challenge_method).
     @param configuration The service's configuration.
     @param clientID The client identifier.

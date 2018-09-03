@@ -173,6 +173,38 @@ NSString *const OIDOAuthorizationRequestCodeChallengeMethodS256 = @"S256";
                 additionalParameters:additionalParameters];
 }
 
+
+- (instancetype)
+    initWithConfiguration:(OIDServiceConfiguration *)configuration
+                 clientId:(NSString *)clientID
+             clientSecret:(NSString *)clientSecret
+                   scopes:(nullable NSArray<NSString *> *)scopes
+                 useNonce:(BOOL)useNonce
+              redirectURL:(NSURL *)redirectURL
+             responseType:(NSString *)responseType
+     additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters {
+    
+    // generates PKCE code verifier and challenge
+    NSString *codeVerifier = [[self class] generateCodeVerifier];
+    NSString *codeChallenge = [[self class] codeChallengeS256ForVerifier:codeVerifier];
+    
+    // generate nonce only when not explicitly told to ignore it
+    NSString *nonce = useNonce ? [[self class] generateState] : nil;
+    
+    return [self initWithConfiguration:configuration
+                              clientId:clientID
+                          clientSecret:clientSecret
+                                 scope:[OIDScopeUtilities scopesWithArray:scopes]
+                           redirectURL:redirectURL
+                          responseType:responseType
+                                 state:[[self class] generateState]
+                                 nonce:nonce
+                          codeVerifier:codeVerifier
+                         codeChallenge:codeChallenge
+                   codeChallengeMethod:OIDOAuthorizationRequestCodeChallengeMethodS256
+                  additionalParameters:additionalParameters];
+}
+
 - (instancetype)
     initWithConfiguration:(OIDServiceConfiguration *)configuration
                  clientId:(NSString *)clientID
