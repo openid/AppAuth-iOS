@@ -251,7 +251,7 @@ NS_ASSUME_NONNULL_BEGIN
   // The logic of when to handle the URL is the same as for authorization requests: should match
   // down to the path component.
   return [[OIDAuthorizationFlowSessionImplementation class] URL:URL
-                                           matchesRedirectonURL:_request.endSessionRequestURL];
+                                           matchesRedirectonURL:_request.postLogoutRedirectURL];
 }
 
 - (BOOL)resumeExternalUserAgentFlowWithURL:(NSURL *)URL {
