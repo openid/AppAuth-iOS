@@ -748,7 +748,9 @@
 				341741AE1C5D8243000EF209 /* Source */,
 				340E737D1C5D819B0076B1F6 /* Products */,
 			);
+			indentWidth = 2;
 			sourceTree = "<group>";
+			tabWidth = 2;
 		};
 		340E737D1C5D819B0076B1F6 /* Products */ = {
 			isa = PBXGroup;
