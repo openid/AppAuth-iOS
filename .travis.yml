@@ -1,17 +1,17 @@
 # Travis CI config for AppAuth
 # Use the `wwtd` gem to test locally.
 language: objective-c
-osx_image: xcode9
+osx_image: xcode10
 # Tests iOS, macOS and tvOS: both static library and framework schemes.
 env: 
 # To generate this list, use `xcodebuild -showsdks` to get possible SDK values, and platforms.
 # Use `instruments -s devices` to get the device name.
-  - SCHEME=AppAuth-iOS DESTINATION="'platform=iOS Simulator,name=iPhone 6,OS=11.0'" SDK=iphonesimulator11.0
-  - SCHEME=AppAuth_iOS DESTINATION="'platform=iOS Simulator,name=iPhone 6,OS=11.0'" SDK=iphonesimulator11.0
-  - SCHEME=AppAuth-macOS DESTINATION="'platform=macOS,arch=x86_64'" SDK=macosx10.13
-  - SCHEME=AppAuth_macOS DESTINATION="'platform=macOS,arch=x86_64'" SDK=macosx10.13
-  - SCHEME=AppAuth-tvOS DESTINATION="'platform=tvOS Simulator,name=Apple TV,OS=11.0'" SDK=appletvsimulator11.0
-  - SCHEME=AppAuth_tvOS DESTINATION="'platform=tvOS Simulator,name=Apple TV,OS=11.0'" SDK=appletvsimulator11.0
+  - SCHEME=AppAuth-iOS DESTINATION="'platform=iOS Simulator,name=iPhone 6,OS=12.0'" SDK=iphonesimulator12.0
+  - SCHEME=AppAuth_iOS DESTINATION="'platform=iOS Simulator,name=iPhone 6,OS=12.0'" SDK=iphonesimulator12.0
+  - SCHEME=AppAuth-macOS DESTINATION="'platform=macOS,arch=x86_64'" SDK=macosx10.14
+  - SCHEME=AppAuth_macOS DESTINATION="'platform=macOS,arch=x86_64'" SDK=macosx10.14
+  - SCHEME=AppAuth-tvOS DESTINATION="'platform=tvOS Simulator,name=Apple TV,OS=12.0'" SDK=appletvsimulator12.0
+  - SCHEME=AppAuth_tvOS DESTINATION="'platform=tvOS Simulator,name=Apple TV,OS=12.0'" SDK=appletvsimulator12.0
 before_script:
   - sudo gem install xcpretty
 script:
