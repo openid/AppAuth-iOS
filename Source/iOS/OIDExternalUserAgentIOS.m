@@ -50,9 +50,7 @@ static id<OIDSafariViewControllerFactory> __nullable gSafariViewControllerFactor
 #pragma clang diagnostic ignored "-Wpartial-availability"
   __weak SFSafariViewController *_safariVC;
   SFAuthenticationSession *_authenticationVC;
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 120000
   ASWebAuthenticationSession *_webAuthenticationVC;
-#endif // __IPHONE_OS_VERSION_MAX_ALLOWED >= 120000
 #pragma clang diagnostic pop
 }
 
@@ -93,7 +91,6 @@ static id<OIDSafariViewControllerFactory> __nullable gSafariViewControllerFactor
   NSURL *requestURL = [request externalUserAgentRequestURL];
 
   // iOS 12 and later, use ASWebAuthenticationSession
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 120000
   if (@available(iOS 12.0, *)) {
     __weak OIDExternalUserAgentIOS *weakSelf = self;
     NSString *redirectScheme = request.redirectScheme;
@@ -119,10 +116,8 @@ static id<OIDSafariViewControllerFactory> __nullable gSafariViewControllerFactor
     }];
     _webAuthenticationVC = authenticationVC;
     openedSafari = [authenticationVC start];
-  } else
-#endif // __IPHONE_OS_VERSION_MAX_ALLOWED >= 120000
   // iOS 11, use SFAuthenticationSession
-  if (@available(iOS 11.0, *)) {
+  } else if (@available(iOS 11.0, *)) {
     __weak OIDExternalUserAgentIOS *weakSelf = self;
     NSString *redirectScheme = request.redirectScheme;
     SFAuthenticationSession *authenticationVC =
