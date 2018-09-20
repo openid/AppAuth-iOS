@@ -48,7 +48,6 @@ static id<OIDSafariViewControllerFactory> __nullable gSafariViewControllerFactor
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wpartial-availability"
   __weak SFSafariViewController *_safariVC;
-  SFAuthenticationSession *_authenticationVC;
 #pragma clang diagnostic pop
 }
 
@@ -88,31 +87,7 @@ static id<OIDSafariViewControllerFactory> __nullable gSafariViewControllerFactor
   BOOL openedSafari = NO;
   NSURL *requestURL = [request externalUserAgentRequestURL];
 
-  if (@available(iOS 11.0, *)) {
-    __weak OIDExternalUserAgentIOS *weakSelf = self;
-    NSString *redirectScheme = request.redirectScheme;
-    SFAuthenticationSession *authenticationVC =
-        [[SFAuthenticationSession alloc] initWithURL:requestURL
-                                   callbackURLScheme:redirectScheme
-                                   completionHandler:^(NSURL * _Nullable callbackURL,
-                                                       NSError * _Nullable error) {
-      __strong OIDExternalUserAgentIOS *strongSelf = weakSelf;
-      if (!strongSelf)
-          return;
-      strongSelf->_authenticationVC = nil;
-      if (callbackURL) {
-        [strongSelf->_session resumeExternalUserAgentFlowWithURL:callbackURL];
-      } else {
-        NSError *safariError =
-            [OIDErrorUtilities errorWithCode:OIDErrorCodeUserCanceledAuthorizationFlow
-                             underlyingError:error
-                                 description:@"User cancelled."];
-        [strongSelf->_session failExternalUserAgentFlowWithError:safariError];
-      }
-    }];
-    _authenticationVC = authenticationVC;
-    openedSafari = [authenticationVC start];
-  } else if (@available(iOS 9.0, *)) {
+  if (@available(iOS 9.0, *)) {
     SFSafariViewController *safariVC =
         [[[self class] safariViewControllerFactory] safariViewControllerWithURL:requestURL];
     safariVC.delegate = self;
@@ -142,15 +117,11 @@ static id<OIDSafariViewControllerFactory> __nullable gSafariViewControllerFactor
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wpartial-availability"
   SFSafariViewController *safariVC = _safariVC;
-  SFAuthenticationSession *authenticationVC = _authenticationVC;
 #pragma clang diagnostic pop
   
   [self cleanUp];
   
-  if (@available(iOS 11.0, *)) {
-    [authenticationVC cancel];
-    if (completion) completion();
-  } else if (@available(iOS 9.0, *)) {
+  if (@available(iOS 9.0, *)) {
     if (safariVC) {
       [safariVC dismissViewControllerAnimated:YES completion:completion];
     } else {
@@ -165,7 +136,6 @@ static id<OIDSafariViewControllerFactory> __nullable gSafariViewControllerFactor
   // The weak references to |_safariVC| and |_session| are set to nil to avoid accidentally using
   // them while not in an authorization flow.
   _safariVC = nil;
-  _authenticationVC = nil;
   _session = nil;
   _externalUserAgentFlowInProgress = NO;
 }
