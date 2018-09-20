@@ -25,7 +25,11 @@ NS_ASSUME_NONNULL_BEGIN
 @interface OIDAuthState (Mac)
 
 /*! @brief Convenience method to create a @c OIDAuthState by presenting an authorization request
-        and performing the authorization code exchange in the case of code flow requests.
+        and performing the authorization code exchange in the case of code flow requests. For
+        the hybrid flow, the caller should validate the id_token and c_hash, then perform the token
+        request (@c OIDAuthorizationService.performTokenRequest:callback:)
+        and update the OIDAuthState with the results (@c
+        OIDAuthState.updateWithTokenResponse:error:).
     @param authorizationRequest The authorization request to present.
     @param callback The method called when the request has completed or failed.
     @return A @c OIDExternalUserAgentSession instance which will terminate when it
