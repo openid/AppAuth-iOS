@@ -30,7 +30,7 @@ in all protocol requests and responses.
 
 #### Supported Versions
 
-AppAuth supports iOS 7 and above.
+AppAuth supports iOS 8 and above.
 
 iOS 9+ uses the in-app browser tab pattern
 (via `SFSafariViewController`), and falls back to the system browser (mobile

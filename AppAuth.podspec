@@ -30,7 +30,7 @@ It follows the OAuth 2.0 for Native Apps best current practice
   #       classes of AppAuth with tokens on watchOS and tvOS, but currently the
   #       library won't help you obtain authorization grants on those platforms.
 
-  s.platforms    = { :ios => "7.0", :osx => "10.9", :watchos => "2.0", :tvos => "9.0" }
+  s.platforms    = { :ios => "8.0", :osx => "10.9", :watchos => "2.0", :tvos => "9.0" }
 
   s.source       = { :git => "https://github.com/openid/AppAuth-iOS.git", :tag => s.version }
 
@@ -39,7 +39,7 @@ It follows the OAuth 2.0 for Native Apps best current practice
 
   # iOS
   s.ios.source_files      = "Source/iOS/**/*.{h,m}"
-  s.ios.deployment_target = "7.0"
+  s.ios.deployment_target = "8.0"
   s.ios.frameworks        = "SafariServices", "AuthenticationServices"
 
   # macOS
