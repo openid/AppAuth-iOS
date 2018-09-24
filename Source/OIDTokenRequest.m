@@ -67,6 +67,8 @@ static NSString *const kCodeVerifierKey = @"code_verifier";
  */
 static NSString *const kAdditionalParametersKey = @"additionalParameters";
 
+static NSString *const kAdditionalHeadersKey = @"additionalHeaders";
+
 @implementation OIDTokenRequest
 
 - (instancetype)init
@@ -201,6 +203,7 @@ static NSString *const kAdditionalParametersKey = @"additionalParameters";
   [aCoder encodeObject:_refreshToken forKey:kRefreshTokenKey];
   [aCoder encodeObject:_codeVerifier forKey:kCodeVerifierKey];
   [aCoder encodeObject:_additionalParameters forKey:kAdditionalParametersKey];
+  [aCoder encodeObject:_additionalHeaders forKey:kAdditionalHeadersKey];
 }
 
 #pragma mark - NSObject overrides
@@ -300,7 +303,11 @@ static NSString *const kAdditionalParametersKey = @"additionalParameters";
   for (id header in httpHeaders) {
     [URLRequest setValue:httpHeaders[header] forHTTPHeaderField:header];
   }
-
+  
+  for (id header in _additionalHeaders) {
+    [URLRequest setValue:_additionalHeaders[header] forHTTPHeaderField:header];
+  }
+  
   return URLRequest;
 }
 

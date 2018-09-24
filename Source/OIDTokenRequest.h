@@ -95,6 +95,8 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property(nonatomic, readonly, nullable) NSDictionary<NSString *, NSString *> *additionalParameters;
 
+@property(nonatomic, readwrite, nullable) NSDictionary<NSString *, NSString *> *additionalHeaders;
+
 /*! @internal
     @brief Unavailable. Please use
         initWithConfiguration:grantType:code:redirectURL:clientID:additionalParameters:.
