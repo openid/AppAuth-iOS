@@ -464,6 +464,15 @@ static const NSUInteger kExpiryTimeTolerance = 60;
 }
 
 - (void)performActionWithFreshTokens:(OIDAuthStateAction)action
+         additionalRefreshParameters:(NSDictionary<NSString *,NSString *> *)additionalParameters
+                   additionalHeaders:(NSDictionary<NSString *,NSString *> *)additionalHeaders {
+  [self performActionWithFreshTokens:action
+         additionalRefreshParameters:additionalParameters
+                   additionalHeaders:additionalHeaders
+                       dispatchQueue:dispatch_get_main_queue()];
+}
+
+- (void)performActionWithFreshTokens:(OIDAuthStateAction)action
                     additionalHeaders:(NSDictionary<NSString *,NSString *> *)additionalHeaders {
     [self performActionWithFreshTokens:action
            additionalRefreshParameters:nil

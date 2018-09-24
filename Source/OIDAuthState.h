@@ -229,6 +229,10 @@ typedef void (^OIDAuthStateAuthorizationCallback)(OIDAuthState *_Nullable authSt
                     additionalHeaders:
     (nullable NSDictionary<NSString *, NSString *> *)additionalHeaders;
 
+- (void)performActionWithFreshTokens:(OIDAuthStateAction)action
+         additionalRefreshParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters
+                   additionalHeaders:(nullable NSDictionary<NSString *, NSString *> *)additionalHeaders;
+
 /*! @brief Calls the block with a valid access token (refreshing it first, if needed), or if a
  refresh was needed and failed, with the error that caused it to fail.
  @param action The block to execute with a fresh token. This block will be executed on the main
