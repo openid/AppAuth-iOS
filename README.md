@@ -51,7 +51,7 @@ confidentiality of the client secrets may not work well.
 
 #### Supported Versions
 
-AppAuth supports macOS (OS X) 10.8 and above.
+AppAuth supports macOS (OS X) 10.9 and above.
 
 #### Authorization Server Requirements
 
