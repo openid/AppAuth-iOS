@@ -33,16 +33,21 @@ It follows the OAuth 2.0 for Native Apps best current practice
   s.platforms    = { :ios => "7.0", :osx => "10.9", :watchos => "2.0", :tvos => "9.0" }
 
   s.source       = { :git => "https://github.com/openid/AppAuth-iOS.git", :tag => s.version }
-
-  s.source_files = "Source/*.{h,m}"
   s.requires_arc = true
 
-  # iOS
-  s.ios.source_files      = "Source/iOS/**/*.{h,m}"
-  s.ios.deployment_target = "7.0"
-  s.ios.frameworks        = "SafariServices", "AuthenticationServices"
+  s.subspec 'Core' do |core|
+     # subspec for users who don't want the authentication code
+     core.source_files = "Source/*.{h,m}"
+  end
 
-  # macOS
-  s.osx.source_files = "Source/macOS/**/*.{h,m}"
-  s.osx.deployment_target = '10.9'
+  s.subspec 'Auth' do |auth|
+    # iOS
+    auth.ios.source_files      = "Source/iOS/**/*.{h,m}"
+    auth.ios.deployment_target = "7.0"
+    auth.ios.frameworks        = "SafariServices", "AuthenticationServices"
+
+    # macOS
+    auth.osx.source_files = "Source/macOS/**/*.{h,m}"
+    auth.osx.deployment_target = '10.9'
+  end
 end

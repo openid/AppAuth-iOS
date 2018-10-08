@@ -15,7 +15,6 @@
 		340DAE5A1D5821AB00EC285B /* OIDAuthorizationRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741B51C5D8243000EF209 /* OIDAuthorizationRequest.m */; };
 		340DAE5C1D5821AB00EC285B /* OIDAuthorizationService.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741B91C5D8243000EF209 /* OIDAuthorizationService.m */; };
 		340DAE5D1D5821AB00EC285B /* OIDAuthState.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741BB1C5D8243000EF209 /* OIDAuthState.m */; };
-		340DAE741D58223A00EC285B /* AppAuth.h in Headers */ = {isa = PBXBuildFile; fileRef = 341741AF1C5D8243000EF209 /* AppAuth.h */; };
 		340DAEBC1D582AF100EC285B /* OIDRedirectHTTPHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 340DAEBA1D582AF100EC285B /* OIDRedirectHTTPHandler.m */; };
 		340DAECB1D582DE100EC285B /* OIDAuthorizationService+IOS.m in Sources */ = {isa = PBXBuildFile; fileRef = F6F60FB11D2BFEFE00325CB3 /* OIDAuthorizationService+IOS.m */; };
 		340DAECC1D582DE100EC285B /* OIDAuthState+IOS.m in Sources */ = {isa = PBXBuildFile; fileRef = F6F60FB01D2BFEFE00325CB3 /* OIDAuthState+IOS.m */; };
@@ -508,7 +507,6 @@
 		340DAEB91D582AF100EC285B /* OIDRedirectHTTPHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OIDRedirectHTTPHandler.h; sourceTree = "<group>"; };
 		340DAEBA1D582AF100EC285B /* OIDRedirectHTTPHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OIDRedirectHTTPHandler.m; sourceTree = "<group>"; };
 		340E737C1C5D819B0076B1F6 /* libAppAuth-iOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libAppAuth-iOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		341741AF1C5D8243000EF209 /* AppAuth.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppAuth.h; sourceTree = "<group>"; };
 		341741B41C5D8243000EF209 /* OIDAuthorizationRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OIDAuthorizationRequest.h; sourceTree = "<group>"; };
 		341741B51C5D8243000EF209 /* OIDAuthorizationRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OIDAuthorizationRequest.m; sourceTree = "<group>"; };
 		341741B61C5D8243000EF209 /* OIDAuthorizationResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OIDAuthorizationResponse.h; sourceTree = "<group>"; };
@@ -782,7 +780,6 @@
 				343AAA4C1E8345B600F9D36E /* Framework */,
 				340DAE241D581FE700EC285B /* macOS */,
 				F6F60FAF1D2BFEF000325CB3 /* iOS */,
-				341741AF1C5D8243000EF209 /* AppAuth.h */,
 				341741B41C5D8243000EF209 /* OIDAuthorizationRequest.h */,
 				341741B51C5D8243000EF209 /* OIDAuthorizationRequest.m */,
 				341741B61C5D8243000EF209 /* OIDAuthorizationResponse.h */,
@@ -925,7 +922,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				340DAE741D58223A00EC285B /* AppAuth.h in Headers */,
 				34FEA6AE1DB6E083005C9212 /* OIDLoopbackHTTPServer.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
