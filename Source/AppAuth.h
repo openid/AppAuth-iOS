@@ -21,11 +21,20 @@
 
 #import "AppAuthCore.h"
 
-#if TARGET_OS_MAC
+#if TARGET_OS_TV
+#elif TARGET_OS_WATCH
+#elif TARGET_OS_IOS
+#import "OIDAuthState+IOS.h"
+#import "OIDAuthorizationService+IOS.h"
+#import "OIDExternalUserAgentIOS.h"
+#import "OIDExternalUserAgentIOSCustomBrowser.h"
+#elif TARGET_OS_MAC
 #import "OIDAuthState+Mac.h"
 #import "OIDAuthorizationService+Mac.h"
 #import "OIDExternalUserAgentMac.h"
 #import "OIDRedirectHTTPHandler.h"
+#else
+#error "Platform Undefined"
 #endif
 
 #endif /* AppAuth_h */

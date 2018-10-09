@@ -38,6 +38,7 @@ It follows the OAuth 2.0 for Native Apps best current practice
   s.subspec 'Core' do |core|
      # subspec for users who don't need the external user agent implementations
      core.source_files = "Source/*.{h,m}"
+     core.exclude_files = "Source/AppAuth.h"
   end
 
   s.subspec 'ExternalUserAgent' do |externalUserAgent|
