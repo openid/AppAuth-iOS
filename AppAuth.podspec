@@ -41,6 +41,8 @@ It follows the OAuth 2.0 for Native Apps best current practice
   end
 
   s.subspec 'ExternalUserAgent' do |externalUserAgent|
+    externalUserAgent.dependency 'AppAuth/Core'
+
     # iOS
     externalUserAgent.ios.source_files      = "Source/iOS/**/*.{h,m}"
     externalUserAgent.ios.deployment_target = "7.0"
