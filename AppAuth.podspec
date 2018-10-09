@@ -40,14 +40,14 @@ It follows the OAuth 2.0 for Native Apps best current practice
      core.source_files = "Source/*.{h,m}"
   end
 
-  s.subspec 'Auth' do |auth|
+  s.subspec 'ExternalUserAgent' do |externalUserAgent|
     # iOS
-    auth.ios.source_files      = "Source/iOS/**/*.{h,m}"
-    auth.ios.deployment_target = "7.0"
-    auth.ios.frameworks        = "SafariServices", "AuthenticationServices"
+    externalUserAgent.ios.source_files      = "Source/iOS/**/*.{h,m}"
+    externalUserAgent.ios.deployment_target = "7.0"
+    externalUserAgent.ios.frameworks        = "SafariServices", "AuthenticationServices"
 
     # macOS
-    auth.osx.source_files = "Source/macOS/**/*.{h,m}"
-    auth.osx.deployment_target = '10.9'
+    externalUserAgent.osx.source_files = "Source/macOS/**/*.{h,m}"
+    externalUserAgent.osx.deployment_target = '10.9'
   end
 end
