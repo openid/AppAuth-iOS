@@ -67,6 +67,7 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize issuer = _issuer;
 @synthesize registrationEndpoint = _registrationEndpoint;
 @synthesize discoveryDocument = _discoveryDocument;
+@synthesize endSessionEndpoint = _endSessionEndpoint;
 
 - (instancetype)init
     OID_UNAVAILABLE_USE_INITIALIZER(@selector(
@@ -208,6 +209,7 @@ NS_ASSUME_NONNULL_BEGIN
   [aCoder encodeObject:_issuer forKey:kIssuerKey];
   [aCoder encodeObject:_registrationEndpoint forKey:kRegistrationEndpointKey];
   [aCoder encodeObject:_discoveryDocument forKey:kDiscoveryDocumentKey];
+  [aCoder encodeObject:_endSessionEndpoint forKey:kEndSessionEndpointKey];
 }
 
 #pragma mark - description
@@ -215,10 +217,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSString *)description {
   return [NSString stringWithFormat:
       @"OIDServiceConfiguration authorizationEndpoint: %@, tokenEndpoint: %@, "
-          "registrationEndpoint: %@, discoveryDocument: [%@]",
+          "registrationEndpoint: %@, endSessionEndpoint: %@, discoveryDocument: [%@]",
       _authorizationEndpoint,
       _tokenEndpoint,
       _registrationEndpoint,
+      _endSessionEndpoint,
       _discoveryDocument];
 }
 
