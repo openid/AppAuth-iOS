@@ -373,13 +373,26 @@ static NSString *const kDiscoveryDocumentNullField =
 - (void)testSecureCoding {
   NSError *error;
   NSDictionary *serviceDiscoveryDictionary = [[self class] completeServiceDiscoveryDictionary];
-  OIDServiceDiscovery *discovery =
-      [[OIDServiceDiscovery alloc] initWithDictionary:serviceDiscoveryDictionary
-                                                             error:&error];
-  NSData *data = [NSKeyedArchiver archivedDataWithRootObject:discovery];
-  OIDServiceDiscovery *unarchived = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+  NSMutableArray<OIDServiceDiscovery *> *discoveries = [[NSMutableArray alloc] init];
+  [discoveries addObject:[[OIDServiceDiscovery alloc] initWithDictionary:serviceDiscoveryDictionary
+                                                                   error:&error]];
+  [discoveries addObject:[[OIDServiceDiscovery alloc] initWithJSON:kDiscoveryDocument error:&error]];
 
-  XCTAssertEqualObjects(discovery.discoveryDictionary, unarchived.discoveryDictionary, @"");
+  for (OIDServiceDiscovery *discovery in discoveries) {
+    @try {
+      NSData *data = [NSKeyedArchiver archivedDataWithRootObject:discovery];
+
+      NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:data];
+      unarchiver.requiresSecureCoding = YES;
+      OIDServiceDiscovery *unarchived = [unarchiver decodeObjectOfClass:[OIDServiceDiscovery class]
+                                                                 forKey:NSKeyedArchiveRootObjectKey];
+
+      XCTAssertEqualObjects(discovery.discoveryDictionary, unarchived.discoveryDictionary, @"");
+    }
+    @catch (NSException *exception) {
+      XCTFail("Failed discovery: %@; Exception: %@", discovery.discoveryDictionary, exception);
+    }
+  }
 }
 
 /*! @brief Tests the NSCopying implementation by round-tripping an instance through the copying

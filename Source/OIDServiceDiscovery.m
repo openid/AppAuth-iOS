@@ -23,6 +23,10 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/*! @brief Key used to encode the @c discoveryDictionary property for @c NSSecureCoding
+ */
+static NSString *const kDiscoveryDictionaryKey = @"discovery_dictionary";
+
 /*! Field keys associated with an OpenID Connect Discovery Document. */
 static NSString *const kIssuerKey = @"issuer";
 static NSString *const kAuthorizationEndpointKey = @"authorization_endpoint";
@@ -183,7 +187,8 @@ static NSString *const kOPTosURIKey = @"op_tos_uri";
 
 - (nullable instancetype)initWithCoder:(NSCoder *)aDecoder {
   NSError *error;
-  NSDictionary *dictionary = [[NSDictionary alloc] initWithCoder:aDecoder];
+  NSDictionary *dictionary = [aDecoder decodeObjectOfClasses:[NSSet setWithObjects:[NSArray class], [NSDictionary class], nil] forKey:kDiscoveryDictionaryKey];
+
   self = [self initWithDictionary:dictionary error:&error];
   if (error) {
     return nil;
@@ -192,7 +197,7 @@ static NSString *const kOPTosURIKey = @"op_tos_uri";
 }
 
 - (void)encodeWithCoder:(NSCoder *)aCoder {
-  [_discoveryDictionary encodeWithCoder:aCoder];
+  [aCoder encodeObject:_discoveryDictionary forKey:kDiscoveryDictionaryKey];
 }
 
 #pragma mark - Properties
