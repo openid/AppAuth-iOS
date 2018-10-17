@@ -33,16 +33,26 @@ It follows the OAuth 2.0 for Native Apps best current practice
   s.platforms    = { :ios => "7.0", :osx => "10.9", :watchos => "2.0", :tvos => "9.0" }
 
   s.source       = { :git => "https://github.com/openid/AppAuth-iOS.git", :tag => s.version }
-
-  s.source_files = "Source/*.{h,m}"
   s.requires_arc = true
 
-  # iOS
-  s.ios.source_files      = "Source/iOS/**/*.{h,m}"
-  s.ios.deployment_target = "7.0"
-  s.ios.frameworks        = "SafariServices", "AuthenticationServices"
+  # Subspec for the core AppAuth library classes only, suitable for extensions.
+  s.subspec 'Core' do |core|
+     core.source_files = "Source/*.{h,m}"
+     core.exclude_files = "Source/AppAuth.h"
+  end
 
-  # macOS
-  s.osx.source_files = "Source/macOS/**/*.{h,m}"
-  s.osx.deployment_target = '10.9'
+  # Subspec for the full AppAuth library, including platform-dependant external user agents.
+  s.subspec 'ExternalUserAgent' do |externalUserAgent|
+
+    externalUserAgent.source_files = "Source/*.{h,m}"
+    
+    # iOS
+    externalUserAgent.ios.source_files      = "Source/iOS/**/*.{h,m}"
+    externalUserAgent.ios.deployment_target = "7.0"
+    externalUserAgent.ios.frameworks        = "SafariServices", "AuthenticationServices"
+
+    # macOS
+    externalUserAgent.osx.source_files = "Source/macOS/**/*.{h,m}"
+    externalUserAgent.osx.deployment_target = '10.9'    
+  end
 end
