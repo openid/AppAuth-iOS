@@ -41,6 +41,8 @@
 #import "OIDTokenUtilities.h"
 #import "OIDURLSessionProvider.h"
 
+#if APPAUTH_EXTERNALUSERAGENT
+
 #if TARGET_OS_TV
 #elif TARGET_OS_WATCH
 #elif TARGET_OS_IOS
@@ -57,6 +59,7 @@
 #error "Platform Undefined"
 #endif
 
+# endif // APPAUTH_EXTERNALUSERAGENT
 
 /*! @mainpage AppAuth for iOS and macOS
 
