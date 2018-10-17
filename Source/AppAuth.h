@@ -57,7 +57,6 @@
 #error "Platform Undefined"
 #endif
 
-
 /*! @mainpage AppAuth for iOS and macOS
 
     @section introduction Introduction
