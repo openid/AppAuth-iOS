@@ -26,11 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
     @see http://openid.net/specs/openid-connect-session-1_0.html#RPLogout
  */
 
-@interface OIDEndSessionResponse : NSObject <NSCopying, NSSecureCoding> {
-  OIDEndSessionRequest *_request;
-  NSString *_state;
-  NSDictionary<NSString *, NSObject<NSCopying> *> *additionalParameters;
-}
+@interface OIDEndSessionResponse : NSObject <NSCopying, NSSecureCoding>
 
 /*! @brief The request which was serviced.
  */

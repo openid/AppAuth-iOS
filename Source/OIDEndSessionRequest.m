@@ -55,12 +55,6 @@ static NSString *const OIDMissingEndSessionEndpointMessage =
 
 @implementation OIDEndSessionRequest
 
-@synthesize configuration = _configuration;
-@synthesize postLogoutRedirectURL = _postLogoutRedirectURL;
-@synthesize idTokenHint = _idTokenHint;
-@synthesize state = _state;
-@synthesize additionalParameters = _additionalParameters;
-
 - (instancetype)init
     OID_UNAVAILABLE_USE_INITIALIZER(
         @selector(initWithConfiguration:

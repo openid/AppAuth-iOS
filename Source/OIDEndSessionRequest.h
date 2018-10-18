@@ -25,13 +25,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface OIDEndSessionRequest : NSObject
-    <NSCopying, NSSecureCoding, OIDExternalUserAgentRequest> {
-  OIDServiceConfiguration *_configuration;
-  NSURL *_postLogoutRedirectURL;
-  NSString *_idTokenHint;
-  NSString *_state;
-  NSDictionary<NSString *, NSString *> *_additionalParameters;
-}
+    <NSCopying, NSSecureCoding, OIDExternalUserAgentRequest>
 
 /*! @brief The service's configuration.
     @remarks This configuration specifies how to connect to a particular OAuth provider.

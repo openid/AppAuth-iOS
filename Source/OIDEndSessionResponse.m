@@ -37,10 +37,6 @@ static NSString *const kAdditionalParametersKey = @"additionalParameters";
 
 @implementation OIDEndSessionResponse
 
-@synthesize request = _request;
-@synthesize state = _state;
-@synthesize additionalParameters = _additionalParameters;
-
 #pragma mark - Initializers
 
 - (instancetype)init
