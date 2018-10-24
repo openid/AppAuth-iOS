@@ -43,6 +43,12 @@ static NSString *const kQueryStringParamAdditionalDisallowedCharacters = @"=&+";
 - (nullable instancetype)initWithURL:(NSURL *)URL {
   self = [self init];
   if (self) {
+    // iOS can't parse queryItems from something that is a fragment
+    // Convert all fragment to query
+    NSString * urlString = URL.absoluteString;
+    urlString = [urlString stringByReplacingOccurrencesOfString:@"#" withString:@"?"];
+    
+    URL = [NSURL URLWithString:urlString];
     if (@available(iOS 8.0, macOS 10.10, *)) {
       // If NSURLQueryItem is available, use it for deconstructing the new URL. (iOS 8+)
       if (!gOIDURLQueryComponentForceIOS7Handling) {
