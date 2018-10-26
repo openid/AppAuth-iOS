@@ -27,6 +27,10 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/** @brief Whether to prefer @c SFSafariViewController over other user agents.
+ */
+static BOOL gPreferSafariViewController = NO;
+
 /** @brief The global/shared Safari view controller factory. Responsible for creating all new
         instances of @c SFSafariViewController.
  */
@@ -52,6 +56,10 @@ static id<OIDSafariViewControllerFactory> __nullable gSafariViewControllerFactor
   SFAuthenticationSession *_authenticationVC;
   ASWebAuthenticationSession *_webAuthenticationVC;
 #pragma clang diagnostic pop
+}
+
++ (void)setPreferSafariViewController:(BOOL)preferSafariViewController {
+  gPreferSafariViewController = preferSafariViewController;
 }
 
 /** @brief Obtains the current @c OIDSafariViewControllerFactory; creating a new default instance if
@@ -90,8 +98,13 @@ static id<OIDSafariViewControllerFactory> __nullable gSafariViewControllerFactor
   BOOL openedSafari = NO;
   NSURL *requestURL = [request externalUserAgentRequestURL];
 
+  // If preferred, use SFSafariViewController
+  if (gPreferSafariViewController) {
+    _safariVC = [self presentSafariViewControllerWithURL:requestURL];
+    openedSafari = YES;
+  }
   // iOS 12 and later, use ASWebAuthenticationSession
-  if (@available(iOS 12.0, *)) {
+  else if (@available(iOS 12.0, *)) {
     __weak OIDExternalUserAgentIOS *weakSelf = self;
     NSString *redirectScheme = request.redirectScheme;
     ASWebAuthenticationSession *authenticationVC =
@@ -144,11 +157,7 @@ static id<OIDSafariViewControllerFactory> __nullable gSafariViewControllerFactor
     openedSafari = [authenticationVC start];
   // iOS 9 and 10, use SFSafariViewController
   } else if (@available(iOS 9.0, *)) {
-    SFSafariViewController *safariVC =
-        [[[self class] safariViewControllerFactory] safariViewControllerWithURL:requestURL];
-    safariVC.delegate = self;
-    _safariVC = safariVC;
-    [_presentingViewController presentViewController:safariVC animated:YES completion:nil];
+    _safariVC = [self presentSafariViewControllerWithURL:requestURL];
     openedSafari = YES;
   // iOS 8 and earlier, use mobile Safari
   } else {
@@ -163,6 +172,14 @@ static id<OIDSafariViewControllerFactory> __nullable gSafariViewControllerFactor
     [session failExternalUserAgentFlowWithError:safariError];
   }
   return openedSafari;
+}
+
+- (SFSafariViewController *)presentSafariViewControllerWithURL:(NSURL *)requestURL {
+  SFSafariViewController *safariVC =
+  [[[self class] safariViewControllerFactory] safariViewControllerWithURL:requestURL];
+  safariVC.delegate = self;
+  [_presentingViewController presentViewController:safariVC animated:YES completion:nil];
+  return safariVC;
 }
 
 - (void)dismissExternalUserAgentAnimated:(BOOL)animated completion:(void (^)(void))completion {

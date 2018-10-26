@@ -41,6 +41,14 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @interface OIDExternalUserAgentIOS : NSObject<OIDExternalUserAgent>
 
+/*! @brief Set whether to prefer using @c SFSafariViewController even if newer user agents are available. False by default.
+    @remarks Useful if you rely on customization via @c setSafariViewControllerFactory:
+        or need to share the browser session (e.g., cookies) with other Safari View
+        Controllers.
+ */
++ (void)setPreferSafariViewController:
+    (BOOL)preferSafariViewController;
+
 /*! @brief Allows library consumers to change the @c OIDSafariViewControllerFactory used to create
         new instances of @c SFSafariViewController.
     @remarks Useful for customizing tint colors and presentation styles.
