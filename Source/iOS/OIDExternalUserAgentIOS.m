@@ -149,14 +149,21 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma clang diagnostic ignored "-Wpartial-availability"
   SFSafariViewController *safariVC = _safariVC;
   SFAuthenticationSession *authenticationVC = _authenticationVC;
+  ASWebAuthenticationSession *webAuthenticationVC = _webAuthenticationVC;
 #pragma clang diagnostic pop
   
   [self cleanUp];
   
-  if (@available(iOS 11.0, *)) {
+  if (@available(iOS 12.0, *)) {
+    // dismiss the ASWebAuthenticationSession
+    [webAuthenticationVC cancel];
+    if (completion) completion();
+  } else if (@available(iOS 11.0, *)) {
+    // dismiss the SFAuthenticationSession
     [authenticationVC cancel];
     if (completion) completion();
   } else if (@available(iOS 9.0, *)) {
+    // dismiss the SFSafariViewController
     if (safariVC) {
       [safariVC dismissViewControllerAnimated:YES completion:completion];
     } else {
