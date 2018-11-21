@@ -18,7 +18,7 @@
 
 #import "TodayViewController.h"
 #import <NotificationCenter/NotificationCenter.h>
-#import <AppAuth/AppAuth.h>
+#import <AppAuthCore/AppAuthCore.h>
 
 static NSString *const kAppAuthExampleAuthStateKey = @"authState";
 

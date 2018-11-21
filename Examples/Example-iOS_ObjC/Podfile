@@ -7,7 +7,7 @@ target 'Example-iOS_ObjC' do
 end
 
 target 'Example-iOS_ObjC_Extension' do    
-    # AppAuth Pod
-    # In production, just use `pod 'AppAuth'` without the path reference.
-    pod 'AppAuth', :path => '../../'
+    # AppAuth/Core Pod
+    # In production, just use `pod 'AppAuth/Core'` without the path reference.
+    pod 'AppAuth/Core', :path => '../../'
 end
