@@ -471,7 +471,7 @@ NS_ASSUME_NONNULL_BEGIN
         NSError *invalidIDToken =
           [OIDErrorUtilities errorWithCode:OIDErrorCodeIDTokenFailedValidationError
                            underlyingError:nil
-                               description:@"Issued at time is more than 5 minutes before or after "
+                               description:@"Issued at time is more than 10 minutes before or after "
                                             "the current time"];
         dispatch_async(dispatch_get_main_queue(), ^{
           callback(nil, invalidIDToken);
