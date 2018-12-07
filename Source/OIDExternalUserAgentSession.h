@@ -27,8 +27,9 @@
         Will cause an error with code: @c ::OIDErrorCodeProgramCanceledAuthorizationFlow to be
         passed to the @c callback block passed to
         @c OIDAuthorizationService.presentAuthorizationRequest:presentingViewController:callback:
+    @param completion The block to be called when the cancel operation ends
  */
-- (void)cancel;
+- (void)cancelWithCompletion:(void (^)(void))completion;
 
 /*! @brief Clients should call this method with the result of the external user-agent code flow if
         it becomes available.

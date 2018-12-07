@@ -79,12 +79,13 @@ NS_ASSUME_NONNULL_BEGIN
   }
 }
 
-- (void)cancel {
+- (void)cancelWithCompletion:(void (^)(void))completion {
   [_externalUserAgent dismissExternalUserAgentAnimated:YES completion:^{
       NSError *error = [OIDErrorUtilities errorWithCode:OIDErrorCodeUserCanceledAuthorizationFlow
                                         underlyingError:nil
                                             description:@"Authorization flow was cancelled."];
       [self didFinishWithResponse:nil error:error];
+      if (completion) completion();
   }];
 }
 
