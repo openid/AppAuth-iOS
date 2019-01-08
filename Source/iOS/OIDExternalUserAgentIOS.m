@@ -27,17 +27,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/** @brief The global/shared Safari view controller factory. Responsible for creating all new
-        instances of @c SFSafariViewController.
- */
-static id<OIDSafariViewControllerFactory> __nullable gSafariViewControllerFactory;
-
-/** @brief The default @c OIDSafariViewControllerFactory which creates new instances of
-        @c SFSafariViewController using known best practices.
- */
-@interface OIDDefaultSafariViewControllerFactory : NSObject<OIDSafariViewControllerFactory>
-@end
-
 @interface OIDExternalUserAgentIOS ()<SFSafariViewControllerDelegate>
 @end
 
@@ -52,21 +41,6 @@ static id<OIDSafariViewControllerFactory> __nullable gSafariViewControllerFactor
   SFAuthenticationSession *_authenticationVC;
   ASWebAuthenticationSession *_webAuthenticationVC;
 #pragma clang diagnostic pop
-}
-
-/** @brief Obtains the current @c OIDSafariViewControllerFactory; creating a new default instance if
-        required.
- */
-+ (id<OIDSafariViewControllerFactory>)safariViewControllerFactory {
-  if (!gSafariViewControllerFactory) {
-    gSafariViewControllerFactory = [[OIDDefaultSafariViewControllerFactory alloc] init];
-  }
-  return gSafariViewControllerFactory;
-}
-
-+ (void)setSafariViewControllerFactory:(id<OIDSafariViewControllerFactory>)factory {
-  NSAssert(factory, @"Parameter: |factory| must be non-nil.");
-  gSafariViewControllerFactory = factory;
 }
 
 - (nullable instancetype)initWithPresentingViewController:
@@ -145,7 +119,7 @@ static id<OIDSafariViewControllerFactory> __nullable gSafariViewControllerFactor
   // iOS 9 and 10, use SFSafariViewController
   } else if (@available(iOS 9.0, *)) {
     SFSafariViewController *safariVC =
-        [[[self class] safariViewControllerFactory] safariViewControllerWithURL:requestURL];
+        [[SFSafariViewController alloc] initWithURL:requestURL];
     safariVC.delegate = self;
     _safariVC = safariVC;
     [_presentingViewController presentViewController:safariVC animated:YES completion:nil];
@@ -175,14 +149,21 @@ static id<OIDSafariViewControllerFactory> __nullable gSafariViewControllerFactor
 #pragma clang diagnostic ignored "-Wpartial-availability"
   SFSafariViewController *safariVC = _safariVC;
   SFAuthenticationSession *authenticationVC = _authenticationVC;
+  ASWebAuthenticationSession *webAuthenticationVC = _webAuthenticationVC;
 #pragma clang diagnostic pop
   
   [self cleanUp];
   
-  if (@available(iOS 11.0, *)) {
+  if (@available(iOS 12.0, *)) {
+    // dismiss the ASWebAuthenticationSession
+    [webAuthenticationVC cancel];
+    if (completion) completion();
+  } else if (@available(iOS 11.0, *)) {
+    // dismiss the SFAuthenticationSession
     [authenticationVC cancel];
     if (completion) completion();
   } else if (@available(iOS 9.0, *)) {
+    // dismiss the SFSafariViewController
     if (safariVC) {
       [safariVC dismissViewControllerAnimated:YES completion:completion];
     } else {
@@ -219,16 +200,6 @@ static id<OIDSafariViewControllerFactory> __nullable gSafariViewControllerFactor
                                     underlyingError:nil
                                         description:@"No external user agent flow in progress."];
   [session failExternalUserAgentFlowWithError:error];
-}
-
-@end
-
-@implementation OIDDefaultSafariViewControllerFactory
-
-- (SFSafariViewController *)safariViewControllerWithURL:(NSURL *)URL NS_AVAILABLE_IOS(9.0) {
-  SFSafariViewController *safariViewController =
-      [[SFSafariViewController alloc] initWithURL:URL entersReaderIfAvailable:NO];
-  return safariViewController;
 }
 
 @end

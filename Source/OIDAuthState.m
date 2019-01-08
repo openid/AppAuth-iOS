@@ -159,8 +159,13 @@ static const NSUInteger kExpiryTimeTolerance = 60;
                                                 callback(authState, tokenError);
                                }];
                              } else {
-                               // implicit or hybrid flow (hybrid flow assumes code is not for this
-                               // client)
+                               // hybrid flow (code id_token). Two possible cases:
+                               // 1. The code is not for this client, ie. will be sent to a
+                               //    webservice that performs the id token verification and token
+                               //    exchange
+                               // 2. The code is for this client and, for security reasons, the
+                               //    application developer must verify the id_token signature and
+                               //    c_hash before calling the token endpoint
                                OIDAuthState *authState = [[OIDAuthState alloc]
                                    initWithAuthorizationResponse:authorizationResponse];
                                callback(authState, authorizationError);
@@ -434,7 +439,7 @@ static const NSUInteger kExpiryTimeTolerance = 60;
                 redirectURL:nil
                    clientID:_lastAuthorizationResponse.request.clientID
                clientSecret:_lastAuthorizationResponse.request.clientSecret
-                      scope:_lastAuthorizationResponse.request.scope
+                      scope:nil
                refreshToken:_refreshToken
                codeVerifier:nil
        additionalParameters:additionalParameters];

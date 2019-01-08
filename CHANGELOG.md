@@ -1,0 +1,142 @@
+# AppAuth for iOS and macOS Changelog
+
+## Unreleased
+### Notable Changes
+
+1. `AppAuth/Core` subspec, and AppAuthCore Framework added to support
+iOS extensions.
+
+## 1.0.0.beta1 (2018-09-27)
+
+First 1.0.0 beta!  HEAD is now tracking changes for the 1.0.0 release.
+The `pre-1.0` branch was cut prior to the breaking changes for 1.0.0,
+bug fixes for critical issues may be backported for a time.
+
+### Notable Changes
+
+1. **All deprecated APIs removed.** Please ensure your code builds on
+   version 0.95.0 with no deprecation warnings before upgrading!
+   Notably, if you started with a version of AppAuth prior to 0.93.0
+   you will need to follow the instructions in 
+   [Upgrading to 0.93.0](#upgrading-to-0930)
+2. Updated for iOS 12, and Xcode 10. **Xcode 10 is now required.**
+   NB. per policy, AppAuth supports many older versions of iOS and
+   macOS, but only the current Xcode toolchain.
+   If you need to stay on old versions of Xcode for some reason, stay
+   on the pre-1.0 releases.
+3. macOS 32-bit support removed. If you need this support, stay on the
+   pre-1.0 releases.
+
+### Fixes
+
+1. All fixes in the 0.95.0 release are incorporated in this release.
+
+## 0.95.0 (2018-09-27)
+
+### Fixes
+
+1. `x-www-form-urlencoded` encoding and decoding should be 100%
+   spec compliant now, previously the `+` character was not decoded as
+   0x20 space. https://github.com/openid/AppAuth-iOS/pull/291
+
+2. `scope` no longer sent during token refresh (was redundant)
+    https://github.com/openid/AppAuth-iOS/pull/301
+
+## 0.94.0 (2018-07-13)
+
+### Fixes
+1. `form-urlencode` client ID and client secret in Authorization header
+
+### Added
+
+1. Samples have icons now!
+2. Output trace logs by defining `_APPAUTHTRACE`
+
+## 0.93.0 (2018-06-26)
+
+### Notable Changes
+
+1. Implements OpenID Connect (ID Token handling) and the OpenID Connect
+   RP Certification test suite.
+   https://github.com/openid/AppAuth-iOS/pull/101
+
+2. The `OIDAuthorizationUICoordinator` pattern was genericized to
+   support non-authorization external user-agent flows like logout
+   (though none are directly implemented by AppAuth, yet). 
+   `OIDAuthorizationUICoordinator*` classes renamed to
+   `OIDExternalUserAgent*`.
+   https://github.com/openid/AppAuth-iOS/pull/196
+   https://github.com/openid/AppAuth-iOS/pull/212
+   See [Upgrading to 0.93.0](#upgrading-to-0930).
+
+3. Added custom browser support on iOS. Provides several 
+   convenience implementations of alternative external user-agents on
+   iOS such as Chrome and Firefox. These are intended for
+   **enterprise use only**, where the app developers have greater
+   control over the operating environment and have special requirements
+   that require a custom browser like Chrome.
+   See the [code example](https://github.com/openid/AppAuth-iOS/issues/200#issuecomment-364610027).
+   https://github.com/openid/AppAuth-iOS/issues/200
+   https://github.com/openid/AppAuth-iOS/pull/201
+
+### Upgrading to 0.93.0
+
+0.93.0 deprecates several methods. To update your code to avoid the
+deprecated methods (which will be required for the 1.0.0 release),
+you will need to make changes.
+
+If you implemented your own `OIDAuthorizationUICoordinator`, or called
+the methods which accepted a `UICoordinator` instance, you will need to
+update to the new method names. See the deprecation error messages
+for the new methods to use in those cases.
+
+Most users who are using the convenience methods of AppAuth will only
+need to make the following 3 minor changes to their AppDelegate:
+
+#### Import:
+
+Change
+```objc
+@protocol OIDAuthorizationFlowSession;	
+```
+to
+```objc
+@protocol OIDExternalUserAgentSession;
+```
+
+#### Property:
+
+Change
+```objc
+@property(nonatomic, strong, nullable) id<OIDAuthorizationFlowSession> currentAuthorizationFlow;	
+```
+to
+```objc
+@property(nonatomic, strong, nullable) id<OIDExternalUserAgentSession>currentAuthorizationFlow;
+```
+
+####  Implementation of `-(BOOL)application:openURL:options:`
+Change
+```objc
+if ([_currentAuthorizationFlow resumeAuthorizationFlowWithURL:url]) {	
+```
+to
+```objc
+if ([_currentAuthorizationFlow resumeExternalUserAgentFlowWithURL:url]) {
+```
+
+See also the changes made to the sample which you can copy:
+https://github.com/openid/AppAuth-iOS/commit/619bb7c7d5f83cc2ed19380d425ca8afa279644c?diff=unified
+
+
+## 0.92.0 (2018-01-05)
+
+### Improvements
+
+1. Added an official Swift sample, and included Swift testing in the
+   continuous integration tests.
+
+## Pre 0.92.0
+
+No changelog entries exist for changes prior to 2018, please review the
+[git history](https://github.com/openid/AppAuth-iOS/commits/0.91.0).
