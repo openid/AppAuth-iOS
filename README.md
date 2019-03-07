@@ -94,7 +94,7 @@ line to your `Cartfile`:
 
     github "openid/AppAuth-iOS" "master"
 
-Then run `carthage bootstrap`.
+Then run `carthage update`.
 
 ### Static Library
 
