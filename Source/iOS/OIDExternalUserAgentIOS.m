@@ -64,8 +64,8 @@ NS_ASSUME_NONNULL_BEGIN
   BOOL openedUserAgent = NO;
   NSURL *requestURL = [request externalUserAgentRequestURL];
 
+  // iOS 12 and later, use ASWebAuthenticationSession
   if (@available(iOS 12.0, *)) {
-    // iOS 12 and later, use ASWebAuthenticationSession
     // ASWebAuthenticationSession doesn't work with guided access (rdar://40809553)
     if (!UIAccessibilityIsGuidedAccessEnabled()) {
       __weak OIDExternalUserAgentIOS *weakSelf = self;
@@ -94,8 +94,8 @@ NS_ASSUME_NONNULL_BEGIN
       openedUserAgent = [authenticationVC start];
     }
   }
+  // iOS 11, use SFAuthenticationSession
   if (@available(iOS 11.0, *)) {
-    // iOS 11, use SFAuthenticationSession
     // SFAuthenticationSession doesn't work with guided access (rdar://40809553)
     if (!openedUserAgent && !UIAccessibilityIsGuidedAccessEnabled()) {
       __weak OIDExternalUserAgentIOS *weakSelf = self;
