@@ -61,7 +61,7 @@ NS_ASSUME_NONNULL_BEGIN
 
   _externalUserAgentFlowInProgress = YES;
   _session = session;
-  BOOL openedSafari = NO;
+  BOOL openedUserAgent = NO;
   NSURL *requestURL = [request externalUserAgentRequestURL];
 
   // iOS 12 and later, use ASWebAuthenticationSession
@@ -91,13 +91,13 @@ NS_ASSUME_NONNULL_BEGIN
         }
       }];
       _webAuthenticationVC = authenticationVC;
-      openedSafari = [authenticationVC start];
+      openedUserAgent = [authenticationVC start];
     }
   }
   // iOS 11, use SFAuthenticationSession
   // SFAuthenticationSession doesn't work with guided access (rdar://40809553)
   if (@available(iOS 11.0, *)) {
-    if (!openedSafari && !UIAccessibilityIsGuidedAccessEnabled()) {
+    if (!openedUserAgent && !UIAccessibilityIsGuidedAccessEnabled()) {
       __weak OIDExternalUserAgentIOS *weakSelf = self;
       NSString *redirectScheme = request.redirectScheme;
       SFAuthenticationSession *authenticationVC =
@@ -121,32 +121,33 @@ NS_ASSUME_NONNULL_BEGIN
         }
       }];
       _authenticationVC = authenticationVC;
-      openedSafari = [authenticationVC start];
+      openedUserAgent = [authenticationVC start];
     }
   }
   // iOS 9 and 10, use SFSafariViewController
   if (@available(iOS 9.0, *)) {
-    if (!openedSafari) {
+    if (!openedUserAgent) {
       SFSafariViewController *safariVC =
           [[SFSafariViewController alloc] initWithURL:requestURL];
       safariVC.delegate = self;
       _safariVC = safariVC;
       [_presentingViewController presentViewController:safariVC animated:YES completion:nil];
-      openedSafari = YES;
+      openedUserAgent = YES;
     }
+  }
   // iOS 8 and earlier, use mobile Safari
-  } else {
-    openedSafari = [[UIApplication sharedApplication] openURL:requestURL];
+  if (!openedUserAgent){
+    openedUserAgent = [[UIApplication sharedApplication] openURL:requestURL];
   }
 
-  if (!openedSafari) {
+  if (!openedUserAgent) {
     [self cleanUp];
     NSError *safariError = [OIDErrorUtilities errorWithCode:OIDErrorCodeSafariOpenError
                                             underlyingError:nil
                                                 description:@"Unable to open Safari."];
     [session failExternalUserAgentFlowWithError:safariError];
   }
-  return openedSafari;
+  return openedUserAgent;
 }
 
 - (void)dismissExternalUserAgentAnimated:(BOOL)animated completion:(void (^)(void))completion {
