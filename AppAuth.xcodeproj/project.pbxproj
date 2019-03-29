@@ -201,7 +201,7 @@
 		343AAA911E83478900F9D36E /* OIDTokenRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741D21C5D8243000EF209 /* OIDTokenRequest.m */; };
 		343AAA921E83478900F9D36E /* OIDTokenResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741D41C5D8243000EF209 /* OIDTokenResponse.m */; };
 		343AAA931E83478900F9D36E /* OIDTokenUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 341741D61C5D8243000EF209 /* OIDTokenUtilities.m */; };
-		343AAAAF1E83489A00F9D36E /* AppAUth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 343AAAA61E83489A00F9D36E /* AppAUth.framework */; };
+		343AAAAF1E83489A00F9D36E /* AppAuth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 343AAAA61E83489A00F9D36E /* AppAuth.framework */; };
 		343AAACB1E8348AA00F9D36E /* AppAuth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 343AAAC21E8348A900F9D36E /* AppAuth.framework */; };
 		343AAAD91E83493D00F9D36E /* OIDRedirectHTTPHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 340DAEBA1D582AF100EC285B /* OIDRedirectHTTPHandler.m */; };
 		343AAADA1E83493D00F9D36E /* OIDAuthorizationService+Mac.m in Sources */ = {isa = PBXBuildFile; fileRef = 340DAE261D581FE700EC285B /* OIDAuthorizationService+Mac.m */; };
@@ -650,7 +650,7 @@
 		343AAA541E83463400F9D36E /* AppAuth.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AppAuth.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		343AAA5C1E83463400F9D36E /* AppAuth_iOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AppAuth_iOSTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		343AAA991E83487200F9D36E /* AppAuth.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AppAuth.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		343AAAA61E83489A00F9D36E /* AppAUth.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AppAUth.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		343AAAA61E83489A00F9D36E /* AppAuth.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AppAuth.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		343AAAAE1E83489A00F9D36E /* AppAuth_tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AppAuth_tvOSTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		343AAAC21E8348A900F9D36E /* AppAuth.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AppAuth.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		343AAACA1E8348AA00F9D36E /* AppAuth_macOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AppAuth_macOSTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -781,7 +781,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				343AAAAF1E83489A00F9D36E /* AppAUth.framework in Frameworks */,
+				343AAAAF1E83489A00F9D36E /* AppAuth.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -859,7 +859,7 @@
 				343AAA541E83463400F9D36E /* AppAuth.framework */,
 				343AAA5C1E83463400F9D36E /* AppAuth_iOSTests.xctest */,
 				343AAA991E83487200F9D36E /* AppAuth.framework */,
-				343AAAA61E83489A00F9D36E /* AppAUth.framework */,
+				343AAAA61E83489A00F9D36E /* AppAuth.framework */,
 				343AAAAE1E83489A00F9D36E /* AppAuth_tvOSTests.xctest */,
 				343AAAC21E8348A900F9D36E /* AppAuth.framework */,
 				343AAACA1E8348AA00F9D36E /* AppAuth_macOSTests.xctest */,
@@ -1398,7 +1398,7 @@
 			);
 			name = AppAuth_tvOS;
 			productName = AppAuth_tvOS;
-			productReference = 343AAAA61E83489A00F9D36E /* AppAUth.framework */;
+			productReference = 343AAAA61E83489A00F9D36E /* AppAuth.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		343AAAAD1E83489A00F9D36E /* AppAuth_tvOSTests */ = {
@@ -2630,7 +2630,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "net.openid.AppAuth-tvOS";
-				PRODUCT_NAME = AppAUth;
+				PRODUCT_NAME = AppAuth;
 				SDKROOT = appletvos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = 3;
@@ -2655,7 +2655,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "net.openid.AppAuth-tvOS";
-				PRODUCT_NAME = AppAUth;
+				PRODUCT_NAME = AppAuth;
 				SDKROOT = appletvos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = 3;
