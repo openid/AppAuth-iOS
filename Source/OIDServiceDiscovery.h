@@ -20,8 +20,10 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/*! @brief Represents an OpenID Connect 1.0 Discovery Document
+/*! @brief Represents an OpenID Connect 1.0 Discovery or OAuth 2.0 Authorization Server Metadata
+        Document.
     @see https://openid.net/specs/openid-connect-discovery-1_0.html#ProviderMetadata
+    @see https://tools.ietf.org/html/rfc8414
  */
 @interface OIDServiceDiscovery : NSObject <NSCopying, NSSecureCoding>
 
@@ -58,7 +60,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property(nonatomic, readonly, nullable) NSURL *userinfoEndpoint;
 
-/*! @brief REQUIRED. URL of the OP's JSON Web Key Set document. This contains the signing key(s) the
+/*! @brief REQUIRED for OpenID Connect 2.0, OPTIONAL for RFC 8414. URL of the OP's JSON Web Key Set document. This contains the signing key(s) the
         RP uses to validate signatures from the OP. The JWK Set MAY also contain the Server's
         encryption key(s), which are used by RPs to encrypt requests to the Server. When both
         signing and encryption keys are made available, a use (Key Use) parameter value is REQUIRED
@@ -116,13 +118,13 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property(nonatomic, readonly, nullable) NSArray<NSString *> *acrValuesSupported;
 
-/*! @brief REQUIRED. JSON array containing a list of the Subject Identifier types that this OP
+/*! @brief REQUIRED for OpenID Connect 2.0, otherwise OPTIONAL. JSON array containing a list of the Subject Identifier types that this OP
         supports. Valid types include @c pairwise and @c public.
     @remarks subject_types_supported
  */
 @property(nonatomic, readonly) NSArray<NSString *> *subjectTypesSupported;
 
-/*! @brief REQUIRED. JSON array containing a list of the JWS signing algorithms (@c alg values)
+/*! @brief REQUIRED for OpenID Connect 2.0, otherwise OPTIONAL. JSON array containing a list of the JWS signing algorithms (@c alg values)
         supported by the OP for the ID Token to encode the Claims in a JWT. The algorithm @c RS256
         MUST be included. The value @c none MAY be supported, but MUST NOT be used unless the
         Response Type used returns no ID Token from the Authorization Endpoint (such as when using
