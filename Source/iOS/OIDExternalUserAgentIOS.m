@@ -88,36 +88,6 @@ static id<OIDSafariViewControllerFactory> __nullable gSafariViewControllerFactor
   BOOL openedUserAgent = NO;
   NSURL *requestURL = [request externalUserAgentRequestURL];
 
-  // iOS 12 and later, use ASWebAuthenticationSession
-  if (@available(iOS 12.0, *)) {
-    // ASWebAuthenticationSession doesn't work with guided access (rdar://40809553)
-    if (!UIAccessibilityIsGuidedAccessEnabled()) {
-      __weak OIDExternalUserAgentIOS *weakSelf = self;
-      NSString *redirectScheme = request.redirectScheme;
-      ASWebAuthenticationSession *authenticationVC =
-          [[ASWebAuthenticationSession alloc] initWithURL:requestURL
-                                        callbackURLScheme:redirectScheme
-                                         completionHandler:^(NSURL * _Nullable callbackURL,
-                                                             NSError * _Nullable error) {
-        __strong OIDExternalUserAgentIOS *strongSelf = weakSelf;
-        if (!strongSelf) {
-            return;
-        }
-        strongSelf->_webAuthenticationVC = nil;
-        if (callbackURL) {
-          [strongSelf->_session resumeExternalUserAgentFlowWithURL:callbackURL];
-        } else {
-          NSError *safariError =
-              [OIDErrorUtilities errorWithCode:OIDErrorCodeUserCanceledAuthorizationFlow
-                               underlyingError:error
-                                   description:nil];
-          [strongSelf->_session failExternalUserAgentFlowWithError:safariError];
-        }
-      }];
-      _webAuthenticationVC = authenticationVC;
-      openedUserAgent = [authenticationVC start];
-    }
-  }
   // iOS 11, use SFAuthenticationSession
   if (@available(iOS 11.0, *)) {
     // SFAuthenticationSession doesn't work with guided access (rdar://40809553)
@@ -188,11 +158,7 @@ static id<OIDSafariViewControllerFactory> __nullable gSafariViewControllerFactor
   
   [self cleanUp];
   
-  if (webAuthenticationVC) {
-    // dismiss the ASWebAuthenticationSession
-    [webAuthenticationVC cancel];
-    if (completion) completion();
-  } else if (authenticationVC) {
+  if (authenticationVC) {
     // dismiss the SFAuthenticationSession
     [authenticationVC cancel];
     if (completion) completion();
