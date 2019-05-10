@@ -36,9 +36,11 @@
 
 + (id<OIDExternalUserAgentSession>)
     authStateByPresentingAuthorizationRequest:(OIDAuthorizationRequest *)authorizationRequest
-                                     callback:(OIDAuthStateAuthorizationCallback)callback {
+                                  callback:(OIDAuthStateAuthorizationCallback)callback {
+  OIDExternalUserAgentIOS *externalUserAgent = [[OIDExternalUserAgentIOS alloc] init];
   return [self authStateByPresentingAuthorizationRequest:authorizationRequest
-                                       externalUserAgent:[[OIDExternalUserAgentIOS alloc] init] callback:callback];
+                                       externalUserAgent:externalUserAgent
+                                                callback:callback];
 }
 
 @end

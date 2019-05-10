@@ -44,11 +44,11 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (nullable instancetype)init {
-  return [self initWithPresentingViewController: nil];  
+  return [self initWithPresentingViewController:nil];
 }
 
 - (nullable instancetype)initWithPresentingViewController:
-        (nullable UIViewController  *)presentingViewController {
+        (nullable UIViewController *)presentingViewController {
   self = [super init];
   if (self) {
     _presentingViewController = presentingViewController;
