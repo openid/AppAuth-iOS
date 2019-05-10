@@ -43,7 +43,10 @@ NS_ASSUME_NONNULL_BEGIN
 + (id<OIDExternalUserAgentSession>)
     authStateByPresentingAuthorizationRequest:(OIDAuthorizationRequest *)authorizationRequest
                      presentingViewController:(UIViewController *)presentingViewController
-                                     callback:(OIDAuthStateAuthorizationCallback)callback NS_DEPRECATED_IOS(7, 11, "This method has been deprecated. Call authStateByPresentingAuthorizationRequest without passing UIViewController instead.");
+                                     callback:(OIDAuthStateAuthorizationCallback)callback
+                                     NS_DEPRECATED_IOS(7, 11, "This method has been deprecated. Call\
+                                                       authStateByPresentingAuthorizationRequest without passing\
+                                                       UIViewController instead.");
 
 /*! @brief Convenience method for iOS 11+ devices to create a @c OIDAuthState
         by presenting an authorization request and performing the authorization code exchange
