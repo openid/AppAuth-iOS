@@ -38,8 +38,7 @@
     authStateByPresentingAuthorizationRequest:(OIDAuthorizationRequest *)authorizationRequest
                                      callback:(OIDAuthStateAuthorizationCallback)callback {
   return [self authStateByPresentingAuthorizationRequest:authorizationRequest
-                                presentingViewController:[UIViewController new]
-                                                callback:callback];
+                                       externalUserAgent:[[OIDExternalUserAgentIOS alloc] init] callback:callback];
 }
 
 @end

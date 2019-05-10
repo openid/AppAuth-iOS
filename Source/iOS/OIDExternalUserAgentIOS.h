@@ -29,17 +29,16 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @interface OIDExternalUserAgentIOS : NSObject<OIDExternalUserAgent>
 
-/*! @internal
-    @brief Unavailable. Please use @c initWithPresentingViewController:
+/*! @brief The convenience initializer for devices with iOS 11+
  */
-- (nonnull instancetype)init NS_UNAVAILABLE;
+- (nullable instancetype)init API_AVAILABLE(ios(11));
 
 /*! @brief The designated initializer.
     @param presentingViewController The view controller from which to present the
         \SFSafariViewController.
  */
 - (nullable instancetype)initWithPresentingViewController:
-    (UIViewController *)presentingViewController
+    (nullable UIViewController *)presentingViewController
     NS_DESIGNATED_INITIALIZER;
 
 @end
