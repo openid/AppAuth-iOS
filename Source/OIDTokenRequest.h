@@ -108,8 +108,10 @@ NS_ASSUME_NONNULL_BEGIN
     @param code The authorization code received from the authorization server.
     @param redirectURL The client's redirect URI.
     @param clientID The client identifier.
+    @param clientSecret The client secret.
     @param scopes An array of scopes to combine into a single scope string per the OAuth2 spec.
     @param refreshToken The refresh token.
+    @param codeVerifier The PKCE code verifier.
     @param additionalParameters The client's additional token request parameters.
  */
 - (instancetype)initWithConfiguration:(OIDServiceConfiguration *)configuration
@@ -131,9 +133,11 @@ NS_ASSUME_NONNULL_BEGIN
     @param code The authorization code received from the authorization server.
     @param redirectURL The client's redirect URI.
     @param clientID The client identifier.
+    @param clientSecret The client secret.
     @param scope The value of the scope parameter is expressed as a list of space-delimited,
         case-sensitive strings.
     @param refreshToken The refresh token.
+    @param codeVerifier The PKCE code verifier.
     @param additionalParameters The client's additional token request parameters.
  */
 - (instancetype)initWithConfiguration:(OIDServiceConfiguration *)configuration
