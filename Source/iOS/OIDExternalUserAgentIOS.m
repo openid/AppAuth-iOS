@@ -43,8 +43,12 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma clang diagnostic pop
 }
 
+- (nullable instancetype)init {
+  return [self initWithPresentingViewController:nil];
+}
+
 - (nullable instancetype)initWithPresentingViewController:
-        (UIViewController *)presentingViewController {
+        (nullable UIViewController *)presentingViewController {
   self = [super init];
   if (self) {
     _presentingViewController = presentingViewController;
@@ -126,7 +130,7 @@ NS_ASSUME_NONNULL_BEGIN
   }
   // iOS 9 and 10, use SFSafariViewController
   if (@available(iOS 9.0, *)) {
-    if (!openedUserAgent) {
+    if (!openedUserAgent && _presentingViewController) {
       SFSafariViewController *safariVC =
           [[SFSafariViewController alloc] initWithURL:requestURL];
       safariVC.delegate = self;
