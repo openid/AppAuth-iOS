@@ -39,6 +39,10 @@
  */
 static NSString *const kOpenIDConfigurationWellKnownPath = @".well-known/openid-configuration";
 
+/*! @brief Max allowable iat (Issued At) time skew
+    @see https://openid.net/specs/openid-connect-core-1_0.html#IDTokenValidation
+ */
+static int const kOIDAuthorizationSessionIATMaxSkew = 600;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -467,12 +471,15 @@ NS_ASSUME_NONNULL_BEGIN
       // OpenID Connect Core Section 3.1.3.7. rule #10
       // Validates that the issued at time is not more than +/- 10 minutes on the current time.
       NSTimeInterval issuedAtDifference = [idToken.issuedAt timeIntervalSinceNow];
-      if (fabs(issuedAtDifference) > 600) {
+      if (fabs(issuedAtDifference) > kOIDAuthorizationSessionIATMaxSkew) {
+        NSString *message =
+            [NSString stringWithFormat:@"Issued at time is more than %d seconds before or after "
+                                        "the current time",
+                                       kOIDAuthorizationSessionIATMaxSkew];
         NSError *invalidIDToken =
           [OIDErrorUtilities errorWithCode:OIDErrorCodeIDTokenFailedValidationError
                            underlyingError:nil
-                               description:@"Issued at time is more than 5 minutes before or after "
-                                            "the current time"];
+                               description:message];
         dispatch_async(dispatch_get_main_queue(), ^{
           callback(nil, invalidIDToken);
         });
