@@ -189,7 +189,7 @@ OIDAuthorizationRequest *request =
                                                   clientId:kClientID
                                                     scopes:@[OIDScopeOpenID,
                                                              OIDScopeProfile]
-                                               redirectURL:KRedirectURI
+                                               redirectURL:kRedirectURI
                                               responseType:OIDResponseTypeCode
                                       additionalParameters:nil];
 
