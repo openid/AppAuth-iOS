@@ -90,7 +90,7 @@ NS_ASSUME_NONNULL_BEGIN
     NSDictionary<NSString *, NSObject<NSCopying> *> *additionalParameters;
 
 /*! @internal
-    @brief Unavailable. Please use initWithParameters:.
+    @brief Unavailable. Please use initWithRequest:parameters:.
  */
 - (instancetype)init NS_UNAVAILABLE;
 
