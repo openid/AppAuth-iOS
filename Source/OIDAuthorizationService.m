@@ -96,12 +96,12 @@ NS_ASSUME_NONNULL_BEGIN
   NSURL *standardizedURL = [URL standardizedURL];
   NSURL *standardizedRedirectURL = [_request.redirectURL standardizedURL];
 
-  return OIDIsEqualIncludingNil(standardizedURL.scheme, standardizedRedirectURL.scheme) &&
-      OIDIsEqualIncludingNil(standardizedURL.user, standardizedRedirectURL.user) &&
-      OIDIsEqualIncludingNil(standardizedURL.password, standardizedRedirectURL.password) &&
-      OIDIsEqualIncludingNil(standardizedURL.host, standardizedRedirectURL.host) &&
-      OIDIsEqualIncludingNil(standardizedURL.port, standardizedRedirectURL.port) &&
-      OIDIsEqualIncludingNil(standardizedURL.path, standardizedRedirectURL.path);
+  return [standardizedURL.scheme caseInsensitiveCompare:standardizedRedirectURL.scheme] == NSOrderedSame
+      && OIDIsEqualIncludingNil(standardizedURL.user, standardizedRedirectURL.user)
+      && OIDIsEqualIncludingNil(standardizedURL.password, standardizedRedirectURL.password)
+      && OIDIsEqualIncludingNil(standardizedURL.host, standardizedRedirectURL.host)
+      && OIDIsEqualIncludingNil(standardizedURL.port, standardizedRedirectURL.port)
+      && OIDIsEqualIncludingNil(standardizedURL.path, standardizedRedirectURL.path);
 }
 
 - (BOOL)resumeExternalUserAgentFlowWithURL:(NSURL *)URL {
