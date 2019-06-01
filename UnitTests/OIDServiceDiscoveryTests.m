@@ -188,6 +188,10 @@ static NSString *const kDiscoveryDocumentNullField =
       "ail_verified\",\"exp\",\"family_name\",\"given_name\",\"iat\",\"iss\",\"locale\",\"name\",\""
       "picture\",\"sub\"]}";
 
+static NSString *const kDiscoveryDocumentNotDictionary =
+    @"[\"code\",\"token\",\"id_token\",\"code token\",\"code id_token\",\"token id_token\",\"code to"
+    "ken id_token\",\"none\"]";
+
 /*! @brief Tests that URLs are handled properly when converted from the dictionary's string
         representation.
  */
@@ -220,6 +224,18 @@ static NSString *const kDiscoveryDocumentNullField =
   XCTAssertNotNil(error, @"There should be an error indicating we received bad JSON.");
   XCTAssertEqualObjects(error.domain, OIDGeneralErrorDomain, @"");
   XCTAssertEqual(error.code, OIDErrorCodeJSONDeserializationError, @"");
+}
+
+/*! @brief Tests that we get an error when the root JSON object isn't a dictionary.
+ */
+- (void)testErrorWhenRootObjectNotNSDictionary {
+  NSError *error;
+  OIDServiceDiscovery *discovery = [[OIDServiceDiscovery alloc] initWithJSON:kDiscoveryDocumentNotDictionary error:&error];
+  XCTAssertNil(discovery, @"When initializing a discovery document, it should not return an "
+               "instance if the root JSON object is not a NSDictionary.");
+  XCTAssertNotNil(error, @"There should be an error indicating we received bad JSON.");
+  XCTAssertEqualObjects(error.domain, OIDGeneralErrorDomain, @"");
+  XCTAssertEqual(error.code, OIDErrorCodeInvalidDiscoveryDocument, @"");
 }
 
 /*! @brief Tests that we get an error when the required fields aren't in the source dictionary.
