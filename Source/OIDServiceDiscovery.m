@@ -93,6 +93,13 @@ static NSString *const kOPTosURIKey = @"op_tos_uri";
                                   description:jsonError.localizedDescription];
     return nil;
   }
+  if (![json isKindOfClass:[NSDictionary class]]) {
+    *error = [OIDErrorUtilities errorWithCode:OIDErrorCodeInvalidDiscoveryDocument
+                              underlyingError:nil
+                                  description:@"Discovery document isn't a dictionary"];
+    return nil;
+  }
+
   return [self initWithDictionary:json error:error];
 }
 
