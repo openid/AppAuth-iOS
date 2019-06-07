@@ -27,7 +27,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface OIDExternalUserAgentIOS ()<SFSafariViewControllerDelegate>
+@interface OIDExternalUserAgentIOS ()<SFSafariViewControllerDelegate, ASWebAuthenticationPresentationContextProviding>
 @end
 
 @implementation OIDExternalUserAgentIOS {
@@ -94,6 +94,11 @@ NS_ASSUME_NONNULL_BEGIN
           [strongSelf->_session failExternalUserAgentFlowWithError:safariError];
         }
       }];
+
+      if (@available(iOS 13.0, *)) {
+        authenticationVC.presentationContextProvider = self;
+      }
+
       _webAuthenticationVC = authenticationVC;
       openedUserAgent = [authenticationVC start];
     }
@@ -211,6 +216,12 @@ NS_ASSUME_NONNULL_BEGIN
                                     underlyingError:nil
                                         description:@"No external user agent flow in progress."];
   [session failExternalUserAgentFlowWithError:error];
+}
+
+#pragma mark - ASWebAuthenticationPresentationContextProviding
+
+- (ASPresentationAnchor)presentationAnchorForWebAuthenticationSession:(ASWebAuthenticationSession *)session  API_AVAILABLE(ios(13.0)){
+  return UIApplication.sharedApplication.keyWindow;
 }
 
 @end
