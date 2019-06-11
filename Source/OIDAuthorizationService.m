@@ -232,12 +232,17 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)cancel {
+  [self cancelWithCompletion:nil];
+}
+
+- (void)cancelWithCompletion:(nullable void (^)(void))completion {
   [_externalUserAgent dismissExternalUserAgentAnimated:YES completion:^{
     NSError *error = [OIDErrorUtilities
                       errorWithCode:OIDErrorCodeUserCanceledAuthorizationFlow
                       underlyingError:nil
                       description:nil];
     [self didFinishWithResponse:nil error:error];
+    if (completion) completion();
   }];
 }
 
