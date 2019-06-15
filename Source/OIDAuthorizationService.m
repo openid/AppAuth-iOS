@@ -101,12 +101,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 /*! @brief Does the redirection URL equal another URL down to the path component?
     @param URL The first redirect URI to compare.
-    @param redirectonURL The second redirect URI to compare.
+    @param redirectionURL The second redirect URI to compare.
     @return YES if the URLs match down to the path level (query params are ignored).
  */
-+ (BOOL)URL:(NSURL *)URL matchesRedirectonURL:(NSURL *)redirectonURL {
++ (BOOL)URL:(NSURL *)URL matchesRedirectionURL:(NSURL *)redirectionURL {
   NSURL *standardizedURL = [URL standardizedURL];
-  NSURL *standardizedRedirectURL = [redirectonURL standardizedURL];
+  NSURL *standardizedRedirectURL = [redirectionURL standardizedURL];
 
   return [standardizedURL.scheme caseInsensitiveCompare:standardizedRedirectURL.scheme] == NSOrderedSame
       && OIDIsEqualIncludingNil(standardizedURL.user, standardizedRedirectURL.user)
@@ -117,7 +117,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (BOOL)shouldHandleURL:(NSURL *)URL {
-  return [[self class] URL:URL matchesRedirectonURL:_request.redirectURL];
+  return [[self class] URL:URL matchesRedirectionURL:_request.redirectURL];
 }
 
 - (BOOL)resumeExternalUserAgentFlowWithURL:(NSURL *)URL {
@@ -250,7 +250,7 @@ NS_ASSUME_NONNULL_BEGIN
   // The logic of when to handle the URL is the same as for authorization requests: should match
   // down to the path component.
   return [[OIDAuthorizationSession class] URL:URL
-                         matchesRedirectonURL:_request.postLogoutRedirectURL];
+                        matchesRedirectionURL:_request.postLogoutRedirectURL];
 }
 
 - (BOOL)resumeExternalUserAgentFlowWithURL:(NSURL *)URL {
