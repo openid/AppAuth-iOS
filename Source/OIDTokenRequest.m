@@ -285,7 +285,7 @@ static NSString *const kAdditionalParametersKey = @"additionalParameters";
   OIDURLQueryComponent *bodyParameters = [self tokenRequestBody];
   NSMutableDictionary *httpHeaders = [[NSMutableDictionary alloc] init];
 
-  if (_clientSecret) {
+  if (_clientSecret && false) {
     // The client id and secret are encoded using the "application/x-www-form-urlencoded" 
     // encoding algorithm per RFC 6749 Section 2.3.1.
     // https://tools.ietf.org/html/rfc6749#section-2.3.1
@@ -301,6 +301,7 @@ static NSString *const kAdditionalParametersKey = @"additionalParameters";
     [httpHeaders setObject:authValue forKey:@"Authorization"];
   } else  {
     [bodyParameters addParameter:kClientIDKey value:_clientID];
+    [bodyParameters addParameter:kClientSecretKey value:_clientSecret];
   }
 
   // Constructs request with the body string and headers.
