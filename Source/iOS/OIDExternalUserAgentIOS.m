@@ -27,8 +27,13 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 130000
+@interface OIDExternalUserAgentIOS ()<SFSafariViewControllerDelegate, ASWebAuthenticationPresentationContextProviding>
+@end
+#else
 @interface OIDExternalUserAgentIOS ()<SFSafariViewControllerDelegate>
 @end
+#endif
 
 @implementation OIDExternalUserAgentIOS {
   UIViewController *_presentingViewController;
@@ -94,6 +99,11 @@ NS_ASSUME_NONNULL_BEGIN
           [strongSelf->_session failExternalUserAgentFlowWithError:safariError];
         }
       }];
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 130000
+      if (@available(iOS 13.0, *)) {
+          authenticationVC.presentationContextProvider = self;
+      }
+#endif
       _webAuthenticationVC = authenticationVC;
       openedUserAgent = [authenticationVC start];
     }
@@ -213,6 +223,14 @@ NS_ASSUME_NONNULL_BEGIN
                                         description:@"No external user agent flow in progress."];
   [session failExternalUserAgentFlowWithError:error];
 }
+
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 130000
+#pragma mark - ASWebAuthenticationPresentationContextProviding
+
+- (ASPresentationAnchor)presentationAnchorForWebAuthenticationSession:(ASWebAuthenticationSession *)session API_AVAILABLE(ios(13.0)){
+    return UIApplication.sharedApplication.keyWindow;
+}
+#endif
 
 @end
 
