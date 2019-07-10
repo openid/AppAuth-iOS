@@ -45,6 +45,16 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (instancetype)initWithSuccessURL:(nullable NSURL *)successURL;
 
+/*! @brief Creates an a loopback HTTP redirect URI handler with the given success HTML.
+    @param htmlAuthorizationComplete The HTML that is shown to the user after the external user-agent request flow completes
+        either with a result of success or error. The contents of this page should instruct the user
+        to return to the app.
+    @discussion Once you have initiated the external user-agent request, be sure to set
+        @c currentAuthorizationFlow on this object so that any responses received by this listener will
+        be routed accordingly.
+ */
+- (instancetype)initWithHTMLAuthorizationComplete:(nullable NSString *)htmlAuthorizationComplete;
+
 /*! @brief Starts listening on the loopback interface on a specified port, and returns a URL
         with the base address. Use the returned redirect URI to build a @c OIDExternalUserAgentRequest,
         and once you initiate the request, set the resulting @c OIDExternalUserAgentSession to
