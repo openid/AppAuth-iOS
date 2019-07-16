@@ -61,7 +61,7 @@ static NSString *const kHTMLErrorRedirectNotValid =
   self = [super init];
   if (self) {
     _successURL = [successURL copy];
-    _htmlAuthorizationComplete = nil;
+    _successHTML = nil;
   }
   return self;
 }
