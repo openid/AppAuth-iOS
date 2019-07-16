@@ -50,7 +50,7 @@ static NSString *const kHTMLErrorRedirectNotValid =
 @implementation OIDRedirectHTTPHandler {
   HTTPServer *_httpServ;
   NSURL *_successURL;
-  NSString *_htmlAuthorizationComplete;
+  NSString *_successHTML;
 }
 
 - (instancetype)init {
@@ -66,10 +66,10 @@ static NSString *const kHTMLErrorRedirectNotValid =
   return self;
 }
 
-- (instancetype)initWithHTMLAuthorizationComplete:(nullable NSString *)htmlAuthorizationComplete {
+- (instancetype)initWithSuccessHTML:(nullable NSString *)successHTML {
   self = [self initWithSuccessURL:nil];
   if (self) {
-    _htmlAuthorizationComplete = [htmlAuthorizationComplete copy];
+    _successHTML = [successHTML copy];
   }
   return self;
 }
@@ -141,7 +141,7 @@ static NSString *const kHTMLErrorRedirectNotValid =
   }
 
   // Responds to browser request.
-  NSString *bodyText = _htmlAuthorizationComplete ?: kHTMLAuthorizationComplete;
+  NSString *bodyText = _successHTML ?: kHTMLAuthorizationComplete;
   NSInteger httpResponseCode = (_successURL) ? 302 : 200;
   // Returns an error page if a URL other than the expected redirect is requested.
   if (!handled) {
