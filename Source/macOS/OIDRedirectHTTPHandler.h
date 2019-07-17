@@ -35,7 +35,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property(nonatomic, strong, nullable) id<OIDExternalUserAgentSession> currentAuthorizationFlow;
 
-/*! @brief Creates an a loopback HTTP redirect URI handler with the given success URL.
+/*! @brief Creates a loopback HTTP redirect URI handler with the given success URL.
     @param successURL The URL that the user is redirected to after the external user-agent request flow completes
         either with a result of success or error. The contents of this page should instruct the user
         to return to the app.
@@ -45,7 +45,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (instancetype)initWithSuccessURL:(nullable NSURL *)successURL;
 
-/*! @brief Creates an a loopback HTTP redirect URI handler with the given success HTML.
+/*! @brief Creates a loopback HTTP redirect URI handler with the given success HTML.
     @param successHTML The HTML that is shown to the user after the external user-agent request flow completes
         either with a result of success or error. The contents of this page should instruct the user
         to return to the app.
