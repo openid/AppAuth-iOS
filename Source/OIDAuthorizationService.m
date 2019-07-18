@@ -574,10 +574,12 @@ NS_ASSUME_NONNULL_BEGIN
         return;
       }
 
-      // OpenID Connect Core Section 3.1.3.7. rule #3
-      // Validates that the audience of the ID Token matches the client ID.
+      // OpenID Connect Core Section 3.1.3.7. rule #3 & Section 2 azp Claim
+      // Validates that the aud (audience) Claim contains the client ID, or that the azp
+      // (authorized party) Claim matches the client ID.
       NSString *clientID = tokenResponse.request.clientID;
-      if (![idToken.audience containsObject:clientID]) {
+      if (![idToken.audience containsObject:clientID] &&
+          ![idToken.claims[@"azp"] isEqualToString:clientID]) {
         NSError *invalidIDToken =
           [OIDErrorUtilities errorWithCode:OIDErrorCodeIDTokenFailedValidationError
                            underlyingError:nil
