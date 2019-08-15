@@ -228,7 +228,35 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark - ASWebAuthenticationPresentationContextProviding
 
 - (ASPresentationAnchor)presentationAnchorForWebAuthenticationSession:(ASWebAuthenticationSession *)session API_AVAILABLE(ios(13.0)){
-    return UIApplication.sharedApplication.keyWindow;
+    UIWindowScene *preferedWindowScene;
+    UIWindow *preferedWindow = nil;
+    
+    for(UIScene *scene in UIApplication.sharedApplication.connectedScenes) {
+        if([scene isKindOfClass:[UIWindowScene class]] && ((UIWindowScene *)scene).windows.count > 0) {
+            if (scene.activationState == UISceneActivationStateForegroundActive) {
+                preferedWindowScene = (UIWindowScene *)scene;
+                // We won't find a better scene than this one
+                break;
+            }
+            if (scene.activationState == UISceneActivationStateForegroundInactive) {
+                preferedWindowScene = (UIWindowScene *)scene;
+            } else if (scene.activationState == UISceneActivationStateBackground && preferedWindowScene != nil && preferedWindowScene.activationState == UISceneActivationStateUnattached) {
+                preferedWindowScene = (UIWindowScene *)scene;
+            } else if (preferedWindowScene == nil) {
+                preferedWindowScene = (UIWindowScene *)scene;
+            }
+        }
+    }
+    
+    if(preferedWindowScene != nil) {
+        preferedWindow = [preferedWindowScene.windows filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(UIWindow *window, NSDictionary *bindings) {
+            return window.isKeyWindow;
+        }]].firstObject;
+        
+        preferedWindow = preferedWindow ?: preferedWindowScene.windows.firstObject;
+    }
+    
+    return preferedWindow;
 }
 #endif
 
