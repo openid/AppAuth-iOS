@@ -440,13 +440,29 @@ static int const kCodeVerifierRecommendedLength = 43;
 
   NSString *scope = [OIDScopeUtilities scopesWithArray:@[ kTestScope, kTestScopeA ]];
 
-  XCTAssertThrows(
+  XCTAssertNoThrow(
       [[OIDAuthorizationRequest alloc] initWithConfiguration:configuration
                       clientId:kTestClientID
                   clientSecret:kTestClientSecret
                         scope:scope
                   redirectURL:[NSURL URLWithString:kTestRedirectURL]
                   responseType:@"code id_token"
+                         state:kTestState
+                         nonce:kTestNonce
+                  codeVerifier:kTestCodeVerifier
+                 codeChallenge:[[self class] codeChallenge]
+           codeChallengeMethod:[[self class] codeChallengeMethod]
+          additionalParameters:additionalParameters]
+  );
+
+  // https://tools.ietf.org/html/rfc6749#section-3.1.1 says the order of values does not matter
+  XCTAssertNoThrow(
+      [[OIDAuthorizationRequest alloc] initWithConfiguration:configuration
+                      clientId:kTestClientID
+                  clientSecret:kTestClientSecret
+                        scope:scope
+                  redirectURL:[NSURL URLWithString:kTestRedirectURL]
+                  responseType:@"id_token code"
                          state:kTestState
                          nonce:kTestNonce
                   codeVerifier:kTestCodeVerifier
@@ -462,6 +478,21 @@ static int const kCodeVerifierRecommendedLength = 43;
                         scope:scope
                   redirectURL:[NSURL URLWithString:kTestRedirectURL]
                   responseType:@"code token id_token"
+                         state:kTestState
+                         nonce:kTestNonce
+                  codeVerifier:kTestCodeVerifier
+                 codeChallenge:[[self class] codeChallenge]
+           codeChallengeMethod:[[self class] codeChallengeMethod]
+          additionalParameters:additionalParameters]
+  );
+
+  XCTAssertThrows(
+      [[OIDAuthorizationRequest alloc] initWithConfiguration:configuration
+                      clientId:kTestClientID
+                  clientSecret:kTestClientSecret
+                        scope:scope
+                  redirectURL:[NSURL URLWithString:kTestRedirectURL]
+                  responseType:@"token"
                          state:kTestState
                          nonce:kTestNonce
                   codeVerifier:kTestCodeVerifier

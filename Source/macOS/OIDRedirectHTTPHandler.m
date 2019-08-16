@@ -64,13 +64,14 @@ static NSString *const kHTMLErrorRedirectNotValid =
   return self;
 }
 
-- (NSURL *)startHTTPListener:(NSError **)returnError {
+- (NSURL *)startHTTPListener:(NSError **)returnError withPort:(uint16_t)port {
   // Cancels any pending requests.
   [self cancelHTTPListener];
 
   // Starts a HTTP server on the loopback interface.
   // By not specifying a port, a random available one will be assigned.
   _httpServ = [[HTTPServer alloc] init];
+  [_httpServ setPort:port];
   [_httpServ setDelegate:self];
   NSError *error = nil;
   if (![_httpServ start:&error]) {
@@ -89,6 +90,11 @@ static NSString *const kHTMLErrorRedirectNotValid =
   }
 
   return nil;
+}
+
+- (NSURL *)startHTTPListener:(NSError **)returnError {
+  // A port of 0 requests a random available port
+  return [self startHTTPListener:returnError withPort:0];
 }
 
 - (void)cancelHTTPListener {

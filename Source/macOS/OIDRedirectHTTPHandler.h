@@ -45,17 +45,30 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (instancetype)initWithSuccessURL:(nullable NSURL *)successURL;
 
+/*! @brief Starts listening on the loopback interface on a specified port, and returns a URL
+        with the base address. Use the returned redirect URI to build a @c OIDExternalUserAgentRequest,
+        and once you initiate the request, set the resulting @c OIDExternalUserAgentSession to
+        @c currentAuthorizationFlow so the response can be handled.
+    @param returnError The error if an error occurred while starting the local HTTP server.
+    @param port The manually specified port, or 0 for a random available port.
+    @return The URL containing the address of the server with the specified port, or nil if there was an error.
+    @discussion Each instance of @c OIDRedirectHTTPHandler can only listen for a single response.
+        Calling this more than once will result in the previous listener being cancelled (equivalent
+        of @c cancelHTTPListener being called).
+ */
+- (NSURL *)startHTTPListener:(NSError **)returnError withPort:(uint16_t)port;
+
 /*! @brief Starts listening on the loopback interface on a random available port, and returns a URL
         with the base address. Use the returned redirect URI to build a @c OIDExternalUserAgentRequest,
         and once you initiate the request, set the resulting @c OIDExternalUserAgentSession to
         @c currentAuthorizationFlow so the response can be handled.
-    @param error The error if an error occurred while starting the local HTTP server.
+    @param returnError The error if an error occurred while starting the local HTTP server.
     @return The URL containing the address of the server with the randomly assigned available port.
     @discussion Each instance of @c OIDRedirectHTTPHandler can only listen for a single response.
         Calling this more than once will result in the previous listener being cancelled (equivalent
         of @c cancelHTTPListener being called).
  */
-- (NSURL *)startHTTPListener:(NSError **)error;
+- (NSURL *)startHTTPListener:(NSError **)returnError;
 
 /*! @brief Stops listening the loopback interface and sends an cancellation error (in the domain
         ::OIDGeneralErrorDomain, with the code ::OIDErrorCodeProgramCanceledAuthorizationFlow) to

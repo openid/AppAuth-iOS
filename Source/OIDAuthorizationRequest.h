@@ -136,7 +136,7 @@ extern NSString *const OIDOAuthorizationRequestCodeChallengeMethodS256;
 
 /*! @internal
     @brief Unavailable. Please use
-        @c initWithConfiguration:clientId:scopes:redirectURL:additionalParameters:.
+        @c initWithConfiguration:clientId:scopes:redirectURL:responseType:additionalParameters:.
  */
 - (instancetype)init NS_UNAVAILABLE;
 

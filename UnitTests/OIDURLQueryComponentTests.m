@@ -80,6 +80,88 @@ static NSString *const kTestURLRoot = @"https://www.example.com/";
                         kTestParameterValue, @"");
 }
 
+/*! @brief Test that URI query items are decoded correctly, using application/x-www-form-urlencoded
+        encoding.
+    @see https://tools.ietf.org/html/rfc6749#section-4.1.2
+    @see https://tools.ietf.org/html/rfc6749#appendix-B
+ */
+- (void)test_formurlencoded_decoding {
+  // Authorization response URL template
+  NSString *responseURLtemplate = @"com.example.apps.1234-tepulg5joaks7:/?state=z634l182&code=4/WQA"
+      "stm4iiN_0Qi-n4mEo-jL-85CvQ&scope=%@&authuser=0&session_state=ab78c20&prompt=consent#";
+
+  NSString *expectedDecodedScope =
+    @"https://www.example.com/auth/userinfo.email https://www.example.com/auth/userinfo.profile";
+  
+  // Tests an encoded scope with a '+'-encoded space
+  {
+    NSString* encodedScope =
+        @"https://www.example.com/auth/userinfo.email+https://www.example.com/auth/userinfo.profile";
+    NSString *authorizationResponse = [NSString stringWithFormat:responseURLtemplate,encodedScope];
+    OIDURLQueryComponent *query =
+        [[OIDURLQueryComponent alloc] initWithURL:[NSURL URLWithString:authorizationResponse]];
+     NSString* value = [query valuesForParameter:@"scope"][0];
+      XCTAssertEqualObjects(value,
+                            expectedDecodedScope,
+                            @"Failed to decode scope with '+' delimiter");
+  }
+  // Tests an encoded scope with a '%20'-encoded space
+  {
+    NSString* encodedScope =
+      @"https://www.example.com/auth/userinfo.email%20https://www.example.com/auth/userinfo.profile";
+    NSString *authorizationResponse = [NSString stringWithFormat:responseURLtemplate,encodedScope];
+    OIDURLQueryComponent *query =
+        [[OIDURLQueryComponent alloc] initWithURL:[NSURL URLWithString:authorizationResponse]];
+    NSString* value = [query valuesForParameter:@"scope"][0];
+    XCTAssertEqualObjects(value,
+                          expectedDecodedScope,
+                          @"Failed to decode scope with '%%20' delimiter");
+  }
+  // Tests that the example string from RFC6749 Appendix B is decoded correctly
+  {
+    NSString* encodedScope = @"+%25%26%2B%C2%A3%E2%82%AC";
+    NSString *authorizationResponse = [NSString stringWithFormat:responseURLtemplate,encodedScope];
+    OIDURLQueryComponent *query =
+        [[OIDURLQueryComponent alloc] initWithURL:[NSURL URLWithString:authorizationResponse]];
+    NSString* value = [query valuesForParameter:@"scope"][0];
+    XCTAssertEqualObjects(value,
+                          @" %&+£€",
+                          @"Failed to decode RFC6749 Appendix B sample string correctly.");
+  }
+}
+
+/*! @brief Test that URI query items are encoded correctly, using application/x-www-form-urlencoded
+        encoding. Note that AppAuth always encodes "+" as "%20" (as permitted) to reduce
+        ambiguity.
+    @see https://tools.ietf.org/html/rfc6749#section-4.1.3
+    @see https://tools.ietf.org/html/rfc6749#appendix-B
+ */
+- (void)test_formurlencoded_encoding {
+  NSURL *baseURL = [NSURL URLWithString:kTestURLRoot];
+  // Tests that space is encoded as %20
+  {
+    OIDURLQueryComponent *query = [[OIDURLQueryComponent alloc] initWithURL:baseURL];
+    [query addParameter:@"scope" value:@"openid profile"];
+    NSString *encodedParams = [query URLEncodedParameters];
+    NSString *expected = @"scope=openid%20profile";
+    XCTAssertEqualObjects(encodedParams,
+                          expected,
+                          @"Failed to encode space as %%20.");
+  }
+  // Tests that the example string from RFC6749 Appendix B is encoded correctly (but with space
+  // encoded as %20, not +, as allowed by application/x-www-form-urlencoded.
+  {
+      OIDURLQueryComponent *query = [[OIDURLQueryComponent alloc] initWithURL:baseURL];
+      [query addParameter:@"scope" value:@" %&+£€"];
+      // Tests the URLEncodedParameters method
+      NSString *encodedParams = [query URLEncodedParameters];
+      NSString *expected = @"scope=%20%25%26%2B%C2%A3%E2%82%AC";
+      XCTAssertEqualObjects(encodedParams,
+                            expected,
+                            @"Failed to encode RFC6749 Appendix B sample string correctly.");
+  }
+}
+
 - (void)testAddingTwoParameters {
   OIDURLQueryComponent *query = [[OIDURLQueryComponent alloc] init];
   [query addParameter:kTestParameterName value:kTestParameterValue];

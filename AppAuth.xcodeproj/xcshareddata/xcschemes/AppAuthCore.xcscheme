@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "343AAAA51E83489A00F9D36E"
-               BuildableName = "AppAuth.framework"
-               BlueprintName = "AppAuth_tvOS"
+               BlueprintIdentifier = "342F42842177B1FC00574F24"
+               BuildableName = "AppAuthCore.framework"
+               BlueprintName = "AppAuthCore"
                ReferencedContainer = "container:AppAuth.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -32,9 +32,9 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "343AAAAD1E83489A00F9D36E"
-               BuildableName = "AppAuth_tvOSTests.xctest"
-               BlueprintName = "AppAuth_tvOSTests"
+               BlueprintIdentifier = "3489707D2177B3B000ABEED4"
+               BuildableName = "AppAuthCoreTests.xctest"
+               BlueprintName = "AppAuthCoreTests"
                ReferencedContainer = "container:AppAuth.xcodeproj">
             </BuildableReference>
          </TestableReference>
@@ -42,9 +42,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "343AAAA51E83489A00F9D36E"
-            BuildableName = "AppAuth.framework"
-            BlueprintName = "AppAuth_tvOS"
+            BlueprintIdentifier = "342F42842177B1FC00574F24"
+            BuildableName = "AppAuthCore.framework"
+            BlueprintName = "AppAuthCore"
             ReferencedContainer = "container:AppAuth.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -64,9 +64,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "343AAAA51E83489A00F9D36E"
-            BuildableName = "AppAuth.framework"
-            BlueprintName = "AppAuth_tvOS"
+            BlueprintIdentifier = "342F42842177B1FC00574F24"
+            BuildableName = "AppAuthCore.framework"
+            BlueprintName = "AppAuthCore"
             ReferencedContainer = "container:AppAuth.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -82,9 +82,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "343AAAA51E83489A00F9D36E"
-            BuildableName = "AppAuth.framework"
-            BlueprintName = "AppAuth_tvOS"
+            BlueprintIdentifier = "342F42842177B1FC00574F24"
+            BuildableName = "AppAuthCore.framework"
+            BlueprintName = "AppAuthCore"
             ReferencedContainer = "container:AppAuth.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

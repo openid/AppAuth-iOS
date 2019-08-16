@@ -39,6 +39,7 @@ static NSString *const kTokenEndpointKey = @"token_endpoint";
 static NSString *const kUserinfoEndpointKey = @"userinfo_endpoint";
 static NSString *const kJWKSURLKey = @"jwks_uri";
 static NSString *const kRegistrationEndpointKey = @"registration_endpoint";
+static NSString *const kEndSessionEndpointKey = @"end_session_endpoint";
 static NSString *const kScopesSupportedKey = @"scopes_supported";
 static NSString *const kResponseTypesSupportedKey = @"response_types_supported";
 static NSString *const kResponseModesSupportedKey = @"response_modes_supported";
@@ -102,6 +103,7 @@ static NSString *const kOPTosURIKey = @"op_tos_uri";
     kUserinfoEndpointKey : @"User Info Endpoint",
     kJWKSURLKey : @"http://www.example.com/jwks",
     kRegistrationEndpointKey : @"Registration Endpoint",
+    kEndSessionEndpointKey : @"https://www.example.com/logout",
     kScopesSupportedKey : @"Scopes Supported",
     kResponseTypesSupportedKey : @"Response Types Supported",
     kResponseModesSupportedKey : @"Response Modes Supported",
@@ -188,6 +190,10 @@ static NSString *const kDiscoveryDocumentNullField =
       "ail_verified\",\"exp\",\"family_name\",\"given_name\",\"iat\",\"iss\",\"locale\",\"name\",\""
       "picture\",\"sub\"]}";
 
+static NSString *const kDiscoveryDocumentNotDictionary =
+    @"[\"code\",\"token\",\"id_token\",\"code token\",\"code id_token\",\"token id_token\",\"code to"
+    "ken id_token\",\"none\"]";
+
 /*! @brief Tests that URLs are handled properly when converted from the dictionary's string
         representation.
  */
@@ -220,6 +226,18 @@ static NSString *const kDiscoveryDocumentNullField =
   XCTAssertNotNil(error, @"There should be an error indicating we received bad JSON.");
   XCTAssertEqualObjects(error.domain, OIDGeneralErrorDomain, @"");
   XCTAssertEqual(error.code, OIDErrorCodeJSONDeserializationError, @"");
+}
+
+/*! @brief Tests that we get an error when the root JSON object isn't a dictionary.
+ */
+- (void)testErrorWhenRootObjectNotNSDictionary {
+  NSError *error;
+  OIDServiceDiscovery *discovery = [[OIDServiceDiscovery alloc] initWithJSON:kDiscoveryDocumentNotDictionary error:&error];
+  XCTAssertNil(discovery, @"When initializing a discovery document, it should not return an "
+               "instance if the root JSON object is not a NSDictionary.");
+  XCTAssertNotNil(error, @"There should be an error indicating we received bad JSON.");
+  XCTAssertEqualObjects(error.domain, OIDGeneralErrorDomain, @"");
+  XCTAssertEqual(error.code, OIDErrorCodeInvalidDiscoveryDocument, @"");
 }
 
 /*! @brief Tests that we get an error when the required fields aren't in the source dictionary.
@@ -471,6 +489,7 @@ TestURLFieldBackedBy(tokenEndpoint, kTokenEndpointKey, kTestURL)
 TestURLFieldBackedBy(userinfoEndpoint, kUserinfoEndpointKey, kTestURL)
 TestURLFieldBackedBy(jwksURL, kJWKSURLKey, kTestURL)
 TestURLFieldBackedBy(registrationEndpoint, kRegistrationEndpointKey, kTestURL)
+TestURLFieldBackedBy(endSessionEndpoint, kEndSessionEndpointKey, kTestURL)
 TestFieldBackedBy(scopesSupported, kScopesSupportedKey, @"Scopes Supported")
 TestFieldBackedBy(responseTypesSupported, kResponseTypesSupportedKey, @"Response Types Supported")
 TestFieldBackedBy(responseModesSupported, kResponseModesSupportedKey, @"Response Modes Supported")

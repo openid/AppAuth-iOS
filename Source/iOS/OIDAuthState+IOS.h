@@ -27,7 +27,11 @@ NS_ASSUME_NONNULL_BEGIN
 @interface OIDAuthState (IOS)
 
 /*! @brief Convenience method to create a @c OIDAuthState by presenting an authorization request
-        and performing the authorization code exchange in the case of code flow requests.
+        and performing the authorization code exchange in the case of code flow requests. For
+        the hybrid flow, the caller should validate the id_token and c_hash, then perform the token
+        request (@c OIDAuthorizationService.performTokenRequest:callback:)
+        and update the OIDAuthState with the results (@c
+        OIDAuthState.updateWithTokenResponse:error:).
     @param authorizationRequest The authorization request to present.
     @param presentingViewController The view controller from which to present the
         @c SFSafariViewController.
@@ -39,7 +43,26 @@ NS_ASSUME_NONNULL_BEGIN
 + (id<OIDExternalUserAgentSession>)
     authStateByPresentingAuthorizationRequest:(OIDAuthorizationRequest *)authorizationRequest
                      presentingViewController:(UIViewController *)presentingViewController
-                                     callback:(OIDAuthStateAuthorizationCallback)callback;
+                                     callback:(OIDAuthStateAuthorizationCallback)callback
+                                     NS_DEPRECATED_IOS(7, 11, "This method has been deprecated. Call\
+                                                       authStateByPresentingAuthorizationRequest without passing\
+                                                       UIViewController instead.");
+
+/*! @brief Convenience method for iOS 11+ devices to create a @c OIDAuthState
+        by presenting an authorization request and performing the authorization code exchange
+        in the case of code flow requests. For the hybrid flow, the caller should validate
+        the id_token and c_hash, then perform the token request
+        (@c OIDAuthorizationService.performTokenRequest:callback:) and update the OIDAuthState
+        with the results (@c OIDAuthState.updateWithTokenResponse:error:).
+    @param authorizationRequest The authorization request to present.
+    @param callback The method called when the request has completed or failed.
+    @return A @c OIDExternalUserAgentSession instance which will terminate when it
+        receives a @c OIDExternalUserAgentSession.cancel message, or after processing a
+        @c OIDExternalUserAgentSession.resumeExternalUserAgentFlowWithURL: message.
+ */
++ (id<OIDExternalUserAgentSession>)
+    authStateByPresentingAuthorizationRequest:(OIDAuthorizationRequest *)authorizationRequest
+                     callback:(OIDAuthStateAuthorizationCallback)callback API_AVAILABLE(ios(11));
 
 @end
 
