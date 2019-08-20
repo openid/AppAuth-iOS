@@ -19,9 +19,9 @@ supported due to the security and usability reasons explained in
 [Section 8.12 of RFC 8252](https://tools.ietf.org/html/rfc8252#section-8.12).
 
 It also supports the [PKCE](https://tools.ietf.org/html/rfc7636) extension to
-OAuth which was created to secure authorization codes in public clients when
+OAuth, which was created to secure authorization codes in public clients when
 custom URI scheme redirects are used. The library is friendly to other
-extensions (standard or otherwise) with the ability to handle additional params
+extensions (standard or otherwise), with the ability to handle additional params
 in all protocol requests and responses.
 
 ## Specification
@@ -41,10 +41,10 @@ Safari) on earlier versions.
 Both Custom URI Schemes (all supported versions of iOS) and Universal Links
 (iOS 9+) can be used with the library.
 
-In general, AppAuth can work with any Authorization Server (AS) that supports
-native apps as documented in [RFC 8252](https://tools.ietf.org/html/rfc8252),
+In general, AppAuth can work with any authorization server that supports
+native apps, as documented in [RFC 8252](https://tools.ietf.org/html/rfc8252),
 either through custom URI scheme redirects, or universal links.
-AS's that assume all clients are web-based or require clients to maintain
+Authorization servers that assume all clients are web-based, or require clients to maintain
 confidentiality of the client secrets may not work well.
 
 ### macOS
@@ -55,13 +55,13 @@ AppAuth supports macOS (OS X) 10.9 and above.
 
 #### Authorization Server Requirements
 
-AppAuth for macOS supports both custom schemes, a loopback HTTP redirects
+AppAuth for macOS supports both custom schemes; a loopback HTTP redirects
 via a small embedded server.
 
-In general, AppAuth can work with any Authorization Server (AS) that supports
-native apps as documented in [RFC 8252](https://tools.ietf.org/html/rfc8252),
-either through custom URI scheme, or loopback HTTP redirects.
-AS's that assume all clients are web-based or require clients to maintain
+In general, AppAuth can work with any authorization server that supports
+native apps, as documented in [RFC 8252](https://tools.ietf.org/html/rfc8252);
+either through custom URI schemes, or loopback HTTP redirects.
+Authorization servers that assume all clients are web-based, or require clients to maintain
 confidentiality of the client secrets may not work well.
 
 ## Try
@@ -71,7 +71,7 @@ Want to try out AppAuth? Just run:
     pod try AppAuth
 
 Follow the instructions in [Examples/README.md](Examples/README.md) to configure
-with your own OAuth client (you need to update 3 configuration points with your
+with your own OAuth client (you need to update three configuration points with your
 client info to try the demo).
 
 ## Setup
@@ -85,7 +85,7 @@ add the following line to your `Podfile`:
 
     pod 'AppAuth'
 
-Then run `pod install`.
+Then, run `pod install`.
 
 ### Carthage
 
@@ -94,12 +94,12 @@ line to your `Cartfile`:
 
     github "openid/AppAuth-iOS" "master"
 
-Then run `carthage bootstrap`.
+Then, run `carthage bootstrap`.
 
 ### Static Library
 
 You can also use AppAuth as a static library. This requires linking the library
-and your project and including the headers.  Suggested configuration:
+and your project, and including the headers.  Here is a suggested configuration:
 
 1. Create an Xcode Workspace.
 2. Add `AppAuth.xcodeproj` to your Workspace.
@@ -110,10 +110,10 @@ Linked Framework and Libraries" section of your target).
 
 ## Auth Flow
 
-AppAuth supports both manual interaction with the Authorization Server
+AppAuth supports both manual interaction with the authorization server
 where you need to perform your own token exchanges, as well as convenience
 methods that perform some of this logic for you. This example uses the
-convenience method which returns either an `OIDAuthState` object, or an error.
+convenience method, which returns either an `OIDAuthState` object, or an error.
 
 `OIDAuthState` is a class that keeps track of the authorization and token
 requests and responses, and provides a convenience method to call an API with
@@ -159,8 +159,8 @@ NSURL *issuer = [NSURL URLWithString:@"https://accounts.google.com"];
 
 ### Authorizing – iOS
 
-First you need to have a property in your AppDelegate to hold the session, in
-order to continue the authorization flow from the redirect.
+First, you need to have a property in your AppDelegate to hold the session, in
+order to continue the authorization flow from the redirect:
 
 ```objc
 // property of the app's AppDelegate
@@ -178,9 +178,9 @@ And your main class, a property to store the auth state:
 Then, initiate the authorization request. By using the 
 `authStateByPresentingAuthorizationRequest` convenience method, the token
 exchange will be performed automatically, and everything will be protected with
-PKCE (if the server supports it). AppAuth also allows you to perform these
+PKCE (if the server supports it). AppAuth also lets you perform these
 requests manually. See the `authNoCodeExchange` method in the included Example
-app for a demonstration.
+app for a demonstration:
 
 ```objc
 // builds authentication request
@@ -216,7 +216,7 @@ appDelegate.currentAuthorizationFlow =
 
 The authorization response URL is returned to the app via the iOS openURL
 app delegate method, so you need to pipe this through to the current
-authorization session (created in the previous session).
+authorization session (created in the previous session):
 
 ```objc
 - (BOOL)application:(UIApplication *)app
@@ -246,20 +246,20 @@ lifecycle for you.
 
 > #### :bulb: Alternative: Custom URI Schemes
 > Custom URI schemes are also supported on macOS, but some browsers display
-> an interstitial which reduces the usability. For an example on using custom
+> an interstitial, which reduces the usability. For an example on using custom
 > URI schemes with macOS, See `Example-Mac`.
 
 To receive the authorization response using a local HTTP server, first you need
 to have an instance variable in your main class to retain the HTTP redirect
-handler.
+handler:
 
 ```objc
 OIDRedirectHTTPHandler *_redirectHTTPHandler;
 ```
 
 Then, as the port used by the local HTTP server varies, you need to start it
-before building the authorization request in order to get the exact redirect
-URI to use.
+before building the authorization request, in order to get the exact redirect
+URI to use:
 
 ```objc
 static NSString *const kSuccessURLString =
@@ -277,7 +277,7 @@ Then, initiate the authorization request. By using the
 exchange will be performed automatically, and everything will be protected with
 PKCE (if the server supports it). By assigning the return value to the
 `OIDRedirectHTTPHandler`'s `currentAuthorizationFlow`, the authorization will
-continue automatically once the user makes their choice.
+continue automatically once the user makes their choice:
 
 ```objc
 // builds authentication request
@@ -313,10 +313,10 @@ _redirectHTTPHandler.currentAuthorizationFlow =
 
 ### Making API Calls
 
-AppAuth gives you the raw token information, if you need it. However we
+AppAuth gives you the raw token information, if you need it. However, we
 recommend that users of the `OIDAuthState` convenience wrapper use the provided
 `performActionWithFreshTokens:` method to perform their API calls to avoid
-needing to worry about token freshness.
+needing to worry about token freshness:
 
 ```objc
 [_authState performActionWithFreshTokens:^(NSString *_Nonnull accessToken,
@@ -337,4 +337,4 @@ Browse the [API documentation](http://openid.github.io/AppAuth-iOS/docs/latest/a
 
 ## Included Samples
 
-Sample apps that explore core AppAuth features are available for iOS and macOS, follow the instructions in [Examples/README.md](Examples/README.md) to get started.
+Sample apps that explore core AppAuth features are available for iOS and macOS; follow the instructions in [Examples/README.md](Examples/README.md) to get started.
