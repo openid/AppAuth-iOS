@@ -1,10 +1,53 @@
 # AppAuth for iOS and macOS Changelog
 
 ## Unreleased
+
+## 1.2.0
+
+### Notable Changes
+
+1. Support for iOS 13
+
+## 1.1.0
+
+### Notable Changes
+
+1. [OpenID Connect RP-Initiated Logout](http://openid.net/specs/openid-connect-session-1_0.html#RPLogout) implemented
+2. Added logic for the `azp` claim
+
+### Fixes
+
+1. Scheme comparison for redirects is now case insensitive
+2. Improved error handling during discovery when a non-JSON document
+   is encountered.
+
+## 1.0.0
+
+1.0.0! 🎉
+
+### Notable Changes
+
+1. **All deprecated APIs removed.** Please ensure your code builds on
+   version 0.95.0 with no deprecation warnings before upgrading!
+   Notably, if you started with a version of AppAuth prior to 0.93.0
+   you will need to follow the instructions in 
+   [Upgrading to 0.93.0](#upgrading-to-0930)
+2. Updated for iOS 12, and Xcode 10. **Xcode 10 is now required.**
+   NB. per policy, AppAuth supports many older versions of iOS and
+   macOS, but only the current Xcode toolchain.
+   If you need to stay on old versions of Xcode for some reason, stay
+   on the pre-1.0 releases.
+3. macOS 32-bit support removed. If you need this support, stay on the
+   pre-1.0 releases.
+4. `AppAuth/Core` subspec, and AppAuthCore Framework added to support
+    iOS extensions.
+
+## 1.0.0.beta2 (2018-09-27)
+
 ### Notable Changes
 
 1. `AppAuth/Core` subspec, and AppAuthCore Framework added to support
-iOS extensions.
+    iOS extensions.
 
 ## 1.0.0.beta1 (2018-09-27)
 
