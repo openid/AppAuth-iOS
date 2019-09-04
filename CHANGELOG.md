@@ -39,7 +39,7 @@
    on the pre-1.0 releases.
 3. macOS 32-bit support removed. If you need this support, stay on the
    pre-1.0 releases.
-1. `AppAuth/Core` subspec, and AppAuthCore Framework added to support
+4. `AppAuth/Core` subspec, and AppAuthCore Framework added to support
     iOS extensions.
 
 ## 1.0.0.beta2 (2018-09-27)
