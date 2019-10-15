@@ -515,6 +515,8 @@
 		CF37C0701F1FC21A00662E41 /* OIDEndSessionRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = CF37C06C1F1FC21A00662E41 /* OIDEndSessionRequest.m */; };
 		CF37C0711F1FC21A00662E41 /* OIDEndSessionRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = CF37C06C1F1FC21A00662E41 /* OIDEndSessionRequest.m */; };
 		CF6431F41F228A980075B6B5 /* OIDEndSessionResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = CF6431F31F228A980075B6B5 /* OIDEndSessionResponse.m */; };
+		F9A7082E2355ED74004B3E6D /* OIDExternalUserAgentCatalyst.h in Headers */ = {isa = PBXBuildFile; fileRef = F9A7082C2355ED74004B3E6D /* OIDExternalUserAgentCatalyst.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F9A7082F2355ED74004B3E6D /* OIDExternalUserAgentCatalyst.m in Sources */ = {isa = PBXBuildFile; fileRef = F9A7082D2355ED74004B3E6D /* OIDExternalUserAgentCatalyst.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -730,6 +732,8 @@
 		F6F60FB11D2BFEFE00325CB3 /* OIDAuthorizationService+IOS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "OIDAuthorizationService+IOS.m"; path = "iOS/OIDAuthorizationService+IOS.m"; sourceTree = "<group>"; };
 		F6F60FB31D2BFEFE00325CB3 /* OIDAuthorizationService+IOS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "OIDAuthorizationService+IOS.h"; path = "iOS/OIDAuthorizationService+IOS.h"; sourceTree = "<group>"; };
 		F6F60FB51D2BFEFE00325CB3 /* OIDAuthState+IOS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "OIDAuthState+IOS.h"; path = "iOS/OIDAuthState+IOS.h"; sourceTree = "<group>"; };
+		F9A7082C2355ED74004B3E6D /* OIDExternalUserAgentCatalyst.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OIDExternalUserAgentCatalyst.h; path = iOS/OIDExternalUserAgentCatalyst.h; sourceTree = "<group>"; };
+		F9A7082D2355ED74004B3E6D /* OIDExternalUserAgentCatalyst.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = OIDExternalUserAgentCatalyst.m; path = iOS/OIDExternalUserAgentCatalyst.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1064,6 +1068,8 @@
 				F6F60FB01D2BFEFE00325CB3 /* OIDAuthState+IOS.m */,
 				A6DEABA92018E5B50022AC32 /* OIDExternalUserAgentIOS.h */,
 				A6DEABA82018E5B50022AC32 /* OIDExternalUserAgentIOS.m */,
+				F9A7082C2355ED74004B3E6D /* OIDExternalUserAgentCatalyst.h */,
+				F9A7082D2355ED74004B3E6D /* OIDExternalUserAgentCatalyst.m */,
 			);
 			name = iOS;
 			sourceTree = "<group>";
@@ -1124,6 +1130,7 @@
 				343AAAE81E83499000F9D36E /* OIDAuthStateChangeDelegate.h in Headers */,
 				345AE749202D526900738D22 /* OIDExternalUserAgentIOSCustomBrowser.h in Headers */,
 				343AAA6B1E83465500F9D36E /* AppAuth.h in Headers */,
+				F9A7082E2355ED74004B3E6D /* OIDExternalUserAgentCatalyst.h in Headers */,
 				34A663291E871DD40060B664 /* OIDIDToken.h in Headers */,
 				343AAAF21E83499000F9D36E /* OIDResponseTypes.h in Headers */,
 				343AAAF71E83499000F9D36E /* OIDTokenRequest.h in Headers */,
@@ -1942,6 +1949,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A6DEABAF2018E5D80022AC32 /* OIDExternalUserAgentIOS.m in Sources */,
+				F9A7082F2355ED74004B3E6D /* OIDExternalUserAgentCatalyst.m in Sources */,
 				343AAA881E83478900F9D36E /* OIDFieldMapping.m in Sources */,
 				34A663311E871DD40060B664 /* OIDIDToken.m in Sources */,
 				A6DEAB862017A7060022AC32 /* OIDEndSessionResponse.m in Sources */,
@@ -2537,6 +2545,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = net.openid.AppAuthCore;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -2562,6 +2571,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = net.openid.AppAuthCore;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -2586,6 +2596,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "net.openid.AppAuth-iOS";
 				PRODUCT_NAME = AppAuth;
 				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -2610,6 +2621,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "net.openid.AppAuth-iOS";
 				PRODUCT_NAME = AppAuth;
 				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
