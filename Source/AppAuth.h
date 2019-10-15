@@ -50,6 +50,10 @@
 #import "OIDAuthorizationService+IOS.h"
 #import "OIDExternalUserAgentIOS.h"
 #import "OIDExternalUserAgentIOSCustomBrowser.h"
+#elif TARGET_OS_MACCATALYST
+#import "OIDAuthState+IOS.h"
+#import "OIDAuthorizationService+IOS.h"
+#import "OIDExternalUserAgentCatalyst.h"
 #elif TARGET_OS_MAC
 #import "OIDAuthState+Mac.h"
 #import "OIDAuthorizationService+Mac.h"

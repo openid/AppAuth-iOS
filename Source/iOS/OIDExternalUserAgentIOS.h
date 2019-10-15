@@ -20,6 +20,8 @@
 
 #import "OIDExternalUserAgent.h"
 
+#if !TARGET_OS_MACCATALYST
+
 @class SFSafariViewController;
 
 NS_ASSUME_NONNULL_BEGIN
@@ -44,3 +46,5 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 NS_ASSUME_NONNULL_END
+
+#endif // !TARGET_OS_MACCATALYST

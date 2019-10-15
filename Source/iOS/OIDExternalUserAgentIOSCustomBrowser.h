@@ -20,6 +20,8 @@
 
 #import "OIDExternalUserAgent.h"
 
+#if !TARGET_OS_MACCATALYST
+
 NS_ASSUME_NONNULL_BEGIN
 
 /*! @brief A block that transforms a regular http/https URL into one that will open in an
@@ -104,3 +106,5 @@ typedef NSURL *_Nullable (^OIDCustomBrowserURLTransformation)(NSURL *_Nullable r
 @end
 
 NS_ASSUME_NONNULL_END
+
+#endif // !TARGET_OS_MACCATALYST
