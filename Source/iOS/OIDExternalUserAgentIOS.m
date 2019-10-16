@@ -211,7 +211,6 @@ NS_ASSUME_NONNULL_BEGIN
   // them while not in an authorization flow.
   _safariVC = nil;
   _authenticationVC = nil;
-  _webAuthenticationVC = nil;
   _session = nil;
   _externalUserAgentFlowInProgress = NO;
 }
