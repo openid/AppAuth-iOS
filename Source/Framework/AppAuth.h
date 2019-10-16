@@ -53,15 +53,15 @@ FOUNDATION_EXPORT const unsigned char AppAuthVersionString[];
 
 #if TARGET_OS_TV
 #elif TARGET_OS_WATCH
+#elif TARGET_OS_MACCATALYST
+#import <AppAuth/OIDAuthState+IOS.h>
+#import <AppAuth/OIDAuthorizationService+IOS.h>
+#import "AppAuth/OIDExternalUserAgentCatalyst.h"
 #elif TARGET_OS_IOS
 #import <AppAuth/OIDAuthState+IOS.h>
 #import <AppAuth/OIDAuthorizationService+IOS.h>
 #import <AppAuth/OIDExternalUserAgentIOS.h>
 #import <AppAuth/OIDExternalUserAgentIOSCustomBrowser.h>
-#elif TARGET_OS_MACCATALYST
-#import <AppAuth/OIDAuthState+IOS.h>
-#import <AppAuth/OIDAuthorizationService+IOS.h>
-#import "AppAuth/OIDExternalUserAgentCatalyst.h"
 #elif TARGET_OS_MAC
 #import <AppAuth/OIDAuthState+Mac.h>
 #import <AppAuth/OIDAuthorizationService+Mac.h>
