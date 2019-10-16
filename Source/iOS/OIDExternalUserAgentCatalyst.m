@@ -1,7 +1,7 @@
 /*! @file OIDExternalUserAgentCatalyst.m
    @brief AppAuth iOS SDK
    @copyright
-       Copyright 2016 Google Inc. All Rights Reserved.
+       Copyright 2019 The AppAuth Authors. All Rights Reserved.
    @copydetails
        Licensed under the Apache License, Version 2.0 (the "License");
        you may not use this file except in compliance with the License.
