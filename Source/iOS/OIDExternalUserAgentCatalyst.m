@@ -101,7 +101,7 @@ NS_ASSUME_NONNULL_BEGIN
     [self cleanUp];
     NSError *safariError = [OIDErrorUtilities errorWithCode:OIDErrorCodeSafariOpenError
                                             underlyingError:nil
-                                                description:@"Unable to open Safari."];
+                                                description:@"Unable to open ASWebAuthenticationSession view controller."];
     [session failExternalUserAgentFlowWithError:safariError];
   }
   return openedUserAgent;
