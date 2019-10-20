@@ -17,14 +17,8 @@
  */
 
 #import "OIDAuthState+IOS.h"
-
-#if TARGET_OS_MACCATALYST
-  #import "OIDExternalUserAgentCatalyst.h"
-  typedef OIDExternalUserAgentCatalyst ExternalUserAgent;
-#else
-  #import "OIDExternalUserAgentIOS.h"
-  typedef OIDExternalUserAgentIOS ExternalUserAgent;
-#endif
+#import "OIDExternalUserAgentIOS.h"
+#import "OIDExternalUserAgentCatalyst.h"
 
 @implementation OIDAuthState (IOS)
 
@@ -32,9 +26,13 @@
     authStateByPresentingAuthorizationRequest:(OIDAuthorizationRequest *)authorizationRequest
                      presentingViewController:(UIViewController *)presentingViewController
                                      callback:(OIDAuthStateAuthorizationCallback)callback {
-  ExternalUserAgent *externalUserAgent =
-      [[ExternalUserAgent alloc]
-          initWithPresentingViewController:presentingViewController];
+  id<OIDExternalUserAgent> externalUserAgent;
+#if TARGET_OS_MACCATALYST
+  externalUserAgent = [[OIDExternalUserAgentCatalyst alloc]
+      initWithPresentingViewController:presentingViewController];
+#else
+  externalUserAgent = [[OIDExternalUserAgentIOS alloc] initWithPresentingViewController:presentingViewController];
+#endif
   return [self authStateByPresentingAuthorizationRequest:authorizationRequest
                                        externalUserAgent:externalUserAgent
                                                 callback:callback];
@@ -43,7 +41,12 @@
 + (id<OIDExternalUserAgentSession>)
     authStateByPresentingAuthorizationRequest:(OIDAuthorizationRequest *)authorizationRequest
                                   callback:(OIDAuthStateAuthorizationCallback)callback {
-  ExternalUserAgent *externalUserAgent = [[ExternalUserAgent alloc] init];
+  id<OIDExternalUserAgent> externalUserAgent;
+#if TARGET_OS_MACCATALYST
+  externalUserAgent = [[OIDExternalUserAgentCatalyst alloc] init];
+#else
+  externalUserAgent = [[OIDExternalUserAgentIOS alloc] init];
+#endif
   return [self authStateByPresentingAuthorizationRequest:authorizationRequest
                                        externalUserAgent:externalUserAgent
                                                 callback:callback];
