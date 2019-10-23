@@ -100,8 +100,11 @@ NS_ASSUME_NONNULL_BEGIN
         if (callbackURL) {
           [strongSelf->_session resumeExternalUserAgentFlowWithURL:callbackURL];
         } else {
+          int errorCode;
+          NSString *descriptionOfTopView = [[[[[[UIApplication sharedApplication] keyWindow] subviews] lastObject] class] description];
+          errorCode = [descriptionOfTopView compare:@"UITransitionView"] ? OIDErrorCodeExternalUserAgentDismissed : OIDErrorCodeUserCanceledAuthorizationFlow;
           NSError *safariError =
-              [OIDErrorUtilities errorWithCode:OIDErrorCodeUserCanceledAuthorizationFlow
+              [OIDErrorUtilities errorWithCode:errorCode
                                underlyingError:error
                                    description:nil];
           [strongSelf->_session failExternalUserAgentFlowWithError:safariError];
@@ -135,8 +138,11 @@ NS_ASSUME_NONNULL_BEGIN
         if (callbackURL) {
           [strongSelf->_session resumeExternalUserAgentFlowWithURL:callbackURL];
         } else {
+          int errorCode;
+          NSString *descriptionOfTopView = [[[[[[UIApplication sharedApplication] keyWindow] subviews] lastObject] class] description];
+          errorCode = [descriptionOfTopView compare:@"UITransitionView"] ? OIDErrorCodeExternalUserAgentDismissed : OIDErrorCodeUserCanceledAuthorizationFlow;
           NSError *safariError =
-              [OIDErrorUtilities errorWithCode:OIDErrorCodeUserCanceledAuthorizationFlow
+              [OIDErrorUtilities errorWithCode:errorCode
                                underlyingError:error
                                    description:@"User cancelled."];
           [strongSelf->_session failExternalUserAgentFlowWithError:safariError];
