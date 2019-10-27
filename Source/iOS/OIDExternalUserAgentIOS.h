@@ -20,8 +20,6 @@
 
 #import "OIDExternalUserAgent.h"
 
-#if !TARGET_OS_MACCATALYST
-
 @class SFSafariViewController;
 
 NS_ASSUME_NONNULL_BEGIN
@@ -29,6 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
 /*! @brief An iOS specific external user-agent that uses the best possible user-agent available
         depending on the version of iOS to present the request.
  */
+API_UNAVAILABLE(macCatalyst)
 @interface OIDExternalUserAgentIOS : NSObject<OIDExternalUserAgent>
 
 - (nullable instancetype)init API_AVAILABLE(ios(11))
@@ -46,5 +45,3 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 NS_ASSUME_NONNULL_END
-
-#endif // !TARGET_OS_MACCATALYST

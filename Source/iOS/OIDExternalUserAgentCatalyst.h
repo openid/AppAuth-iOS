@@ -20,13 +20,12 @@
 
 #import "OIDExternalUserAgent.h"
 
-#if TARGET_OS_MACCATALYST
-
 NS_ASSUME_NONNULL_BEGIN
 
 /*! @brief A Catalyst specific external user-agent that uses `ASWebAuthenticationSession` to
        present the request.
 */
+API_AVAILABLE(macCatalyst(13)) API_UNAVAILABLE(ios)
 @interface OIDExternalUserAgentCatalyst : NSObject<OIDExternalUserAgent>
 
 /*! @internal
@@ -45,5 +44,3 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 NS_ASSUME_NONNULL_END
-
-#endif // TARGET_OS_MACCATALYST

@@ -20,8 +20,6 @@
 
 #import "OIDExternalUserAgent.h"
 
-#if !TARGET_OS_MACCATALYST
-
 NS_ASSUME_NONNULL_BEGIN
 
 /*! @brief A block that transforms a regular http/https URL into one that will open in an
@@ -37,6 +35,7 @@ typedef NSURL *_Nullable (^OIDCustomBrowserURLTransformation)(NSURL *_Nullable r
         for browsers that require other modifications to the URL.  If the browser is not installed
         the user will be prompted to install it.
  */
+API_UNAVAILABLE(macCatalyst)
 @interface OIDExternalUserAgentIOSCustomBrowser : NSObject<OIDExternalUserAgent>
 
 /*! @brief URL transformation block for the browser.
@@ -106,5 +105,3 @@ typedef NSURL *_Nullable (^OIDCustomBrowserURLTransformation)(NSURL *_Nullable r
 @end
 
 NS_ASSUME_NONNULL_END
-
-#endif // !TARGET_OS_MACCATALYST
