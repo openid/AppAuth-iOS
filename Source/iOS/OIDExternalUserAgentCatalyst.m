@@ -40,19 +40,10 @@ NS_ASSUME_NONNULL_BEGIN
   ASWebAuthenticationSession *_webAuthenticationVC;
 }
 
-- (nullable instancetype)init {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wnonnull"
-  return [self initWithPresentingViewController:nil];
-#pragma clang diagnostic pop
-}
-
 - (nullable instancetype)initWithPresentingViewController:
     (UIViewController *)presentingViewController {
   self = [super init];
   if (self) {
-    NSAssert(presentingViewController != nil,
-             @"presentingViewController cannot be nil on iOS 13");
     _presentingViewController = presentingViewController;
   }
   return self;
