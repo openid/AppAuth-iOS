@@ -6,8 +6,8 @@ osx_image: xcode11
 env: 
 # To generate this list, use `xcodebuild -showsdks` to get possible SDK values, and platforms.
 # Use `instruments -s devices` to get the device name.
-  - SCHEME=AppAuth-iOS DESTINATION="'platform=iOS Simulator,name=iPhone 6,OS=13.0'" SDK=iphonesimulator13.0
-  - SCHEME=AppAuth_iOS DESTINATION="'platform=iOS Simulator,name=iPhone 6,OS=13.0'" SDK=iphonesimulator13.0
+  - SCHEME=AppAuth-iOS DESTINATION="'platform=iOS Simulator,name=iPhone 11,OS=13.0'" SDK=iphonesimulator13.0
+  - SCHEME=AppAuth_iOS DESTINATION="'platform=iOS Simulator,name=iPhone 11,OS=13.0'" SDK=iphonesimulator13.0
   - SCHEME=AppAuth-macOS DESTINATION="'platform=macOS,arch=x86_64'" SDK=macosx10.15
   - SCHEME=AppAuth_macOS DESTINATION="'platform=macOS,arch=x86_64'" SDK=macosx10.15
   - SCHEME=AppAuth-tvOS DESTINATION="'platform=tvOS Simulator,name=Apple TV,OS=13.0'" SDK=appletvsimulator13.0
