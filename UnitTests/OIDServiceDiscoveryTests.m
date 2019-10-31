@@ -128,7 +128,7 @@ static NSString *const kOPTosURIKey = @"op_tos_uri";
     kTokenEndpointAuthSigningAlgorithmValuesSupportedKey :
         @"Token Endpoint Auth Signing Algorithm Values Supported",
     kDisplayValuesSupportedKey : @"Display Values Supported",
-    kClaimTypesSupportedKey : @"Claim Types Supported",
+    kClaimTypesSupportedKey : @[@"normal"],
     kClaimsSupportedKey : @"Claims Supported",
     kServiceDocumentationKey : @"Service Documentation",
     kClaimsLocalesSupportedKey : @"Claims Locales Supported",
@@ -398,6 +398,12 @@ static NSString *const kDiscoveryDocumentNotDictionary =
   OIDServiceDiscovery *unarchived = [NSKeyedUnarchiver unarchiveObjectWithData:data];
 
   XCTAssertEqualObjects(discovery.discoveryDictionary, unarchived.discoveryDictionary, @"");
+  
+  if (@available(iOS 11.0, *)) {
+    data = [NSKeyedArchiver archivedDataWithRootObject:discovery requiringSecureCoding:YES error:&error];
+    unarchived = [NSKeyedUnarchiver unarchivedObjectOfClass:[OIDServiceDiscovery class] fromData:data error:&error];
+    XCTAssertEqualObjects(discovery.discoveryDictionary, unarchived.discoveryDictionary, @"");
+  }
 }
 
 /*! @brief Tests the NSCopying implementation by round-tripping an instance through the copying
