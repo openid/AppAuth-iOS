@@ -353,11 +353,13 @@ NSString *const OIDOAuthorizationRequestCodeChallengeMethodS256 = @"S256";
 }
 
 - (NSURL *)appOAuthUrlScheme {
-  NSString* urlScheme = [self.additionalParameters valueForKey:kAppOAuthUrlScheme];
-  if (urlScheme != NULL) {
-    OIDURLQueryComponent *query = [self queryComponent];
-    NSURL *url = [NSURL URLWithString:urlScheme];
-    return [query URLByReplacingQueryInURL:url];
+  if (self.additionalParameters != NULL) {
+    NSString* urlScheme = [self.additionalParameters valueForKey:kAppOAuthUrlScheme];
+    if (urlScheme != NULL) {
+      OIDURLQueryComponent *query = [self queryComponent];
+      NSURL *url = [NSURL URLWithString:urlScheme];
+      return [query URLByReplacingQueryInURL:url];
+    }
   }
   return NULL;
 }
