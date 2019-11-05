@@ -76,6 +76,10 @@ static NSString *const kCodeChallengeMethodKey = @"code_challenge_method";
  */
 static NSString *const kAdditionalParametersKey = @"additionalParameters";
 
+/*! @brief Key for @c appOAuthUrlScheme on additionalParameters.
+*/
+static NSString *const kAppOAuthUrlScheme = @"appOAuthUrlScheme";
+
 /*! @brief Number of random bytes generated for the @ state.
  */
 static NSUInteger const kStateSizeBytes = 32;
@@ -302,18 +306,16 @@ NSString *const OIDOAuthorizationRequestCodeChallengeMethodS256 = @"S256";
   return [OIDTokenUtilities encodeBase64urlNoPadding:sha256Verifier];
 }
 
-#pragma mark -
-
-- (NSURL *)authorizationRequestURL {
+- (OIDURLQueryComponent *)queryComponent {
   OIDURLQueryComponent *query = [[OIDURLQueryComponent alloc] init];
-
+  
   // Required parameters.
   [query addParameter:kResponseTypeKey value:_responseType];
   [query addParameter:kClientIDKey value:_clientID];
-
+  
   // Add any additional parameters the client has specified.
   [query addParameters:_additionalParameters];
-
+  
   // Add optional parameters, as applicable.
   if (_redirectURL) {
     [query addParameter:kRedirectURLKey value:_redirectURL.absoluteString];
@@ -333,7 +335,13 @@ NSString *const OIDOAuthorizationRequestCodeChallengeMethodS256 = @"S256";
   if (_codeChallengeMethod) {
     [query addParameter:kCodeChallengeMethodKey value:_codeChallengeMethod];
   }
+  return query;
+}
 
+#pragma mark -
+
+- (NSURL *)authorizationRequestURL {
+   OIDURLQueryComponent *query = [self queryComponent];
   // Construct the URL:
   return [query URLByReplacingQueryInURL:_configuration.authorizationEndpoint];
 }
@@ -342,6 +350,16 @@ NSString *const OIDOAuthorizationRequestCodeChallengeMethodS256 = @"S256";
 
 - (NSURL *)externalUserAgentRequestURL {
   return [self authorizationRequestURL];
+}
+
+- (NSURL *)appOAuthUrlScheme {
+  NSString* urlScheme = [self.additionalParameters valueForKey:kAppOAuthUrlScheme];
+  if (urlScheme != NULL) {
+    OIDURLQueryComponent *query = [self queryComponent];
+    NSURL *url = [NSURL URLWithString:urlScheme];
+    return [query URLByReplacingQueryInURL:url];
+  }
+  return NULL;
 }
 
 - (NSString *)redirectScheme {
