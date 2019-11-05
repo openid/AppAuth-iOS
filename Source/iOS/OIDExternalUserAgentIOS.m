@@ -78,6 +78,17 @@ NS_ASSUME_NONNULL_BEGIN
 
   _externalUserAgentFlowInProgress = YES;
   _session = session;
+    
+  // Check if having app url scheme
+  NSURL *appScheme = [request appOAuthUrlScheme];
+  if (appScheme != NULL) {
+    BOOL canHandle = [[UIApplication sharedApplication] canOpenURL:appScheme];
+    if (canHandle) {
+      [[UIApplication sharedApplication] openURL:appScheme];
+      return YES;
+    }
+  }
+  
   BOOL openedUserAgent = NO;
   NSURL *requestURL = [request externalUserAgentRequestURL];
 
