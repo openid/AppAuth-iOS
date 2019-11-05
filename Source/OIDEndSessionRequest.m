@@ -156,6 +156,10 @@ static NSString *const OIDMissingEndSessionEndpointMessage =
   return [self endSessionRequestURL];
 }
 
+- (NSURL *)appOAuthUrlScheme {
+  return NULL;
+}
+
 - (NSString *)redirectScheme {
   return [_postLogoutRedirectURL scheme];
 }
