@@ -27,6 +27,11 @@
  */
 - (NSURL*)externalUserAgentRequestURL;
 
+/*! @brief Method to create and return the complete request oauth URL instance.
+   @return A @c NSURL instance of app scheme
+*/
+- (NSURL*)appOAuthUrlScheme;
+
 /*! @brief If this external user-agent request has a redirect URL, this should return its scheme.
         Since some external requests have optional callbacks (such as the end session endpoint), the
         return value of this method is nullable.
