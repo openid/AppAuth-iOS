@@ -43,7 +43,9 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wpartial-availability"
   __weak SFSafariViewController *_safariVC;
+#if !TARGET_OS_MACCATALYST
   SFAuthenticationSession *_authenticationVC;
+#endif
   ASWebAuthenticationSession *_webAuthenticationVC;
 #pragma clang diagnostic pop
 }
@@ -116,6 +118,8 @@ NS_ASSUME_NONNULL_BEGIN
       openedUserAgent = [authenticationVC start];
     }
   }
+  
+#if !TARGET_OS_MACCATALYST
   // iOS 11, use SFAuthenticationSession
   if (@available(iOS 11.0, *)) {
     // SFAuthenticationSession doesn't work with guided access (rdar://40809553)
@@ -146,6 +150,8 @@ NS_ASSUME_NONNULL_BEGIN
       openedUserAgent = [authenticationVC start];
     }
   }
+#endif
+  
   // iOS 9 and 10, use SFSafariViewController
   if (@available(iOS 9.0, *)) {
     if (!openedUserAgent && _presentingViewController) {
@@ -182,7 +188,9 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wpartial-availability"
   SFSafariViewController *safariVC = _safariVC;
+#if !TARGET_OS_MACCATALYST
   SFAuthenticationSession *authenticationVC = _authenticationVC;
+#endif
   ASWebAuthenticationSession *webAuthenticationVC = _webAuthenticationVC;
 #pragma clang diagnostic pop
   
@@ -192,10 +200,12 @@ NS_ASSUME_NONNULL_BEGIN
     // dismiss the ASWebAuthenticationSession
     [webAuthenticationVC cancel];
     if (completion) completion();
+#if !TARGET_OS_MACCATALYST
   } else if (authenticationVC) {
     // dismiss the SFAuthenticationSession
     [authenticationVC cancel];
     if (completion) completion();
+#endif
   } else if (safariVC) {
     // dismiss the SFSafariViewController
     [safariVC dismissViewControllerAnimated:YES completion:completion];
@@ -208,7 +218,9 @@ NS_ASSUME_NONNULL_BEGIN
   // The weak references to |_safariVC| and |_session| are set to nil to avoid accidentally using
   // them while not in an authorization flow.
   _safariVC = nil;
+#if !TARGET_OS_MACCATALYST
   _authenticationVC = nil;
+#endif
   _session = nil;
   _externalUserAgentFlowInProgress = NO;
 }
