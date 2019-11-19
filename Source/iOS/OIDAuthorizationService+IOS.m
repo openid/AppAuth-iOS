@@ -31,9 +31,9 @@ NS_ASSUME_NONNULL_BEGIN
 #if TARGET_OS_MACCATALYST
   externalUserAgent = [[OIDExternalUserAgentCatalyst alloc]
       initWithPresentingViewController:presentingViewController];
-#else
+#else // TARGET_OS_MACCATALYST
   externalUserAgent = [[OIDExternalUserAgentIOS alloc] initWithPresentingViewController:presentingViewController];
-#endif
+#endif // TARGET_OS_MACCATALYST
   return [self presentAuthorizationRequest:request externalUserAgent:externalUserAgent callback:callback];
 }
 
