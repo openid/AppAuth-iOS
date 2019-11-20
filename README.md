@@ -452,6 +452,108 @@ self.authState?.performAction() { (accessToken, idToken, error) in
   // Perform request...
 }
 ```
+
+### Custom User-Agents
+
+Each OAuth flow involves presenting an external user-agent to the user, that
+allows them to interact with the OAuth authorization server. Typical examples
+of a user-agent are the user's browser, or an in-app browser tab incarnation
+like `ASWebAuthenticationSession` on iOS.
+
+AppAuth ships with several implementations of an external user-agent out of the
+box, including defaults for iOS and macOS suitable for most cases. The default
+user-agents typically share persistent cookies with the system default browser,
+to improve the chance that the user doesn't need to sign-in all over again.
+
+It is possible to change the user-agent that AppAuth uses, and even write your
+own - all without needing to fork the library.
+
+All implementations of the external user-agent, be they included or created by
+you need to conform to the 
+[`OIDExternalUserAgent`](http://openid.github.io/AppAuth-iOS/docs/latest/protocol_o_i_d_external_user_agent-p.html)
+protocol.
+
+Instances of the `OIDExternalUserAgent`are passed into
+[`OIDAuthState.authStateByPresentingAuthorizationRequest:externalUserAgent:callback`](http://openid.github.io/AppAuth-iOS/docs/latest/interface_o_i_d_auth_state.html#ac762fe2bf95c116f0b437419be211fa1)
+and/or 
+[`OIDAuthorizationService.presentAuthorizationRequest:externalUserAgent:callback:`](http://openid.github.io/AppAuth-iOS/docs/latest/interface_o_i_d_authorization_service.html#ae551f8e6887366a46e49b09b37389b8f)
+rather than using the platform-specific convenience methods (which use the 
+default user-agents for their respective platforms), like 
+[`OIDAuthState.authStateByPresentingAuthorizationRequest:presentingViewController:callback:`](http://openid.github.io/AppAuth-iOS/docs/latest/category_o_i_d_auth_state_07_i_o_s_08.html#ae32fd0732cd3192cd5219f2655a4c85c).
+
+Popular use-cases for writing your own user-agent implementation include needing
+to style the user-agent in ways not supported by AppAuth, and implementing a
+fully custom flow with your own business logic. You can take one of the existing
+implementations as a starting point to copy, rename, and customize to your
+needs.
+
+#### Custom Browser User-Agent
+
+AppAuth for iOS includes a few extra user-agent implementations which you can
+try, or use as a reference for your own implementation. One of them,
+[`OIDExternalUserAgentIOSCustomBrowser`](http://openid.github.io/AppAuth-iOS/docs/latest/interface_o_i_d_external_user_agent_i_o_s_custom_browser.html)
+enables you to use a different browser for authentication, like Chrome for iOS
+or Firefox for iOS.
+
+Here's how to configure AppAuth to use a custom browser using the
+`OIDExternalUserAgentIOSCustomBrowser` user agent:
+
+First, add the following array to your
+[Info.plist](https://github.com/openid/AppAuth-iOS/blob/135f99d2cb4e9d18d310ac2588b905e612461561/Examples/Example-iOS_ObjC/Source/Info.plist#L34)
+(in XCode, right click -> Open As -> Source Code)
+
+```
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>googlechromes</string>
+		<string>opera-https</string>
+		<string>firefox</string>
+	</array>
+```
+
+This is required so that AppAuth can test for the browser and open the app store
+if it's not installed (the default behavior of this user-agent). You only need
+to include the URL scheme of the actual browser you intend to use.
+
+<sub>Objective-C</sub>
+```objc
+// performs authentication request
+AppDelegate *appDelegate =
+    (AppDelegate *)[UIApplication sharedApplication].delegate;
+id<OIDExternalUserAgent> userAgent =
+    [OIDExternalUserAgentIOSCustomBrowser CustomBrowserChrome];
+appDelegate.currentAuthorizationFlow =
+    [OIDAuthState authStateByPresentingAuthorizationRequest:request
+        externalUserAgent:self
+                 callback:^(OIDAuthState *_Nullable authState,
+                                   NSError *_Nullable error) {
+  if (authState) {
+    NSLog(@"Got authorization tokens. Access token: %@",
+          authState.lastTokenResponse.accessToken);
+    [self setAuthState:authState];
+  } else {
+    NSLog(@"Authorization error: %@", [error localizedDescription]);
+    [self setAuthState:nil];
+  }
+}];
+```
+
+That's it! With those two changes (which you can try on the included sample),
+AppAuth will use Chrome iOS for the authorization request (and open Chrome in
+the App Store if it's not installed).
+
+⚠️**Note: the `OIDExternalUserAgentIOSCustomBrowser` user-agent is not intended for consumer apps**. It is designed for
+advanced enterprise use-cases where the app developers have greater control over
+the operating environment and have special requirements that require a custom
+browser like Chrome.
+
+You don't need to stop with the included external user agents either! Since the
+[`OIDExternalUserAgent`](http://openid.github.io/AppAuth-iOS/docs/latest/protocol_o_i_d_external_user_agent-p.html)
+protocol is part of AppAuth's public API, you can implement your own versions of
+it. In the above example,
+`userAgent = [OIDExternalUserAgentIOSCustomBrowser CustomBrowserChrome]` would
+be replaced with an instantiation of your user-agent implementation.
+
 ## API Documentation
 
 Browse the [API documentation](http://openid.github.io/AppAuth-iOS/docs/latest/annotated.html).
