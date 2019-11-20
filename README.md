@@ -124,6 +124,7 @@ authorization state of the session.
 
 You can configure AppAuth by specifying the endpoints directly:
 
+<sub>Objective-C</sub>
 ```objc
 NSURL *authorizationEndpoint =
     [NSURL URLWithString:@"https://accounts.google.com/o/oauth2/v2/auth"];
@@ -138,8 +139,19 @@ OIDServiceConfiguration *configuration =
 // perform the auth request...
 ```
 
+<sub>Swift</sub>
+```swift
+let authorizationEndpoint = URL(string: "https://accounts.google.com/o/oauth2/v2/auth")!
+let tokenEndpoint = URL(string: "https://www.googleapis.com/oauth2/v4/token")!
+let configuration = OIDServiceConfiguration(authorizationEndpoint: authorizationEndpoint,
+                                            tokenEndpoint: tokenEndpoint)
+
+// perform the auth request...
+```
+
 Or through discovery:
 
+<sub>Objective-C</sub>
 ```objc
 NSURL *issuer = [NSURL URLWithString:@"https://accounts.google.com"];
 
@@ -157,23 +169,59 @@ NSURL *issuer = [NSURL URLWithString:@"https://accounts.google.com"];
 }];
 ```
 
+<sub>Swift</sub>
+```swift
+let issuer = URL(string: "https://accounts.google.com")!
+
+// discovers endpoints
+OIDAuthorizationService.discoverConfiguration(forIssuer: issuer) { configuration, error in
+  guard let config = configuration else {
+    print("Error retrieving discovery document: \(error?.localizedDescription ?? "Unknown error")")
+    return
+  }
+
+  // perform the auth request...
+}
+```
+
 ### Authorizing – iOS
 
-First, you need to have a property in your AppDelegate to hold the session, in
-order to continue the authorization flow from the redirect:
+First, you need to have a property in your `UIApplicationDelegate`
+implementation to hold the session, in order to continue the authorization flow
+from the redirect. In this example, the implementation of this delegate is
+a class named `AppDelegate`, if your app's application delegate has a different
+name, please update the class name in samples below accordingly.
 
+<sub>Objective-C</sub>
 ```objc
+@interface AppDelegate : UIResponder <UIApplicationDelegate>
 // property of the app's AppDelegate
-@property(nonatomic, strong, nullable)
-    id<OIDExternalUserAgentSession> currentAuthorizationFlow;
+@property(nonatomic, strong, nullable) id<OIDExternalUserAgentSession> currentAuthorizationFlow;
+@end
 ```
+
+<sub>Swift</sub>
+```swift
+class AppDelegate: UIResponder, UIApplicationDelegate {
+  // property of the app's AppDelegate
+  var currentAuthorizationFlow: OIDExternalUserAgentSession?
+}
+```
+
 
 And your main class, a property to store the auth state:
 
+<sub>Objective-C</sub>
 ```objc
 // property of the containing class
 @property(nonatomic, strong, nullable) OIDAuthState *authState;
 ```
+<sub>Swift</sub>
+```swift
+// property of the containing class
+private var authState: OIDAuthState?
+```
+
 
 Then, initiate the authorization request. By using the 
 `authStateByPresentingAuthorizationRequest` convenience method, the token
@@ -182,6 +230,7 @@ PKCE (if the server supports it). AppAuth also lets you perform these
 requests manually. See the `authNoCodeExchange` method in the included Example
 app for a demonstration:
 
+<sub>Objective-C</sub>
 ```objc
 // builds authentication request
 OIDAuthorizationRequest *request =
@@ -212,12 +261,42 @@ appDelegate.currentAuthorizationFlow =
 }];
 ```
 
+<sub>Swift</sub>
+```swift
+// builds authentication request
+let request = OIDAuthorizationRequest(configuration: configuration,
+                                      clientId: clientID,
+                                      clientSecret: clientSecret,
+                                      scopes: [OIDScopeOpenID, OIDScopeProfile],
+                                      redirectURL: redirectURI,
+                                      responseType: OIDResponseTypeCode,
+                                      additionalParameters: nil)
+
+// performs authentication request
+print("Initiating authorization request with scope: \(request.scope ?? "nil")")
+
+let appDelegate = UIApplication.shared.delegate as! AppDelegate
+
+appDelegate.currentAuthorizationFlow =
+    OIDAuthState.authState(byPresenting: request, presenting: self) { authState, error in
+  if let authState = authState {
+    self.setAuthState(authState)
+    print("Got authorization tokens. Access token: " +
+          "\(authState.lastTokenResponse?.accessToken ?? "nil")")
+  } else {
+    print("Authorization error: \(error?.localizedDescription ?? "Unknown error")")
+    self.setAuthState(nil)
+  }
+}
+```
+
 *Handling the Redirect*
 
 The authorization response URL is returned to the app via the iOS openURL
 app delegate method, so you need to pipe this through to the current
 authorization session (created in the previous session):
 
+<sub>Objective-C</sub>
 ```objc
 - (BOOL)application:(UIApplication *)app
             openURL:(NSURL *)url
@@ -232,6 +311,25 @@ authorization session (created in the previous session):
   // Your additional URL handling (if any) goes here.
 
   return NO;
+}
+```
+
+<sub>Swift</sub>
+```swift
+func application(_ app: UIApplication,
+                 open url: URL,
+                 options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
+  // Sends the URL to the current authorization flow (if any) which will
+  // process it if it relates to an authorization response.
+  if let authorizationFlow = self.currentAuthorizationFlow,
+                             authorizationFlow.resumeExternalUserAgentFlow(with: url) {
+    self.currentAuthorizationFlow = nil
+    return true
+  }
+
+  // Your additional URL handling (if any)
+
+  return false
 }
 ```
 
@@ -253,6 +351,7 @@ To receive the authorization response using a local HTTP server, first you need
 to have an instance variable in your main class to retain the HTTP redirect
 handler:
 
+<sub>Objective-C</sub>
 ```objc
 OIDRedirectHTTPHandler *_redirectHTTPHandler;
 ```
@@ -261,6 +360,7 @@ Then, as the port used by the local HTTP server varies, you need to start it
 before building the authorization request, in order to get the exact redirect
 URI to use:
 
+<sub>Objective-C</sub>
 ```objc
 static NSString *const kSuccessURLString =
     @"http://openid.github.io/AppAuth-iOS/redirect/";
@@ -318,6 +418,7 @@ recommend that users of the `OIDAuthState` convenience wrapper use the provided
 `performActionWithFreshTokens:` method to perform their API calls to avoid
 needing to worry about token freshness:
 
+<sub>Objective-C</sub>
 ```objc
 [_authState performActionWithFreshTokens:^(NSString *_Nonnull accessToken,
                                            NSString *_Nonnull idToken,
@@ -331,6 +432,26 @@ needing to worry about token freshness:
 }];
 ```
 
+<sub>Swift</sub>
+```swift
+let userinfoEndpoint = URL(string:"https://openidconnect.googleapis.com/v1/userinfo")!
+self.authState?.performAction() { (accessToken, idToken, error) in
+
+  if error != nil  {
+    print("Error fetching fresh tokens: \(error?.localizedDescription ?? "Unknown error")")
+    return
+  }
+  guard let accessToken = accessToken else {
+    return
+  }
+
+  // Add Bearer token to request
+  var urlRequest = URLRequest(url: userinfoEndpoint)
+  urlRequest.allHTTPHeaderFields = ["Authorization": "Bearer \(accessToken)"]
+
+  // Perform request...
+}
+```
 ## API Documentation
 
 Browse the [API documentation](http://openid.github.io/AppAuth-iOS/docs/latest/annotated.html).
