@@ -228,7 +228,7 @@ extension AppAuthExampleViewController {
 
         let currentAccessToken: String? = self.authState?.lastTokenResponse?.accessToken
 
-        self.authState?.performAction() { (accessToken, idTOken, error) in
+        self.authState?.performAction() { (accessToken, idToken, error) in
 
             if error != nil  {
                 self.logMessage("Error fetching fresh tokens: \(error?.localizedDescription ?? "ERROR")")
