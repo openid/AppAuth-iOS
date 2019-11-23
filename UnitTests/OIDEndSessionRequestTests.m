@@ -91,9 +91,19 @@ static NSString *const kTestIdTokenHint = @"id-token-hint";
     XCTAssertEqualObjects(request.state, kTestState);
     XCTAssertEqualObjects(request.additionalParameters[kTestAdditionalParameterKey],
                           kTestAdditionalParameterValue);
-
-    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:request];
-    OIDEndSessionRequest *requestCopy = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+  
+    OIDEndSessionRequest *requestCopy;
+    if (@available(iOS 11, macCatalyst 13, macOS 10.13, tvOS 11, *)) {
+        NSError *error;
+        NSData *data = [NSKeyedArchiver archivedDataWithRootObject:request requiringSecureCoding:YES error:&error];
+        requestCopy = [NSKeyedUnarchiver unarchivedObjectOfClass:[OIDEndSessionRequest class] fromData:data error:&error];
+    } else {
+        #pragma clang diagnostic push
+        #pragma clang diagnostic ignored "-Wdeprecated-declarations"
+        NSData *data = [NSKeyedArchiver archivedDataWithRootObject:request];
+        requestCopy = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+        #pragma clang diagnostic pop
+    }
 
     XCTAssertNotNil(requestCopy.configuration);
     XCTAssertEqualObjects(requestCopy.configuration.authorizationEndpoint,

@@ -394,8 +394,17 @@ static NSString *const kDiscoveryDocumentNotDictionary =
   OIDServiceDiscovery *discovery =
       [[OIDServiceDiscovery alloc] initWithDictionary:serviceDiscoveryDictionary
                                                              error:&error];
-  NSData *data = [NSKeyedArchiver archivedDataWithRootObject:discovery];
-  OIDServiceDiscovery *unarchived = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+  OIDServiceDiscovery *unarchived;
+  if (@available(iOS 11, macCatalyst 13, macOS 10.13, tvOS 11, *)) {
+    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:discovery requiringSecureCoding:YES error:&error];
+    unarchived = [NSKeyedUnarchiver unarchivedObjectOfClass:[OIDServiceDiscovery class] fromData:data error:&error];
+  } else {
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wdeprecated-declarations"
+    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:discovery];
+    unarchived = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+    #pragma clang diagnostic pop
+  }
 
   XCTAssertEqualObjects(discovery.discoveryDictionary, unarchived.discoveryDictionary, @"");
 }

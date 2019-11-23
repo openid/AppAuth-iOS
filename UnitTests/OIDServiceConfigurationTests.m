@@ -358,8 +358,18 @@ static NSString *const kIssuerTestExpectedFullDiscoveryURL =
  */
 - (void)testSecureCoding {
   OIDServiceConfiguration *configuration = [[self class] testInstance];
-  NSData *data = [NSKeyedArchiver archivedDataWithRootObject:configuration];
-  OIDServiceConfiguration *unarchived = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+  OIDServiceConfiguration *unarchived;
+  if (@available(iOS 11, macCatalyst 13, macOS 10.13, tvOS 11, *)) {
+    NSError *error;
+    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:configuration requiringSecureCoding:YES error:&error];
+    unarchived = [NSKeyedUnarchiver unarchivedObjectOfClass:[OIDServiceConfiguration class] fromData:data error:&error];
+  } else {
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wdeprecated-declarations"
+    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:configuration];
+    unarchived = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+    #pragma clang diagnostic pop
+  }
 
   XCTAssertEqualObjects(configuration.authorizationEndpoint, unarchived.authorizationEndpoint, @"");
   XCTAssertEqualObjects(configuration.tokenEndpoint, unarchived.tokenEndpoint, @"");
