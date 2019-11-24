@@ -34,7 +34,7 @@ NS_ASSUME_NONNULL_BEGIN
 API_UNAVAILABLE(macCatalyst)
 @interface OIDExternalUserAgentIOS : NSObject<OIDExternalUserAgent>
 
-- (nullable instancetype)init API_AVAILABLE(ios(11))
+- (instancetype)init API_AVAILABLE(ios(11))
     __deprecated_msg("This method will not work on iOS 13, use "
                      "initWithPresentingViewController:presentingViewController");
 
@@ -42,7 +42,7 @@ API_UNAVAILABLE(macCatalyst)
     @param presentingViewController The view controller from which to present the
         \SFSafariViewController.
  */
-- (nullable instancetype)initWithPresentingViewController:
+- (instancetype)initWithPresentingViewController:
     (UIViewController *)presentingViewController
     NS_DESIGNATED_INITIALIZER;
 
