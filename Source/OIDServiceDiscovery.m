@@ -196,7 +196,7 @@ static NSString *const kOPTosURIKey = @"op_tos_uri";
 - (nullable instancetype)initWithCoder:(NSCoder *)aDecoder {
   NSError *error;
   NSDictionary *dictionary = nil;
-  if (@available(iOS 11.0, *)) {
+  if (@available(iOS 11.0, macCatalyst 13, macOS 10.13, tvOS 11, watchOS 4, *)) {
     dictionary = [aDecoder decodeObjectOfClasses:[NSSet setWithObjects:[NSDictionary class], [NSArray class], nil] forKey:kDiscoveryDictionaryKey];
   } else {
     dictionary = [[NSDictionary alloc] initWithCoder:aDecoder];
@@ -209,7 +209,7 @@ static NSString *const kOPTosURIKey = @"op_tos_uri";
 }
 
 - (void)encodeWithCoder:(NSCoder *)aCoder {
-  if (@available(iOS 11.0, *)) {
+  if (@available(iOS 11.0, macCatalyst 13, macOS 10.13, tvOS 11, watchOS 4, *)) {
     [aCoder encodeObject:_discoveryDictionary forKey:kDiscoveryDictionaryKey];
   } else {
     [_discoveryDictionary encodeWithCoder:aCoder];

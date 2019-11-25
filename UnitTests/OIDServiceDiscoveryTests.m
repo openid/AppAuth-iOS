@@ -399,7 +399,7 @@ static NSString *const kDiscoveryDocumentNotDictionary =
 
   XCTAssertEqualObjects(discovery.discoveryDictionary, unarchived.discoveryDictionary, @"");
   
-  if (@available(iOS 11.0, *)) {
+  if (@available(iOS 11.0, macCatalyst 13, macOS 10.13, tvOS 11, watchOS 4, *)) {
     data = [NSKeyedArchiver archivedDataWithRootObject:discovery requiringSecureCoding:YES error:&error];
     unarchived = [NSKeyedUnarchiver unarchivedObjectOfClass:[OIDServiceDiscovery class] fromData:data error:&error];
     XCTAssertEqualObjects(discovery.discoveryDictionary, unarchived.discoveryDictionary, @"");
