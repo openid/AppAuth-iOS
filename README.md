@@ -280,12 +280,12 @@ let appDelegate = UIApplication.shared.delegate as! AppDelegate
 appDelegate.currentAuthorizationFlow =
     OIDAuthState.authState(byPresenting: request, presenting: self) { authState, error in
   if let authState = authState {
-    self.setAuthState(authState)
+    self.authState = authState
     print("Got authorization tokens. Access token: " +
           "\(authState.lastTokenResponse?.accessToken ?? "nil")")
   } else {
     print("Authorization error: \(error?.localizedDescription ?? "Unknown error")")
-    self.setAuthState(nil)
+    self.authState = nil
   }
 }
 ```
