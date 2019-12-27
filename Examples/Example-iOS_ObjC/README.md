@@ -9,6 +9,9 @@ gem install cocoapods
 
 This has been configured to work with my client. If you want to use your own make sure the deep-link is correctly set up in your client.
 
+## Side Notes
+
+This is configured for your vagrant box and multi-dev so make sure to be on pritunl and have vagrant up and running. If those aren't on you'll just hang on white pages when you reach out to gizmo.
 
 ## Gizmo Cert
 

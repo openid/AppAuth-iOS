@@ -33,7 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nullable) IBOutlet UIButton *clearAuthStateButton;
 @property(nullable) IBOutlet UITextView *logTextView;
 @property(nullable) IBOutlet UIButton *profile;
-@property(nullable) IBOutlet UIButton *logout;
+@property(nullable) IBOutlet UIButton *logoutWithoutRedirect;
 @property(nullable) IBOutlet UIButton *lougoutRedirect;
 
 /*! @brief The authorization state. This is the AppAuth object that you should keep around and

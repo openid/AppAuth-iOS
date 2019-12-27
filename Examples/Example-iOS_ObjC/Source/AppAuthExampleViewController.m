@@ -139,9 +139,9 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
   _clearAuthStateButton.enabled = _authState != nil;
   _codeExchangeButton.enabled = _authState.lastAuthorizationResponse.authorizationCode
                                 && !_authState.lastTokenResponse;
-    _profile.enabled = _authState == nil;
-    _logout.enabled = _authState == nil;
-    _lougoutRedirect.enabled = _authState == nil;
+    _profile.enabled = [_authState isAuthorized];
+    _logoutWithoutRedirect.enabled = [_authState isAuthorized];
+    _lougoutRedirect.enabled = [_authState isAuthorized];
   // dynamically changes authorize button text depending on authorized state
   if (!_authState) {
     [_authAutoButton setTitle:@"Authorize" forState:UIControlStateNormal];
@@ -370,17 +370,13 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
 
 - (IBAction)logoutWithoutRedirect:(nullable id)sender {
     [self logMessage:@"Logout without Button Touched"];
-    NSURL *logoutEndpoint = [NSURL URLWithString:kLogoutURI];
-    
-    
-    [self logMessage:@"Fetching logout for issuer: %@", logoutEndpoint];
-    [self logout:kLogoutURI];
+    [self logout:nil];
     
 }
 
 - (IBAction)logoutWithRedirect:(nullable id)sender {
     [self logMessage:@"Logout with Redirect Button Touched"];
-    //[self logout:kRedirectURI];
+    [self logout:kLogoutURI];
 }
     
     //TODO:: Construct configuration probs copy of real configuration adding logoutUrl
@@ -389,29 +385,43 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
     NSURL *redirectURL = [NSURL URLWithString:kRedirectURI];
     //
     NSDictionary *addParams = @{ @"id_token": _authState.lastTokenResponse.idToken };
-    [self logMessage:@"additional params of: %@", addParams];
     //This should probably be a real copy of the config
     OIDServiceConfiguration *fakeConfig = [[OIDServiceConfiguration alloc] initWithAuthorizationEndpoint:logoutURL
                                                                            tokenEndpoint:logoutURL
                                                                            issuer:logoutURL
                                                                            registrationEndpoint:logoutURL
                                                                            endSessionEndpoint:logoutURL];
-    // builds logout request
-    OIDEndSessionRequest *request =
-          [[OIDEndSessionRequest alloc] initWithConfiguration:fakeConfig
-                                                        idTokenHint:_authState.lastTokenResponse.accessToken
-                                                        postLogoutRedirectURL:redirectURL
-                                                        additionalParameters:addParams];
     
+    OIDEndSessionRequest *request = [[OIDEndSessionRequest alloc] initWithConfiguration:fakeConfig
+                                                                            idTokenHint:_authState.lastTokenResponse.accessToken
+                                                                  postLogoutRedirectURL:redirectURL
+                                                                   additionalParameters:addParams];
+    // builds logout request
+//    if (logoutURI) {
+//        request =
+//              [[OIDEndSessionRequest alloc] initWithConfiguration:fakeConfig
+//                                                            idTokenHint:_authState.lastTokenResponse.accessToken
+//                                                            postLogoutRedirectURL:redirectURL
+//                                                            additionalParameters:addParams];
+//    } else {
+//        request =
+//        [[OIDEndSessionRequest alloc] initWithConfiguration:fakeConfig
+//                                                      idTokenHint:_authState.lastTokenResponse.accessToken
+//                                                      postLogoutRedirectURL:redirectURL
+//                                                      additionalParameters:addParams];
+//    }
     // performs logout request
     AppDelegate *appDelegate = (AppDelegate *) [UIApplication sharedApplication].delegate;
-    [self logMessage:@"Initiating logout with a redirect of: %@", request];
 
     appDelegate.currentAuthorizationFlow =
     [OIDAuthorizationService presentEndSessionRequest:request
                                     externalUserAgent:[[OIDExternalUserAgentIOS alloc] initWithPresentingViewController:self]
                         callback:^(OIDEndSessionResponse *_Nullable endSessionResponse, NSError *_Nullable error) {
-        [self logMessage:@"Authorization error: %@", [error localizedDescription]];
+        if(error) {
+            [self logMessage:@"Authorization error: %@", [error localizedDescription]];
+        } else {
+            [self setAuthState:nil];
+        }
       }
     ];
     }

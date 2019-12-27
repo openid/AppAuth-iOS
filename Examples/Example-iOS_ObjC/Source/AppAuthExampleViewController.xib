@@ -14,7 +14,8 @@
                 <outlet property="clearAuthStateButton" destination="pph-Jd-bi0" id="BhD-XD-CC4"/>
                 <outlet property="codeExchangeButton" destination="thC-Nv-mlY" id="tFT-mX-uxY"/>
                 <outlet property="logTextView" destination="EM1-NJ-NcX" id="XfR-G7-1ui"/>
-                <outlet property="logout" destination="Iig-UN-4ef" id="bSf-jZ-w0b"/>
+                <outlet property="logoutWithoutRedirect" destination="U7k-73-k1V" id="87Z-JS-ilv"/>
+                <outlet property="lougoutRedirect" destination="Iig-UN-4ef" id="Nap-Jh-wzc"/>
                 <outlet property="profile" destination="16I-BC-HyV" id="M95-x2-MvA"/>
                 <outlet property="userinfoButton" destination="Hr5-4v-dy0" id="RWN-Ju-zcT"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -141,7 +142,7 @@
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <state key="normal" title="Logout w/o Redirect"/>
                     <connections>
-                        <action selector="logoutWithoutRedirect:" destination="-1" eventType="touchUpInside" id="ugO-cA-lD6"/>
+                        <action selector="logoutWithRedirect:" destination="-1" eventType="touchUpInside" id="bwb-Ml-Ypa"/>
                     </connections>
                 </button>
             </subviews>
