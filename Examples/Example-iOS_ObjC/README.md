@@ -1,5 +1,21 @@
 # Example Project
 
+## Hosted Login Comments
+
+You need to install cocoa pods. I found it not terrible but a necessary step. Then follow the setup steps under Setup & Open the Project
+```
+gem install cocoapods
+```
+
+This has been configured to work with my client. If you want to use your own make sure the deep-link is correctly set up in your client.
+
+
+## Gizmo Cert
+
+Out of the box this is configured for your vagrant box. This causes that your simulated phone will not trust the certificate.
+This link : https://developer.apple.com/documentation/security/preventing_insecure_network_connections has the settings that should allow you to configure
+your phone to trust the sites. If after set up it still causing issues when shown the insecure connection page press 'you can visit the website' then 'visit the website' and it will allow you through.
+
 ## Setup & Open the Project
 
 1. In the `Example-iOS_ObjC` folder, run the following command to install the
@@ -29,6 +45,7 @@ client ID.
 * Issuer
 * Client ID
 * Redirect URI
+* Logout url
 
 How to get this information varies by IdP, but we have
 [instructions](../README.md#openid-certified-providers) for some OpenID
@@ -41,6 +58,7 @@ Certified providers.
 1. Update `kIssuer` with the IdP's issuer.
 2. Update `kClientID` with your new client id.
 3. Update `kRedirectURI` redirect URI
+4. Update 'kLogoutURI' logout endpoint
 
 #### In the file `Info.plist`
 

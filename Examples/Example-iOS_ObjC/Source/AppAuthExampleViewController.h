@@ -32,6 +32,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nullable) IBOutlet UIButton *userinfoButton;
 @property(nullable) IBOutlet UIButton *clearAuthStateButton;
 @property(nullable) IBOutlet UITextView *logTextView;
+@property(nullable) IBOutlet UIButton *profile;
+@property(nullable) IBOutlet UIButton *logout;
+@property(nullable) IBOutlet UIButton *lougoutRedirect;
 
 /*! @brief The authorization state. This is the AppAuth object that you should keep around and
         serialize to disk.
@@ -68,6 +71,14 @@ NS_ASSUME_NONNULL_BEGIN
     @param sender IBAction sender.
  */
 - (IBAction)clearLog:(nullable id)sender;
+
+- (IBAction)openProfile:(nullable id)sender;
+
+- (IBAction)logoutWithoutRedirect:(nullable id)sender;
+
+- (IBAction)logoutWithRedirect:(nullable id)sender;
+
+//- (void)logout:(nullable * String)redirect;
 
 @end
 
