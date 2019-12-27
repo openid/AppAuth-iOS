@@ -45,7 +45,7 @@ static NSString *const kRedirectURI = @"aic.com.gizmo.vagrant.testing://oauth2re
 
 static NSString *const kLogoutURI = @"https://gizmo.janrain.test:8080/00000000-0000-0000-0000-000000000000/logout";
 
-
+static NSDictionary<NSString *, NSString *> *kAddParams = nil;
 /*! @brief NSCoding key for the authState property.
  */
 static NSString *const kAppAuthExampleAuthStateKey = @"authState";
@@ -169,6 +169,10 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
   [self logMessage:@"Received authorization error: %@", error];
 }
 
+- (void)setAdditionalParams:(NSDictionary *)settings {
+    kAddParams = settings;
+}
+
 - (void)viewDidAppear:(BOOL)animated {
   [super viewDidAppear:animated];
 }
@@ -217,7 +221,7 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
   // performs authentication request
   AppDelegate *appDelegate = (AppDelegate *) [UIApplication sharedApplication].delegate;
   [self logMessage:@"Initiating authorization request with scope: %@", request.scope];
-
+  [self logMessage:@"Initiating authorization request with additional params of : %@", request.additionalParameters];
   appDelegate.currentAuthorizationFlow =
       [OIDAuthState authStateByPresentingAuthorizationRequest:request
           presentingViewController:self
@@ -267,6 +271,40 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
           [self logMessage:@"Authorization error: %@", [error localizedDescription]];
         }
       }];
+}
+
+- (IBAction)forceLogin:(nullable id)sender {
+    [self logMessage:@"Additional Params: %@", kAddParams];
+    [self verifyConfig];
+
+    NSURL *issuer = [NSURL URLWithString:kIssuer];
+
+    [self logMessage:@"Fetching configuration for issuer: %@", issuer];
+
+    // discovers endpoints
+    [OIDAuthorizationService discoverServiceConfigurationForIssuer:issuer
+        completion:^(OIDServiceConfiguration *_Nullable configuration, NSError *_Nullable error) {
+      if (!configuration) {
+        [self logMessage:@"Error retrieving discovery document: %@", [error localizedDescription]];
+        [self setAuthState:nil];
+        return;
+      }
+
+      [self logMessage:@"Got configuration: %@", configuration];
+
+      if (!kClientID) {
+        [self doClientRegistration:configuration
+                          callback:^(OIDServiceConfiguration *configuration,
+                                     OIDRegistrationResponse *registrationResponse) {
+          [self doAuthWithAutoCodeExchange:configuration
+                                  clientID:registrationResponse.clientID
+                              clientSecret:registrationResponse.clientSecret];
+        }];
+      } else {
+        [self doAuthWithAutoCodeExchange:configuration clientID:kClientID clientSecret:nil];
+      }
+     }];
+
 }
 
 - (IBAction)authWithAutoCodeExchange:(nullable id)sender {
@@ -383,7 +421,7 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
 - (void)logout:(nullable NSString *)logoutURI {
     NSURL *logoutURL = [NSURL URLWithString:logoutURI];
     NSURL *redirectURL = [NSURL URLWithString:kRedirectURI];
-    //
+    
     NSDictionary *addParams = @{ @"id_token": _authState.lastTokenResponse.idToken };
     //This should probably be a real copy of the config
     OIDServiceConfiguration *fakeConfig = [[OIDServiceConfiguration alloc] initWithAuthorizationEndpoint:logoutURL
@@ -396,20 +434,6 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
                                                                             idTokenHint:_authState.lastTokenResponse.accessToken
                                                                   postLogoutRedirectURL:redirectURL
                                                                    additionalParameters:addParams];
-    // builds logout request
-//    if (logoutURI) {
-//        request =
-//              [[OIDEndSessionRequest alloc] initWithConfiguration:fakeConfig
-//                                                            idTokenHint:_authState.lastTokenResponse.accessToken
-//                                                            postLogoutRedirectURL:redirectURL
-//                                                            additionalParameters:addParams];
-//    } else {
-//        request =
-//        [[OIDEndSessionRequest alloc] initWithConfiguration:fakeConfig
-//                                                      idTokenHint:_authState.lastTokenResponse.accessToken
-//                                                      postLogoutRedirectURL:redirectURL
-//                                                      additionalParameters:addParams];
-//    }
     // performs logout request
     AppDelegate *appDelegate = (AppDelegate *) [UIApplication sharedApplication].delegate;
 

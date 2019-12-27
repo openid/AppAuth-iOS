@@ -28,6 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property(nullable) IBOutlet UIButton *authAutoButton;
 @property(nullable) IBOutlet UIButton *authManual;
+@property(nullable) IBOutlet UIButton *authForce;
 @property(nullable) IBOutlet UIButton *codeExchangeButton;
 @property(nullable) IBOutlet UIButton *userinfoButton;
 @property(nullable) IBOutlet UIButton *clearAuthStateButton;
@@ -77,8 +78,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (IBAction)logoutWithoutRedirect:(nullable id)sender;
 
 - (IBAction)logoutWithRedirect:(nullable id)sender;
-
-//- (void)logout:(nullable * String)redirect;
 
 @end
 

@@ -10,6 +10,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AppAuthExampleViewController">
             <connections>
                 <outlet property="authAutoButton" destination="d6O-XG-moU" id="OZQ-6B-ng1"/>
+                <outlet property="authForce" destination="Nx2-jP-qUz" id="m7U-nN-rPG"/>
                 <outlet property="authManual" destination="OKZ-2D-pGK" id="l6n-Wd-hDp"/>
                 <outlet property="clearAuthStateButton" destination="pph-Jd-bi0" id="BhD-XD-CC4"/>
                 <outlet property="codeExchangeButton" destination="thC-Nv-mlY" id="tFT-mX-uxY"/>
@@ -143,6 +144,14 @@
                     <state key="normal" title="Logout w/o Redirect"/>
                     <connections>
                         <action selector="logoutWithRedirect:" destination="-1" eventType="touchUpInside" id="bwb-Ml-Ypa"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Nx2-jP-qUz">
+                    <rect key="frame" x="190" y="62" width="174" height="30"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <state key="normal" title="Authorize (Prompt=login)"/>
+                    <connections>
+                        <action selector="forceLogin:" destination="-1" eventType="touchUpInside" id="m13-GZ-hDU"/>
                     </connections>
                 </button>
             </subviews>
