@@ -135,7 +135,7 @@
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <state key="normal" title="Logout w/ Redirect"/>
                     <connections>
-                        <action selector="logoutWithRedirect:" destination="-1" eventType="touchUpInside" id="dSV-80-lTc"/>
+                        <action selector="logoutWithRedirect:" destination="-1" eventType="touchUpInside" id="8XO-KI-Q43"/>
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="U7k-73-k1V">
@@ -143,7 +143,7 @@
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <state key="normal" title="Logout w/o Redirect"/>
                     <connections>
-                        <action selector="logoutWithRedirect:" destination="-1" eventType="touchUpInside" id="bwb-Ml-Ypa"/>
+                        <action selector="logoutWithoutRedirect:" destination="-1" eventType="touchUpInside" id="kzY-j4-6Jb"/>
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Nx2-jP-qUz">
