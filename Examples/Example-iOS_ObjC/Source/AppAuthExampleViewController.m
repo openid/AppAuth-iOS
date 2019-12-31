@@ -370,19 +370,19 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
 
 - (IBAction)logoutWithoutRedirect:(nullable id)sender {
     [self logMessage:@"Logout without Button Touched"];
-    [self logout:nil];
+    [self logout:kLogoutURI withRedirect:nil];
     
 }
 
 - (IBAction)logoutWithRedirect:(nullable id)sender {
     [self logMessage:@"Logout with Redirect Button Touched"];
-    [self logout:kLogoutURI];
+    [self logout:kLogoutURI withRedirect:kRedirectURI];
 }
     
     //TODO:: Construct configuration probs copy of real configuration adding logoutUrl
-- (void)logout:(nullable NSString *)logoutURI {
+- (void)logout:(nullable NSString *)logoutURI withRedirect:(nullable NSString *)redirectURI {
     NSURL *logoutURL = [NSURL URLWithString:logoutURI];
-    NSURL *redirectURL = [NSURL URLWithString:kRedirectURI];
+    NSURL *redirectURL = [NSURL URLWithString:redirectURI];
     //
     NSDictionary *addParams = @{ @"id_token": _authState.lastTokenResponse.idToken };
     //This should probably be a real copy of the config
@@ -419,6 +419,7 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
                         callback:^(OIDEndSessionResponse *_Nullable endSessionResponse, NSError *_Nullable error) {
         if(error) {
             [self logMessage:@"Authorization error: %@", [error localizedDescription]];
+            [self setAuthState:nil];
         } else {
             [self setAuthState:nil];
         }

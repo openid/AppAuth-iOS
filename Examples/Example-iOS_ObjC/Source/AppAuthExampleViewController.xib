@@ -142,7 +142,7 @@
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <state key="normal" title="Logout w/o Redirect"/>
                     <connections>
-                        <action selector="logoutWithRedirect:" destination="-1" eventType="touchUpInside" id="bwb-Ml-Ypa"/>
+                        <action selector="logoutWithoutRedirect:" destination="-1" eventType="touchUpInside" id="bwb-Ml-Ypa"/>
                     </connections>
                 </button>
             </subviews>
