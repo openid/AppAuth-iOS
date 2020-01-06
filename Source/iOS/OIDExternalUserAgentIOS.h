@@ -15,7 +15,7 @@
         See the License for the specific language governing permissions and
         limitations under the License.
  */
-
+#if TARGET_OS_IPHONE
 #import <UIKit/UIKit.h>
 
 #import "OIDExternalUserAgent.h"
@@ -45,3 +45,4 @@ API_UNAVAILABLE(macCatalyst)
 @end
 
 NS_ASSUME_NONNULL_END
+#endif
