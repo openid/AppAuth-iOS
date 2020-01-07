@@ -45,7 +45,8 @@ static NSString *const kRedirectURI = @"aic.com.gizmo.vagrant.testing://oauth2re
 
 static NSString *const kLogoutURI = @"https://gizmo.janrain.test:8080/00000000-0000-0000-0000-000000000000/logout";
 
-static NSDictionary<NSString *, NSString *> *kAddParams = nil;
+static NSString *const kProfileURI = @"https://gizmo.janrain.test:8080/00000000-0000-0000-0000-000000000000/profile";
+
 /*! @brief NSCoding key for the authState property.
  */
 static NSString *const kAppAuthExampleAuthStateKey = @"authState";
@@ -169,16 +170,13 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
   [self logMessage:@"Received authorization error: %@", error];
 }
 
-- (void)setAdditionalParams:(NSDictionary *)settings {
-    kAddParams = settings;
-}
-
 - (void)viewDidAppear:(BOOL)animated {
   [super viewDidAppear:animated];
 }
 
 - (void)doClientRegistration:(OIDServiceConfiguration *)configuration
-                    callback:(PostRegistrationCallback)callback {
+                    additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters
+                                callback:(PostRegistrationCallback)callback {
     NSURL *redirectURI = [NSURL URLWithString:kRedirectURI];
 
     OIDRegistrationRequest *request =
@@ -188,7 +186,7 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
                                                    grantTypes:nil
                                                   subjectType:nil
                                       tokenEndpointAuthMethod:@"client_secret_post"
-                                         additionalParameters:nil];
+                                         additionalParameters:additionalParameters];
     // performs registration request
     [self logMessage:@"Initiating registration request"];
 
@@ -207,7 +205,8 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
 
 - (void)doAuthWithAutoCodeExchange:(OIDServiceConfiguration *)configuration
                           clientID:(NSString *)clientID
-                      clientSecret:(NSString *)clientSecret {
+                      clientSecret:(NSString *)clientSecret
+              additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters {
   NSURL *redirectURI = [NSURL URLWithString:kRedirectURI];
   // builds authentication request
   OIDAuthorizationRequest *request =
@@ -217,7 +216,7 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
                                                       scopes:@[ OIDScopeOpenID, OIDScopeProfile ]
                                                  redirectURL:redirectURI
                                                 responseType:OIDResponseTypeCode
-                                        additionalParameters:nil];
+                                        additionalParameters:additionalParameters];
   // performs authentication request
   AppDelegate *appDelegate = (AppDelegate *) [UIApplication sharedApplication].delegate;
   [self logMessage:@"Initiating authorization request with scope: %@", request.scope];
@@ -239,7 +238,8 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
 
 - (void)doAuthWithoutCodeExchange:(OIDServiceConfiguration *)configuration
                          clientID:(NSString *)clientID
-                     clientSecret:(NSString *)clientSecret {
+                     clientSecret:(NSString *)clientSecret
+             additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters {
   NSURL *redirectURI = [NSURL URLWithString:kRedirectURI];
 
   // builds authentication request
@@ -250,7 +250,7 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
                                                       scopes:@[ OIDScopeOpenID, OIDScopeProfile ]
                                                  redirectURL:redirectURI
                                                 responseType:OIDResponseTypeCode
-                                        additionalParameters:nil];
+                                        additionalParameters:additionalParameters];
   // performs authentication request
   AppDelegate *appDelegate = (AppDelegate *) [UIApplication sharedApplication].delegate;
   [self logMessage:@"Initiating authorization request %@", request];
@@ -274,7 +274,6 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
 }
 
 - (IBAction)forceLogin:(nullable id)sender {
-    [self logMessage:@"Additional Params: %@", kAddParams];
     [self verifyConfig];
 
     NSURL *issuer = [NSURL URLWithString:kIssuer];
@@ -294,18 +293,62 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
 
       if (!kClientID) {
         [self doClientRegistration:configuration
+              additionalParameters:@{ @"prompt": @"login" }
                           callback:^(OIDServiceConfiguration *configuration,
                                      OIDRegistrationResponse *registrationResponse) {
           [self doAuthWithAutoCodeExchange:configuration
                                   clientID:registrationResponse.clientID
-                              clientSecret:registrationResponse.clientSecret];
+                              clientSecret:registrationResponse.clientSecret
+                      additionalParameters:@{ @"prompt": @"login" }];
         }];
       } else {
-        [self doAuthWithAutoCodeExchange:configuration clientID:kClientID clientSecret:nil];
+          [self doAuthWithAutoCodeExchange:configuration
+                                  clientID:kClientID
+                              clientSecret:nil
+                      additionalParameters:@{ @"prompt": @"login" }];
       }
      }];
 
 }
+
+- (IBAction)create:(nullable id)sender {
+    [self verifyConfig];
+
+    NSURL *issuer = [NSURL URLWithString:kIssuer];
+
+    [self logMessage:@"Fetching configuration for issuer: %@", issuer];
+
+    // discovers endpoints
+    [OIDAuthorizationService discoverServiceConfigurationForIssuer:issuer
+        completion:^(OIDServiceConfiguration *_Nullable configuration, NSError *_Nullable error) {
+      if (!configuration) {
+        [self logMessage:@"Error retrieving discovery document: %@", [error localizedDescription]];
+        [self setAuthState:nil];
+        return;
+      }
+
+      [self logMessage:@"Got configuration: %@", configuration];
+
+      if (!kClientID) {
+        [self doClientRegistration:configuration
+              additionalParameters:@{ @"prompt": @"create" }
+                          callback:^(OIDServiceConfiguration *configuration,
+                                     OIDRegistrationResponse *registrationResponse) {
+          [self doAuthWithAutoCodeExchange:configuration
+                                  clientID:registrationResponse.clientID
+                              clientSecret:registrationResponse.clientSecret
+                      additionalParameters:@{ @"prompt": @"create" }];
+        }];
+      } else {
+          [self doAuthWithAutoCodeExchange:configuration
+                                  clientID:kClientID
+                              clientSecret:nil
+                      additionalParameters:@{ @"prompt": @"create" }];
+      }
+     }];
+
+}
+
 
 - (IBAction)authWithAutoCodeExchange:(nullable id)sender {
   [self verifyConfig];
@@ -327,14 +370,16 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
 
     if (!kClientID) {
       [self doClientRegistration:configuration
+            additionalParameters:nil
                         callback:^(OIDServiceConfiguration *configuration,
                                    OIDRegistrationResponse *registrationResponse) {
         [self doAuthWithAutoCodeExchange:configuration
                                 clientID:registrationResponse.clientID
-                            clientSecret:registrationResponse.clientSecret];
+                            clientSecret:registrationResponse.clientSecret
+                    additionalParameters:nil];
       }];
     } else {
-      [self doAuthWithAutoCodeExchange:configuration clientID:kClientID clientSecret:nil];
+        [self doAuthWithAutoCodeExchange:configuration clientID:kClientID clientSecret:nil additionalParameters:nil];
     }
    }];
 }
@@ -359,14 +404,16 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
 
     if (!kClientID) {
       [self doClientRegistration:configuration
+            additionalParameters:nil
                         callback:^(OIDServiceConfiguration *configuration,
                                    OIDRegistrationResponse *registrationResponse) {
         [self doAuthWithoutCodeExchange:configuration
                                clientID:registrationResponse.clientID
-                           clientSecret:registrationResponse.clientSecret];
+                           clientSecret:registrationResponse.clientSecret
+                   additionalParameters:nil];
       }];
     } else {
-      [self doAuthWithoutCodeExchange:configuration clientID:kClientID clientSecret:nil];
+        [self doAuthWithoutCodeExchange:configuration clientID:kClientID clientSecret:nil additionalParameters:nil];
     }
   }];
 }
@@ -402,8 +449,33 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
 }
 
 
+// Shoelaced OIDEndSessionRequest to open up a profile page.
+// A longterm better solution would be to create a profile class that inherits
+// OIDExternalUserAgentRequest and OIDExternalUserAgentSession
 - (IBAction)openProfile:(nullable id)sender {
     [self logMessage:@"Profile Button Touched"];
+    NSURL *profileURL = [NSURL URLWithString:kProfileURI];
+    
+    NSDictionary *addParams = @{ @"client_id": kClientID};
+    OIDServiceConfiguration *fakeConfig = [[OIDServiceConfiguration alloc]  initWithAuthorizationEndpoint:profileURL
+                                                                                            tokenEndpoint:profileURL
+                                                                                                   issuer:profileURL
+                                                                                     registrationEndpoint:profileURL
+                                                                                       endSessionEndpoint:profileURL];
+        
+    OIDEndSessionRequest *request = [[OIDEndSessionRequest alloc] initWithConfiguration:fakeConfig
+                                                                            idTokenHint:@""
+                                                                  postLogoutRedirectURL:[NSURL URLWithString:@""]
+                                                                   additionalParameters:addParams];
+        // performs logout request
+    AppDelegate *appDelegate = (AppDelegate *) [UIApplication sharedApplication].delegate;
+
+    appDelegate.currentAuthorizationFlow =
+    [OIDAuthorizationService presentEndSessionRequest:request
+                                    externalUserAgent:[[OIDExternalUserAgentIOS alloc] initWithPresentingViewController:self]
+                                             callback:^(OIDEndSessionResponse *_Nullable endSessionResponse, NSError *_Nullable error) {
+           [self logMessage:@"Showed profile and returned"];
+    }];
 }
 
 - (IBAction)logoutWithoutRedirect:(nullable id)sender {
@@ -417,7 +489,7 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
     [self logout:kLogoutURI withRedirect:kRedirectURI];
 }
     
-    //TODO:: Construct configuration probs copy of real configuration adding logoutUrl
+// As gizmo currently does not report the endSessionEndpoint on discovery this sets a fake configuration.
 - (void)logout:(nullable NSString *)logoutURI withRedirect:(nullable NSString *)redirectURI {
     NSURL *logoutURL = [NSURL URLWithString:logoutURI];
     NSURL *redirectURL = [NSURL URLWithString:redirectURI];
@@ -440,13 +512,20 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
     [OIDAuthorizationService presentEndSessionRequest:request
                                     externalUserAgent:[[OIDExternalUserAgentIOS alloc] initWithPresentingViewController:self]
                         callback:^(OIDEndSessionResponse *_Nullable endSessionResponse, NSError *_Nullable error) {
-        if(error) {
-            [self logMessage:@"Authorization error: %@", [error localizedDescription]];
-            [self setAuthState:nil];
-        } else {
-            [self setAuthState:nil];
+        [self logMessage:@"Error Reason: %@", error.localizedFailureReason ];
+        [self logMessage:@"Request Reason: %@", request ];
+        if([error.localizedDescription containsString:@"State mismatch"]) {
+            [self logMessage:@"Error no state returned: %@", [error localizedDescription]];
         }
-      }
+        else if(error.domain){
+            [self logMessage:@"Browser closed without returning data: %@", [error localizedDescription]];
+        }
+        else if(error) {
+            [self logMessage:@"Authorization error: %@", [error localizedDescription]];
+            [self logMessage:@"error domain: %@", error.domain];
+        }
+     [self setAuthState:nil];
+    }
     ];
     }
 
