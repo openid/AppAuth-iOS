@@ -262,7 +262,25 @@ static UIWindow * _Nullable ApplicationWindow()
 #pragma mark - ASWebAuthenticationPresentationContextProviding
 
 - (ASPresentationAnchor)presentationAnchorForWebAuthenticationSession:(ASWebAuthenticationSession *)session API_AVAILABLE(ios(13.0)){
-  return _presentingViewController.view.window;
+  UIWindow *window = _presentingViewController.view.window;
+  if (!window) {
+    // If the window is nil, the dialog is automatically dismissed.
+    // Attempts to handle gracefully, but warns the developer that this is unexpected.
+    window = ApplicationWindow();
+    NSString *info = window ? @"Using the app's window as the presentation anchor. " : @"The authentication dialog will briefly appear on screen then disappear. ";
+    NSString *severity = window ? @"⚠️" : @"❌";
+    if (!_presentingViewController) {
+      NSLog(@"%@ The presenting view controller of %@ is nil. %@"
+             "This must be fixed by initializing %@ with a non nil presenting view controller.", severity, self.class, info, self.class);
+    } else if (!_presentingViewController.view) {
+      NSLog(@"%@ The view associated to the presenting view controller %@ is nil. %@"
+             "This must be fixed by ensuring that %@ has a non nil view.", severity, _presentingViewController, info, _presentingViewController);
+    } else {
+      NSLog(@"%@ The view associated to the presenting view controller %@ has not yet been added to a window. %@"
+             "This must be fixed by ensuring that the view of %@ has been added to a window.", severity, _presentingViewController, info, _presentingViewController);
+    }
+  }
+  return window;
 }
 #endif // __IPHONE_OS_VERSION_MAX_ALLOWED >= 130000
 
