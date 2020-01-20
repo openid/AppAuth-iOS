@@ -54,11 +54,30 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma clang diagnostic pop
 }
 
+static UIWindow * _Nullable ApplicationWindow()
+{
+  UIApplication *app = UIApplication.sharedApplication;
+  if (@available(iOS 13.0, *)) {
+    for (UIWindowScene *scene in app.connectedScenes) {
+      if ([scene isKindOfClass:UIWindowScene.class]) {
+        for (UIWindow *window in scene.windows) {
+          if (window) {
+            return window;
+          }
+        }
+      }
+    }
+  }
+  UIWindow *window = nil;
+  if ([app.delegate respondsToSelector:@selector(window)]) {
+    window = app.delegate.window;
+  }
+  return window;
+}
+
 - (instancetype)init {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wnonnull"
-  return [self initWithPresentingViewController:nil];
-#pragma clang diagnostic pop
+  UIViewController *rootViewController = ApplicationWindow().rootViewController;
+  return [self initWithPresentingViewController:rootViewController];
 }
 
 - (instancetype)initWithPresentingViewController:
