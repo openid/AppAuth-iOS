@@ -918,9 +918,8 @@
 			children = (
 				348970992178F40600ABEED4 /* CoreFramework */,
 				343AAA4C1E8345B600F9D36E /* Framework */,
-				340DAE241D581FE700EC285B /* macOS */,
-				F6F60FAF1D2BFEF000325CB3 /* iOS */,
 				8A9B9D5E24561EC40055353E /* AppAuthCore */,
+				8A9B9D632456227D0055353E /* AppAuth */,
 				341741AF1C5D8243000EF209 /* AppAuth.h */,
 				3489709E21791B0C00ABEED4 /* AppAuthCore.h */,
 			);
@@ -1063,6 +1062,15 @@
 				039697451FA8258D003D1FB2 /* OIDURLSessionProvider.m */,
 			);
 			path = AppAuthCore;
+			sourceTree = "<group>";
+		};
+		8A9B9D632456227D0055353E /* AppAuth */ = {
+			isa = PBXGroup;
+			children = (
+				340DAE241D581FE700EC285B /* macOS */,
+				F6F60FAF1D2BFEF000325CB3 /* iOS */,
+			);
+			path = AppAuth;
 			sourceTree = "<group>";
 		};
 		F6F60FAF1D2BFEF000325CB3 /* iOS */ = {

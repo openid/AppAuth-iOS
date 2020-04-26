@@ -20,6 +20,10 @@
 // https://developer.apple.com/library/mac/samplecode/MiniSOAP/Introduction/Intro.html
 // Modified to limit connections to the loopback interface only.
 
+#import <TargetConditionals.h>
+
+#if TARGET_OS_OSX
+
 #import <Foundation/Foundation.h>
 #import <CoreServices/CoreServices.h>
 
@@ -185,4 +189,4 @@ typedef enum {
 
 @end
 
-
+#endif // TARGET_OS_OSX

@@ -16,6 +16,10 @@
         limitations under the License.
  */
 
+#import <TargetConditionals.h>
+
+#if TARGET_OS_OSX
+
 #import "OIDRedirectHTTPHandler.h"
 
 #import "OIDAuthorizationService.h"
@@ -169,3 +173,5 @@ static NSString *const kHTMLErrorRedirectNotValid =
 }
 
 @end
+
+#endif // TARGET_OS_MAC

@@ -16,6 +16,10 @@
         limitations under the License.
  */
 
+#import <TargetConditionals.h>
+
+#if TARGET_OS_IOS || TARGET_OS_MACCATALYST
+
 #import <UIKit/UIKit.h>
 
 #import "OIDAuthState.h"
@@ -55,3 +59,5 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 NS_ASSUME_NONNULL_END
+
+#endif // TARGET_OS_IOS || TARGET_OS_MACCATALYST

@@ -31,7 +31,10 @@ let package = Package(
     products: [
         .library(
             name: "AppAuthCore",
-            targets: ["AppAuthCore"])
+            targets: ["AppAuthCore"]),
+        .library(
+            name: "AppAuth",
+            targets: ["AppAuth"])
     ],
     dependencies: [],
     targets: [
@@ -39,6 +42,18 @@ let package = Package(
             name: "AppAuthCore",
             path: "Source/AppAuthCore",
             publicHeadersPath: ""
+        ),
+        .target(
+            name: "AppAuth",
+            dependencies: ["AppAuthCore"],
+            path: "Source/AppAuth",
+            sources: ["iOS", "macOS"],
+            publicHeadersPath: "",
+            cSettings: [
+                .headerSearchPath("iOS"),
+                .headerSearchPath("macOS"),
+                .headerSearchPath("macOS/LoopbackHTTPServer"),
+            ]
         )
     ]
 )

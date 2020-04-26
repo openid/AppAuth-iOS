@@ -16,6 +16,10 @@
         limitations under the License.
  */
 
+#import <TargetConditionals.h>
+
+#if TARGET_OS_OSX
+
 #import "OIDExternalUserAgentMac.h"
 
 #import <Cocoa/Cocoa.h>
@@ -73,3 +77,5 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 NS_ASSUME_NONNULL_END
+
+#endif // TARGET_OS_MAC
