@@ -19,9 +19,9 @@
 #import "OIDEndSessionRequestTests.h"
 
 #import "OIDServiceDiscoveryTests.h"
-#import "Source/OIDEndSessionRequest.h"
-#import "Source/OIDServiceConfiguration.h"
-#import "Source/OIDServiceDiscovery.h"
+#import "Source/AppAuthCore/OIDEndSessionRequest.h"
+#import "Source/AppAuthCore/OIDServiceConfiguration.h"
+#import "Source/AppAuthCore/OIDServiceDiscovery.h"
 
 /*! @brief Test value for the @c redirectURL property.
  */

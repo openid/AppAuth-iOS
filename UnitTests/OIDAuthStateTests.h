@@ -18,8 +18,8 @@
 
 #import <XCTest/XCTest.h>
 
-#import "Source/OIDAuthStateChangeDelegate.h"
-#import "Source/OIDAuthStateErrorDelegate.h"
+#import "Source/AppAuthCore/OIDAuthStateChangeDelegate.h"
+#import "Source/AppAuthCore/OIDAuthStateErrorDelegate.h"
 
 @class OIDAuthState;
 

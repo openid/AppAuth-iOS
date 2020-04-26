@@ -18,7 +18,7 @@
 
 #import <XCTest/XCTest.h>
 
-#import "Source/OIDTokenUtilities.h"
+#import "Source/AppAuthCore/OIDTokenUtilities.h"
 
 
 @interface OIDTokenUtilitiesTests : XCTestCase

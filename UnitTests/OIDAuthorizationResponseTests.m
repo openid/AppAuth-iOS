@@ -19,9 +19,9 @@
 #import "OIDAuthorizationResponseTests.h"
 
 #import "OIDAuthorizationRequestTests.h"
-#import "Source/OIDAuthorizationRequest.h"
-#import "Source/OIDAuthorizationResponse.h"
-#import "Source/OIDGrantTypes.h"
+#import "Source/AppAuthCore/OIDAuthorizationRequest.h"
+#import "Source/AppAuthCore/OIDAuthorizationResponse.h"
+#import "Source/AppAuthCore/OIDGrantTypes.h"
 
 // Ignore warnings about "Use of GNU statement expression extension" which is raised by our use of
 // the XCTAssert___ macros.

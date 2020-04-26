@@ -18,8 +18,8 @@
 
 #import "OIDServiceDiscoveryTests.h"
 
-#import "Source/OIDError.h"
-#import "Source/OIDServiceDiscovery.h"
+#import "Source/AppAuthCore/OIDError.h"
+#import "Source/AppAuthCore/OIDServiceDiscovery.h"
 
 // Ignore warnings about "Use of GNU statement expression extension" which is raised by our use of
 // the XCTAssert___ macros.
