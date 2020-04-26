@@ -19,6 +19,10 @@
 import Foundation
 import XCTest
 
+#if SWIFT_PACKAGE
+import AppAuthCore
+#endif
+
 /*! @brief Unit tests to verify Swift compatability.
  */
 class OIDSwiftTests: XCTestCase {

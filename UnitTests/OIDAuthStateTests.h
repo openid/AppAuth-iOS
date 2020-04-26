@@ -18,8 +18,12 @@
 
 #import <XCTest/XCTest.h>
 
+#if SWIFT_PACKAGE
+@import AppAuthCore;
+#else
 #import "Source/AppAuthCore/OIDAuthStateChangeDelegate.h"
 #import "Source/AppAuthCore/OIDAuthStateErrorDelegate.h"
+#endif
 
 @class OIDAuthState;
 
