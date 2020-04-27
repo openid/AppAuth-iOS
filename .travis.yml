@@ -7,9 +7,9 @@ jobs:
     - stage: Swift PM
       osx_image: xcode11.4
       script:
-      # Make sure that we are able to build when using Swift PM
+      # Build the project using Swift PM
         - swift build
-      # Make sure that all tests pass when using Swift PM
+      # Test the project using Swift PM
         - swift test
 
     - stage: Xcode Tests
