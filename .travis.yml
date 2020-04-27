@@ -16,7 +16,6 @@ jobs:
         - swift test
         - rm -rf ~/.build
 
-  include:
     - stage: Xcode Tests
       # Tests iOS, macOS and tvOS: both static library and framework schemes.
       env: 
