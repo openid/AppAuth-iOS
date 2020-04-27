@@ -15,6 +15,14 @@ env:
 before_script:
   - sudo gem install xcpretty
 script:
+# Make sure the project is buildable when using Swift PM
+  - echo Build using Swift PM
+  - swift build
+  - rm -rf ~/.build  
+# Make sure that all tests pass when using Swift PM
+  - echo Run tests using Swift PM
+  - swift test
+  - rm -rf ~/.build
 # Breaking down this command:
 # eval is used here, otherwise environment variables are not present.
 # `set -o pipefail && ` is so that the return code isn't gobbled by xcpretty (per https://github.com/supermarin/xcpretty#usage)
