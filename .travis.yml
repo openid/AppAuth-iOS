@@ -7,14 +7,14 @@ jobs:
   include:
     - stage: Swift PM
       script:
-        # Make sure the project is buildable when using Swift PM
+      # Make sure the project is buildable when using Swift PM
         - echo Build using Swift PM
         - swift build
         - rm -rf ~/.build  
       # Make sure that all tests pass when using Swift PM
-      - echo Run tests using Swift PM
-      - swift test
-      - rm -rf ~/.build
+        - echo Run tests using Swift PM
+        - swift test
+        - rm -rf ~/.build
 
   include:
     - stage: Xcode Tests
