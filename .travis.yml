@@ -2,32 +2,40 @@
 # Use the `wwtd` gem to test locally.
 language: objective-c
 osx_image: xcode11.4
-# Tests iOS, macOS and tvOS: both static library and framework schemes.
-env: 
-# To generate this list, use `xcodebuild -showsdks` to get possible SDK values, and platforms.
-# Use `instruments -s devices` to get the device name.
-  - SCHEME=AppAuth-iOS DESTINATION="'platform=iOS Simulator,name=iPhone 11,OS=13.4'" SDK=iphonesimulator13.4
-  - SCHEME=AppAuth_iOS DESTINATION="'platform=iOS Simulator,name=iPhone 11,OS=13.4'" SDK=iphonesimulator13.4
-  - SCHEME=AppAuth-macOS DESTINATION="'platform=macOS,arch=x86_64'" SDK=macosx10.15
-  - SCHEME=AppAuth_macOS DESTINATION="'platform=macOS,arch=x86_64'" SDK=macosx10.15
-  - SCHEME=AppAuth-tvOS DESTINATION="'platform=tvOS Simulator,name=Apple TV,OS=13.4'" SDK=appletvsimulator13.4
-  - SCHEME=AppAuth_tvOS DESTINATION="'platform=tvOS Simulator,name=Apple TV,OS=13.4'" SDK=appletvsimulator13.4
-before_script:
-  - sudo gem install xcpretty
-script:
-# Make sure the project is buildable when using Swift PM
-  - echo Build using Swift PM
-  - swift build
-  - rm -rf ~/.build  
-# Make sure that all tests pass when using Swift PM
-  - echo Run tests using Swift PM
-  - swift test
-  - rm -rf ~/.build
-# Breaking down this command:
-# eval is used here, otherwise environment variables are not present.
-# `set -o pipefail && ` is so that the return code isn't gobbled by xcpretty (per https://github.com/supermarin/xcpretty#usage)
-# then it's standard xcodebuild | xcpretty.
-  - eval "set -o pipefail && xcodebuild -project AppAuth.xcodeproj -scheme $SCHEME -sdk $SDK -destination $DESTINATION -enableCodeCoverage YES GCC_INSTRUMENT_PROGRAM_FLOW_ARCS=YES GCC_GENERATE_TEST_COVERAGE_FILES=YES OTHERCFLAGS='-Werror' test | xcpretty"
-after_success:
-  - bash <(curl -s https://codecov.io/bash)
+
+jobs:
+  include:
+    - stage: Swift PM
+      script:
+        # Make sure the project is buildable when using Swift PM
+        - echo Build using Swift PM
+        - swift build
+        - rm -rf ~/.build  
+      # Make sure that all tests pass when using Swift PM
+      - echo Run tests using Swift PM
+      - swift test
+      - rm -rf ~/.build
+
+  include:
+    - stage: Xcode Tests
+      # Tests iOS, macOS and tvOS: both static library and framework schemes.
+      env: 
+      # To generate this list, use `xcodebuild -showsdks` to get possible SDK values, and platforms.
+      # Use `instruments -s devices` to get the device name.
+        - SCHEME=AppAuth-iOS DESTINATION="'platform=iOS Simulator,name=iPhone 11,OS=13.4'" SDK=iphonesimulator13.4
+        - SCHEME=AppAuth_iOS DESTINATION="'platform=iOS Simulator,name=iPhone 11,OS=13.4'" SDK=iphonesimulator13.4
+        - SCHEME=AppAuth-macOS DESTINATION="'platform=macOS,arch=x86_64'" SDK=macosx10.15
+        - SCHEME=AppAuth_macOS DESTINATION="'platform=macOS,arch=x86_64'" SDK=macosx10.15
+        - SCHEME=AppAuth-tvOS DESTINATION="'platform=tvOS Simulator,name=Apple TV,OS=13.4'" SDK=appletvsimulator13.4
+        - SCHEME=AppAuth_tvOS DESTINATION="'platform=tvOS Simulator,name=Apple TV,OS=13.4'" SDK=appletvsimulator13.4
+      before_script:
+        - sudo gem install xcpretty
+      script:
+      # Breaking down this command:
+      # eval is used here, otherwise environment variables are not present.
+      # `set -o pipefail && ` is so that the return code isn't gobbled by xcpretty (per https://github.com/supermarin/xcpretty#usage)
+      # then it's standard xcodebuild | xcpretty.
+        - eval "set -o pipefail && xcodebuild -project AppAuth.xcodeproj -scheme $SCHEME -sdk $SDK -destination $DESTINATION -enableCodeCoverage YES GCC_INSTRUMENT_PROGRAM_FLOW_ARCS=YES GCC_GENERATE_TEST_COVERAGE_FILES=YES OTHERCFLAGS='-Werror' test | xcpretty"
+      after_success:
+        - bash <(curl -s https://codecov.io/bash)
 
