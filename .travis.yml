@@ -1,32 +1,29 @@
 # Travis CI config for AppAuth
 # Use the `wwtd` gem to test locally.
 language: objective-c
-osx_image: xcode11.4
 
 jobs:
   include:
     - stage: Swift PM
+      osx_image: xcode11.4
       script:
-      # Make sure the project is buildable when using Swift PM
-        - echo Build using Swift PM
+      # Make sure that we are able to build when using Swift PM
         - swift build
-        - rm -rf ~/.build  
       # Make sure that all tests pass when using Swift PM
-        - echo Run tests using Swift PM
         - swift test
-        - rm -rf ~/.build
 
     - stage: Xcode Tests
+      osx_image: xcode11
       # Tests iOS, macOS and tvOS: both static library and framework schemes.
       env: 
       # To generate this list, use `xcodebuild -showsdks` to get possible SDK values, and platforms.
       # Use `instruments -s devices` to get the device name.
-        - SCHEME=AppAuth-iOS DESTINATION="'platform=iOS Simulator,name=iPhone 11,OS=13.4'" SDK=iphonesimulator13.4
-        - SCHEME=AppAuth_iOS DESTINATION="'platform=iOS Simulator,name=iPhone 11,OS=13.4'" SDK=iphonesimulator13.4
+        - SCHEME=AppAuth-iOS DESTINATION="'platform=iOS Simulator,name=iPhone 11,OS=13.0'" SDK=iphonesimulator13.0
+        - SCHEME=AppAuth_iOS DESTINATION="'platform=iOS Simulator,name=iPhone 11,OS=13.0'" SDK=iphonesimulator13.0
         - SCHEME=AppAuth-macOS DESTINATION="'platform=macOS,arch=x86_64'" SDK=macosx10.15
         - SCHEME=AppAuth_macOS DESTINATION="'platform=macOS,arch=x86_64'" SDK=macosx10.15
-        - SCHEME=AppAuth-tvOS DESTINATION="'platform=tvOS Simulator,name=Apple TV,OS=13.4'" SDK=appletvsimulator13.4
-        - SCHEME=AppAuth_tvOS DESTINATION="'platform=tvOS Simulator,name=Apple TV,OS=13.4'" SDK=appletvsimulator13.4
+        - SCHEME=AppAuth-tvOS DESTINATION="'platform=tvOS Simulator,name=Apple TV,OS=13.0'" SDK=appletvsimulator13.0
+        - SCHEME=AppAuth_tvOS DESTINATION="'platform=tvOS Simulator,name=Apple TV,OS=13.0'" SDK=appletvsimulator13.0
       before_script:
         - sudo gem install xcpretty
       script:
