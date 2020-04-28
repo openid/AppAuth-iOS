@@ -43,18 +43,6 @@ let package = Package(
             path: "Source/AppAuthCore",
             publicHeadersPath: ""
         ),
-        .testTarget(
-            name: "AppAuthCoreTests",
-            dependencies: ["AppAuthCore"],
-            path: "UnitTests",
-            exclude: ["OIDSwiftTests.swift"]
-        ),
-        .testTarget(
-            name: "AppAuthCoreSwiftTests",
-            dependencies: ["AppAuthCore"],
-            path: "UnitTests",
-            sources: ["OIDSwiftTests.swift"]
-        ),
         .target(
             name: "AppAuth",
             dependencies: ["AppAuthCore"],
@@ -66,6 +54,18 @@ let package = Package(
                 .headerSearchPath("macOS"),
                 .headerSearchPath("macOS/LoopbackHTTPServer"),
             ]
+        ),
+        .testTarget(
+            name: "AppAuthCoreTests",
+            dependencies: ["AppAuthCore"],
+            path: "UnitTests",
+            exclude: ["OIDSwiftTests.swift"]
+        ),
+        .testTarget(
+            name: "AppAuthCoreSwiftTests",
+            dependencies: ["AppAuthCore"],
+            path: "UnitTests",
+            sources: ["OIDSwiftTests.swift"]
         )
     ]
 )
