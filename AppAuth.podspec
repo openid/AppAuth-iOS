@@ -23,6 +23,7 @@ It follows the OAuth 2.0 for Native Apps best current practice
   s.license      = "Apache License, Version 2.0"
   s.authors      = { "William Denniss" => "wdenniss@google.com",
                      "Steven E Wright" => "stevewright@google.com",
+                     "Julien Bodet" => "julien.bodet92@gmail.com"
                    }
 
   # Note: While watchOS and tvOS are specified here, only iOS and macOS have
