@@ -1,5 +1,11 @@
 # AppAuth for iOS and macOS Changelog
 
+## 1.3.1
+
+### Fixes
+
+1. Removed `UIWebView` reference in comment
+
 ## 1.3.0
 
 ### Notable Changes
