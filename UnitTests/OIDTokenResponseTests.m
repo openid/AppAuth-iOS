@@ -170,9 +170,20 @@ static NSString *const kTestAdditionalParameterValue = @"example_value";
  */
 - (void)testSecureCoding {
   OIDTokenResponse *response = [[self class] testInstance];
-  NSData *data = [NSKeyedArchiver archivedDataWithRootObject:response];
-  OIDTokenResponse *responseCopy = [NSKeyedUnarchiver unarchiveObjectWithData:data];
 
+  OIDTokenResponse *responseCopy;
+  if (@available(iOS 11, macCatalyst 13, macOS 10.13, tvOS 11, *)) {
+    NSError *error;
+    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:response requiringSecureCoding:YES error:&error];
+    responseCopy = [NSKeyedUnarchiver unarchivedObjectOfClass:[OIDTokenResponse class] fromData:data error:&error];
+  } else {
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wdeprecated-declarations"
+    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:response];
+    responseCopy = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+    #pragma clang diagnostic pop
+  }
+  
   // Not a full test of the request deserialization, but should be sufficient as a smoke test
   // to make sure the request IS actually getting serialized and deserialized in the
   // NSSecureCoding implementation. We'll leave it up to the OIDAuthorizationRequest tests to make

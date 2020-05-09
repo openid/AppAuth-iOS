@@ -198,7 +198,18 @@
   NSError *oauthError =
       [[self class] OAuthTokenInvalidGrantErrorWithUnderlyingError:nonCompliantError];
   [authstate updateWithAuthorizationError:oauthError];
-  XCTAssertNoThrow([NSKeyedArchiver archivedDataWithRootObject:authstate], @"");
+  
+  NSData *data;
+  if (@available(iOS 11, macCatalyst 13, macOS 10.13, tvOS 11, *)) {
+    NSError *error;
+    data = [NSKeyedArchiver archivedDataWithRootObject:authstate requiringSecureCoding:YES error:&error];
+  } else {
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wdeprecated-declarations"
+    data = [NSKeyedArchiver archivedDataWithRootObject:authstate];
+    #pragma clang diagnostic pop
+  }
+  XCTAssertNoThrow(data, @"");
 }
 
 /*! @brief Tests @c OIDAuthState.updateWithAuthorizationResponse:error: with a success response.
@@ -352,9 +363,20 @@
   XCTAssert([OIDAuthState supportsSecureCoding], @"");
 
   OIDAuthState *authState = [[self class] testInstance];
-  NSData *data = [NSKeyedArchiver archivedDataWithRootObject:authState];
-  OIDAuthState *authStateCopy = [NSKeyedUnarchiver unarchiveObjectWithData:data];
-
+  NSError *error;
+  NSData *data;
+  OIDAuthState *authStateCopy;
+  if (@available(iOS 11, macCatalyst 13, macOS 10.13, tvOS 11, *)) {
+    data = [NSKeyedArchiver archivedDataWithRootObject:authState requiringSecureCoding:YES error:&error];
+    authStateCopy = [NSKeyedUnarchiver unarchivedObjectOfClass:[OIDAuthState class] fromData:data error:&error];
+  } else {
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wdeprecated-declarations"
+    data = [NSKeyedArchiver archivedDataWithRootObject:authState];
+    authStateCopy = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+    #pragma clang diagnostic pop
+  }
+  
   XCTAssertEqualObjects(authStateCopy.refreshToken, authState.refreshToken, @"");
   XCTAssertEqualObjects(authStateCopy.scope, authState.scope, @"");
   XCTAssertEqualObjects(authStateCopy.lastAuthorizationResponse.authorizationCode,
@@ -369,9 +391,17 @@
   // Verify the error object is indeed restored.
   NSError *oauthError = [[self class] OAuthTokenInvalidGrantErrorWithUnderlyingError:nil];
   [authState updateWithTokenResponse:nil error:oauthError];
-  data = [NSKeyedArchiver archivedDataWithRootObject:authState];
   XCTAssertNotNil(authState.authorizationError, @"");
-  authStateCopy = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+  if (@available(iOS 11, macCatalyst 13, macOS 10.13, tvOS 11, *)) {
+    data = [NSKeyedArchiver archivedDataWithRootObject:authState requiringSecureCoding:YES error:&error];
+    authStateCopy = [NSKeyedUnarchiver unarchivedObjectOfClass:[OIDAuthState class] fromData:data error:&error];
+  } else {
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wdeprecated-declarations"
+    data = [NSKeyedArchiver archivedDataWithRootObject:authState];
+    authStateCopy = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+    #pragma clang diagnostic pop
+  }
   XCTAssertEqualObjects(authStateCopy.authorizationError.domain,
                         authState.authorizationError.domain, @"");
   XCTAssertEqual(authStateCopy.authorizationError.code, authState.authorizationError.code, @"");

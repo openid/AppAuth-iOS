@@ -293,9 +293,19 @@ static int const kCodeVerifierRecommendedLength = 43;
   XCTAssertEqualObjects(request.codeChallengeMethod, [[self class] codeChallengeMethod], @"");
   XCTAssertEqualObjects(request.additionalParameters[kTestAdditionalParameterKey],
                         kTestAdditionalParameterValue, @"");
-
-  NSData *data = [NSKeyedArchiver archivedDataWithRootObject:request];
-  OIDAuthorizationRequest *requestCopy = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+  
+  OIDAuthorizationRequest *requestCopy;
+  if (@available(iOS 11, macCatalyst 13, macOS 10.13, tvOS 11, *)) {
+    NSError *error;
+    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:request requiringSecureCoding:YES error:&error];
+    requestCopy = [NSKeyedUnarchiver unarchivedObjectOfClass:[OIDAuthorizationRequest class] fromData:data error:&error];
+  } else {
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wdeprecated-declarations"
+    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:request];
+    requestCopy = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+    #pragma clang diagnostic pop
+  }
 
   // Not a full test of the configuration deserialization, but should be sufficient as a smoke test
   // to make sure the configuration IS actually getting serialized and deserialized in the

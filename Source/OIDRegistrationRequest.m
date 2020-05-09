@@ -130,8 +130,10 @@ static NSString *const kAdditionalParametersKey = @"additionalParameters";
                          forKey:kConfigurationKey];
   NSString *initialAccessToken = [aDecoder decodeObjectOfClass:[NSString class]
                                                         forKey:kInitialAccessToken];
-  NSArray<NSURL *> *redirectURIs = [aDecoder decodeObjectOfClass:[NSArray<NSURL *> class]
-                                                          forKey:kRedirectURIsKey];
+  NSSet *redirectURIsCodingClasses = [NSSet setWithArray:@[ [NSArray<NSURL *> class],
+                                                            [NSURL class] ]];
+  NSArray<NSURL *> *redirectURIs = [aDecoder decodeObjectOfClasses:redirectURIsCodingClasses
+                                                            forKey:kRedirectURIsKey];
   NSArray<NSString *> *responseTypes = [aDecoder decodeObjectOfClass:[NSArray<NSString *> class]
                                                               forKey:kResponseTypesKey];
   NSArray<NSString *> *grantTypes = [aDecoder decodeObjectOfClass:[NSArray<NSString *> class]
