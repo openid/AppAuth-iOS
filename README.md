@@ -30,7 +30,9 @@ in all protocol requests and responses.
 
 #### Supported Versions
 
-AppAuth supports iOS 7 and above.
+AppAuth currently supports iOS 8 and above.
+
+iOS 7 support is available in versions prior to 2.0.
 
 iOS 9+ uses the in-app browser tab pattern
 (via `SFSafariViewController`), and falls back to the system browser (mobile
@@ -51,7 +53,9 @@ confidentiality of the client secrets may not work well.
 
 #### Supported Versions
 
-AppAuth supports macOS (OS X) 10.9 and above.
+AppAuth currently supports macOS (OS X) 10.10 and above. 
+
+OS X 10.9 support is available in versions prior to 2.0.
 
 #### Authorization Server Requirements
 
