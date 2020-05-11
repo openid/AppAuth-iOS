@@ -129,14 +129,15 @@ static NSString *const kOPTosURIKey = @"op_tos_uri";
   static NSString *const kMissingFieldErrorText = @"Missing field: %@";
   static NSString *const kInvalidURLFieldErrorText = @"Invalid URL: %@";
 
+  // Required fields for AppAuth are the intersection of
+  // REQUIRED fields in OpenID Connect Discovery 1.0 and RFC 8414
+  // See: https://openid.net/specs/openid-connect-discovery-1_0.html#ProviderMetadata and
+  // https://tools.ietf.org/html/rfc8414#section-2
   NSArray *requiredFields = @[
     kIssuerKey,
     kAuthorizationEndpointKey,
     kTokenEndpointKey,
-    kJWKSURLKey,
     kResponseTypesSupportedKey,
-    kSubjectTypesSupportedKey,
-    kIDTokenSigningAlgorithmValuesSupportedKey
   ];
 
   for (NSString *field in requiredFields) {
@@ -151,15 +152,20 @@ static NSString *const kOPTosURIKey = @"op_tos_uri";
     }
   }
 
-  // Check required URL fields are valid URLs.
-  NSArray *requiredURLFields = @[
+  // Check URL fields (if present) are valid URLs.
+  NSArray *urlFields = @[
     kIssuerKey,
+    kAuthorizationEndpointKey,
     kTokenEndpointKey,
-    kJWKSURLKey
+    kUserinfoEndpointKey,
+    kRegistrationEndpointKey,
+    kJWKSURLKey,
+    kOPTosURIKey,
+    kOPPolicyURIKey
   ];
 
-  for (NSString *field in requiredURLFields) {
-    if (![NSURL URLWithString:dictionary[field]]) {
+  for (NSString *field in urlFields) {
+    if (dictionary[field] && ![NSURL URLWithString:dictionary[field]]) {
       if (error) {
         NSString *errorText = [NSString stringWithFormat:kInvalidURLFieldErrorText, field];
         *error = [OIDErrorUtilities errorWithCode:OIDErrorCodeInvalidDiscoveryDocument
