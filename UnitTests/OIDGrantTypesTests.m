@@ -18,7 +18,11 @@
 
 #import <XCTest/XCTest.h>
 
-#import "Source/OIDGrantTypes.h"
+#if SWIFT_PACKAGE
+@import AppAuthCore;
+#else
+#import "Source/AppAuthCore/OIDGrantTypes.h"
+#endif
 
 // Ignore warnings about "Use of GNU statement expression extension" which is raised by our use of
 // the XCTAssert___ macros.

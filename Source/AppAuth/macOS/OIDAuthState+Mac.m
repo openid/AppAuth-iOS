@@ -1,4 +1,4 @@
-/*! @file OIDAuthorizationService+Mac.m
+/*! @file OIDAuthState+Mac.m
     @brief AppAuth iOS SDK
     @copyright
         Copyright 2016 Google Inc. All Rights Reserved.
@@ -16,22 +16,25 @@
         limitations under the License.
  */
 
-#import "OIDAuthorizationService+Mac.h"
+#import <TargetConditionals.h>
+
+#if TARGET_OS_OSX
+
+#import "OIDAuthState+Mac.h"
 
 #import "OIDExternalUserAgentMac.h"
 
-NS_ASSUME_NONNULL_BEGIN
+@implementation OIDAuthState (Mac)
 
-@implementation OIDAuthorizationService (Mac)
-
-+ (id<OIDExternalUserAgentSession>) presentAuthorizationRequest:(OIDAuthorizationRequest *)request
-                                                       callback:(OIDAuthorizationCallback)callback {
++ (id<OIDExternalUserAgentSession>)
+    authStateByPresentingAuthorizationRequest:(OIDAuthorizationRequest *)authorizationRequest
+                                     callback:(OIDAuthStateAuthorizationCallback)callback {
   OIDExternalUserAgentMac *externalUserAgent = [[OIDExternalUserAgentMac alloc] init];
-  return [self presentAuthorizationRequest:request
-                         externalUserAgent:externalUserAgent
-                                  callback:callback];
+  return [self authStateByPresentingAuthorizationRequest:authorizationRequest
+                                       externalUserAgent:externalUserAgent
+                                                callback:callback];
 }
 
 @end
 
-NS_ASSUME_NONNULL_END
+#endif // TARGET_OS_OSX

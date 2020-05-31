@@ -16,6 +16,10 @@
         limitations under the License.
  */
 
+#import <TargetConditionals.h>
+
+#if TARGET_OS_IOS || TARGET_OS_MACCATALYST
+
 #import "OIDExternalUserAgentIOSCustomBrowser.h"
 
 #import <UIKit/UIKit.h>
@@ -163,3 +167,5 @@ NS_ASSUME_NONNULL_BEGIN
 NS_ASSUME_NONNULL_END
 
 #endif // !TARGET_OS_MACCATALYST
+
+#endif // TARGET_OS_IOS || TARGET_OS_MACCATALYST

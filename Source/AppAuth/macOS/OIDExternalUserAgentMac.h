@@ -1,4 +1,4 @@
-/*! @file OIDAuthState+Mac.m
+/*! @file OIDExternalUserAgentMac.h
     @brief AppAuth iOS SDK
     @copyright
         Copyright 2016 Google Inc. All Rights Reserved.
@@ -16,19 +16,21 @@
         limitations under the License.
  */
 
-#import "OIDAuthState+Mac.h"
+#import <TargetConditionals.h>
 
-#import "OIDExternalUserAgentMac.h"
+#if TARGET_OS_OSX
 
-@implementation OIDAuthState (Mac)
+#import "OIDExternalUserAgent.h"
 
-+ (id<OIDExternalUserAgentSession>)
-    authStateByPresentingAuthorizationRequest:(OIDAuthorizationRequest *)authorizationRequest
-                                     callback:(OIDAuthStateAuthorizationCallback)callback {
-  OIDExternalUserAgentMac *externalUserAgent = [[OIDExternalUserAgentMac alloc] init];
-  return [self authStateByPresentingAuthorizationRequest:authorizationRequest
-                                       externalUserAgent:externalUserAgent
-                                                callback:callback];
-}
+NS_ASSUME_NONNULL_BEGIN
+
+/*! @brief A Mac-specific external user-agent UI Coordinator that uses the default browser to
+        present an external user-agent request.
+ */
+@interface OIDExternalUserAgentMac : NSObject <OIDExternalUserAgent>
 
 @end
+
+NS_ASSUME_NONNULL_END
+
+#endif // TARGET_OS_OSX

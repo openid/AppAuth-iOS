@@ -16,6 +16,10 @@
        limitations under the License.
 */
 
+#import <TargetConditionals.h>
+
+#if TARGET_OS_IOS || TARGET_OS_MACCATALYST
+
 #import <UIKit/UIKit.h>
 
 #import "OIDExternalUserAgent.h"
@@ -44,3 +48,5 @@ API_AVAILABLE(macCatalyst(13)) API_UNAVAILABLE(ios)
 @end
 
 NS_ASSUME_NONNULL_END
+
+#endif // TARGET_OS_IOS || TARGET_OS_MACCATALYST

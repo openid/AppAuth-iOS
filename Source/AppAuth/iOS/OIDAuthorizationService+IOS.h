@@ -1,4 +1,4 @@
-/*! @file OIDAuthState+Mac.h
+/*! @file OIDAuthorizationService+IOS.h
     @brief AppAuth iOS SDK
     @copyright
         Copyright 2016 Google Inc. All Rights Reserved.
@@ -16,30 +16,35 @@
         limitations under the License.
  */
 
-#import "OIDAuthState.h"
+#import <TargetConditionals.h>
+
+#if TARGET_OS_IOS || TARGET_OS_MACCATALYST
+
+#import <UIKit/UIKit.h>
+
+#import "OIDAuthorizationService.h"
+#import "OIDExternalUserAgentSession.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-/*! @brief macOS specific convenience methods for @c OIDAuthState.
+/*! @brief Provides iOS specific authorization request handling.
  */
-@interface OIDAuthState (Mac)
+@interface OIDAuthorizationService (IOS)
 
-/*! @brief Convenience method to create a @c OIDAuthState by presenting an authorization request
-        and performing the authorization code exchange in the case of code flow requests. For
-        the hybrid flow, the caller should validate the id_token and c_hash, then perform the token
-        request (@c OIDAuthorizationService.performTokenRequest:callback:)
-        and update the OIDAuthState with the results (@c
-        OIDAuthState.updateWithTokenResponse:error:).
-    @param authorizationRequest The authorization request to present.
+/*! @brief Perform an authorization flow using \SFSafariViewController.
+    @param request The authorization request.
+    @param presentingViewController The view controller from which to present the
+        \SFSafariViewController.
     @param callback The method called when the request has completed or failed.
     @return A @c OIDExternalUserAgentSession instance which will terminate when it
         receives a @c OIDExternalUserAgentSession.cancel message, or after processing a
         @c OIDExternalUserAgentSession.resumeExternalUserAgentFlowWithURL: message.
  */
-+ (id<OIDExternalUserAgentSession>)
-    authStateByPresentingAuthorizationRequest:(OIDAuthorizationRequest *)authorizationRequest
-                                     callback:(OIDAuthStateAuthorizationCallback)callback;
-
++ (id<OIDExternalUserAgentSession>) presentAuthorizationRequest:(OIDAuthorizationRequest *)request
+    presentingViewController:(UIViewController *)presentingViewController
+                    callback:(OIDAuthorizationCallback)callback;
 @end
 
 NS_ASSUME_NONNULL_END
+
+#endif // TARGET_OS_IOS || TARGET_OS_MACCATALYST
