@@ -16,11 +16,7 @@
         limitations under the License.
  */
 
-#ifndef GTMAPPAUTH_USER_IMPORTS
-#import <AppAuth/AppAuthCore.h>
-#else // GTMAPPAUTH_USER_IMPORTS
 #import "AppAuthCore.h"
-#endif // GTMAPPAUTH_USER_IMPORTS
 
 NS_ASSUME_NONNULL_BEGIN
 

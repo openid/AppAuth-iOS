@@ -19,15 +19,9 @@
 #import "GTMTVAuthorizationResponse.h"
 
 #import "GTMTVAuthorizationRequest.h"
-#ifndef GTMAPPAUTH_USER_IMPORTS
-#import <AppAuth/AppAuthCore.h>
-#import <AppAuth/OIDDefines.h>
-#import <AppAuth/OIDFieldMapping.h>
-#else // GTMAPPAUTH_USER_IMPORTS
 #import "AppAuthCore.h"
 #import "OIDDefines.h"
 #import "OIDFieldMapping.h"
-#endif // GTMAPPAUTH_USER_IMPORTS
 
 
 NSString *const GTMTVDeviceTokenGrantType = @"http://oauth.net/grant_type/device/1.0";
