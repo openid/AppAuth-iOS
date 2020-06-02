@@ -20,7 +20,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class GTMAppAuthFetcherAuthorization;
+@class OIDAuthState;
 @class GTMTVAuthorizationRequest;
 @class GTMTVAuthorizationResponse;
 @class GTMTVServiceConfiguration;
@@ -35,12 +35,12 @@ typedef void (^GTMTVAuthorizationInitialization)(GTMTVAuthorizationResponse *_Nu
                                                  NSError *_Nullable error);
 
 /*! @brief The block that is called when the TV authorization has completed.
-    @param authorization The @c GTMAppAuthFetcherAuthorization which you can use to authorize
+    @param authorization The @c OIDAuthState which you can use to authorize
         API calls, or nil if there was an error.
     @param error The error if an error occurred.
  */
 typedef void (^GTMTVAuthorizationCompletion)
-    (GTMAppAuthFetcherAuthorization *_Nullable authorization,
+    (OIDAuthState *_Nullable authorization,
      NSError *_Nullable error);
 
 /*! @brief Block returned when authorization is initialized to that will cancel the pending

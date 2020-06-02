@@ -1,4 +1,4 @@
-/*! @file GTMAppAuthFetcherAuthorization.m
+/*! @file GTMTVAuthorizationService.m
     @brief GTMAppAuth SDK
     @copyright
         Copyright 2016 Google Inc.
@@ -18,17 +18,10 @@
 
 #import "GTMTVAuthorizationService.h"
 
-#ifndef GTMAPPAUTH_USER_IMPORTS
-#import <AppAuth/AppAuthCore.h>
-#import <AppAuth/OIDDefines.h>
-#import <AppAuth/OIDURLQueryComponent.h>
-#else // GTMAPPAUTH_USER_IMPORTS
 #import "AppAuthCore.h"
 #import "OIDDefines.h"
 #import "OIDURLQueryComponent.h"
-#endif // GTMAPPAUTH_USER_IMPORTS
 
-#import "GTMAppAuthFetcherAuthorization.h"
 #import "GTMTVAuthorizationRequest.h"
 #import "GTMTVAuthorizationResponse.h"
 #import "GTMTVServiceConfiguration.h"
@@ -216,9 +209,7 @@ NSString *const kErrorCodeSlowDown = @"slow_down";
                 OIDAuthState *authState =
                     [[OIDAuthState alloc] initWithAuthorizationResponse:TVAuthorizationResponse
                                                           tokenResponse:tokenResponse];
-                GTMAppAuthFetcherAuthorization *authorization =
-                    [[GTMAppAuthFetcherAuthorization alloc] initWithAuthState:authState];
-                completion(authorization, nil);
+                completion(authState, nil);
               });
             } else {
               if (tokenError.domain == OIDOAuthTokenErrorDomain) {

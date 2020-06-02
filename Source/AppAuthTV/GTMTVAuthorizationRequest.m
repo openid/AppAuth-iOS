@@ -18,13 +18,8 @@
 
 #import "GTMTVAuthorizationRequest.h"
 
-#ifndef GTMAPPAUTH_USER_IMPORTS
-#import <AppAuth/AppAuthCore.h>
-#import <AppAuth/OIDURLQueryComponent.h>
-#else // GTMAPPAUTH_USER_IMPORTS
 #import "AppAuthCore.h"
 #import "OIDURLQueryComponent.h"
-#endif // GTMAPPAUTH_USER_IMPORTS
 #import "GTMTVServiceConfiguration.h"
 
 @implementation GTMTVAuthorizationRequest
