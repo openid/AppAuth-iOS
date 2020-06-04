@@ -47,7 +47,6 @@ It follows the OAuth 2.0 for Native Apps best current practice
     externalUserAgent.dependency 'AppAuth/Core'
     
     externalUserAgent.source_files = "Source/AppAuth.h", "Source/AppAuth/*.{h,m}"
-    externalUserAgent.source_files = "Source/AppAuth/iOS/OIDExternalUserAgentIOSCustomBrowser.*"
     
     # iOS
     externalUserAgent.ios.source_files      = "Source/AppAuth/iOS/**/*.{h,m}"
