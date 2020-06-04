@@ -44,8 +44,10 @@ It follows the OAuth 2.0 for Native Apps best current practice
 
   # Subspec for the full AppAuth library, including platform-dependant external user agents.
   s.subspec 'ExternalUserAgent' do |externalUserAgent|
-
-    externalUserAgent.source_files = "Source/*.{h,m}", "Source/AppAuthCore/*.{h,m}", "Source/AppAuth/*.{h,m}"
+    externalUserAgent.dependency 'AppAuth/Core'
+    
+    externalUserAgent.source_files = "Source/AppAuth.h", "Source/AppAuth/*.{h,m}"
+    externalUserAgent.source_files = "Source/AppAuth/iOS/OIDExternalUserAgentIOSCustomBrowser.*"
     
     # iOS
     externalUserAgent.ios.source_files      = "Source/AppAuth/iOS/**/*.{h,m}"
@@ -56,5 +58,9 @@ It follows the OAuth 2.0 for Native Apps best current practice
     # macOS
     externalUserAgent.osx.source_files = "Source/AppAuth/macOS/**/*.{h,m}"
     externalUserAgent.osx.deployment_target = '10.9'    
+      
   end
+  
+  s.default_subspec = "ExternalUserAgent"
+  
 end
