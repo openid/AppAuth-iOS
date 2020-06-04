@@ -56,10 +56,8 @@ It follows the OAuth 2.0 for Native Apps best current practice
 
     # macOS
     externalUserAgent.osx.source_files = "Source/AppAuth/macOS/**/*.{h,m}"
-    externalUserAgent.osx.deployment_target = '10.9'    
-      
+    externalUserAgent.osx.deployment_target = '10.9'      
   end
   
   s.default_subspec = "ExternalUserAgent"
-  
 end
