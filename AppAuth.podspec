@@ -25,10 +25,12 @@ It follows the OAuth 2.0 for Native Apps best current practice
                      "Steven E Wright" => "stevewright@google.com",
                      "Julien Bodet" => "julien.bodet92@gmail.com"
                    }
+                   
   # Note: While watchOS and tvOS are specified here, only iOS and macOS have
   #       UI implementations of the authorization service. You can use the
   #       classes of AppAuth with tokens on watchOS and tvOS, but currently the
   #       library won't help you obtain authorization grants on those platforms.
+  
   s.ios.deployment_target = "7.0"
   s.osx.deployment_target = "10.9"
   s.watchos.deployment_target = "2.0"
@@ -61,9 +63,10 @@ It follows the OAuth 2.0 for Native Apps best current practice
   end
   
   s.subspec 'EnterpriseUserAgent' do |enterpriseUserAgent|
-    enterpriseUserAgent.ios.deployment_target = "7.0"
-    enterpriseUserAgent.dependency 'AppAuth/ExternalUserAgent'   
+    enterpriseUserAgent.dependency 'AppAuth/ExternalUserAgent'
+    
     enterpriseUserAgent.source_files = "Source/AppAuthEnterpriseUserAgent.h", "Source/AppAuth/iOS/OIDExternalUserAgentIOSCustomBrowser.{h,m}"
+    enterpriseUserAgent.ios.deployment_target = "7.0"      
   end
   
   s.default_subspecs = 'Core', 'ExternalUserAgent'
