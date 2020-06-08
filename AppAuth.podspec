@@ -62,5 +62,5 @@ It follows the OAuth 2.0 for Native Apps best current practice
     externalUserAgent.osx.deployment_target = '10.9'
   end
   
-  s.default_subspec = "ExternalUserAgent"
+  s.default_subspec = 'Core', 'ExternalUserAgent'
 end
