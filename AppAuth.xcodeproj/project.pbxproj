@@ -1214,10 +1214,7 @@
 				2D91B85B249053190005B197 /* OIDTokenUtilities.h in Headers */,
 				2D91B85C249053190005B197 /* OIDError.h in Headers */,
 				2D91B85D249053190005B197 /* OIDExternalUserAgentIOS.h in Headers */,
-<<<<<<< HEAD
 				2D91B86B249177250005B197 /* AppAuthEnterpriseUserAgent.h in Headers */,
-=======
->>>>>>> 218a2f1... Create dynamic targets
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
