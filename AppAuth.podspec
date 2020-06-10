@@ -25,12 +25,10 @@ It follows the OAuth 2.0 for Native Apps best current practice
                      "Steven E Wright" => "stevewright@google.com",
                      "Julien Bodet" => "julien.bodet92@gmail.com"
                    }
-
   # Note: While watchOS and tvOS are specified here, only iOS and macOS have
   #       UI implementations of the authorization service. You can use the
   #       classes of AppAuth with tokens on watchOS and tvOS, but currently the
   #       library won't help you obtain authorization grants on those platforms.
-
   s.ios.deployment_target = "7.0"
   s.osx.deployment_target = "10.9"
   s.watchos.deployment_target = "2.0"
@@ -41,8 +39,7 @@ It follows the OAuth 2.0 for Native Apps best current practice
 
   # Subspec for the core AppAuth library classes only, suitable for extensions.
   s.subspec 'Core' do |core|
-     core.source_files = "Source/*.{h,m}", "Source/AppAuthCore/*.{h,m}"
-     core.exclude_files = "Source/AppAuth.h"
+     core.source_files = "Source/AppAuthCore.h", "Source/AppAuthCore/*.{h,m}"
   end
 
   # Subspec for the full AppAuth library, including platform-dependant external user agents.
@@ -50,6 +47,7 @@ It follows the OAuth 2.0 for Native Apps best current practice
     externalUserAgent.dependency 'AppAuth/Core'
     
     externalUserAgent.source_files = "Source/AppAuth.h", "Source/AppAuth/*.{h,m}"
+    externalUserAgent.exclude_files = "Source/AppAuth/iOS/OIDExternalUserAgentIOSCustomBrowser.{h,m}"
     
     # iOS
     externalUserAgent.ios.source_files      = "Source/AppAuth/iOS/**/*.{h,m}"
@@ -59,8 +57,14 @@ It follows the OAuth 2.0 for Native Apps best current practice
 
     # macOS
     externalUserAgent.osx.source_files = "Source/AppAuth/macOS/**/*.{h,m}"
-    externalUserAgent.osx.deployment_target = '10.9'
+    externalUserAgent.osx.deployment_target = '10.9'      
   end
   
-  s.default_subspec = 'Core', 'ExternalUserAgent'
+  s.subspec 'EnterpriseUserAgent' do |enterpriseUserAgent|
+    enterpriseUserAgent.ios.deployment_target = "7.0"
+    enterpriseUserAgent.dependency 'AppAuth/ExternalUserAgent'   
+    enterpriseUserAgent.source_files = "Source/AppAuthEnterpriseUserAgent.h", "Source/AppAuth/iOS/OIDExternalUserAgentIOSCustomBrowser.{h,m}"
+  end
+  
+  s.default_subspecs = 'Core', 'ExternalUserAgent'
 end
