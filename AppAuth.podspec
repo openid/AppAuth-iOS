@@ -25,7 +25,7 @@ It follows the OAuth 2.0 for Native Apps best current practice
                      "Steven E Wright" => "stevewright@google.com",
                      "Julien Bodet" => "julien.bodet92@gmail.com"
                    }
-                   
+  
   # Note: While watchOS and tvOS are specified here, only iOS and macOS have
   #       UI implementations of the authorization service. You can use the
   #       classes of AppAuth with tokens on watchOS and tvOS, but currently the
@@ -59,14 +59,14 @@ It follows the OAuth 2.0 for Native Apps best current practice
 
     # macOS
     externalUserAgent.osx.source_files = "Source/AppAuth/macOS/**/*.{h,m}"
-    externalUserAgent.osx.deployment_target = '10.9'      
+    externalUserAgent.osx.deployment_target = '10.9'
   end
   
   s.subspec 'EnterpriseUserAgent' do |enterpriseUserAgent|
     enterpriseUserAgent.dependency 'AppAuth/ExternalUserAgent'
     
     enterpriseUserAgent.source_files = "Source/AppAuthEnterpriseUserAgent.h", "Source/AppAuth/iOS/OIDExternalUserAgentIOSCustomBrowser.{h,m}"
-    enterpriseUserAgent.ios.deployment_target = "7.0"      
+    enterpriseUserAgent.ios.deployment_target = "7.0"
   end
   
   s.default_subspecs = 'Core', 'ExternalUserAgent'
