@@ -377,10 +377,12 @@ static const NSUInteger kExpiryTimeTolerance = 60;
     // Calling updateWithTokenResponse while in an error state probably means the developer obtained
     // a new token and did the exchange without also calling updateWithAuthorizationResponse.
     // Attempts to handle gracefully, but warns the developer that this is unexpected.
-    NSLog(@"OIDAuthState:updateWithTokenResponse should not be called in an error state [%@] call"
-         "updateWithAuthorizationResponse with the result of the fresh authorization response"
-         "first",
-         _authorizationError);
+    NSLog(@"OIDAuthState:updateWithTokenResponse should not be called in an error state."
+          "Enable AppAuthRequestTrace to see the details.");
+    AppAuthRequestTrace(@"OIDAuthState:updateWithTokenResponse should not be called in an error state"
+                        "[%@] call updateWithAuthorizationResponse with the result of the fresh"
+                        "authorization response first",
+                        _authorizationError);
 
     _authorizationError = nil;
   }

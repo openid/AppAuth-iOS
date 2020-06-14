@@ -27,6 +27,7 @@ static NSString *const kIatKey = @"iat";
 static NSString *const kNonceKey = @"nonce";
 
 #import "OIDFieldMapping.h"
+#import "OIDDefines.h"
 
 @implementation OIDIDToken
 
@@ -117,7 +118,8 @@ static NSString *const kNonceKey = @"nonce";
   NSError *error;
   id object = [NSJSONSerialization JSONObjectWithData:decodedData options:0 error:&error];
   if (error) {
-    NSLog(@"Error %@ parsing token payload %@", error, sectionString);
+    NSLog(@"Error parsing token payload. Enable AppAuthRequestTrace to see the details.");
+    AppAuthRequestTrace(@"Error %@ parsing token payload %@", error, sectionString);
   }
   if ([object isKindOfClass:[NSDictionary class]]) {
     return (NSDictionary *)object;
