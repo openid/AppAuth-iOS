@@ -1,5 +1,5 @@
-/*! @file GTMTVAuthorizationService.h
-    @brief GTMAppAuth SDK
+/*! @file OIDTVAuthorizationService.h
+    @brief OIDAppAuth SDK
     @copyright
         Copyright 2016 Google Inc.
     @copydetails
@@ -20,18 +20,18 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class OIDAuthState;
-@class GTMTVAuthorizationRequest;
-@class GTMTVAuthorizationResponse;
-@class GTMTVServiceConfiguration;
+@class GTMAppAuthFetcherAuthorization;
+@class OIDTVAuthorizationRequest;
+@class OIDTVAuthorizationResponse;
+@class OIDTVServiceConfiguration;
 
 /*! @brief The block that is called when the TV authorization has initialized.
     @param response The authorization response, or nil if there was an error. Display
-        @c GTMTVAuthorizationResponse.userCode and @c GTMTVAuthorizationResponse.verificationURL to
+        @c OIDTVAuthorizationResponse.userCode and @c OIDTVAuthorizationResponse.verificationURL to
         the user so they can action the request.
     @param error The error if an error occurred.
  */
-typedef void (^GTMTVAuthorizationInitialization)(GTMTVAuthorizationResponse *_Nullable response,
+typedef void (^OIDTVAuthorizationInitialization)(OIDTVAuthorizationResponse *_Nullable response,
                                                  NSError *_Nullable error);
 
 /*! @brief The block that is called when the TV authorization has completed.
@@ -39,26 +39,26 @@ typedef void (^GTMTVAuthorizationInitialization)(GTMTVAuthorizationResponse *_Nu
         API calls, or nil if there was an error.
     @param error The error if an error occurred.
  */
-typedef void (^GTMTVAuthorizationCompletion)
-    (OIDAuthState *_Nullable authorization,
+typedef void (^OIDTVAuthorizationCompletion)
+    (GTMAppAuthFetcherAuthorization *_Nullable authorization,
      NSError *_Nullable error);
 
 /*! @brief Block returned when authorization is initialized to that will cancel the pending
         authorization when executed. Has no effect if called twice or after the authorization
         concluded.
  */
-typedef void (^GTMTVAuthorizationCancelBlock)(void);
+typedef void (^OIDTVAuthorizationCancelBlock)(void);
 
 /*! @brief Performs authorization flows designed for TVs and other limited input devices.
  */
-@interface GTMTVAuthorizationService : NSObject
+@interface OIDTVAuthorizationService : NSObject
 
-#if !GTM_APPAUTH_SKIP_GOOGLE_SUPPORT
+#if !OID_APPAUTH_SKIP_GOOGLE_SUPPORT
 /*! @brief Convenience method to return the TV authorization URL for Google.
     @return TV authorization URL for Google.
  */
-+ (GTMTVServiceConfiguration *)TVConfigurationForGoogle;
-#endif // !GTM_APPAUTH_SKIP_GOOGLE_SUPPORT
++ (OIDTVServiceConfiguration *)TVConfigurationForGoogle;
+#endif // !OID_APPAUTH_SKIP_GOOGLE_SUPPORT
 
 /*! @brief Starts a TV authorization flow with the given request and polls for a response.
     @param request The TV authorization request to initiate.
@@ -67,15 +67,15 @@ typedef void (^GTMTVAuthorizationCancelBlock)(void);
         authorization as the user has yet to grant it. Rather, it contains the information that you
         show to the user in order for them to authorize the request on another device.
     @param completion Block that is called on the success or failure of the authorization. If the
-        user approves the request, you will get a @c GTMAppAuthFetherAuthorization that you can use
+        user approves the request, you will get a @c OIDAppAuthFetherAuthorization that you can use
         to authenticate API calls, otherwis eyou will get an error.
     @return A block which you can execute if you need to cancel the ongoing authorization. Has no
         effect if called twice, or called after the authorization concludes.
     @see https://developers.google.com/identity/protocols/OAuth2ForDevices
  */
-+ (GTMTVAuthorizationCancelBlock)authorizeTVRequest:(GTMTVAuthorizationRequest *)request
-                                     initializaiton:(GTMTVAuthorizationInitialization)initialization
-                                         completion:(GTMTVAuthorizationCompletion)completion;
++ (OIDTVAuthorizationCancelBlock)authorizeTVRequest:(OIDTVAuthorizationRequest *)request
+                                     initializaiton:(OIDTVAuthorizationInitialization)initialization
+                                         completion:(OIDTVAuthorizationCompletion)completion;
 
 @end
 

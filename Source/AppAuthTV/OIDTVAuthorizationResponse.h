@@ -1,5 +1,5 @@
-/*! @file GTMTVAuthorizationResponse.h
-    @brief GTMAppAuth SDK
+/*! @file OIDTVAuthorizationResponse.h
+    @brief OIDAppAuth SDK
     @copyright
         Copyright 2016 Google Inc.
     @copydetails
@@ -20,7 +20,7 @@
 
 #import "AppAuthCore.h"
 
-@class GTMTVAuthorizationRequest;
+@class OIDTVAuthorizationRequest;
 @class OIDTokenRequest;
 
 NS_ASSUME_NONNULL_BEGIN
@@ -28,12 +28,12 @@ NS_ASSUME_NONNULL_BEGIN
 /*! @brief The @c grant_type  value for the the TV authorization flow.
     @see https://developers.google.com/identity/protocols/OAuth2ForDevices
  */
-extern NSString *const GTMTVDeviceTokenGrantType;
+extern NSString *const OIDTVDeviceTokenGrantType;
 
 /*! @brief Represents the response to a TV authorization request.
     @see https://developers.google.com/identity/protocols/OAuth2ForDevices
  */
-@interface GTMTVAuthorizationResponse : OIDAuthorizationResponse
+@interface OIDTVAuthorizationResponse : OIDAuthorizationResponse
 
 /*! @brief The verification URL that should be displayed to the user instructing them to visit the
         URL and enter the code.
@@ -69,7 +69,7 @@ extern NSString *const GTMTVDeviceTokenGrantType;
         properties are populated. Non-normative parameters are placed in the
         @c #additionalParameters dictionary.
  */
-- (instancetype)initWithRequest:(GTMTVAuthorizationRequest *)request
+- (instancetype)initWithRequest:(OIDTVAuthorizationRequest *)request
     parameters:(NSDictionary<NSString *, NSObject<NSCopying> *> *)parameters
     NS_DESIGNATED_INITIALIZER;
 

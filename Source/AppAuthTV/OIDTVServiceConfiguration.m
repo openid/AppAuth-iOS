@@ -16,7 +16,7 @@
         limitations under the License.
  */
 
-#import "GTMTVServiceConfiguration.h"
+#import "OIDTVServiceConfiguration.h"
 
 #import "AppAuthCore.h"
 #import "OIDDefines.h"
@@ -27,7 +27,7 @@ static NSString *const kTVAuthorizationEndpointKey = @"TVAuthorizationEndpoint";
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface GTMTVServiceConfiguration ()
+@interface OIDTVServiceConfiguration ()
 
 /*! @brief Designated initializer.
     @param aDecoder NSCoder to unserialize the object from.
@@ -36,7 +36,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-@implementation GTMTVServiceConfiguration
+@implementation OIDTVServiceConfiguration
 
 @synthesize TVAuthorizationEndpoint = _TVAuthorizationEndpoint;
 

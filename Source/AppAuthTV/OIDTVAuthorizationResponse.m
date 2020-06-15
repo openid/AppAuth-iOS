@@ -1,5 +1,5 @@
-/*! @file GTMTVAuthorizationResponse.m
-    @brief GTMAppAuth SDK
+/*! @file OIDTVAuthorizationResponse.m
+    @brief OIDAppAuth SDK
     @copyright
         Copyright 2016 Google Inc.
     @copydetails
@@ -16,15 +16,15 @@
         limitations under the License.
  */
 
-#import "GTMTVAuthorizationResponse.h"
+#import "OIDTVAuthorizationResponse.h"
 
-#import "GTMTVAuthorizationRequest.h"
+#import "OIDTVAuthorizationRequest.h"
 #import "AppAuthCore.h"
 #import "OIDDefines.h"
 #import "OIDFieldMapping.h"
 
 
-NSString *const GTMTVDeviceTokenGrantType = @"http://oauth.net/grant_type/device/1.0";
+NSString *const OIDTVDeviceTokenGrantType = @"http://oauth.net/grant_type/device/1.0";
 
 /*! @brief The key for the @c verificationURL property in the incoming parameters and for
         @c NSSecureCoding.
@@ -59,7 +59,7 @@ static NSString *const kAdditionalParametersKey = @"additionalParameters";
  */
 static NSString *const kRequestKey = @"request";
 
-@implementation GTMTVAuthorizationResponse
+@implementation OIDTVAuthorizationResponse
 
 @synthesize verificationURL = _verificationURL;
 @synthesize userCode = _userCode;
@@ -99,7 +99,7 @@ static NSString *const kRequestKey = @"request";
 
 #pragma mark - Initializers
 
-- (instancetype)initWithRequest:(GTMTVAuthorizationRequest *)request
+- (instancetype)initWithRequest:(OIDTVAuthorizationRequest *)request
     parameters:(NSDictionary<NSString *, NSObject<NSCopying> *> *)parameters {
   self = [super initWithRequest:request parameters:parameters];
   return self;
@@ -143,7 +143,7 @@ static NSString *const kRequestKey = @"request";
     (NSDictionary<NSString *, NSString *> *)additionalParameters {
   OIDTokenRequest *pollRequest =
       [[OIDTokenRequest alloc] initWithConfiguration:self.request.configuration
-                                           grantType:GTMTVDeviceTokenGrantType
+                                           grantType:OIDTVDeviceTokenGrantType
                                    authorizationCode:_deviceCode
                                          redirectURL:[[NSURL alloc] init]
                                             clientID:self.request.clientID

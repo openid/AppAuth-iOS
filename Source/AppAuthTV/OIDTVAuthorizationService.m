@@ -1,5 +1,5 @@
-/*! @file GTMTVAuthorizationService.m
-    @brief GTMAppAuth SDK
+/*! @file OIDTVAuthorizationService.m
+    @brief OIDAppAuth SDK
     @copyright
         Copyright 2016 Google Inc.
     @copydetails
@@ -16,15 +16,17 @@
         limitations under the License.
  */
 
-#import "GTMTVAuthorizationService.h"
+#import "OIDTVAuthorizationService.h"
 
 #import "AppAuthCore.h"
 #import "OIDDefines.h"
 #import "OIDURLQueryComponent.h"
 
-#import "GTMTVAuthorizationRequest.h"
-#import "GTMTVAuthorizationResponse.h"
-#import "GTMTVServiceConfiguration.h"
+#import "OIDTVAuthorizationRequest.h"
+#import "OIDTVAuthorizationResponse.h"
+#import "OIDTVServiceConfiguration.h"
+
+#import "GTMAppAuthFetcherAuthorization.h"
 
 /*! @brief Google's device authorization endpoint.
  */
@@ -41,12 +43,12 @@ NSString *const kErrorCodeAuthorizationPending = @"authorization_pending";
  */
 NSString *const kErrorCodeSlowDown = @"slow_down";
 
-@implementation GTMTVAuthorizationService
+@implementation OIDTVAuthorizationService
 
 #pragma mark - Initializers
 
-#if !GTM_APPAUTH_SKIP_GOOGLE_SUPPORT
-+ (GTMTVServiceConfiguration *)TVConfigurationForGoogle {
+#if !OID_APPAUTH_SKIP_GOOGLE_SUPPORT
++ (OIDTVServiceConfiguration *)TVConfigurationForGoogle {
   NSURL *authorizationEndpoint =
       [NSURL URLWithString:@"https://accounts.google.com/o/oauth2/v2/auth"];
   NSURL *tokenEndpoint =
@@ -54,22 +56,22 @@ NSString *const kErrorCodeSlowDown = @"slow_down";
   NSURL *TVAuthorizationEndpoint =
       [NSURL URLWithString:kGoogleDeviceAuthorizationEndpoint];
 
-  GTMTVServiceConfiguration *configuration =
-      [[GTMTVServiceConfiguration alloc] initWithAuthorizationEndpoint:authorizationEndpoint
+  OIDTVServiceConfiguration *configuration =
+      [[OIDTVServiceConfiguration alloc] initWithAuthorizationEndpoint:authorizationEndpoint
                                                TVAuthorizationEndpoint:TVAuthorizationEndpoint
                                                          tokenEndpoint:tokenEndpoint];
   return configuration;
 }
-#endif // !GTM_APPAUTH_SKIP_GOOGLE_SUPPORT
+#endif // !OID_APPAUTH_SKIP_GOOGLE_SUPPORT
 
-+ (GTMTVAuthorizationCancelBlock)authorizeTVRequest:(GTMTVAuthorizationRequest *)request
-                                     initializaiton:(GTMTVAuthorizationInitialization)initialization
-                                         completion:(GTMTVAuthorizationCompletion)completion {
++ (OIDTVAuthorizationCancelBlock)authorizeTVRequest:(OIDTVAuthorizationRequest *)request
+                                     initializaiton:(OIDTVAuthorizationInitialization)initialization
+                                         completion:(OIDTVAuthorizationCompletion)completion {
   // Block level variable that can be used to cancel the polling.
   __block BOOL pollRunning = YES;
 
   // Block that will be returned allowign the caller to cancel the polling.
-  GTMTVAuthorizationCancelBlock cancelBlock = ^{
+  OIDTVAuthorizationCancelBlock cancelBlock = ^{
     if (pollRunning) {
       dispatch_async(dispatch_get_main_queue(), ^{
         NSError *cancelError =
@@ -159,8 +161,8 @@ NSString *const kErrorCodeSlowDown = @"slow_down";
     }
 
     // Parses the authorization response.
-    GTMTVAuthorizationResponse *TVAuthorizationResponse =
-        [[GTMTVAuthorizationResponse alloc] initWithRequest:request parameters:json];
+    OIDTVAuthorizationResponse *TVAuthorizationResponse =
+        [[OIDTVAuthorizationResponse alloc] initWithRequest:request parameters:json];
     if (!TVAuthorizationResponse) {
       // A problem occurred constructing the token response from the JSON.
       NSError *returnedError =
@@ -209,7 +211,9 @@ NSString *const kErrorCodeSlowDown = @"slow_down";
                 OIDAuthState *authState =
                     [[OIDAuthState alloc] initWithAuthorizationResponse:TVAuthorizationResponse
                                                           tokenResponse:tokenResponse];
-                completion(authState, nil);
+                GTMAppAuthFetcherAuthorization *authorization =
+                    [[GTMAppAuthFetcherAuthorization alloc] initWithAuthState:authState];
+                completion(authorization, nil);
               });
             } else {
               if (tokenError.domain == OIDOAuthTokenErrorDomain) {

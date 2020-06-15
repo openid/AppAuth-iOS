@@ -22,7 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /*! @brief Configuration for authorizing the user with the @c GTMTVAuthorizationService.
  */
-@interface GTMTVServiceConfiguration : OIDServiceConfiguration
+@interface OIDTVServiceConfiguration : OIDServiceConfiguration
 
 /*! @brief The TV authorization endpoint URI.
  */

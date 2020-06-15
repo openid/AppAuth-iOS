@@ -1,5 +1,5 @@
 /*! @file AppAuthTV.h
-    @brief GTMAppAuth SDK
+    @brief OIDAppAuth SDK
     @copyright
         Copyright 2016 Google Inc.
     @copydetails
@@ -16,7 +16,7 @@
         limitations under the License.
  */
 
-#import "GTMTVAuthorizationRequest.h"
-#import "GTMTVAuthorizationResponse.h"
-#import "GTMTVAuthorizationService.h"
-#import "GTMTVServiceConfiguration.h"
+#import "OIDTVAuthorizationRequest.h"
+#import "OIDTVAuthorizationResponse.h"
+#import "OIDTVAuthorizationService.h"
+#import "OIDTVServiceConfiguration.h"
