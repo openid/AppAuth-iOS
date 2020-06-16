@@ -932,6 +932,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2D47AAD2249988770059B5A4 /* AppAuthEnterpriseUserAgent */ = {
+			isa = PBXGroup;
+			children = (
+				2D47AAD3249988B90059B5A4 /* iOS */,
+			);
+			path = AppAuthEnterpriseUserAgent;
+			sourceTree = "<group>";
+		};
+		2D47AAD3249988B90059B5A4 /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				345AE746202D526800738D22 /* OIDExternalUserAgentIOSCustomBrowser.h */,
+				345AE745202D526800738D22 /* OIDExternalUserAgentIOSCustomBrowser.m */,
+			);
+			path = iOS;
+			sourceTree = "<group>";
+		};
 		2D91B867249177180005B197 /* EnterpriseUserAgentFramework */ = {
 			isa = PBXGroup;
 			children = (
@@ -963,7 +980,6 @@
 				341741FB1C5D82D3000EF209 /* UnitTests */,
 				341741AE1C5D8243000EF209 /* Source */,
 				340E737D1C5D819B0076B1F6 /* Products */,
-				2D91B863249053190005B197 /* AppAuth_iOS copy-Info.plist */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -996,6 +1012,7 @@
 		341741AE1C5D8243000EF209 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				2D47AAD2249988770059B5A4 /* AppAuthEnterpriseUserAgent */,
 				2D91B86A249177250005B197 /* AppAuthEnterpriseUserAgent.h */,
 				2D91B867249177180005B197 /* EnterpriseUserAgentFramework */,
 				348970992178F40600ABEED4 /* CoreFramework */,
@@ -1160,8 +1177,6 @@
 			children = (
 				F6F60FB31D2BFEFE00325CB3 /* OIDAuthorizationService+IOS.h */,
 				F6F60FB11D2BFEFE00325CB3 /* OIDAuthorizationService+IOS.m */,
-				345AE746202D526800738D22 /* OIDExternalUserAgentIOSCustomBrowser.h */,
-				345AE745202D526800738D22 /* OIDExternalUserAgentIOSCustomBrowser.m */,
 				F6F60FB51D2BFEFE00325CB3 /* OIDAuthState+IOS.h */,
 				F6F60FB01D2BFEFE00325CB3 /* OIDAuthState+IOS.m */,
 				A6DEABA92018E5B50022AC32 /* OIDExternalUserAgentIOS.h */,
