@@ -26,7 +26,6 @@
 #import "OIDTVAuthorizationResponse.h"
 #import "OIDTVServiceConfiguration.h"
 
-//#import "GTMAppAuthFetcherAuthorization.h"
 /*! @brief The authorization pending error code.
     @see https://developers.google.com/identity/protocols/OAuth2ForDevices
  */

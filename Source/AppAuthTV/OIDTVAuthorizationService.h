@@ -60,7 +60,7 @@ typedef void (^OIDTVAuthorizationCancelBlock)(void);
         authorization as the user has yet to grant it. Rather, it contains the information that you
         show to the user in order for them to authorize the request on another device.
     @param completion Block that is called on the success or failure of the authorization. If the
-        user approves the request, you will get a @c OIDAppAuthFetherAuthorization that you can use
+        user approves the request, you will get a @c OIDAuthState that you can use
         to authenticate API calls, otherwis eyou will get an error.
     @return A block which you can execute if you need to cancel the ongoing authorization. Has no
         effect if called twice, or called after the authorization concludes.
