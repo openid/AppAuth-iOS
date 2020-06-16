@@ -40,7 +40,7 @@ NSString *const kErrorCodeSlowDown = @"slow_down";
 
 #pragma mark - Initializers
 + (OIDTVAuthorizationCancelBlock)authorizeTVRequest:(OIDTVAuthorizationRequest *)request
-                                     initializaiton:(OIDTVAuthorizationInitialization)initialization
+                                     initialization:(OIDTVAuthorizationInitialization)initialization
                                          completion:(OIDTVAuthorizationCompletion)completion {
   // Block level variable that can be used to cancel the polling.
   __block BOOL pollRunning = YES;

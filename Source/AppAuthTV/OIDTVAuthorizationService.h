@@ -67,7 +67,7 @@ typedef void (^OIDTVAuthorizationCancelBlock)(void);
     @see https://developers.google.com/identity/protocols/OAuth2ForDevices
  */
 + (OIDTVAuthorizationCancelBlock)authorizeTVRequest:(OIDTVAuthorizationRequest *)request
-                                     initializaiton:(OIDTVAuthorizationInitialization)initialization
+                                     initialization:(OIDTVAuthorizationInitialization)initialization
                                          completion:(OIDTVAuthorizationCompletion)completion;
 
 @end
