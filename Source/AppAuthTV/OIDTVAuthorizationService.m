@@ -26,7 +26,7 @@
 #import "OIDTVAuthorizationResponse.h"
 #import "OIDTVServiceConfiguration.h"
 
-#import "GTMAppAuthFetcherAuthorization.h"
+//#import "GTMAppAuthFetcherAuthorization.h"
 /*! @brief The authorization pending error code.
     @see https://developers.google.com/identity/protocols/OAuth2ForDevices
  */
@@ -187,9 +187,7 @@ NSString *const kErrorCodeSlowDown = @"slow_down";
                 OIDAuthState *authState =
                     [[OIDAuthState alloc] initWithAuthorizationResponse:TVAuthorizationResponse
                                                           tokenResponse:tokenResponse];
-                GTMAppAuthFetcherAuthorization *authorization =
-                    [[GTMAppAuthFetcherAuthorization alloc] initWithAuthState:authState];
-                completion(authorization, nil);
+                completion(authState, nil);
               });
             } else {
               if (tokenError.domain == OIDOAuthTokenErrorDomain) {

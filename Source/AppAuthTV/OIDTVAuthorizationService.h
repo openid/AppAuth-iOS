@@ -20,7 +20,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class GTMAppAuthFetcherAuthorization;
+@class OIDAuthState;
 @class OIDTVAuthorizationRequest;
 @class OIDTVAuthorizationResponse;
 @class OIDTVServiceConfiguration;
@@ -40,7 +40,7 @@ typedef void (^OIDTVAuthorizationInitialization)(OIDTVAuthorizationResponse *_Nu
     @param error The error if an error occurred.
  */
 typedef void (^OIDTVAuthorizationCompletion)
-    (GTMAppAuthFetcherAuthorization *_Nullable authorization,
+    (OIDAuthState *_Nullable authorization,
      NSError *_Nullable error);
 
 /*! @brief Block returned when authorization is initialized to that will cancel the pending
