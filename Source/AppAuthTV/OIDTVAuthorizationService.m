@@ -1,5 +1,5 @@
 /*! @file OIDTVAuthorizationService.m
-    @brief OIDAppAuth SDK
+    @brief AppAuthTV SDK
     @copyright
         Copyright 2016 Google Inc.
     @copydetails
@@ -27,12 +27,6 @@
 #import "OIDTVServiceConfiguration.h"
 
 #import "GTMAppAuthFetcherAuthorization.h"
-
-/*! @brief Google's device authorization endpoint.
- */
-NSString *const kGoogleDeviceAuthorizationEndpoint =
-    @"https://accounts.google.com/o/oauth2/device/code";
-
 /*! @brief The authorization pending error code.
     @see https://developers.google.com/identity/protocols/OAuth2ForDevices
  */
@@ -46,24 +40,6 @@ NSString *const kErrorCodeSlowDown = @"slow_down";
 @implementation OIDTVAuthorizationService
 
 #pragma mark - Initializers
-
-#if !OID_APPAUTH_SKIP_GOOGLE_SUPPORT
-+ (OIDTVServiceConfiguration *)TVConfigurationForGoogle {
-  NSURL *authorizationEndpoint =
-      [NSURL URLWithString:@"https://accounts.google.com/o/oauth2/v2/auth"];
-  NSURL *tokenEndpoint =
-      [NSURL URLWithString:@"https://www.googleapis.com/oauth2/v4/token"];
-  NSURL *TVAuthorizationEndpoint =
-      [NSURL URLWithString:kGoogleDeviceAuthorizationEndpoint];
-
-  OIDTVServiceConfiguration *configuration =
-      [[OIDTVServiceConfiguration alloc] initWithAuthorizationEndpoint:authorizationEndpoint
-                                               TVAuthorizationEndpoint:TVAuthorizationEndpoint
-                                                         tokenEndpoint:tokenEndpoint];
-  return configuration;
-}
-#endif // !OID_APPAUTH_SKIP_GOOGLE_SUPPORT
-
 + (OIDTVAuthorizationCancelBlock)authorizeTVRequest:(OIDTVAuthorizationRequest *)request
                                      initializaiton:(OIDTVAuthorizationInitialization)initialization
                                          completion:(OIDTVAuthorizationCompletion)completion {

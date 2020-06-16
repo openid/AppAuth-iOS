@@ -53,13 +53,6 @@ typedef void (^OIDTVAuthorizationCancelBlock)(void);
  */
 @interface OIDTVAuthorizationService : NSObject
 
-#if !OID_APPAUTH_SKIP_GOOGLE_SUPPORT
-/*! @brief Convenience method to return the TV authorization URL for Google.
-    @return TV authorization URL for Google.
- */
-+ (OIDTVServiceConfiguration *)TVConfigurationForGoogle;
-#endif // !OID_APPAUTH_SKIP_GOOGLE_SUPPORT
-
 /*! @brief Starts a TV authorization flow with the given request and polls for a response.
     @param request The TV authorization request to initiate.
     @param initialization Block that is called with the initial authorization response. Unlike other

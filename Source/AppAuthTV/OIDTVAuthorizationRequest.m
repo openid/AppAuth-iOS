@@ -1,5 +1,5 @@
 /*! @file OIDTVAuthorizationRequest.m
-    @brief OIDAppAuth SDK
+    @brief AppAuthTV SDK
     @copyright
         Copyright 2016 Google Inc.
     @copydetails

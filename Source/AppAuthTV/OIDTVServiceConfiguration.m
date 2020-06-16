@@ -1,5 +1,5 @@
-/*! @file GTMTVServiceConfiguration.m
-    @brief GTMAppAuth SDK
+/*! @file OIDTVServiceConfiguration.m
+    @brief AppAuthTV SDK
     @copyright
         Copyright 2016 Google Inc.
     @copydetails
