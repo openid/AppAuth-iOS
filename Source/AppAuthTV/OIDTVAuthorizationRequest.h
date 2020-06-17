@@ -1,7 +1,7 @@
 /*! @file OIDTVAuthorizationRequest.h
     @brief AppAuthTV SDK
     @copyright
-        Copyright 2016 Google Inc.
+        Copyright 2020 Google Inc.
     @copydetails
         Licensed under the Apache License, Version 2.0 (the "License");
         you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /*! @brief Represents a TV and limited input device authorization request.
-    @see https://developers.google.com/identity/protocols/OAuth2ForDevices
+    @see https://tools.ietf.org/html/rfc8628#section-3.1
  */
 @interface OIDTVAuthorizationRequest : OIDAuthorizationRequest
 
