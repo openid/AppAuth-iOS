@@ -42,12 +42,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)init
     OID_UNAVAILABLE_USE_INITIALIZER(
-        @selector(initWithAuthorizationEndpoint:TVAuthorizationEndpoint:tokenEndpoint:));
+                                    @selector(initWithAuthorizationEndpoint:TVAuthorizationEndpoint:tokenEndpoint:))
 
 - (instancetype)initWithAuthorizationEndpoint:(NSURL *)authorizationEndpoint
                                          tokenEndpoint:(NSURL *)tokenEndpoint
     OID_UNAVAILABLE_USE_INITIALIZER(
-        @selector(initWithAuthorizationEndpoint:TVAuthorizationEndpoint:tokenEndpoint:));
+                                    @selector(initWithAuthorizationEndpoint:TVAuthorizationEndpoint:tokenEndpoint:))
 
 - (instancetype)initWithAuthorizationEndpoint:(NSURL *)authorizationEndpoint
                       TVAuthorizationEndpoint:(NSURL *)TVAuthorizationEndpoint
@@ -85,7 +85,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSString *)description {
   return [NSString stringWithFormat:@"<%@: %p, TVAuthorizationEndpoint: %@ tokenEndpoint: %@>",
                                     NSStringFromClass([self class]),
-                                    self,
+                                    (void *)self,
                                     _TVAuthorizationEndpoint,
                                     self.tokenEndpoint];
 }

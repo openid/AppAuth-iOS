@@ -79,7 +79,7 @@
 - (NSString *)description {
   return [NSString stringWithFormat:@"<%@: %p, request: %@>",
                                     NSStringFromClass([self class]),
-                                    self,
+                                    (void *)self,
                                     self.authorizationRequestURL];
 }
 

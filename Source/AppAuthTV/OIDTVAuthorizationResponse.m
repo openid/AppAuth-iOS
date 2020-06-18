@@ -123,7 +123,7 @@ static NSString *const kRequestKey = @"request";
                                      "additionalParameters: %@, "
                                      "request: %@>",
                                     NSStringFromClass([self class]),
-                                    self,
+                                    (void *)self,
                                     _verificationURL,
                                     _userCode,
                                     _deviceCode,
