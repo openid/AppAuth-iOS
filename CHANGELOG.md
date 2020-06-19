@@ -1,5 +1,11 @@
 # AppAuth for iOS and macOS Changelog
 
+## 1.4.0
+
+### Added
+
+1. Support for Swift Package Manager
+
 ## 1.3.1
 
 ### Fixes
