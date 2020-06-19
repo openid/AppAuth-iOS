@@ -1,5 +1,5 @@
 /*! @file OIDTVAuthorizationService.m
-    @brief AppAuthTV SDK
+    @brief AppAuth iOS SDK
     @copyright
         Copyright 2016 Google Inc.
     @copydetails
@@ -39,6 +39,7 @@ NSString *const kErrorCodeSlowDown = @"slow_down";
 @implementation OIDTVAuthorizationService
 
 #pragma mark - Initializers
+
 + (OIDTVAuthorizationCancelBlock)authorizeTVRequest:(OIDTVAuthorizationRequest *)request
                                      initialization:(OIDTVAuthorizationInitialization)initialization
                                          completion:(OIDTVAuthorizationCompletion)completion {

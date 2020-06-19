@@ -16,7 +16,7 @@
         limitations under the License.
  */
 
-#import "OIDTVAuthorizationRequest.h"
 #import "OIDTVAuthorizationResponse.h"
+#import "OIDTVAuthorizationRequest.h"
 #import "OIDTVAuthorizationService.h"
 #import "OIDTVServiceConfiguration.h"

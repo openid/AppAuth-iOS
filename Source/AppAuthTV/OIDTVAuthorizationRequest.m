@@ -1,5 +1,5 @@
 /*! @file OIDTVAuthorizationRequest.m
-    @brief AppAuthTV SDK
+    @brief AppAuth iOS SDK
     @copyright
         Copyright 2016 Google Inc.
     @copydetails
@@ -15,12 +15,10 @@
         See the License for the specific language governing permissions and
         limitations under the License.
  */
-
-#import "OIDTVAuthorizationRequest.h"
-
 #import "AppAuthCore.h"
-#import "OIDURLQueryComponent.h"
+#import "OIDTVAuthorizationRequest.h"
 #import "OIDTVServiceConfiguration.h"
+#import "OIDURLQueryComponent.h"
 
 @implementation OIDTVAuthorizationRequest
 

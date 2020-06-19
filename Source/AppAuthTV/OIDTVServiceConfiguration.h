@@ -1,5 +1,5 @@
 /*! @file OIDTVServiceConfiguration.h
-    @brief AppAuthTV SDK
+    @brief AppAuth iOS SDK
     @copyright
         Copyright 2016 Google Inc.
     @copydetails
@@ -20,7 +20,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/*! @brief Configuration for authorizing the user with the @c GTMTVAuthorizationService.
+/*! @brief Configuration for authorizing the user with the @c OIDTVAuthorizationService.
  */
 @interface OIDTVServiceConfiguration : OIDServiceConfiguration
 

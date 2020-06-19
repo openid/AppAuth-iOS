@@ -64,4 +64,5 @@ It follows the OAuth 2.0 for Native Apps best current practice
     tv.dependency 'AppAuth/Core'
   end
 
+  s.default_subspecs = 'Core', 'ExternalUserAgent'
 end

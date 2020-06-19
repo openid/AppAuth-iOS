@@ -18,7 +18,6 @@
 		2D47AAE3249A87020059B5A4 /* OIDTVAuthorizationRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = 2D47AAD9249A87010059B5A4 /* OIDTVAuthorizationRequest.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2D47AAE4249A87020059B5A4 /* OIDTVServiceConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D47AADA249A87010059B5A4 /* OIDTVServiceConfiguration.m */; };
 		2D47AAE5249A87020059B5A4 /* OIDTVServiceConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D47AADA249A87010059B5A4 /* OIDTVServiceConfiguration.m */; };
-		2D47AAE6249A87020059B5A4 /* AppAuthTV.h in Headers */ = {isa = PBXBuildFile; fileRef = 2D47AADB249A87010059B5A4 /* AppAuthTV.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2D47AAE7249A87020059B5A4 /* OIDTVAuthorizationResponse.h in Headers */ = {isa = PBXBuildFile; fileRef = 2D47AADC249A87010059B5A4 /* OIDTVAuthorizationResponse.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2D47AAE8249A87020059B5A4 /* OIDTVAuthorizationRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D47AADD249A87010059B5A4 /* OIDTVAuthorizationRequest.m */; };
 		2D47AAE9249A87020059B5A4 /* OIDTVAuthorizationRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D47AADD249A87010059B5A4 /* OIDTVAuthorizationRequest.m */; };
@@ -887,7 +886,6 @@
 		2D47AAD7249A86E30059B5A4 /* AppAuthTV */ = {
 			isa = PBXGroup;
 			children = (
-				2D47AADB249A87010059B5A4 /* AppAuthTV.h */,
 				2D47AAD9249A87010059B5A4 /* OIDTVAuthorizationRequest.h */,
 				2D47AADD249A87010059B5A4 /* OIDTVAuthorizationRequest.m */,
 				2D47AADC249A87010059B5A4 /* OIDTVAuthorizationResponse.h */,
@@ -954,6 +952,7 @@
 		341741AE1C5D8243000EF209 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				2D47AADB249A87010059B5A4 /* AppAuthTV.h */,
 				2D47AAD7249A86E30059B5A4 /* AppAuthTV */,
 				348970992178F40600ABEED4 /* CoreFramework */,
 				343AAA4C1E8345B600F9D36E /* Framework */,
@@ -1282,7 +1281,6 @@
 				2D47AAEB249A87020059B5A4 /* OIDTVAuthorizationService.h in Headers */,
 				2D47AAE7249A87020059B5A4 /* OIDTVAuthorizationResponse.h in Headers */,
 				343AAB131E83499200F9D36E /* OIDAuthorizationRequest.h in Headers */,
-				2D47AAE6249A87020059B5A4 /* AppAuthTV.h in Headers */,
 				343AAB1D1E83499200F9D36E /* OIDErrorUtilities.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

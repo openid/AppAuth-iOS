@@ -1,5 +1,5 @@
 /*! @file OIDTVAuthorizationService.h
-    @brief AppAuthTV SDK
+    @brief AppAuth iOS SDK
     @copyright
         Copyright 2016 Google Inc.
     @copydetails
