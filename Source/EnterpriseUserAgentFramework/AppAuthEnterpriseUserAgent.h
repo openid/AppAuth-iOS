@@ -24,31 +24,6 @@ FOUNDATION_EXPORT double AppAuthCoreVersionNumber;
 //! Project version string for AppAuthCoreFramework.
 FOUNDATION_EXPORT const unsigned char AppAuthCoreVersionString[];
 
-#import <AppAuthCore/OIDAuthState.h>
-#import <AppAuthCore/OIDAuthStateChangeDelegate.h>
-#import <AppAuthCore/OIDAuthStateErrorDelegate.h>
-#import <AppAuthCore/OIDAuthorizationRequest.h>
-#import <AppAuthCore/OIDAuthorizationResponse.h>
-#import <AppAuthCore/OIDAuthorizationService.h>
-#import <AppAuthCore/OIDError.h>
-#import <AppAuthCore/OIDErrorUtilities.h>
-#import <AppAuthCore/OIDExternalUserAgent.h>
-#import <AppAuthCore/OIDExternalUserAgentRequest.h>
-#import <AppAuthCore/OIDExternalUserAgentSession.h>
-#import <AppAuthCore/OIDGrantTypes.h>
-#import <AppAuthCore/OIDIDToken.h>
-#import <AppAuthCore/OIDRegistrationRequest.h>
-#import <AppAuthCore/OIDRegistrationResponse.h>
-#import <AppAuthCore/OIDResponseTypes.h>
-#import <AppAuthCore/OIDScopes.h>
-#import <AppAuthCore/OIDScopeUtilities.h>
-#import <AppAuthCore/OIDServiceConfiguration.h>
-#import <AppAuthCore/OIDServiceDiscovery.h>
-#import <AppAuthCore/OIDTokenRequest.h>
-#import <AppAuthCore/OIDTokenResponse.h>
-#import <AppAuthCore/OIDTokenUtilities.h>
-#import <AppAuthCore/OIDURLSessionProvider.h>
-#import <AppAuthCore/OIDEndSessionRequest.h>
-#import <AppAuthCore/OIDEndSessionResponse.h>
+#import "AppAuthCore.h"
 
 #import "AppAuthEnterpriseUserAgent/iOS/OIDExternalUserAgentIOSCustomBrowser.h"
