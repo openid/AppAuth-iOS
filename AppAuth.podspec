@@ -64,7 +64,7 @@ It follows the OAuth 2.0 for Native Apps best current practice
   s.subspec 'EnterpriseUserAgent' do |enterpriseUserAgent|
     enterpriseUserAgent.dependency 'AppAuth/Core'
     
-    enterpriseUserAgent.source_files = "Source/AppAuthEnterpriseUserAgent.h", "Source/AppAuthEnterpriseUserAgent/iOS/OIDExternalUserAgentIOSCustomBrowser.{h,m}"
+    enterpriseUserAgent.ios.source_files = "Source/AppAuthEnterpriseUserAgent.h", "Source/AppAuthEnterpriseUserAgent/iOS/**/*.{h,m}"
     enterpriseUserAgent.ios.deployment_target = "7.0"
   end
   

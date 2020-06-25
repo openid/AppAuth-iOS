@@ -506,6 +506,13 @@ try, or use as a reference for your own implementation. One of them,
 enables you to use a different browser for authentication, like Chrome for iOS
 or Firefox for iOS.
 
+To include this if using CocoaPods, include the EnterpriseUserAgent subspec alongside any subspecs you were already using, e.g.:
+```
+	pod 'AppAuth/ExternalUserAgent', 'AppAuth/EnterpriseUserAgent'
+```
+
+To include this if using Carthage, please use the EnterpriseUserAgent Framework alongside any frameworks you were already using.
+
 Here's how to configure AppAuth to use a custom browser using the
 `OIDExternalUserAgentIOSCustomBrowser` user agent:
 

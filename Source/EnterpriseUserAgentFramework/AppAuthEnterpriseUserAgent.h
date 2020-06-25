@@ -18,11 +18,11 @@
 
 #import <Foundation/Foundation.h>
 
-//! Project version number for AppAuthFramework-iOS.
-FOUNDATION_EXPORT double AppAuthCoreVersionNumber;
+//! Project version number for AppAuthEnterpriseUserAgentFramework.
+FOUNDATION_EXPORT double AppAuthEnterpriseUserAgentVersionNumber;
 
-//! Project version string for AppAuthCoreFramework.
-FOUNDATION_EXPORT const unsigned char AppAuthCoreVersionString[];
+//! Project version string for AppAuthEnterpriseUserAgentFramework.
+FOUNDATION_EXPORT const unsigned char AppAuthEnterpriseUserAgentVersionString[];
 
 #import "AppAuthCore.h"
 
