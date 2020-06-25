@@ -508,7 +508,8 @@ or Firefox for iOS.
 
 To include this if using CocoaPods, include the EnterpriseUserAgent subspec alongside any subspecs you were already using, e.g.:
 ```
-	pod 'AppAuth/ExternalUserAgent', 'AppAuth/EnterpriseUserAgent'
+	pod 'AppAuth/ExternalUserAgent'
+	pod 'AppAuth/EnterpriseUserAgent'
 ```
 
 To include this if using Carthage, please use the EnterpriseUserAgent Framework alongside any frameworks you were already using.
