@@ -64,7 +64,7 @@ API_UNAVAILABLE(macCatalyst)
 
 /*! @brief An instance of @c OIDExternalUserAgentIOSCustomBrowser for Opera.
  */
-//+ (instancetype)CustomBrowserOpera;
++ (instancetype)CustomBrowserOpera;
 
 /*! @brief An instance of @c OIDExternalUserAgentIOSCustomBrowser for Safari.
  */

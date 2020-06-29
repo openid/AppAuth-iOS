@@ -56,15 +56,15 @@ NS_ASSUME_NONNULL_BEGIN
                                              appStoreURL:appStoreURL];
 }
 
-//+ (instancetype)CustomBrowserOpera {
-//  OIDCustomBrowserURLTransformation transform =
-//      [[self class] URLTransformationSchemeSubstitutionHTTPS:@"touch-https" HTTP:@"touch-http"];
-//  NSURL *appStoreURL =
-//  [NSURL URLWithString:@"https://itunes.apple.com/us/app/opera-touch-web-browser/id1411869974"];
-//  return [[[self class] alloc] initWithURLTransformation:transform
-//                                        canOpenURLScheme:@"touch-https"
-//                                             appStoreURL:appStoreURL];
-//}
++ (instancetype)CustomBrowserOpera {
+  OIDCustomBrowserURLTransformation transform =
+      [[self class] URLTransformationSchemeSubstitutionHTTPS:@"touch-https" HTTP:@"touch-http"];
+  NSURL *appStoreURL =
+  [NSURL URLWithString:@"https://itunes.apple.com/us/app/opera-touch-web-browser/id1411869974"];
+  return [[[self class] alloc] initWithURLTransformation:transform
+                                        canOpenURLScheme:@"touch-https"
+                                             appStoreURL:appStoreURL];
+}
 
 + (instancetype)CustomBrowserSafari {
   OIDCustomBrowserURLTransformation transformNOP = ^NSURL *(NSURL *requestURL) {
