@@ -58,11 +58,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (instancetype)CustomBrowserOpera {
   OIDCustomBrowserURLTransformation transform =
-      [[self class] URLTransformationSchemeSubstitutionHTTPS:@"touch-https" HTTP:@"touch-http"];
+      [[self class] URLTransformationSchemeSubstitutionHTTPS:@"opera-https" HTTP:@"opera-http"];
   NSURL *appStoreURL =
-  [NSURL URLWithString:@"https://itunes.apple.com/us/app/opera-touch-web-browser/id1411869974"];
+  [NSURL URLWithString:@"https://itunes.apple.com/us/app/opera-mini-web-browser/id363729560"];
   return [[[self class] alloc] initWithURLTransformation:transform
-                                        canOpenURLScheme:@"touch-https"
+                                        canOpenURLScheme:@"opera-https"
                                              appStoreURL:appStoreURL];
 }
 
