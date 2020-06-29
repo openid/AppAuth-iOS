@@ -543,7 +543,7 @@ id<OIDExternalUserAgent> userAgent =
     [OIDExternalUserAgentIOSCustomBrowser CustomBrowserChrome];
 appDelegate.currentAuthorizationFlow =
     [OIDAuthState authStateByPresentingAuthorizationRequest:request
-        externalUserAgent:self
+        externalUserAgent:userAgent
                  callback:^(OIDAuthState *_Nullable authState,
                                    NSError *_Nullable error) {
   if (authState) {

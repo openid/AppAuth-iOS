@@ -39,7 +39,7 @@ NS_ASSUME_NONNULL_BEGIN
   // Chrome iOS documentation: https://developer.chrome.com/multidevice/ios/links
   OIDCustomBrowserURLTransformation transform = [[self class] URLTransformationSchemeSubstitutionHTTPS:@"googlechromes" HTTP:@"googlechrome"];
   NSURL *appStoreURL =
-  [NSURL URLWithString:@"itms-apps://itunes.apple.com/us/app/chrome/id535886823"];
+  [NSURL URLWithString:@"https://itunes.apple.com/us/app/chrome/id535886823"];
   return [[[self class] alloc] initWithURLTransformation:transform
                                         canOpenURLScheme:@"googlechromes"
                                              appStoreURL:appStoreURL];
@@ -50,21 +50,21 @@ NS_ASSUME_NONNULL_BEGIN
   OIDCustomBrowserURLTransformation transform =
       [[self class] URLTransformationSchemeConcatPrefix:@"firefox://open-url?url="];
   NSURL *appStoreURL =
-  [NSURL URLWithString:@"itms-apps://itunes.apple.com/us/app/firefox-web-browser/id989804926"];
+  [NSURL URLWithString:@"https://itunes.apple.com/us/app/firefox-web-browser/id989804926"];
   return [[[self class] alloc] initWithURLTransformation:transform
                                         canOpenURLScheme:@"firefox"
                                              appStoreURL:appStoreURL];
 }
 
-+ (instancetype)CustomBrowserOpera {
-  OIDCustomBrowserURLTransformation transform =
-      [[self class] URLTransformationSchemeSubstitutionHTTPS:@"opera-https" HTTP:@"opera-http"];
-  NSURL *appStoreURL =
-  [NSURL URLWithString:@"itms-apps://itunes.apple.com/us/app/opera-mini-web-browser/id363729560"];
-  return [[[self class] alloc] initWithURLTransformation:transform
-                                        canOpenURLScheme:@"opera-https"
-                                             appStoreURL:appStoreURL];
-}
+//+ (instancetype)CustomBrowserOpera {
+//  OIDCustomBrowserURLTransformation transform =
+//      [[self class] URLTransformationSchemeSubstitutionHTTPS:@"touch-https" HTTP:@"touch-http"];
+//  NSURL *appStoreURL =
+//  [NSURL URLWithString:@"https://itunes.apple.com/us/app/opera-touch-web-browser/id1411869974"];
+//  return [[[self class] alloc] initWithURLTransformation:transform
+//                                        canOpenURLScheme:@"touch-https"
+//                                             appStoreURL:appStoreURL];
+//}
 
 + (instancetype)CustomBrowserSafari {
   OIDCustomBrowserURLTransformation transformNOP = ^NSURL *(NSURL *requestURL) {
