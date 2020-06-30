@@ -56,4 +56,4 @@ FOUNDATION_EXPORT const unsigned char AppAuthEnterpriseUserAgentEnterpriseUserAg
 #import <AppAuthEnterpriseUserAgent/OIDExternalUserAgentIOS.h>
 #import "AppAuthEnterpriseUserAgent/OIDExternalUserAgentCatalyst.h"
 
-#import <AppAuthEnterpriseUserAgentEnterpriseUserAgent/OIDExternalUserAgentIOSCustomBrowser.h>
+#import <AppAuthEnterpriseUserAgent/OIDExternalUserAgentIOSCustomBrowser.h>
