@@ -1195,12 +1195,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				2D0BB86C249D5BAF005BA653 /* AppAuthEnterpriseUserAgent.h in Headers */,
+				2D91B842249053190005B197 /* OIDExternalUserAgentIOSCustomBrowser.h in Headers */,
 				2D91B83E249053190005B197 /* OIDAuthorizationResponse.h in Headers */,
 				2D91B83F249053190005B197 /* OIDScopes.h in Headers */,
 				2D91B840249053190005B197 /* OIDExternalUserAgentRequest.h in Headers */,
 				2D91B841249053190005B197 /* OIDAuthStateChangeDelegate.h in Headers */,
-				2D91B842249053190005B197 /* OIDExternalUserAgentIOSCustomBrowser.h in Headers */,
-				2D91B844249053190005B197 /* OIDExternalUserAgentCatalyst.h in Headers */,
 				2D91B845249053190005B197 /* OIDIDToken.h in Headers */,
 				2D91B846249053190005B197 /* OIDResponseTypes.h in Headers */,
 				2D91B847249053190005B197 /* OIDTokenRequest.h in Headers */,
@@ -1210,7 +1209,6 @@
 				2D91B84B249053190005B197 /* OIDServiceDiscovery.h in Headers */,
 				2D91B84C249053190005B197 /* OIDGrantTypes.h in Headers */,
 				2D91B84D249053190005B197 /* OIDURLSessionProvider.h in Headers */,
-				2D91B84E249053190005B197 /* OIDAuthState+IOS.h in Headers */,
 				2D91B84F249053190005B197 /* OIDRegistrationResponse.h in Headers */,
 				2D91B850249053190005B197 /* OIDExternalUserAgent.h in Headers */,
 				2D91B851249053190005B197 /* OIDExternalUserAgentSession.h in Headers */,
@@ -1221,11 +1219,13 @@
 				2D91B856249053190005B197 /* OIDEndSessionRequest.h in Headers */,
 				2D91B857249053190005B197 /* OIDAuthState.h in Headers */,
 				2D91B858249053190005B197 /* OIDErrorUtilities.h in Headers */,
-				2D91B859249053190005B197 /* OIDAuthorizationService+IOS.h in Headers */,
 				2D91B85A249053190005B197 /* OIDAuthorizationRequest.h in Headers */,
 				2D91B85B249053190005B197 /* OIDTokenUtilities.h in Headers */,
 				2D91B85C249053190005B197 /* OIDError.h in Headers */,
+				2D91B859249053190005B197 /* OIDAuthorizationService+IOS.h in Headers */,
+				2D91B84E249053190005B197 /* OIDAuthState+IOS.h in Headers */,
 				2D91B85D249053190005B197 /* OIDExternalUserAgentIOS.h in Headers */,
+				2D91B844249053190005B197 /* OIDExternalUserAgentCatalyst.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1920,13 +1920,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2D91B81F249053190005B197 /* OIDExternalUserAgentIOS.m in Sources */,
-				2D91B820249053190005B197 /* OIDExternalUserAgentCatalyst.m in Sources */,
+				2D91B82F249053190005B197 /* OIDExternalUserAgentIOSCustomBrowser.m in Sources */,
 				2D91B821249053190005B197 /* OIDFieldMapping.m in Sources */,
 				2D91B822249053190005B197 /* OIDIDToken.m in Sources */,
 				2D91B823249053190005B197 /* OIDEndSessionResponse.m in Sources */,
 				2D91B824249053190005B197 /* OIDAuthState.m in Sources */,
-				2D91B825249053190005B197 /* OIDAuthState+IOS.m in Sources */,
 				2D91B826249053190005B197 /* OIDTokenResponse.m in Sources */,
 				2D91B827249053190005B197 /* OIDErrorUtilities.m in Sources */,
 				2D91B828249053190005B197 /* OIDURLQueryComponent.m in Sources */,
@@ -1936,9 +1934,7 @@
 				2D91B82C249053190005B197 /* OIDTokenUtilities.m in Sources */,
 				2D91B82D249053190005B197 /* OIDServiceDiscovery.m in Sources */,
 				2D91B82E249053190005B197 /* OIDTokenRequest.m in Sources */,
-				2D91B82F249053190005B197 /* OIDExternalUserAgentIOSCustomBrowser.m in Sources */,
 				2D91B830249053190005B197 /* OIDEndSessionRequest.m in Sources */,
-				2D91B831249053190005B197 /* OIDAuthorizationService+IOS.m in Sources */,
 				2D91B832249053190005B197 /* OIDServiceConfiguration.m in Sources */,
 				2D91B833249053190005B197 /* OIDRegistrationResponse.m in Sources */,
 				2D91B834249053190005B197 /* OIDURLSessionProvider.m in Sources */,
@@ -1949,6 +1945,10 @@
 				2D91B839249053190005B197 /* OIDResponseTypes.m in Sources */,
 				2D91B83A249053190005B197 /* OIDAuthorizationResponse.m in Sources */,
 				2D91B83B249053190005B197 /* OIDError.m in Sources */,
+				2D91B825249053190005B197 /* OIDAuthState+IOS.m in Sources */,
+				2D91B831249053190005B197 /* OIDAuthorizationService+IOS.m in Sources */,
+				2D91B81F249053190005B197 /* OIDExternalUserAgentIOS.m in Sources */,
+				2D91B820249053190005B197 /* OIDExternalUserAgentCatalyst.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

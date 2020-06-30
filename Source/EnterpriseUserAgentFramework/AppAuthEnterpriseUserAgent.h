@@ -1,5 +1,5 @@
-/*! @file AppAuthEnterpriseUserAgent.h
-   @brief AppAuth iOS SDK
+/*! @file AppAuthEnterpriseUserAgentEnterpriseUserAgent.h
+   @brief AppAuthEnterpriseUserAgent iOS SDK
    @copyright
        Copyright 2020 Google Inc. All Rights Reserved.
    @copydetails
@@ -18,11 +18,11 @@
 
 #import <Foundation/Foundation.h>
 
-//! Project version number for AppAuthEnterpriseUserAgentFramework.
-FOUNDATION_EXPORT double AppAuthEnterpriseUserAgentVersionNumber;
+//! Project version number for AppAuthEnterpriseUserAgentEnterpriseUserAgentFramework.
+FOUNDATION_EXPORT double AppAuthEnterpriseUserAgentEnterpriseUserAgentVersionNumber;
 
-//! Project version string for AppAuthEnterpriseUserAgentFramework.
-FOUNDATION_EXPORT const unsigned char AppAuthEnterpriseUserAgentVersionString[];
+//! Project version string for AppAuthEnterpriseUserAgentEnterpriseUserAgentFramework.
+FOUNDATION_EXPORT const unsigned char AppAuthEnterpriseUserAgentEnterpriseUserAgentVersionString[];
 
 #import <AppAuthEnterpriseUserAgent/OIDAuthState.h>
 #import <AppAuthEnterpriseUserAgent/OIDAuthStateChangeDelegate.h>
@@ -51,4 +51,9 @@ FOUNDATION_EXPORT const unsigned char AppAuthEnterpriseUserAgentVersionString[];
 #import <AppAuthEnterpriseUserAgent/OIDEndSessionRequest.h>
 #import <AppAuthEnterpriseUserAgent/OIDEndSessionResponse.h>
 
-#import <AppAuthEnterpriseUserAgent/OIDExternalUserAgentIOSCustomBrowser.h>
+#import <AppAuthEnterpriseUserAgent/OIDAuthState+IOS.h>
+#import <AppAuthEnterpriseUserAgent/OIDAuthorizationService+IOS.h>
+#import <AppAuthEnterpriseUserAgent/OIDExternalUserAgentIOS.h>
+#import "AppAuthEnterpriseUserAgent/OIDExternalUserAgentCatalyst.h"
+
+#import <AppAuthEnterpriseUserAgentEnterpriseUserAgent/OIDExternalUserAgentIOSCustomBrowser.h>
