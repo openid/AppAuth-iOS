@@ -1,4 +1,4 @@
-/*! @file AppAuthCore.h
+/*! @file AppAuthEnterpriseUserAgent.h
    @brief AppAuth iOS SDK
    @copyright
        Copyright 2020 Google Inc. All Rights Reserved.
