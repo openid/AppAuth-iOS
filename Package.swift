@@ -62,7 +62,7 @@ let package = Package(
             name: "AppAuthEnterpriseUserAgent",
             dependencies: ["AppAuthCore"],
             path: "Source/AppAuthEnterpriseUserAgent",
-            sources: ["iOS", "macOS"],
+            sources: ["iOS"],
             publicHeadersPath: "",
             cSettings: [
                 .headerSearchPath("iOS"),
