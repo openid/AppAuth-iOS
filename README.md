@@ -512,12 +512,16 @@ Include the `EnterpriseUserAgent` subspec alongside any pods/subspecs you were a
 	pod 'AppAuth'
 	pod 'AppAuth/EnterpriseUserAgent'
 ```
+Make sure to import `AppAuthEnterpriseUserAgent` in addition to `AppAuth` if you are using the full `AppAuth` functionality.
 
 ##### Carthage
 Use the `EnterpriseUserAgent` Framework, which includes all the headers of the `AppAuth` framework.
+Make sure to import `<AppAuthEnterpriseUserAgent/AppAuthEnterpriseUserAgent.h>`. This includes all the files included by AppAuth/AppAuthCore, so only this import is necessary.
 
 ##### Swift Package Manager
-Include the `AppAuthEnterpriseUserAgent` target
+Include the `AppAuthEnterpriseUserAgent` target.
+Make sure to import `AppAuthEnterpriseUserAgent.h` in addition to `AppAuth.h` if you are using the full `AppAuth` functionality.
+
 Here's how to configure AppAuth to use a custom browser using the
 `OIDExternalUserAgentIOSCustomBrowser` user agent:
 
@@ -537,6 +541,9 @@ First, add the following array to your
 This is required so that AppAuth can test for the browser and open the app store
 if it's not installed (the default behavior of this user-agent). You only need
 to include the URL scheme of the actual browser you intend to use.
+
+Next, make sure to import the correct header file.
+If using CocoaPods/Swift Package manager, make sure to import AppAuthEnterpriseUserAgent alongside AppAuth/AppAuthCore.
 
 <sub>Objective-C</sub>
 ```objc
