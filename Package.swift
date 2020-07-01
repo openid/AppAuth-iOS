@@ -35,7 +35,7 @@ let package = Package(
         .library(
             name: "AppAuth",
             targets: ["AppAuth"]),
-	    .library(
+        .library(
 	        name: "AppAuthEnterpriseUserAgent",
 	        targets: ["AppAuthEnterpriseUserAgent"])
     ],
