@@ -561,6 +561,24 @@ appDelegate.currentAuthorizationFlow =
 }];
 ```
 
+<sub>Swift</sub>
+```
+guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
+            self.logMessage("Error accessing AppDelegate")
+            return
+        }
+let userAgent = OIDExternalUserAgentIOSCustomBrowser.customBrowserChrome()		
+appDelegate.currentAuthorizationFlow = OIDAuthState.authState(byPresenting: request, externalUserAgent: userAgent) { authState, error in
+    if let authState = authState {
+        self.setAuthState(authState)
+        self.logMessage("Got authorization tokens. Access token: \(authState.lastTokenResponse?.accessToken ?? "DEFAULT_TOKEN")")
+    } else {
+        self.logMessage("Authorization error: \(error?.localizedDescription ?? "DEFAULT_ERROR")")
+        self.setAuthState(nil)
+    }
+}
+```
+
 That's it! With those two changes (which you can try on the included sample),
 AppAuth will use Chrome iOS for the authorization request (and open Chrome in
 the App Store if it's not installed).
