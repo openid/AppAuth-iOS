@@ -18,8 +18,10 @@
 
 #import "OIDTVAuthorizationService.h"
 
-#import "AppAuthCore.h"
+#import "OIDAuthorizationService.h"
+#import "OIDAuthState.h"
 #import "OIDDefines.h"
+#import "OIDErrorUtilities.h"
 #import "OIDURLQueryComponent.h"
 
 #import "OIDTVAuthorizationRequest.h"

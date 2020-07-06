@@ -18,7 +18,6 @@
 
 #import "OIDTVServiceConfiguration.h"
 
-#import "AppAuthCore.h"
 #import "OIDDefines.h"
 
 /*! @brief The key for the @c TVAuthorizationEndpoint property.

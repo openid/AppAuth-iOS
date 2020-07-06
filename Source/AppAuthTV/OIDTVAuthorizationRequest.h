@@ -18,7 +18,7 @@
 
 #import <Foundation/Foundation.h>
 
-#import "AppAuthCore.h"
+#import "OIDAuthorizationRequest.h"
 
 @class OIDTVServiceConfiguration;
 

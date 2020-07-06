@@ -18,11 +18,11 @@
 
 #import "OIDTVAuthorizationResponse.h"
 
-#import "OIDTVAuthorizationRequest.h"
-#import "AppAuthCore.h"
 #import "OIDDefines.h"
 #import "OIDFieldMapping.h"
+#import "OIDTokenRequest.h"
 
+#import "OIDTVAuthorizationRequest.h"
 
 NSString *const OIDTVDeviceTokenGrantType = @"http://oauth.net/grant_type/device/1.0";
 
