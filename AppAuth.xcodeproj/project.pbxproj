@@ -76,6 +76,22 @@
 		2D93865024B38840009A12D7 /* OIDTVAuthorizationResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D47AAD8249A87010059B5A4 /* OIDTVAuthorizationResponse.m */; };
 		2D93865124B38840009A12D7 /* OIDTVAuthorizationService.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D47AAE0249A87020059B5A4 /* OIDTVAuthorizationService.m */; };
 		2D93865224B38840009A12D7 /* OIDTVServiceConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D47AADA249A87010059B5A4 /* OIDTVServiceConfiguration.m */; };
+		2D93866624B3A912009A12D7 /* OIDScopesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 341742081C5D82D3000EF209 /* OIDScopesTests.m */; };
+		2D93866724B3A912009A12D7 /* OIDURLQueryComponentTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 341742121C5D82D3000EF209 /* OIDURLQueryComponentTests.m */; };
+		2D93866824B3A912009A12D7 /* OIDServiceConfigurationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3417420A1C5D82D3000EF209 /* OIDServiceConfigurationTests.m */; };
+		2D93866924B3A912009A12D7 /* OIDURLQueryComponentTestsIOS7.m in Sources */ = {isa = PBXBuildFile; fileRef = 341742131C5D82D3000EF209 /* OIDURLQueryComponentTestsIOS7.m */; };
+		2D93866A24B3A912009A12D7 /* OIDRegistrationResponseTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 60140F851DE43CC700DA0DC3 /* OIDRegistrationResponseTests.m */; };
+		2D93866B24B3A912009A12D7 /* OIDServiceDiscoveryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3417420C1C5D82D3000EF209 /* OIDServiceDiscoveryTests.m */; };
+		2D93866C24B3A912009A12D7 /* OIDAuthStateTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 341742051C5D82D3000EF209 /* OIDAuthStateTests.m */; };
+		2D93866D24B3A912009A12D7 /* OIDTokenResponseTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 341742101C5D82D3000EF209 /* OIDTokenResponseTests.m */; };
+		2D93866E24B3A912009A12D7 /* OIDTokenRequestTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3417420E1C5D82D3000EF209 /* OIDTokenRequestTests.m */; };
+		2D93866F24B3A912009A12D7 /* OIDResponseTypesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 341742071C5D82D3000EF209 /* OIDResponseTypesTests.m */; };
+		2D93867024B3A912009A12D7 /* OIDRegistrationRequestTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 60140F821DE43BAF00DA0DC3 /* OIDRegistrationRequestTests.m */; };
+		2D93867124B3A912009A12D7 /* OIDAuthorizationRequestTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 341742011C5D82D3000EF209 /* OIDAuthorizationRequestTests.m */; };
+		2D93867224B3A912009A12D7 /* OIDGrantTypesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 341742061C5D82D3000EF209 /* OIDGrantTypesTests.m */; };
+		2D93867324B3A912009A12D7 /* OIDRPProfileCode.m in Sources */ = {isa = PBXBuildFile; fileRef = 34A6638A1E8865090060B664 /* OIDRPProfileCode.m */; };
+		2D93867524B3A912009A12D7 /* OIDAuthorizationResponseTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 341742031C5D82D3000EF209 /* OIDAuthorizationResponseTests.m */; };
+		2D93867624B3A912009A12D7 /* OIDTokenUtilitiesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A5EEF1FD20CF07760044F470 /* OIDTokenUtilitiesTests.m */; };
 		340DAE571D5821A100EC285B /* OIDAuthorizationService+Mac.m in Sources */ = {isa = PBXBuildFile; fileRef = 340DAE261D581FE700EC285B /* OIDAuthorizationService+Mac.m */; };
 		340DAE581D5821A100EC285B /* OIDExternalUserAgentMac.m in Sources */ = {isa = PBXBuildFile; fileRef = 340DAE281D581FE700EC285B /* OIDExternalUserAgentMac.m */; };
 		340DAE591D5821A100EC285B /* OIDAuthState+Mac.m in Sources */ = {isa = PBXBuildFile; fileRef = 340DAE2A1D581FE700EC285B /* OIDAuthState+Mac.m */; };
@@ -583,6 +599,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		2D93867F24B3AB54009A12D7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 340E73741C5D819B0076B1F6 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2D9385B624B37CAD009A12D7;
+			remoteInfo = AppAuthTV;
+		};
 		341741F61C5D8283000EF209 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 340E73741C5D819B0076B1F6 /* Project object */;
@@ -680,8 +703,7 @@
 		2D9385B724B37CAD009A12D7 /* AppAuthTV.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AppAuthTV.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D9385B924B37CAD009A12D7 /* AppAuthTV.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppAuthTV.h; sourceTree = "<group>"; };
 		2D9385BA24B37CAD009A12D7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		2D9385D524B3837C009A12D7 /* AppAuthTVTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppAuthTVTests.m; sourceTree = "<group>"; };
-		2D9385D724B3837C009A12D7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2D93867D24B3A912009A12D7 /* AppAuthTVTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AppAuthTVTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		340DAE251D581FE700EC285B /* OIDAuthorizationService+Mac.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "OIDAuthorizationService+Mac.h"; sourceTree = "<group>"; };
 		340DAE261D581FE700EC285B /* OIDAuthorizationService+Mac.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "OIDAuthorizationService+Mac.m"; sourceTree = "<group>"; };
 		340DAE271D581FE700EC285B /* OIDExternalUserAgentMac.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OIDExternalUserAgentMac.h; sourceTree = "<group>"; };
@@ -815,6 +837,13 @@
 
 /* Begin PBXFrameworksBuildPhase section */
 		2D9385B424B37CAD009A12D7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2D93867724B3A912009A12D7 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -970,15 +999,6 @@
 			path = TVFramework;
 			sourceTree = "<group>";
 		};
-		2D9385D424B3837C009A12D7 /* AppAuthTVTests */ = {
-			isa = PBXGroup;
-			children = (
-				2D9385D524B3837C009A12D7 /* AppAuthTVTests.m */,
-				2D9385D724B3837C009A12D7 /* Info.plist */,
-			);
-			path = AppAuthTVTests;
-			sourceTree = "<group>";
-		};
 		340DAE241D581FE700EC285B /* macOS */ = {
 			isa = PBXGroup;
 			children = (
@@ -998,7 +1018,6 @@
 		340E73731C5D819B0076B1F6 = {
 			isa = PBXGroup;
 			children = (
-				2D9385D424B3837C009A12D7 /* AppAuthTVTests */,
 				341742291C5D84D0000EF209 /* Frameworks */,
 				341741FB1C5D82D3000EF209 /* UnitTests */,
 				341741AE1C5D8243000EF209 /* Source */,
@@ -1028,6 +1047,7 @@
 				342F42C32177B1FC00574F24 /* AppAuthCore.framework */,
 				348970972177B3B000ABEED4 /* AppAuthCoreTests.xctest */,
 				2D9385B724B37CAD009A12D7 /* AppAuthTV.framework */,
+				2D93867D24B3A912009A12D7 /* AppAuthTVTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1463,6 +1483,24 @@
 			productReference = 2D9385B724B37CAD009A12D7 /* AppAuthTV.framework */;
 			productType = "com.apple.product-type.framework";
 		};
+		2D93866224B3A912009A12D7 /* AppAuthTVTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2D93867A24B3A912009A12D7 /* Build configuration list for PBXNativeTarget "AppAuthTVTests" */;
+			buildPhases = (
+				2D93866524B3A912009A12D7 /* Sources */,
+				2D93867724B3A912009A12D7 /* Frameworks */,
+				2D93867924B3A912009A12D7 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				2D93868024B3AB54009A12D7 /* PBXTargetDependency */,
+			);
+			name = AppAuthTVTests;
+			productName = AppAuth_tvOSTests;
+			productReference = 2D93867D24B3A912009A12D7 /* AppAuthTVTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		340DAE4D1D58216A00EC285B /* AppAuth-macOS */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 340DAE541D58216A00EC285B /* Build configuration list for PBXNativeTarget "AppAuth-macOS" */;
@@ -1847,12 +1885,20 @@
 				342F42842177B1FC00574F24 /* AppAuthCore */,
 				3489707D2177B3B000ABEED4 /* AppAuthCoreTests */,
 				2D9385B624B37CAD009A12D7 /* AppAuthTV */,
+				2D93866224B3A912009A12D7 /* AppAuthTVTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		2D9385B524B37CAD009A12D7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2D93867924B3A912009A12D7 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1978,6 +2024,29 @@
 				2D93862924B3881C009A12D7 /* OIDErrorUtilities.m in Sources */,
 				2D93865124B38840009A12D7 /* OIDTVAuthorizationService.m in Sources */,
 				2D93863E24B38827009A12D7 /* OIDScopes.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2D93866524B3A912009A12D7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2D93866624B3A912009A12D7 /* OIDScopesTests.m in Sources */,
+				2D93866724B3A912009A12D7 /* OIDURLQueryComponentTests.m in Sources */,
+				2D93866824B3A912009A12D7 /* OIDServiceConfigurationTests.m in Sources */,
+				2D93866924B3A912009A12D7 /* OIDURLQueryComponentTestsIOS7.m in Sources */,
+				2D93866A24B3A912009A12D7 /* OIDRegistrationResponseTests.m in Sources */,
+				2D93866B24B3A912009A12D7 /* OIDServiceDiscoveryTests.m in Sources */,
+				2D93866C24B3A912009A12D7 /* OIDAuthStateTests.m in Sources */,
+				2D93866D24B3A912009A12D7 /* OIDTokenResponseTests.m in Sources */,
+				2D93866E24B3A912009A12D7 /* OIDTokenRequestTests.m in Sources */,
+				2D93866F24B3A912009A12D7 /* OIDResponseTypesTests.m in Sources */,
+				2D93867024B3A912009A12D7 /* OIDRegistrationRequestTests.m in Sources */,
+				2D93867124B3A912009A12D7 /* OIDAuthorizationRequestTests.m in Sources */,
+				2D93867224B3A912009A12D7 /* OIDGrantTypesTests.m in Sources */,
+				2D93867324B3A912009A12D7 /* OIDRPProfileCode.m in Sources */,
+				2D93867524B3A912009A12D7 /* OIDAuthorizationResponseTests.m in Sources */,
+				2D93867624B3A912009A12D7 /* OIDTokenUtilitiesTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2453,6 +2522,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		2D93868024B3AB54009A12D7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2D9385B624B37CAD009A12D7 /* AppAuthTV */;
+			targetProxy = 2D93867F24B3AB54009A12D7 /* PBXContainerItemProxy */;
+		};
 		341741F71C5D8283000EF209 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 340E737B1C5D819B0076B1F6 /* AppAuth-iOS */;
@@ -2555,6 +2629,36 @@
 				TVOS_DEPLOYMENT_TARGET = 13.4;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		2D93867B24B3A912009A12D7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				HEADER_SEARCH_PATHS = .;
+				INFOPLIST_FILE = UnitTests/UnitTestsInfo.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = net.openid.AppAuthTVTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				TVOS_DEPLOYMENT_TARGET = 10.1;
+			};
+			name = Debug;
+		};
+		2D93867C24B3A912009A12D7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				HEADER_SEARCH_PATHS = .;
+				INFOPLIST_FILE = UnitTests/UnitTestsInfo.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = net.openid.AppAuthTVTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				TVOS_DEPLOYMENT_TARGET = 10.1;
 			};
 			name = Release;
 		};
@@ -3245,6 +3349,15 @@
 			buildConfigurations = (
 				2D9385C924B37CAD009A12D7 /* Debug */,
 				2D9385CA24B37CAD009A12D7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2D93867A24B3A912009A12D7 /* Build configuration list for PBXNativeTarget "AppAuthTVTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2D93867B24B3A912009A12D7 /* Debug */,
+				2D93867C24B3A912009A12D7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -51,7 +51,7 @@ FOUNDATION_EXPORT const unsigned char AppAuthTVVersionString[];
 #import <AppAuthTV/OIDEndSessionRequest.h>
 #import <AppAuthTV/OIDEndSessionResponse.h>
 
-#import <AppAuthTV/OIDTVAuthorizationResponse.h>
 #import <AppAuthTV/OIDTVAuthorizationRequest.h>
+#import <AppAuthTV/OIDTVAuthorizationResponse.h>
 #import <AppAuthTV/OIDTVAuthorizationService.h>
 #import <AppAuthTV/OIDTVServiceConfiguration.h>
