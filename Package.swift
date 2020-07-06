@@ -34,7 +34,10 @@ let package = Package(
             targets: ["AppAuthCore"]),
         .library(
             name: "AppAuth",
-            targets: ["AppAuth"])
+            targets: ["AppAuth"]),
+        .library(
+            name: "AppAuthTV",
+            targets: ["AppAuthTV"])
     ],
     dependencies: [],
     targets: [
@@ -54,6 +57,12 @@ let package = Package(
                 .headerSearchPath("macOS"),
                 .headerSearchPath("macOS/LoopbackHTTPServer"),
             ]
+        ),
+        .target(
+            name: "AppAuthTV",
+            dependencies: ["AppAuthCore"],
+            path: "Source/AppAuthTV",
+            publicHeadersPath: ""
         ),
         .testTarget(
             name: "AppAuthCoreTests",
