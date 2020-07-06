@@ -37,8 +37,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation OIDTVServiceConfiguration
 
-@synthesize TVAuthorizationEndpoint = _TVAuthorizationEndpoint;
-
 - (instancetype)init
     OID_UNAVAILABLE_USE_INITIALIZER(
                                     @selector(initWithAuthorizationEndpoint:TVAuthorizationEndpoint:tokenEndpoint:))

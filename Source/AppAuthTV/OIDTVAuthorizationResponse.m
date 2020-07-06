@@ -61,12 +61,6 @@ static NSString *const kRequestKey = @"request";
 
 @implementation OIDTVAuthorizationResponse
 
-@synthesize verificationURL = _verificationURL;
-@synthesize userCode = _userCode;
-@synthesize deviceCode = _deviceCode;
-@synthesize interval = _interval;
-@synthesize expirationDate = _expirationDate;
-
 /*! @brief Returns a mapping of incoming parameters to instance variables.
     @return A mapping of incoming parameters to instance variables.
  */
