@@ -506,6 +506,24 @@ try, or use as a reference for your own implementation. One of them,
 enables you to use a different browser for authentication, like Chrome for iOS
 or Firefox for iOS.
 
+##### CocoaPods
+Include the `EnterpriseUserAgent` subspec alongside any pods/subspecs you were already using, e.g.:
+```
+	pod 'AppAuth'
+	pod 'AppAuth/EnterpriseUserAgent'
+```
+
+Make sure to import `AppAuthEnterpriseUserAgent.h` in addition to `AppAuth.h` if you are using the full `AppAuth` functionality.
+
+##### Carthage
+Use the `AppAuthEnterpriseUserAgent` Framework, which includes all the headers of the `AppAuth` framework.
+Make sure to import `<AppAuthEnterpriseUserAgent/AppAuthEnterpriseUserAgent.h>`. This includes all the files included by AppAuth/AppAuthCore, so only this import is necessary.
+
+##### Swift Package Manager
+Include the `AppAuthEnterpriseUserAgent` target alongside any targets you were already using.
+
+Make sure to import `AppAuthEnterpriseUserAgent.h` in addition to `AppAuth.h` if you are using the full `AppAuth` functionality.
+
 Here's how to configure AppAuth to use a custom browser using the
 `OIDExternalUserAgentIOSCustomBrowser` user agent:
 
@@ -526,6 +544,9 @@ This is required so that AppAuth can test for the browser and open the app store
 if it's not installed (the default behavior of this user-agent). You only need
 to include the URL scheme of the actual browser you intend to use.
 
+Next, make sure to import the correct header file.
+If using CocoaPods/Swift Package manager, make sure to import AppAuthEnterpriseUserAgent alongside AppAuth/AppAuthCore.
+
 <sub>Objective-C</sub>
 ```objc
 // performs authentication request
@@ -535,7 +556,7 @@ id<OIDExternalUserAgent> userAgent =
     [OIDExternalUserAgentIOSCustomBrowser CustomBrowserChrome];
 appDelegate.currentAuthorizationFlow =
     [OIDAuthState authStateByPresentingAuthorizationRequest:request
-        externalUserAgent:self
+        externalUserAgent:userAgent
                  callback:^(OIDAuthState *_Nullable authState,
                                    NSError *_Nullable error) {
   if (authState) {
@@ -547,6 +568,24 @@ appDelegate.currentAuthorizationFlow =
     [self setAuthState:nil];
   }
 }];
+```
+
+<sub>Swift</sub>
+```
+guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
+            self.logMessage("Error accessing AppDelegate")
+            return
+        }
+let userAgent = OIDExternalUserAgentIOSCustomBrowser.customBrowserChrome()		
+appDelegate.currentAuthorizationFlow = OIDAuthState.authState(byPresenting: request, externalUserAgent: userAgent) { authState, error in
+    if let authState = authState {
+        self.setAuthState(authState)
+        self.logMessage("Got authorization tokens. Access token: \(authState.lastTokenResponse?.accessToken ?? "DEFAULT_TOKEN")")
+    } else {
+        self.logMessage("Authorization error: \(error?.localizedDescription ?? "DEFAULT_ERROR")")
+        self.setAuthState(nil)
+    }
+}
 ```
 
 That's it! With those two changes (which you can try on the included sample),
