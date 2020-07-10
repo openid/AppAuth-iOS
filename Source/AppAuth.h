@@ -49,7 +49,6 @@
 #import "OIDAuthState+IOS.h"
 #import "OIDAuthorizationService+IOS.h"
 #import "OIDExternalUserAgentIOS.h"
-#import "OIDExternalUserAgentIOSCustomBrowser.h"
 #import "OIDExternalUserAgentCatalyst.h"
 #elif TARGET_OS_MAC
 #import "OIDAuthState+Mac.h"

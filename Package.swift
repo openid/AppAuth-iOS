@@ -34,7 +34,10 @@ let package = Package(
             targets: ["AppAuthCore"]),
         .library(
             name: "AppAuth",
-            targets: ["AppAuth"])
+            targets: ["AppAuth"]),
+        .library(
+	        name: "AppAuthEnterpriseUserAgent",
+	        targets: ["AppAuthEnterpriseUserAgent"])
     ],
     dependencies: [],
     targets: [
@@ -53,6 +56,16 @@ let package = Package(
                 .headerSearchPath("iOS"),
                 .headerSearchPath("macOS"),
                 .headerSearchPath("macOS/LoopbackHTTPServer"),
+            ]
+        ),
+        .target(
+            name: "AppAuthEnterpriseUserAgent",
+            dependencies: ["AppAuthCore"],
+            path: "Source/AppAuthEnterpriseUserAgent",
+            sources: ["iOS"],
+            publicHeadersPath: "",
+            cSettings: [
+                .headerSearchPath("iOS"),
             ]
         ),
         .testTarget(

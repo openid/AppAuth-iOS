@@ -41,8 +41,7 @@ It follows the OAuth 2.0 for Native Apps best current practice
 
   # Subspec for the core AppAuth library classes only, suitable for extensions.
   s.subspec 'Core' do |core|
-     core.source_files = "Source/*.{h,m}", "Source/AppAuthCore/*.{h,m}"
-     core.exclude_files = "Source/AppAuth.h"
+     core.source_files = "Source/AppAuthCore.h", "Source/AppAuthCore/*.{h,m}"
   end
 
   # Subspec for the full AppAuth library, including platform-dependant external user agents.
@@ -62,5 +61,12 @@ It follows the OAuth 2.0 for Native Apps best current practice
     externalUserAgent.osx.deployment_target = '10.9'
   end
   
-  s.default_subspec = 'Core', 'ExternalUserAgent'
+  s.subspec 'EnterpriseUserAgent' do |enterpriseUserAgent|
+    enterpriseUserAgent.dependency 'AppAuth/Core'
+    
+    enterpriseUserAgent.ios.source_files = "Source/AppAuthEnterpriseUserAgent.h", "Source/AppAuthEnterpriseUserAgent/iOS/**/*.{h,m}"
+    enterpriseUserAgent.ios.deployment_target = "7.0"
+  end
+  
+  s.default_subspecs = 'Core', 'ExternalUserAgent'
 end
