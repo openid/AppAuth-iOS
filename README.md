@@ -512,14 +512,16 @@ Include the `EnterpriseUserAgent` subspec alongside any pods/subspecs you were a
 	pod 'AppAuth'
 	pod 'AppAuth/EnterpriseUserAgent'
 ```
-Make sure to import `AppAuthEnterpriseUserAgent` in addition to `AppAuth` if you are using the full `AppAuth` functionality.
+
+Make sure to import `AppAuthEnterpriseUserAgent.h` in addition to `AppAuth.h` if you are using the full `AppAuth` functionality.
 
 ##### Carthage
-Use the `EnterpriseUserAgent` Framework, which includes all the headers of the `AppAuth` framework.
+Use the `AppAuthEnterpriseUserAgent` Framework, which includes all the headers of the `AppAuth` framework.
 Make sure to import `<AppAuthEnterpriseUserAgent/AppAuthEnterpriseUserAgent.h>`. This includes all the files included by AppAuth/AppAuthCore, so only this import is necessary.
 
 ##### Swift Package Manager
-Include the `AppAuthEnterpriseUserAgent` target.
+Include the `AppAuthEnterpriseUserAgent` target alongside any targets you were already using.
+
 Make sure to import `AppAuthEnterpriseUserAgent.h` in addition to `AppAuth.h` if you are using the full `AppAuth` functionality.
 
 Here's how to configure AppAuth to use a custom browser using the
