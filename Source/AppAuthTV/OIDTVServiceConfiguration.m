@@ -42,7 +42,7 @@ NS_ASSUME_NONNULL_BEGIN
       @selector(initWithAuthorizationEndpoint:TVAuthorizationEndpoint:tokenEndpoint:))
 
 - (instancetype)initWithAuthorizationEndpoint:(NSURL *)authorizationEndpoint
-                                      tokenEndpoint:(NSURL *)tokenEndpoint
+                                tokenEndpoint:(NSURL *)tokenEndpoint
     OID_UNAVAILABLE_USE_INITIALIZER(
       @selector(initWithAuthorizationEndpoint:TVAuthorizationEndpoint:tokenEndpoint:))
 
