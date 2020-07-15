@@ -1,5 +1,5 @@
-/*! @file GTMTVAuthorizationResponse.m
-    @brief GTMAppAuth SDK
+/*! @file OIDTVAuthorizationResponse.m
+    @brief AppAuth iOS SDK
     @copyright
         Copyright 2016 Google Inc.
     @copydetails
@@ -16,15 +16,15 @@
         limitations under the License.
  */
 
-#import "GTMTVAuthorizationResponse.h"
+#import "OIDTVAuthorizationResponse.h"
 
-#import "GTMTVAuthorizationRequest.h"
-#import "AppAuthCore.h"
 #import "OIDDefines.h"
 #import "OIDFieldMapping.h"
+#import "OIDTokenRequest.h"
 
+#import "OIDTVAuthorizationRequest.h"
 
-NSString *const GTMTVDeviceTokenGrantType = @"http://oauth.net/grant_type/device/1.0";
+NSString *const OIDTVDeviceTokenGrantType = @"http://oauth.net/grant_type/device/1.0";
 
 /*! @brief The key for the @c verificationURL property in the incoming parameters and for
         @c NSSecureCoding.
@@ -59,13 +59,7 @@ static NSString *const kAdditionalParametersKey = @"additionalParameters";
  */
 static NSString *const kRequestKey = @"request";
 
-@implementation GTMTVAuthorizationResponse
-
-@synthesize verificationURL = _verificationURL;
-@synthesize userCode = _userCode;
-@synthesize deviceCode = _deviceCode;
-@synthesize interval = _interval;
-@synthesize expirationDate = _expirationDate;
+@implementation OIDTVAuthorizationResponse
 
 /*! @brief Returns a mapping of incoming parameters to instance variables.
     @return A mapping of incoming parameters to instance variables.
@@ -99,7 +93,7 @@ static NSString *const kRequestKey = @"request";
 
 #pragma mark - Initializers
 
-- (instancetype)initWithRequest:(GTMTVAuthorizationRequest *)request
+- (instancetype)initWithRequest:(OIDTVAuthorizationRequest *)request
     parameters:(NSDictionary<NSString *, NSObject<NSCopying> *> *)parameters {
   self = [super initWithRequest:request parameters:parameters];
   return self;
@@ -123,7 +117,7 @@ static NSString *const kRequestKey = @"request";
                                      "additionalParameters: %@, "
                                      "request: %@>",
                                     NSStringFromClass([self class]),
-                                    self,
+                                    (void *)self,
                                     _verificationURL,
                                     _userCode,
                                     _deviceCode,
@@ -143,7 +137,7 @@ static NSString *const kRequestKey = @"request";
     (NSDictionary<NSString *, NSString *> *)additionalParameters {
   OIDTokenRequest *pollRequest =
       [[OIDTokenRequest alloc] initWithConfiguration:self.request.configuration
-                                           grantType:GTMTVDeviceTokenGrantType
+                                           grantType:OIDTVDeviceTokenGrantType
                                    authorizationCode:_deviceCode
                                          redirectURL:[[NSURL alloc] init]
                                             clientID:self.request.clientID

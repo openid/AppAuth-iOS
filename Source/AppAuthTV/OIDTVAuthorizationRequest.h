@@ -1,5 +1,5 @@
-/*! @file GTMTVAuthorizationRequest.h
-    @brief GTMAppAuth SDK
+/*! @file OIDTVAuthorizationRequest.h
+    @brief AppAuth iOS SDK
     @copyright
         Copyright 2016 Google Inc.
     @copydetails
@@ -18,16 +18,16 @@
 
 #import <Foundation/Foundation.h>
 
-#import "AppAuthCore.h"
+#import "OIDAuthorizationRequest.h"
 
-@class GTMTVServiceConfiguration;
+@class OIDTVServiceConfiguration;
 
 NS_ASSUME_NONNULL_BEGIN
 
 /*! @brief Represents a TV and limited input device authorization request.
-    @see https://developers.google.com/identity/protocols/OAuth2ForDevices
+    @see https://tools.ietf.org/html/rfc8628#section-3.1
  */
-@interface GTMTVAuthorizationRequest : OIDAuthorizationRequest
+@interface OIDTVAuthorizationRequest : OIDAuthorizationRequest
 
 /*! @brief Creates a TV authorization request with opinionated defaults
     @param configuration The service's configuration.
@@ -37,7 +37,7 @@ NS_ASSUME_NONNULL_BEGIN
     @param additionalParameters The client's additional authorization parameters.
  */
 - (instancetype)
-    initWithConfiguration:(GTMTVServiceConfiguration *)configuration
+    initWithConfiguration:(OIDTVServiceConfiguration *)configuration
                  clientId:(NSString *)clientID
              clientSecret:(NSString *)clientSecret
                    scopes:(nullable NSArray<NSString *> *)scopes

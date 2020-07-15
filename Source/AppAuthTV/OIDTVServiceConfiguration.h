@@ -1,5 +1,5 @@
-/*! @file GTMTVServiceConfiguration.h
-    @brief GTMAppAuth SDK
+/*! @file OIDTVServiceConfiguration.h
+    @brief AppAuth iOS SDK
     @copyright
         Copyright 2016 Google Inc.
     @copydetails
@@ -16,13 +16,13 @@
         limitations under the License.
  */
 
-#import "AppAuthCore.h"
+#import "OIDServiceConfiguration.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-/*! @brief Configuration for authorizing the user with the @c GTMTVAuthorizationService.
+/*! @brief Configuration for authorizing the user with the @c OIDTVAuthorizationService.
  */
-@interface GTMTVServiceConfiguration : OIDServiceConfiguration
+@interface OIDTVServiceConfiguration : OIDServiceConfiguration
 
 /*! @brief The TV authorization endpoint URI.
  */

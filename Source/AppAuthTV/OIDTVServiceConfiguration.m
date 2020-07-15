@@ -1,5 +1,5 @@
-/*! @file GTMTVServiceConfiguration.m
-    @brief GTMAppAuth SDK
+/*! @file OIDTVServiceConfiguration.m
+    @brief AppAuth iOS SDK
     @copyright
         Copyright 2016 Google Inc.
     @copydetails
@@ -16,9 +16,8 @@
         limitations under the License.
  */
 
-#import "GTMTVServiceConfiguration.h"
+#import "OIDTVServiceConfiguration.h"
 
-#import "AppAuthCore.h"
 #import "OIDDefines.h"
 
 /*! @brief The key for the @c TVAuthorizationEndpoint property.
@@ -27,7 +26,7 @@ static NSString *const kTVAuthorizationEndpointKey = @"TVAuthorizationEndpoint";
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface GTMTVServiceConfiguration ()
+@interface OIDTVServiceConfiguration ()
 
 /*! @brief Designated initializer.
     @param aDecoder NSCoder to unserialize the object from.
@@ -36,18 +35,16 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-@implementation GTMTVServiceConfiguration
-
-@synthesize TVAuthorizationEndpoint = _TVAuthorizationEndpoint;
+@implementation OIDTVServiceConfiguration
 
 - (instancetype)init
     OID_UNAVAILABLE_USE_INITIALIZER(
-        @selector(initWithAuthorizationEndpoint:TVAuthorizationEndpoint:tokenEndpoint:));
+        @selector(initWithAuthorizationEndpoint:TVAuthorizationEndpoint:tokenEndpoint:))
 
 - (instancetype)initWithAuthorizationEndpoint:(NSURL *)authorizationEndpoint
-                                         tokenEndpoint:(NSURL *)tokenEndpoint
+                                tokenEndpoint:(NSURL *)tokenEndpoint
     OID_UNAVAILABLE_USE_INITIALIZER(
-        @selector(initWithAuthorizationEndpoint:TVAuthorizationEndpoint:tokenEndpoint:));
+        @selector(initWithAuthorizationEndpoint:TVAuthorizationEndpoint:tokenEndpoint:))
 
 - (instancetype)initWithAuthorizationEndpoint:(NSURL *)authorizationEndpoint
                       TVAuthorizationEndpoint:(NSURL *)TVAuthorizationEndpoint
@@ -85,7 +82,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSString *)description {
   return [NSString stringWithFormat:@"<%@: %p, TVAuthorizationEndpoint: %@ tokenEndpoint: %@>",
                                     NSStringFromClass([self class]),
-                                    self,
+                                    (void *)self,
                                     _TVAuthorizationEndpoint,
                                     self.tokenEndpoint];
 }

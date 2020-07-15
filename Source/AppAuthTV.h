@@ -1,7 +1,7 @@
 /*! @file AppAuthTV.h
-    @brief GTMAppAuth SDK
+    @brief AppAuthTV SDK
     @copyright
-        Copyright 2016 Google Inc.
+        Copyright 2020 Google Inc.
     @copydetails
         Licensed under the Apache License, Version 2.0 (the "License");
         you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
         limitations under the License.
  */
 
-#import "GTMTVAuthorizationRequest.h"
-#import "GTMTVAuthorizationResponse.h"
-#import "GTMTVAuthorizationService.h"
-#import "GTMTVServiceConfiguration.h"
+#import "OIDTVAuthorizationRequest.h"
+#import "OIDTVAuthorizationResponse.h"
+#import "OIDTVAuthorizationService.h"
+#import "OIDTVServiceConfiguration.h"
