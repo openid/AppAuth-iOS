@@ -29,12 +29,12 @@
 #import "OIDTVServiceConfiguration.h"
 
 /*! @brief The authorization pending error code.
-    @see https://developers.google.com/identity/protocols/OAuth2ForDevices
+    @see https://tools.ietf.org/html/rfc8628#section-3.5
  */
 NSString *const kErrorCodeAuthorizationPending = @"authorization_pending";
 
 /*! @brief The slow down error code.
-    @see https://developers.google.com/identity/protocols/OAuth2ForDevices
+    @see https://tools.ietf.org/html/rfc8628#section-3.5
  */
 NSString *const kErrorCodeSlowDown = @"slow_down";
 

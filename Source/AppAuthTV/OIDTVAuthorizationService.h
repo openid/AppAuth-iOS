@@ -43,7 +43,7 @@ typedef void (^OIDTVAuthorizationCompletion)
     (OIDAuthState *_Nullable authorization,
      NSError *_Nullable error);
 
-/*! @brief Block returned when authorization is initialized to that will cancel the pending
+/*! @brief Block returned when authorization is initialized that will cancel the pending
         authorization when executed. Has no effect if called twice or after the authorization
         concluded.
  */
@@ -64,7 +64,7 @@ typedef void (^OIDTVAuthorizationCancelBlock)(void);
         to authenticate API calls, otherwis eyou will get an error.
     @return A block which you can execute if you need to cancel the ongoing authorization. Has no
         effect if called twice, or called after the authorization concludes.
-    @see https://developers.google.com/identity/protocols/OAuth2ForDevices
+    @see https://tools.ietf.org/html/rfc8628
  */
 + (OIDTVAuthorizationCancelBlock)authorizeTVRequest:(OIDTVAuthorizationRequest *)request
                                      initialization:(OIDTVAuthorizationInitialization)initialization
