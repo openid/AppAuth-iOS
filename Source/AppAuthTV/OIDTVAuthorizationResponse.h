@@ -75,14 +75,14 @@ extern NSString *const OIDTVDeviceTokenGrantType;
 
 /*! @brief Creates a token request suitable for polling the token endpoint with the @c deviceCode.
     @return A @c OIDTokenRequest suitable for polling the token endpoint.
-    @see https://developers.google.com/identity/protocols/OAuth2ForDevices
+    @see  https://tools.ietf.org/html/rfc8628#section-3.2
  */
 - (nullable OIDTokenRequest *)tokenPollRequest;
 
 /*! @brief Creates a token request suitable for polling the token endpoint with the @c deviceCode.
     @param additionalParameters Additional parameters for the token request.
     @return A @c OIDTokenRequest suitable for polling the token endpoint.
-    @see https://developers.google.com/identity/protocols/OAuth2ForDevices
+    @see  https://tools.ietf.org/html/rfc8628#section-3.2s
  */
 - (nullable OIDTokenRequest *)tokenPollRequestWithAdditionalParameters:
     (nullable NSDictionary<NSString *, NSString *> *)additionalParameters;
