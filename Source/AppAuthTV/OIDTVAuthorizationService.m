@@ -1,5 +1,5 @@
-/*! @file GTMTVAuthorizationService.m
-    @brief GTMAppAuth SDK
+/*! @file OIDTVAuthorizationService.m
+    @brief AppAuth iOS SDK
     @copyright
         Copyright 2016 Google Inc.
     @copydetails
@@ -16,60 +16,40 @@
         limitations under the License.
  */
 
-#import "GTMTVAuthorizationService.h"
+#import "OIDTVAuthorizationService.h"
 
-#import "AppAuthCore.h"
+#import "OIDAuthorizationService.h"
+#import "OIDAuthState.h"
 #import "OIDDefines.h"
+#import "OIDErrorUtilities.h"
 #import "OIDURLQueryComponent.h"
 
-#import "GTMTVAuthorizationRequest.h"
-#import "GTMTVAuthorizationResponse.h"
-#import "GTMTVServiceConfiguration.h"
-
-/*! @brief Google's device authorization endpoint.
- */
-NSString *const kGoogleDeviceAuthorizationEndpoint =
-    @"https://accounts.google.com/o/oauth2/device/code";
+#import "OIDTVAuthorizationRequest.h"
+#import "OIDTVAuthorizationResponse.h"
+#import "OIDTVServiceConfiguration.h"
 
 /*! @brief The authorization pending error code.
-    @see https://developers.google.com/identity/protocols/OAuth2ForDevices
+    @see https://tools.ietf.org/html/rfc8628#section-3.5
  */
 NSString *const kErrorCodeAuthorizationPending = @"authorization_pending";
 
 /*! @brief The slow down error code.
-    @see https://developers.google.com/identity/protocols/OAuth2ForDevices
+    @see https://tools.ietf.org/html/rfc8628#section-3.5
  */
 NSString *const kErrorCodeSlowDown = @"slow_down";
 
-@implementation GTMTVAuthorizationService
+@implementation OIDTVAuthorizationService
 
 #pragma mark - Initializers
 
-#if !GTM_APPAUTH_SKIP_GOOGLE_SUPPORT
-+ (GTMTVServiceConfiguration *)TVConfigurationForGoogle {
-  NSURL *authorizationEndpoint =
-      [NSURL URLWithString:@"https://accounts.google.com/o/oauth2/v2/auth"];
-  NSURL *tokenEndpoint =
-      [NSURL URLWithString:@"https://www.googleapis.com/oauth2/v4/token"];
-  NSURL *TVAuthorizationEndpoint =
-      [NSURL URLWithString:kGoogleDeviceAuthorizationEndpoint];
-
-  GTMTVServiceConfiguration *configuration =
-      [[GTMTVServiceConfiguration alloc] initWithAuthorizationEndpoint:authorizationEndpoint
-                                               TVAuthorizationEndpoint:TVAuthorizationEndpoint
-                                                         tokenEndpoint:tokenEndpoint];
-  return configuration;
-}
-#endif // !GTM_APPAUTH_SKIP_GOOGLE_SUPPORT
-
-+ (GTMTVAuthorizationCancelBlock)authorizeTVRequest:(GTMTVAuthorizationRequest *)request
-                                     initializaiton:(GTMTVAuthorizationInitialization)initialization
-                                         completion:(GTMTVAuthorizationCompletion)completion {
++ (OIDTVAuthorizationCancelBlock)authorizeTVRequest:(OIDTVAuthorizationRequest *)request
+                                     initialization:(OIDTVAuthorizationInitialization)initialization
+                                         completion:(OIDTVAuthorizationCompletion)completion {
   // Block level variable that can be used to cancel the polling.
   __block BOOL pollRunning = YES;
 
   // Block that will be returned allowign the caller to cancel the polling.
-  GTMTVAuthorizationCancelBlock cancelBlock = ^{
+  OIDTVAuthorizationCancelBlock cancelBlock = ^{
     if (pollRunning) {
       dispatch_async(dispatch_get_main_queue(), ^{
         NSError *cancelError =
@@ -159,8 +139,8 @@ NSString *const kErrorCodeSlowDown = @"slow_down";
     }
 
     // Parses the authorization response.
-    GTMTVAuthorizationResponse *TVAuthorizationResponse =
-        [[GTMTVAuthorizationResponse alloc] initWithRequest:request parameters:json];
+    OIDTVAuthorizationResponse *TVAuthorizationResponse =
+        [[OIDTVAuthorizationResponse alloc] initWithRequest:request parameters:json];
     if (!TVAuthorizationResponse) {
       // A problem occurred constructing the token response from the JSON.
       NSError *returnedError =

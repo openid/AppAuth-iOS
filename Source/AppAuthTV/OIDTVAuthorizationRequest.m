@@ -1,5 +1,5 @@
-/*! @file GTMTVAuthorizationRequest.m
-    @brief GTMAppAuth SDK
+/*! @file OIDTVAuthorizationRequest.m
+    @brief AppAuth iOS SDK
     @copyright
         Copyright 2016 Google Inc.
     @copydetails
@@ -15,17 +15,14 @@
         See the License for the specific language governing permissions and
         limitations under the License.
  */
-
-#import "GTMTVAuthorizationRequest.h"
-
-#import "AppAuthCore.h"
+#import "OIDTVAuthorizationRequest.h"
+#import "OIDTVServiceConfiguration.h"
 #import "OIDURLQueryComponent.h"
-#import "GTMTVServiceConfiguration.h"
 
-@implementation GTMTVAuthorizationRequest
+@implementation OIDTVAuthorizationRequest
 
 - (instancetype)
-    initWithConfiguration:(GTMTVServiceConfiguration *)configuration
+    initWithConfiguration:(OIDTVServiceConfiguration *)configuration
                  clientId:(NSString *)clientID
              clientSecret:(nullable NSString *)clientSecret
                     scope:(nullable NSString *)scope
@@ -38,9 +35,9 @@
       codeChallengeMethod:(nullable NSString *)codeChallengeMethod
      additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters {
 
-  if (![configuration isKindOfClass:[GTMTVServiceConfiguration class]]) {
-    NSAssert([configuration isKindOfClass:[GTMTVServiceConfiguration class]],
-             @"configuration parameter must be of type GTMTVServiceConfiguration, encountered %@",
+  if (![configuration isKindOfClass:[OIDTVServiceConfiguration class]]) {
+    NSAssert([configuration isKindOfClass:[OIDTVServiceConfiguration class]],
+             @"configuration parameter must be of type OIDTVServiceConfiguration, encountered %@",
             NSStringFromClass([configuration class]));
     return nil;
   }
@@ -60,7 +57,7 @@
 }
 
 - (instancetype)
-    initWithConfiguration:(GTMTVServiceConfiguration *)configuration
+    initWithConfiguration:(OIDTVServiceConfiguration *)configuration
                  clientId:(NSString *)clientID
              clientSecret:(NSString *)clientSecret
                    scopes:(nullable NSArray<NSString *> *)scopes
@@ -79,7 +76,7 @@
 - (NSString *)description {
   return [NSString stringWithFormat:@"<%@: %p, request: %@>",
                                     NSStringFromClass([self class]),
-                                    self,
+                                    (void *)self,
                                     self.authorizationRequestURL];
 }
 
@@ -105,7 +102,7 @@
   static NSString *const kHTTPContentTypeHeaderValue =
       @"application/x-www-form-urlencoded; charset=UTF-8";
 
-  GTMTVServiceConfiguration *tvConfiguration = (GTMTVServiceConfiguration *)self.configuration;
+  OIDTVServiceConfiguration *tvConfiguration = (OIDTVServiceConfiguration *)self.configuration;
 
   NSMutableURLRequest *URLRequest =
       [[NSURLRequest requestWithURL:tvConfiguration.TVAuthorizationEndpoint] mutableCopy];
