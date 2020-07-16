@@ -764,8 +764,6 @@
 		2D47AADF249A87020059B5A4 /* OIDTVAuthorizationService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OIDTVAuthorizationService.h; sourceTree = "<group>"; };
 		2D47AAE0249A87020059B5A4 /* OIDTVAuthorizationService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OIDTVAuthorizationService.m; sourceTree = "<group>"; };
 		2D8111F524C0FD4C00984DA7 /* AppAuthTVTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AppAuthTVTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		2D8111F724C0FD4C00984DA7 /* AppAuthTVTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppAuthTVTests.m; sourceTree = "<group>"; };
-		2D8111F924C0FD4C00984DA7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2D81120024C1036700984DA7 /* OIDTVAuthorizationRequestTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OIDTVAuthorizationRequestTests.m; sourceTree = "<group>"; };
 		2D81120124C1036700984DA7 /* OIDTVAuthorizationResponseTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OIDTVAuthorizationResponseTests.h; sourceTree = "<group>"; };
 		2D81120224C1036700984DA7 /* OIDTVAuthorizationResponseTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OIDTVAuthorizationResponseTests.m; sourceTree = "<group>"; };
@@ -1086,15 +1084,6 @@
 			path = AppAuthTV;
 			sourceTree = "<group>";
 		};
-		2D8111F624C0FD4C00984DA7 /* AppAuthTVTests */ = {
-			isa = PBXGroup;
-			children = (
-				2D8111F724C0FD4C00984DA7 /* AppAuthTVTests.m */,
-				2D8111F924C0FD4C00984DA7 /* Info.plist */,
-			);
-			path = AppAuthTVTests;
-			sourceTree = "<group>";
-		};
 		2D91B867249177180005B197 /* EnterpriseUserAgentFramework */ = {
 			isa = PBXGroup;
 			children = (
@@ -1132,7 +1121,6 @@
 		340E73731C5D819B0076B1F6 = {
 			isa = PBXGroup;
 			children = (
-				2D8111F624C0FD4C00984DA7 /* AppAuthTVTests */,
 				341742291C5D84D0000EF209 /* Frameworks */,
 				341741FB1C5D82D3000EF209 /* UnitTests */,
 				341741AE1C5D8243000EF209 /* Source */,
