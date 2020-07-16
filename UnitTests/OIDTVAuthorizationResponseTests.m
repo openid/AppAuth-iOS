@@ -80,7 +80,8 @@ static NSString *const testjson = @"";
       [NSURL URLWithString:kInitializerTestTVAuthEndpoint];
 
   OIDTVServiceConfiguration *configuration =
-      [[OIDTVServiceConfiguration alloc] initWithTVAuthorizationEndpoint:TVAuthorizationEndpoint
+      [[OIDTVServiceConfiguration alloc] initWithAuthorizationEndpoint:TVAuthorizationEndpoint
+                                               TVAuthorizationEndpoint:TVAuthorizationEndpoint
                                                          tokenEndpoint:tokenEndpoint];
   return configuration;
 }
