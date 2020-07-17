@@ -22,6 +22,8 @@
 #import "OIDTVAuthorizationRequest.h"
 #import "OIDTVServiceConfiguration.h"
 
+#import "OIDScopeUtilities.h"
+
 //TODO: Swift PM macro
 #import "Source/AppAuthCore/OIDScopeUtilities.h"
 
@@ -117,16 +119,24 @@ static NSString *const kHTTPContentTypeHeaderValue =
 /*! @brief Tests the initializer
 */
 - (void)testInitializer {
+  NSArray<NSString *> *testScopes =@[kTestScope, kTestScopeA];
+  NSString *testScopeString = [OIDScopeUtilities scopesWithArray: testScopes];
+  NSDictionary<NSString *, NSString *> *testAdditionalParameters =
+    @{kTestAdditionalParameterKey : kTestAdditionalParameterValue};
+  
   OIDTVAuthorizationRequest *authRequest =
       [[OIDTVAuthorizationRequest alloc] initWithConfiguration:[self testServiceConfiguration]
                                                       clientId:kTestClientID
                                                   clientSecret:kTestClientSecret
-                                                        scopes:nil
-                                          additionalParameters:nil];
+                                                        scopes:testScopes
+                                          additionalParameters:testAdditionalParameters];
   
+  XCTAssertEqualObjects(authRequest.clientID, kTestClientID);
+  XCTAssertEqualObjects(authRequest.clientSecret, kTestClientSecret);
+  XCTAssertEqualObjects(authRequest.scope, testScopeString);
+  XCTAssertEqualObjects(authRequest.additionalParameters, testAdditionalParameters);
   XCTAssertEqualObjects(authRequest.responseType, OIDResponseTypeCode);
   XCTAssertEqualObjects(authRequest.redirectURL, [[NSURL alloc] init]);
-  //TODO: Could flesh this out more
 }
 
 /*! @brief Tests the @c URLRequest method on a request with no scopes or additional parameters
@@ -156,6 +166,9 @@ static NSString *const kHTTPContentTypeHeaderValue =
 /*! @brief Tests the @c URLRequest method on a request with two scopes and no additional parameters
 */
 - (void)testURLRequestScopes {
+  NSArray<NSString *> *testScopes =@[kTestScope, kTestScopeA];
+  NSString *testScopeString = [OIDScopeUtilities scopesWithArray: testScopes];
+  
   OIDTVAuthorizationRequest *authRequest =
       [[OIDTVAuthorizationRequest alloc] initWithConfiguration:[self testServiceConfiguration]
                                                       clientId:kTestClientID
@@ -174,7 +187,7 @@ static NSString *const kHTTPContentTypeHeaderValue =
       [self bodyParametersFromURLRequest:URLRequest];
   NSDictionary<NSString *, NSString *> *expectedParameters = @{
     kTestClientIDKey : kTestClientID,
-    kTestScopeKey : [[NSString stringWithFormat:@"%@ %@", kTestScope, kTestScopeA]
+    kTestScopeKey : [testScopeString
     stringByAddingPercentEncodingWithAllowedCharacters:[OIDURLQueryComponent
                                                            URLParamValueAllowedCharacters]]
   };
@@ -185,6 +198,9 @@ static NSString *const kHTTPContentTypeHeaderValue =
 /*! @brief Tests the @c URLRequest method on a request with two scopes and one additional parameter
 */
 - (void)testURLRequestAdditionalParams {
+  NSArray<NSString *> *testScopes =@[kTestScope, kTestScopeA];
+  NSString *testScopeString = [OIDScopeUtilities scopesWithArray: testScopes];
+  
   OIDTVAuthorizationRequest *authRequest = [[OIDTVAuthorizationRequest alloc]
       initWithConfiguration:[self testServiceConfiguration]
                    clientId:kTestClientID
@@ -203,7 +219,7 @@ static NSString *const kHTTPContentTypeHeaderValue =
       [self bodyParametersFromURLRequest:URLRequest];
   NSDictionary<NSString *, NSString *> *expectedParameters = @{
     kTestClientIDKey : kTestClientID,
-    kTestScopeKey : [[NSString stringWithFormat:@"%@ %@", kTestScope, kTestScopeA]
+    kTestScopeKey : [testScopeString
         stringByAddingPercentEncodingWithAllowedCharacters:[OIDURLQueryComponent
                                                                URLParamValueAllowedCharacters]],
     kTestAdditionalParameterKey : kTestAdditionalParameterValue
