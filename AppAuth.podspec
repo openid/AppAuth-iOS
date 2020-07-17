@@ -68,13 +68,10 @@ It follows the OAuth 2.0 for Native Apps best current practice
     enterpriseUserAgent.ios.deployment_target = "7.0"
   end
 
-  # Subspec for AppAuth support on tvOS by authorization through a second device (RFC 8628)
+  # Subspec for the full AppAuth library, including platform-dependant external user agents.
   s.subspec 'TV' do |tv|
+    tv.source_files = "Source/AppAuthTV/*.{h,m}"
     tv.dependency 'AppAuth/Core'
-    tv.source_files = "Source/AppAuthTV.h", "Source/AppAuthTV/*.{h,m}"
-  
-    #tvOS
-    tv.tvos.deployment_target = '9.0'
   end
 
   s.default_subspecs = 'Core', 'ExternalUserAgent'
