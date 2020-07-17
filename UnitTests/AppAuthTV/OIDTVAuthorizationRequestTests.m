@@ -17,15 +17,15 @@
  */
 
 #import "OIDTVAuthorizationRequestTests.h"
-#import "OIDURLQueryComponent.h"
-
 #import "OIDTVAuthorizationRequest.h"
 #import "OIDTVServiceConfiguration.h"
 
-#import "OIDScopeUtilities.h"
-
-//TODO: Swift PM macro
+#if SWIFT_PACKAGE
+@import AppAuthCore;
+#else
 #import "Source/AppAuthCore/OIDScopeUtilities.h"
+#import "Source/AppAuthCore/OIDURLQueryComponent.h"
+#endif
 
 // Ignore warnings about "Use of GNU statement expression extension" which is raised by our use of
 // the XCTAssert___ macros.
