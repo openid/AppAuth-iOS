@@ -22,7 +22,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/*! @brief Unit tests for @c OIDTokenRequest.
+/*! @brief Unit tests for @c OIDTVAuthorizationRequest.
  */
 @interface OIDTVAuthorizationRequestTests : XCTestCase
 - (OIDTVServiceConfiguration *)testServiceConfiguration;

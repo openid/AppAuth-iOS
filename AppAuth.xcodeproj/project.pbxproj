@@ -1081,6 +1081,15 @@
 			path = AppAuthTV;
 			sourceTree = "<group>";
 		};
+		2D52A08D24C24C260022E402 /* AppAuthTV */ = {
+			isa = PBXGroup;
+			children = (
+				2D81120324C1036700984DA7 /* OIDTVAuthorizationRequestTests.h */,
+				2D81120024C1036700984DA7 /* OIDTVAuthorizationRequestTests.m */,
+			);
+			path = AppAuthTV;
+			sourceTree = "<group>";
+		};
 		2D91B867249177180005B197 /* EnterpriseUserAgentFramework */ = {
 			isa = PBXGroup;
 			children = (
@@ -1175,6 +1184,7 @@
 		341741FB1C5D82D3000EF209 /* UnitTests */ = {
 			isa = PBXGroup;
 			children = (
+				2D52A08D24C24C260022E402 /* AppAuthTV */,
 				341742231C5D8317000EF209 /* UnitTestsInfo.plist */,
 				341742001C5D82D3000EF209 /* OIDAuthorizationRequestTests.h */,
 				341742011C5D82D3000EF209 /* OIDAuthorizationRequestTests.m */,
@@ -1208,8 +1218,6 @@
 				34D5EC441E6D1AD900814354 /* OIDSwiftTests.swift */,
 				34D5EC431E6D1AD900814354 /* OIDAppAuthTests-Bridging-Header.h */,
 				0396974C1FA827AD003D1FB2 /* OIDURLSessionProviderTests.m */,
-				2D81120324C1036700984DA7 /* OIDTVAuthorizationRequestTests.h */,
-				2D81120024C1036700984DA7 /* OIDTVAuthorizationRequestTests.m */,
 			);
 			path = UnitTests;
 			sourceTree = "<group>";

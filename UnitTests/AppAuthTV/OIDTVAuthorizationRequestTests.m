@@ -168,7 +168,9 @@ static NSString *const kHTTPContentTypeHeaderValue =
 - (void)testURLRequestScopes {
   NSArray<NSString *> *testScopes = @[ kTestScope, kTestScopeA ];
   NSString *testScopeString = [OIDScopeUtilities scopesWithArray:testScopes];
-
+  NSString *testScopeStringPercentEncoded = [testScopeString
+  stringByAddingPercentEncodingWithAllowedCharacters:[OIDURLQueryComponent
+                                                      URLParamValueAllowedCharacters]];
   OIDTVAuthorizationRequest *authRequest =
       [[OIDTVAuthorizationRequest alloc] initWithConfiguration:[self testServiceConfiguration]
                                                       clientId:kTestClientID
@@ -187,9 +189,7 @@ static NSString *const kHTTPContentTypeHeaderValue =
       [self bodyParametersFromURLRequest:URLRequest];
   NSDictionary<NSString *, NSString *> *expectedParameters = @{
     kTestClientIDKey : kTestClientID,
-    kTestScopeKey : [testScopeString
-        stringByAddingPercentEncodingWithAllowedCharacters:[OIDURLQueryComponent
-                                                               URLParamValueAllowedCharacters]]
+    kTestScopeKey : testScopeStringPercentEncoded
   };
 
   XCTAssertEqualObjects(bodyParameters, expectedParameters);
@@ -200,7 +200,10 @@ static NSString *const kHTTPContentTypeHeaderValue =
 - (void)testURLRequestAdditionalParams {
   NSArray<NSString *> *testScopes = @[ kTestScope, kTestScopeA ];
   NSString *testScopeString = [OIDScopeUtilities scopesWithArray:testScopes];
-
+  NSString *testScopeStringPercentEncoded = [testScopeString
+  stringByAddingPercentEncodingWithAllowedCharacters:[OIDURLQueryComponent
+                                           
+                                                      URLParamValueAllowedCharacters]];
   OIDTVAuthorizationRequest *authRequest = [[OIDTVAuthorizationRequest alloc]
       initWithConfiguration:[self testServiceConfiguration]
                    clientId:kTestClientID
@@ -219,9 +222,7 @@ static NSString *const kHTTPContentTypeHeaderValue =
       [self bodyParametersFromURLRequest:URLRequest];
   NSDictionary<NSString *, NSString *> *expectedParameters = @{
     kTestClientIDKey : kTestClientID,
-    kTestScopeKey : [testScopeString
-        stringByAddingPercentEncodingWithAllowedCharacters:[OIDURLQueryComponent
-                                                               URLParamValueAllowedCharacters]],
+    kTestScopeKey : testScopeStringPercentEncoded,
     kTestAdditionalParameterKey : kTestAdditionalParameterValue
   };
 
