@@ -139,6 +139,42 @@ static NSString *const kHTTPContentTypeHeaderValue =
   XCTAssertEqualObjects(authRequest.redirectURL, [[NSURL alloc] init]);
 }
 
+/*! @brief Tests the @c NSCopying implementation by round-tripping an instance through the copying
+        process and checking to make sure the source and destination both contain the @c TVAuthorizationEndpoint
+ */
+- (void)testCopying {
+  OIDTVAuthorizationRequest *authRequest =
+  [[OIDTVAuthorizationRequest alloc] initWithConfiguration:[self testServiceConfiguration]
+                                                  clientId:kTestClientID
+                                              clientSecret:kTestClientSecret
+                                                    scopes:nil
+                                      additionalParameters:nil];
+
+  XCTAssertEqualObjects(((OIDTVServiceConfiguration *) authRequest.configuration).TVAuthorizationEndpoint, [self testServiceConfiguration].TVAuthorizationEndpoint);
+
+  OIDAuthorizationRequest *authRequestCopy = [authRequest copy];
+
+  XCTAssertEqualObjects(((OIDTVServiceConfiguration *) authRequestCopy.configuration).TVAuthorizationEndpoint, [self testServiceConfiguration].TVAuthorizationEndpoint);
+}
+
+/*! @brief Tests the @c NSSecureCoding by round-tripping an instance through the coding process and checking to make sure the source and destination both contain the @c TVAuthorizationEndpoint
+ */
+- (void)testSecureCoding {
+  OIDTVAuthorizationRequest *authRequest =
+  [[OIDTVAuthorizationRequest alloc] initWithConfiguration:[self testServiceConfiguration]
+                                                  clientId:kTestClientID
+                                              clientSecret:kTestClientSecret
+                                                    scopes:nil
+                                      additionalParameters:nil];
+
+  XCTAssertEqualObjects(((OIDTVServiceConfiguration *) authRequest.configuration).TVAuthorizationEndpoint, [self testServiceConfiguration].TVAuthorizationEndpoint);
+
+  NSData *data = [NSKeyedArchiver archivedDataWithRootObject:authRequest];
+  OIDAuthorizationRequest *authRequestCopy = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+
+  XCTAssertEqualObjects(((OIDTVServiceConfiguration *) authRequestCopy.configuration).TVAuthorizationEndpoint, [self testServiceConfiguration].TVAuthorizationEndpoint);
+}
+
 /*! @brief Tests the @c URLRequest method on a request with no scopes or additional parameters
  */
 - (void)testURLRequestBasicClientAuth {
