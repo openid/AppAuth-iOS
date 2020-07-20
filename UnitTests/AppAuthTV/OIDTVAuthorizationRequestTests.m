@@ -1,7 +1,7 @@
 /*! @file OIDTVAuthorizationRequestTests.m
     @brief AppAuth iOS SDK
     @copyright
-        Copyright 2015 Google Inc. All Rights Reserved.
+        Copyright 2020 Google Inc. All Rights Reserved.
     @copydetails
         Licensed under the Apache License, Version 2.0 (the "License");
         you may not use this file except in compliance with the License.
@@ -140,39 +140,50 @@ static NSString *const kHTTPContentTypeHeaderValue =
 }
 
 /*! @brief Tests the @c NSCopying implementation by round-tripping an instance through the copying
-        process and checking to make sure the source and destination both contain the @c TVAuthorizationEndpoint
+ * process and checking to make sure the source and destination both contain the
+ * @c TVAuthorizationEndpoint
  */
 - (void)testCopying {
   OIDTVAuthorizationRequest *authRequest =
-  [[OIDTVAuthorizationRequest alloc] initWithConfiguration:[self testServiceConfiguration]
-                                                  clientId:kTestClientID
-                                              clientSecret:kTestClientSecret
-                                                    scopes:nil
-                                      additionalParameters:nil];
+      [[OIDTVAuthorizationRequest alloc] initWithConfiguration:[self testServiceConfiguration]
+                                                      clientId:kTestClientID
+                                                  clientSecret:kTestClientSecret
+                                                        scopes:nil
+                                          additionalParameters:nil];
 
-  XCTAssertEqualObjects(((OIDTVServiceConfiguration *) authRequest.configuration).TVAuthorizationEndpoint, [self testServiceConfiguration].TVAuthorizationEndpoint);
+  XCTAssertEqualObjects(
+      ((OIDTVServiceConfiguration *)authRequest.configuration).TVAuthorizationEndpoint,
+      [self testServiceConfiguration].TVAuthorizationEndpoint);
 
   OIDAuthorizationRequest *authRequestCopy = [authRequest copy];
 
-  XCTAssertEqualObjects(((OIDTVServiceConfiguration *) authRequestCopy.configuration).TVAuthorizationEndpoint, [self testServiceConfiguration].TVAuthorizationEndpoint);
+  XCTAssertEqualObjects(
+      ((OIDTVServiceConfiguration *)authRequestCopy.configuration).TVAuthorizationEndpoint,
+      [self testServiceConfiguration].TVAuthorizationEndpoint);
 }
 
-/*! @brief Tests the @c NSSecureCoding by round-tripping an instance through the coding process and checking to make sure the source and destination both contain the @c TVAuthorizationEndpoint
+/*! @brief Tests the @c NSSecureCoding implementation by round-tripping an instance through the
+ * coding process and checking to make sure the source and destination both contain the
+ * @c TVAuthorizationEndpoint
  */
 - (void)testSecureCoding {
   OIDTVAuthorizationRequest *authRequest =
-  [[OIDTVAuthorizationRequest alloc] initWithConfiguration:[self testServiceConfiguration]
-                                                  clientId:kTestClientID
-                                              clientSecret:kTestClientSecret
-                                                    scopes:nil
-                                      additionalParameters:nil];
+      [[OIDTVAuthorizationRequest alloc] initWithConfiguration:[self testServiceConfiguration]
+                                                      clientId:kTestClientID
+                                                  clientSecret:kTestClientSecret
+                                                        scopes:nil
+                                          additionalParameters:nil];
 
-  XCTAssertEqualObjects(((OIDTVServiceConfiguration *) authRequest.configuration).TVAuthorizationEndpoint, [self testServiceConfiguration].TVAuthorizationEndpoint);
+  XCTAssertEqualObjects(
+      ((OIDTVServiceConfiguration *)authRequest.configuration).TVAuthorizationEndpoint,
+      [self testServiceConfiguration].TVAuthorizationEndpoint);
 
   NSData *data = [NSKeyedArchiver archivedDataWithRootObject:authRequest];
   OIDAuthorizationRequest *authRequestCopy = [NSKeyedUnarchiver unarchiveObjectWithData:data];
 
-  XCTAssertEqualObjects(((OIDTVServiceConfiguration *) authRequestCopy.configuration).TVAuthorizationEndpoint, [self testServiceConfiguration].TVAuthorizationEndpoint);
+  XCTAssertEqualObjects(
+      ((OIDTVServiceConfiguration *)authRequestCopy.configuration).TVAuthorizationEndpoint,
+      [self testServiceConfiguration].TVAuthorizationEndpoint);
 }
 
 /*! @brief Tests the @c URLRequest method on a request with no scopes or additional parameters
@@ -205,8 +216,8 @@ static NSString *const kHTTPContentTypeHeaderValue =
   NSArray<NSString *> *testScopes = @[ kTestScope, kTestScopeA ];
   NSString *testScopeString = [OIDScopeUtilities scopesWithArray:testScopes];
   NSString *testScopeStringPercentEncoded = [testScopeString
-  stringByAddingPercentEncodingWithAllowedCharacters:[OIDURLQueryComponent
-                                                      URLParamValueAllowedCharacters]];
+      stringByAddingPercentEncodingWithAllowedCharacters:[OIDURLQueryComponent
+                                                             URLParamValueAllowedCharacters]];
   OIDTVAuthorizationRequest *authRequest =
       [[OIDTVAuthorizationRequest alloc] initWithConfiguration:[self testServiceConfiguration]
                                                       clientId:kTestClientID
@@ -223,10 +234,8 @@ static NSString *const kHTTPContentTypeHeaderValue =
 
   NSDictionary<NSString *, NSString *> *bodyParameters =
       [self bodyParametersFromURLRequest:URLRequest];
-  NSDictionary<NSString *, NSString *> *expectedParameters = @{
-    kTestClientIDKey : kTestClientID,
-    kTestScopeKey : testScopeStringPercentEncoded
-  };
+  NSDictionary<NSString *, NSString *> *expectedParameters =
+      @{kTestClientIDKey : kTestClientID, kTestScopeKey : testScopeStringPercentEncoded};
 
   XCTAssertEqualObjects(bodyParameters, expectedParameters);
 }
@@ -237,9 +246,9 @@ static NSString *const kHTTPContentTypeHeaderValue =
   NSArray<NSString *> *testScopes = @[ kTestScope, kTestScopeA ];
   NSString *testScopeString = [OIDScopeUtilities scopesWithArray:testScopes];
   NSString *testScopeStringPercentEncoded = [testScopeString
-  stringByAddingPercentEncodingWithAllowedCharacters:[OIDURLQueryComponent
-                                           
-                                                      URLParamValueAllowedCharacters]];
+      stringByAddingPercentEncodingWithAllowedCharacters:[OIDURLQueryComponent
+
+                                                             URLParamValueAllowedCharacters]];
   OIDTVAuthorizationRequest *authRequest = [[OIDTVAuthorizationRequest alloc]
       initWithConfiguration:[self testServiceConfiguration]
                    clientId:kTestClientID
