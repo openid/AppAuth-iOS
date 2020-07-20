@@ -80,37 +80,6 @@
                                     self.authorizationRequestURL];
 }
 
-//#pragma mark - NSCopying
-//
-//- (instancetype)copyWithZone:(nullable NSZone *)zone {
-//  // The documentation for NSCopying specifically advises us to return a reference to the original
-//  // instance in the case where instances are immutable (as ours is):
-//  // "Implement NSCopying by retaining the original instead of creating a new copy when the class
-//  // and its contents are immutable."
-//  return self;
-//}
-//
-//#pragma mark - NSSecureCoding
-//
-//+ (BOOL)supportsSecureCoding {
-//  return YES;
-//}
-//
-//- (nullable instancetype)initWithCoder:(NSCoder *)aDecoder {
-//  self = [super initWithCoder:aDecoder];
-//  if (self) {
-//    NSURL *TVAuthorizationEndpoint = [aDecoder decodeObjectOfClass:[NSURL class]
-//                                                            forKey:kTVAuthorizationEndpointKey];
-//    _TVAuthorizationEndpoint = TVAuthorizationEndpoint;
-//  }
-//  return self;
-//}
-//
-//- (void)encodeWithCoder:(NSCoder *)aCoder {
-//  [super encodeWithCoder:aCoder];
-//  [aCoder encodeObject:_TVAuthorizationEndpoint forKey:kTVAuthorizationEndpointKey];
-//}
-
 #pragma mark -
 
 - (NSURLRequest *)URLRequest {
