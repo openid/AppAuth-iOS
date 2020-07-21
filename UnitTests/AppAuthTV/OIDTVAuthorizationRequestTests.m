@@ -34,11 +34,11 @@
 
 /*! @brief Test value for the @c authorizationEndpoint property.
  */
-static NSString *const kInitializerTestTVAuthEndpoint = @"https://www.example.com/device/code";
+static NSString *const kTestTVAuthorizationEndpoint = @"https://www.example.com/device/code";
 
 /*! @brief Test value for the @c tokenEndpoint property.
  */
-static NSString *const kInitializerTestTokenEndpoint = @"https://www.example.com/token";
+static NSString *const kTestTokenEndpoint = @"https://www.example.com/token";
 
 /*! @brief Test key for the @c additionalParameters property.
  */
@@ -88,9 +88,11 @@ static NSString *const kHTTPContentTypeHeaderValue =
 @implementation OIDTVAuthorizationRequestTests
 
 - (OIDTVServiceConfiguration *)testServiceConfiguration {
-  NSURL *tokenEndpoint = [NSURL URLWithString:kInitializerTestTokenEndpoint];
-  NSURL *TVAuthorizationEndpoint = [NSURL URLWithString:kInitializerTestTVAuthEndpoint];
+  NSURL *tokenEndpoint = [NSURL URLWithString:kTestTokenEndpoint];
+  NSURL *TVAuthorizationEndpoint = [NSURL URLWithString:kTestTVAuthorizationEndpoint];
 
+  // Pass in an empty AuthorizationEndpoint since only the TVAuthorizationEndpoint and tokenEndpoint
+  // are used for auth.
   OIDTVServiceConfiguration *configuration =
       [[OIDTVServiceConfiguration alloc] initWithAuthorizationEndpoint:[[NSURL alloc] init]
                                                TVAuthorizationEndpoint:TVAuthorizationEndpoint
@@ -119,17 +121,21 @@ static NSString *const kHTTPContentTypeHeaderValue =
 /*! @brief Tests the initializer
  */
 - (void)testInitializer {
+  OIDTVServiceConfiguration *serviceConfiguration = [self testServiceConfiguration];
   NSArray<NSString *> *testScopes = @[ kTestScope, kTestScopeA ];
   NSString *testScopeString = [OIDScopeUtilities scopesWithArray:testScopes];
   NSDictionary<NSString *, NSString *> *testAdditionalParameters =
       @{kTestAdditionalParameterKey : kTestAdditionalParameterValue};
 
   OIDTVAuthorizationRequest *authRequest =
-      [[OIDTVAuthorizationRequest alloc] initWithConfiguration:[self testServiceConfiguration]
+      [[OIDTVAuthorizationRequest alloc] initWithConfiguration:serviceConfiguration
                                                       clientId:kTestClientID
                                                   clientSecret:kTestClientSecret
                                                         scopes:testScopes
                                           additionalParameters:testAdditionalParameters];
+
+  NSURL *authRequestTVAuthorizationEndpoint =
+      ((OIDTVServiceConfiguration *)authRequest.configuration).TVAuthorizationEndpoint;
 
   XCTAssertEqualObjects(authRequest.clientID, kTestClientID);
   XCTAssertEqualObjects(authRequest.clientSecret, kTestClientSecret);
@@ -137,6 +143,8 @@ static NSString *const kHTTPContentTypeHeaderValue =
   XCTAssertEqualObjects(authRequest.additionalParameters, testAdditionalParameters);
   XCTAssertEqualObjects(authRequest.responseType, OIDResponseTypeCode);
   XCTAssertEqualObjects(authRequest.redirectURL, [[NSURL alloc] init]);
+  XCTAssertEqualObjects(authRequestTVAuthorizationEndpoint,
+                        serviceConfiguration.TVAuthorizationEndpoint);
 }
 
 /*! @brief Tests the @c NSCopying implementation by round-tripping an instance through the copying
@@ -144,22 +152,21 @@ static NSString *const kHTTPContentTypeHeaderValue =
  * @c TVAuthorizationEndpoint
  */
 - (void)testCopying {
+  OIDTVServiceConfiguration *serviceConfiguration = [self testServiceConfiguration];
+
   OIDTVAuthorizationRequest *authRequest =
-      [[OIDTVAuthorizationRequest alloc] initWithConfiguration:[self testServiceConfiguration]
+      [[OIDTVAuthorizationRequest alloc] initWithConfiguration:serviceConfiguration
                                                       clientId:kTestClientID
                                                   clientSecret:kTestClientSecret
                                                         scopes:nil
                                           additionalParameters:nil];
 
-  XCTAssertEqualObjects(
-      ((OIDTVServiceConfiguration *)authRequest.configuration).TVAuthorizationEndpoint,
-      [self testServiceConfiguration].TVAuthorizationEndpoint);
+  OIDTVAuthorizationRequest *authRequestCopy = [authRequest copy];
+  NSURL *authRequestCopyTVAuthorizationEndpoint =
+      ((OIDTVServiceConfiguration *)authRequestCopy.configuration).TVAuthorizationEndpoint;
 
-  OIDAuthorizationRequest *authRequestCopy = [authRequest copy];
-
-  XCTAssertEqualObjects(
-      ((OIDTVServiceConfiguration *)authRequestCopy.configuration).TVAuthorizationEndpoint,
-      [self testServiceConfiguration].TVAuthorizationEndpoint);
+  XCTAssertEqualObjects(authRequestCopyTVAuthorizationEndpoint,
+                        serviceConfiguration.TVAuthorizationEndpoint);
 }
 
 /*! @brief Tests the @c NSSecureCoding implementation by round-tripping an instance through the
@@ -167,30 +174,32 @@ static NSString *const kHTTPContentTypeHeaderValue =
  * @c TVAuthorizationEndpoint
  */
 - (void)testSecureCoding {
+  OIDTVServiceConfiguration *serviceConfiguration = [self testServiceConfiguration];
+
   OIDTVAuthorizationRequest *authRequest =
-      [[OIDTVAuthorizationRequest alloc] initWithConfiguration:[self testServiceConfiguration]
+      [[OIDTVAuthorizationRequest alloc] initWithConfiguration:serviceConfiguration
                                                       clientId:kTestClientID
                                                   clientSecret:kTestClientSecret
                                                         scopes:nil
                                           additionalParameters:nil];
 
-  XCTAssertEqualObjects(
-      ((OIDTVServiceConfiguration *)authRequest.configuration).TVAuthorizationEndpoint,
-      [self testServiceConfiguration].TVAuthorizationEndpoint);
-
   NSData *data = [NSKeyedArchiver archivedDataWithRootObject:authRequest];
-  OIDAuthorizationRequest *authRequestCopy = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+  OIDTVAuthorizationRequest *authRequestCopy = [NSKeyedUnarchiver unarchiveObjectWithData:data];
 
-  XCTAssertEqualObjects(
-      ((OIDTVServiceConfiguration *)authRequestCopy.configuration).TVAuthorizationEndpoint,
-      [self testServiceConfiguration].TVAuthorizationEndpoint);
+  NSURL *authRequestCopyTVAuthorizationEndpoint =
+      ((OIDTVServiceConfiguration *)authRequestCopy.configuration).TVAuthorizationEndpoint;
+
+  XCTAssertEqualObjects(authRequestCopyTVAuthorizationEndpoint,
+                        serviceConfiguration.TVAuthorizationEndpoint);
 }
 
 /*! @brief Tests the @c URLRequest method on a request with no scopes or additional parameters
  */
 - (void)testURLRequestBasicClientAuth {
+  OIDTVServiceConfiguration *serviceConfiguration = [self testServiceConfiguration];
+
   OIDTVAuthorizationRequest *authRequest =
-      [[OIDTVAuthorizationRequest alloc] initWithConfiguration:[self testServiceConfiguration]
+      [[OIDTVAuthorizationRequest alloc] initWithConfiguration:serviceConfiguration
                                                       clientId:kTestClientID
                                                   clientSecret:kTestClientSecret
                                                         scopes:nil
@@ -201,7 +210,7 @@ static NSString *const kHTTPContentTypeHeaderValue =
   XCTAssertEqualObjects(URLRequest.HTTPMethod, kHTTPPost);
   XCTAssertEqualObjects([URLRequest valueForHTTPHeaderField:kHTTPContentTypeHeaderKey],
                         kHTTPContentTypeHeaderValue);
-  XCTAssertEqualObjects(URLRequest.URL.absoluteString, kInitializerTestTVAuthEndpoint);
+  XCTAssertEqualObjects(URLRequest.URL, serviceConfiguration.TVAuthorizationEndpoint);
 
   NSDictionary<NSString *, NSString *> *bodyParameters =
       [self bodyParametersFromURLRequest:URLRequest];
@@ -213,13 +222,15 @@ static NSString *const kHTTPContentTypeHeaderValue =
 /*! @brief Tests the @c URLRequest method on a request with two scopes and no additional parameters
  */
 - (void)testURLRequestScopes {
+  OIDTVServiceConfiguration *serviceConfiguration = [self testServiceConfiguration];
   NSArray<NSString *> *testScopes = @[ kTestScope, kTestScopeA ];
   NSString *testScopeString = [OIDScopeUtilities scopesWithArray:testScopes];
   NSString *testScopeStringPercentEncoded = [testScopeString
       stringByAddingPercentEncodingWithAllowedCharacters:[OIDURLQueryComponent
                                                              URLParamValueAllowedCharacters]];
+
   OIDTVAuthorizationRequest *authRequest =
-      [[OIDTVAuthorizationRequest alloc] initWithConfiguration:[self testServiceConfiguration]
+      [[OIDTVAuthorizationRequest alloc] initWithConfiguration:serviceConfiguration
                                                       clientId:kTestClientID
                                                   clientSecret:kTestClientSecret
                                                         scopes:@[ kTestScope, kTestScopeA ]
@@ -230,7 +241,7 @@ static NSString *const kHTTPContentTypeHeaderValue =
   XCTAssertEqualObjects([URLRequest HTTPMethod], kHTTPPost);
   XCTAssertEqualObjects([URLRequest valueForHTTPHeaderField:kHTTPContentTypeHeaderKey],
                         kHTTPContentTypeHeaderValue);
-  XCTAssertEqualObjects(URLRequest.URL.absoluteString, kInitializerTestTVAuthEndpoint);
+  XCTAssertEqualObjects(URLRequest.URL, serviceConfiguration.TVAuthorizationEndpoint);
 
   NSDictionary<NSString *, NSString *> *bodyParameters =
       [self bodyParametersFromURLRequest:URLRequest];
@@ -243,6 +254,7 @@ static NSString *const kHTTPContentTypeHeaderValue =
 /*! @brief Tests the @c URLRequest method on a request with two scopes and one additional parameter
  */
 - (void)testURLRequestAdditionalParams {
+  OIDTVServiceConfiguration *serviceConfiguration = [self testServiceConfiguration];
   NSArray<NSString *> *testScopes = @[ kTestScope, kTestScopeA ];
   NSString *testScopeString = [OIDScopeUtilities scopesWithArray:testScopes];
   NSString *testScopeStringPercentEncoded = [testScopeString
@@ -250,7 +262,7 @@ static NSString *const kHTTPContentTypeHeaderValue =
 
                                                              URLParamValueAllowedCharacters]];
   OIDTVAuthorizationRequest *authRequest = [[OIDTVAuthorizationRequest alloc]
-      initWithConfiguration:[self testServiceConfiguration]
+      initWithConfiguration:serviceConfiguration
                    clientId:kTestClientID
                clientSecret:kTestClientSecret
                      scopes:@[ kTestScope, kTestScopeA ]
@@ -261,7 +273,7 @@ static NSString *const kHTTPContentTypeHeaderValue =
   XCTAssertEqualObjects([URLRequest HTTPMethod], kHTTPPost);
   XCTAssertEqualObjects([URLRequest valueForHTTPHeaderField:kHTTPContentTypeHeaderKey],
                         kHTTPContentTypeHeaderValue);
-  XCTAssertEqualObjects(URLRequest.URL.absoluteString, kInitializerTestTVAuthEndpoint);
+  XCTAssertEqualObjects(URLRequest.URL, serviceConfiguration.TVAuthorizationEndpoint);
 
   NSDictionary<NSString *, NSString *> *bodyParameters =
       [self bodyParametersFromURLRequest:URLRequest];
