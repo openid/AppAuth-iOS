@@ -1,4 +1,4 @@
-/*! @file OIDTVAuthorizationRequestTests.h
+/*! @file OIDTVAuthorizationResponseTests.h
     @brief AppAuth iOS SDK
     @copyright
         Copyright 2020 Google Inc. All Rights Reserved.
@@ -18,18 +18,43 @@
 
 #import <XCTest/XCTest.h>
 
-@class OIDTVAuthorizationRequest;
-@class OIDTVServiceConfiguration;
-
+@class OIDTVAuthorizationResponse;
 
 NS_ASSUME_NONNULL_BEGIN
 
-/*! @brief Unit tests for @c OIDTokenRequest.
+/*! @brief Unit tests for @c OIDTVAuthorizationResponse.
  */
 @interface OIDTVAuthorizationResponseTests : XCTestCase
-- (OIDTVServiceConfiguration *)testServiceConfiguration;
-- (OIDTVAuthorizationRequest *) authRequest;
+- (OIDTVAuthorizationResponse *)testAuthorizationResponse;
 
+/*! @brief Tests the initializer
+ */
+- (void)testInitializer;
+
+/*! @brief Tests the @c NSCopying implementation by round-tripping an instance through the copying
+ * process and checking to make sure the source and destination both contain the
+ * @c TVAuthorizationEndpoint
+ */
+- (void)testCopying;
+
+/*! @brief Tests the @c NSSecureCoding implementation by round-tripping an instance through the
+ * coding process and checking to make sure the source and destination both contain the
+ * @c TVAuthorizationEndpoint
+ */
+- (void)testSecureCoding;
+
+/*! @brief Tests the @c URLRequest method on a request with no scopes or additional parameters
+ */
+- (void)testURLRequestBasicClientAuth;
+
+/*! @brief Tests the @c URLRequest method on a request with two scopes and no additional parameters
+ */
+- (void)testURLRequestScopes;
+
+/*! @brief Tests the @c URLRequest method on a request with two scopes and one additional parameter
+ */
+- (void)testURLRequestAdditionalParams;
 @end
 
 NS_ASSUME_NONNULL_END
+

@@ -1087,10 +1087,10 @@
 		2D52A08D24C24C260022E402 /* AppAuthTV */ = {
 			isa = PBXGroup;
 			children = (
-				2DA8D82524C6190400FDFB34 /* OIDTVAuthorizationResponseTests.h */,
-				2DA8D82424C6190300FDFB34 /* OIDTVAuthorizationResponseTests.m */,
 				2D81120324C1036700984DA7 /* OIDTVAuthorizationRequestTests.h */,
 				2D81120024C1036700984DA7 /* OIDTVAuthorizationRequestTests.m */,
+				2DA8D82524C6190400FDFB34 /* OIDTVAuthorizationResponseTests.h */,
+				2DA8D82424C6190300FDFB34 /* OIDTVAuthorizationResponseTests.m */,
 			);
 			path = AppAuthTV;
 			sourceTree = "<group>";
