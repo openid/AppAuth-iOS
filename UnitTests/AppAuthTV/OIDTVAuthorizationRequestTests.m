@@ -32,7 +32,7 @@
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wgnu"
 
-/*! @brief Test value for the @c authorizationEndpoint property.
+/*! @brief Test value for the @c TVAuthorizationEndpoint property.
  */
 static NSString *const kTestTVAuthorizationEndpoint = @"https://www.example.com/device/code";
 
@@ -80,7 +80,7 @@ static NSString *const kHTTPPost = @"POST";
  */
 static NSString *const kHTTPContentTypeHeaderKey = @"Content-Type";
 
-/*! @brief Expected @c ContentType header key for the authorization @c URLRequest
+/*! @brief Expected @c ContentType header value for the authorization @c URLRequest
  */
 static NSString *const kHTTPContentTypeHeaderValue =
     @"application/x-www-form-urlencoded; charset=UTF-8";
@@ -91,8 +91,8 @@ static NSString *const kHTTPContentTypeHeaderValue =
   NSURL *tokenEndpoint = [NSURL URLWithString:kTestTokenEndpoint];
   NSURL *TVAuthorizationEndpoint = [NSURL URLWithString:kTestTVAuthorizationEndpoint];
 
-  // Pass in an empty AuthorizationEndpoint since only the TVAuthorizationEndpoint and tokenEndpoint
-  // are used for auth.
+  // Pass in an empty authorizationEndpoint since only the TVAuthorizationEndpoint and tokenEndpoint
+  // are used for the TV authentication flow.
   OIDTVServiceConfiguration *configuration =
       [[OIDTVServiceConfiguration alloc] initWithAuthorizationEndpoint:[[NSURL alloc] init]
                                                TVAuthorizationEndpoint:TVAuthorizationEndpoint
@@ -259,7 +259,6 @@ static NSString *const kHTTPContentTypeHeaderValue =
   NSString *testScopeString = [OIDScopeUtilities scopesWithArray:testScopes];
   NSString *testScopeStringPercentEncoded = [testScopeString
       stringByAddingPercentEncodingWithAllowedCharacters:[OIDURLQueryComponent
-
                                                              URLParamValueAllowedCharacters]];
   OIDTVAuthorizationRequest *authRequest = [[OIDTVAuthorizationRequest alloc]
       initWithConfiguration:serviceConfiguration
