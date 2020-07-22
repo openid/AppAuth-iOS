@@ -28,7 +28,7 @@
             buildForAnalyzing = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "2D93866224B3A912009A12D7"
+               BlueprintIdentifier = "2D8111F424C0FD4C00984DA7"
                BuildableName = "AppAuthTVTests.xctest"
                BlueprintName = "AppAuthTVTests"
                ReferencedContainer = "container:AppAuth.xcodeproj">
@@ -42,6 +42,16 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "2D8111F424C0FD4C00984DA7"
+               BuildableName = "AppAuthTVTests.xctest"
+               BlueprintName = "AppAuthTVTests"
+               ReferencedContainer = "container:AppAuth.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction

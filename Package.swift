@@ -81,13 +81,18 @@ let package = Package(
             name: "AppAuthCoreTests",
             dependencies: ["AppAuthCore"],
             path: "UnitTests",
-            exclude: ["OIDSwiftTests.swift"]
+            exclude: ["OIDSwiftTests.swift", "AppAuthTV"]
         ),
         .testTarget(
             name: "AppAuthCoreSwiftTests",
             dependencies: ["AppAuthCore"],
             path: "UnitTests",
             sources: ["OIDSwiftTests.swift"]
-        )
+        ),
+        .testTarget(
+            name: "AppAuthTVTests",
+            dependencies: ["AppAuthTV"],
+            path: "UnitTests/AppAuthTV"
+        ),
     ]
 )
