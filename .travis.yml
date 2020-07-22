@@ -24,6 +24,7 @@ jobs:
         - SCHEME=AppAuth_macOS DESTINATION="'platform=macOS,arch=x86_64'" SDK=macosx10.15
         - SCHEME=AppAuth-tvOS DESTINATION="'platform=tvOS Simulator,name=Apple TV,OS=13.0'" SDK=appletvsimulator13.0
         - SCHEME=AppAuth_tvOS DESTINATION="'platform=tvOS Simulator,name=Apple TV,OS=13.0'" SDK=appletvsimulator13.0
+        - SCHEME=AppAuthTV DESTINATION="'platform=tvOS Simulator,name=Apple TV,OS=13.0'" SDK=appletvsimulator13.0
       before_script:
         - sudo gem install xcpretty
       script:
