@@ -29,6 +29,9 @@
 #import "Source/AppAuthCore/OIDURLQueryComponent.h"
 #endif
 
+
+NSString *const OIDTVDeviceTokenGrantType = @"http://oauth.net/grant_type/device/1.0";
+
 /*! @brief Test value for the @c TVAuthorizationEndpoint property.
  */
 static NSString *const kTestTVAuthorizationEndpoint = @"https://www.example.com/device/code";
@@ -82,6 +85,66 @@ static NSString *const kHTTPContentTypeHeaderKey = @"Content-Type";
 static NSString *const kHTTPContentTypeHeaderValue =
     @"application/x-www-form-urlencoded; charset=UTF-8";
 
+NSString *const OIDTVDeviceTokenGrantType = @"http://oauth.net/grant_type/device/1.0";
+
+/*! @brief The key for the @c verificationURL property in the incoming parameters and for
+        @c NSSecureCoding.
+ */
+static NSString *const kVerificationURLKey = @"verification_url";
+
+/*! @brief The value for the @c verificationURL property in the incoming parameters and for
+        @c NSSecureCoding.
+ */
+static NSString *const kVerificationURLValue = @"ttps://www.example.com/device";
+
+/*! @brief The key for the @c userCode property in the incoming parameters and for
+        @c NSSecureCoding.
+ */
+static NSString *const kUserCodeKey = @"user_code";
+
+/*! @brief The value for the @c userCode property in the incoming parameters and for
+        @c NSSecureCoding.
+ */
+static NSString *const kUserCodeValue = @"ABCD-EFGH";
+
+/*! @brief The key for the @c deviceCode property in the incoming parameters and for
+        @c NSSecureCoding.
+ */
+static NSString *const kDeviceCodeKey = @"device_code";
+
+/*! @brief The value for the @c deviceCode property in the incoming parameters and for
+        @c NSSecureCoding.
+ */
+static NSString *const kDeviceCodeValue = @"AH-1Ng3aOrHEvOZNGDB1PeyLdY3Ol1wIsxZuslF8vOgUnED7yPWSjoPBeuqRFPpt3Cg31GfwVawwW6QnURS9ZDQAfy9V3tctQA";
+
+/*! @brief The key for the @c expirationDate property in the incoming parameters and for
+        @c NSSecureCoding.
+ */
+static NSString *const kExpiresInKey = @"expires_in";
+
+/*! @brief The value for the @c expirationDate property in the incoming parameters and for
+        @c NSSecureCoding.
+ */
+static NSString *const kExpiresInValue = @"1800";
+
+/*! @brief The key for the @c interval property in the incoming parameters and for
+        @c NSSecureCoding.
+ */
+static NSString *const kIntervalKey = @"interval";
+
+/*! @brief The value for the @c interval property in the incoming parameters and for
+        @c NSSecureCoding.
+ */
+static NSString *const kIntervalValue = @"5"; //TODO: need to later test if it handles 0 appropriately, with the new logic
+
+/*! @brief Key used to encode the @c additionalParameters property for @c NSSecureCoding
+ */
+static NSString *const kAdditionalParametersKey = @"additionalParameters";
+
+/*! @brief Key used to encode the @c request property for @c NSSecureCoding
+ */
+static NSString *const kRequestKey = @"request";
+
 @implementation OIDTVAuthorizationResponseTests
 
 - (OIDTVServiceConfiguration *)testServiceConfiguration {
@@ -95,23 +158,66 @@ static NSString *const kHTTPContentTypeHeaderValue =
                                                TVAuthorizationEndpoint:TVAuthorizationEndpoint
                                                          tokenEndpoint:tokenEndpoint];
   return configuration;
-} 
-
-- (OIDTVAuthorizationRequest *) testAuthorizationRequest {
-  NSArray<NSString *> *testScopes = @[ kTestScope, kTestScopeA ];
-  NSString *testScopeString = [OIDScopeUtilities scopesWithArray:testScopes];
-  NSDictionary<NSString *, NSString *> *testAdditionalParameters =
-      @{kTestAdditionalParameterKey : kTestAdditionalParameterValue};
-    return [[OIDTVAuthorizationRequest alloc] initWithConfiguration:[self testServiceConfiguration]
-                                                    clientId:kTestClientID
-                                                clientSecret:kTestClientSecret
-                                                      scopes:testScopes
-                                        additionalParameters:testAdditionalParameters];
 }
 
--(OIDTVAuthorizationResponse *) testAuthorizationResponse {
-  OIDTVAuthorizationResponse *response = [[OIDTVAuthorizationResponse alloc] initWithRequest:[self testAuthorizationRequest] parameters:@{OIDTVAuthorizationResponse.kExp
-  }]
+- (OIDTVAuthorizationRequest *)testAuthorizationRequest {
+  NSArray<NSString *> *testScopes = @[ kTestScope, kTestScopeA ];
+  NSDictionary<NSString *, NSString *> *testAdditionalParameters =
+      @{kTestAdditionalParameterKey : kTestAdditionalParameterValue};
+  return [[OIDTVAuthorizationRequest alloc] initWithConfiguration:[self testServiceConfiguration]
+                                                         clientId:kTestClientID
+                                                     clientSecret:kTestClientSecret
+                                                           scopes:testScopes
+                                             additionalParameters:testAdditionalParameters];
+}
+
+- (OIDTVAuthorizationResponse *)testAuthorizationResponse {
+  OIDTVAuthorizationResponse *response =
+      [[OIDTVAuthorizationResponse alloc] initWithRequest:[self testAuthorizationRequest]
+                                               parameters:@{
+                                                 kVerificationURLKey : kVerificationURLValue,
+                                                 kUserCodeKey : kUserCodeValue,
+                                                 kDeviceCodeKey : kDeviceCodeValue,
+                                                 kExpiresInKey : kExpiresInValue,
+                                                 kIntervalKey : kIntervalValue
+                                               }];
+}
+
+/*! @brief Tests the @c NSCopying implementation by round-tripping an instance through the copying
+ * process and checking to make sure the source and destination both contain the
+ * @c TODO
+ */
+- (void)testCopying {
+  OIDTVAuthorizationResponse *response = [self testAuthorizationResponse];
+  
+  OIDTVAuthorizationResponse *responseCopy = [response copy];
+  
+  
+}
+
+/*! @brief Tests the @c NSSecureCoding implementation by round-tripping an instance through the
+ * coding process and checking to make sure the source and destination both contain the
+ * @c TODO
+ */
+- (void)testSecureCoding {
+  OIDTVAuthorizationResponse *response = [self testAuthorizationResponse];
+
+  NSData *data = [NSKeyedArchiver archivedDataWithRootObject:authRequest];
+  OIDTVAuthorizationRequest *authRequestCopy = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+
+  NSURL *authRequestCopyTVAuthorizationEndpoint =
+      ((OIDTVServiceConfiguration *)authRequestCopy.configuration).TVAuthorizationEndpoint;
+
+  XCTAssertEqualObjects(authRequestCopyTVAuthorizationEndpoint,
+                        serviceConfiguration.TVAuthorizationEndpoint);
+}
+
+-(void) testTokenPollRequest() {
+  //This just calls the following with nil additionalParameters, so..
+}
+
+-(void) testTokenPollRequestWithAdditionalParameters() {
+  //???
 }
 
 @end
