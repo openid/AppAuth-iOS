@@ -20,7 +20,7 @@
 #import "OIDTVTokenRequest.h"
 #import "OIDURLQueryComponent.h"
 
-/*! @brief The key for the @c deviceCode  property.
+/*! @brief The key for the @c deviceCode  property for NSSecureCoding and request body.
  */
 static NSString *const kDeviceCodeKey = @"code";
 
@@ -72,6 +72,11 @@ static NSString *const kDeviceCodeKey = @"code";
     _deviceCode = deviceCode;
   }
   return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder {
+  [super encodeWithCoder:aCoder];
+  [aCoder encodeObject:_deviceCode forKey:kDeviceCodeKey];
 }
 
 - (OIDURLQueryComponent *)tokenRequestBody {
