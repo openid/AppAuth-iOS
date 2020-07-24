@@ -24,6 +24,7 @@
 
 @class OIDAuthorizationResponse;
 @class OIDServiceConfiguration;
+@class OIDURLQueryComponent;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -157,6 +158,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (NSURLRequest *)URLRequest;
 
+- (OIDURLQueryComponent *)tokenRequestBody;
 @end
 
 NS_ASSUME_NONNULL_END
