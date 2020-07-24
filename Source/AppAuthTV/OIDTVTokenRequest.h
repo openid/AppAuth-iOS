@@ -66,6 +66,11 @@ NS_ASSUME_NONNULL_BEGIN
                  additionalParameters:(NSDictionary<NSString *, NSString *> *)additionalParameters
     NS_DESIGNATED_INITIALIZER;
 
+/*! @brief Designated initializer for NSSecureCoding.
+    @param aDecoder Unarchiver object to decode
+ */
+- (instancetype)initWithCoder:(NSCoder *)aDecoder NS_DESIGNATED_INITIALIZER;
+
 @end
 
 NS_ASSUME_NONNULL_END

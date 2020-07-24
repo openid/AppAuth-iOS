@@ -26,6 +26,9 @@
  */
 static NSString *const kDeviceCodeKey = @"code";
 
+/*! @brief Key used to encode the @c grantType property for @c NSSecureCoding
+ */
+static NSString *const kGrantTypeKey = @"grant_type";
 
 @implementation OIDTVTokenRequest
 
@@ -132,9 +135,17 @@ static NSString *const kDeviceCodeKey = @"code";
 }
 
 - (OIDURLQueryComponent *)tokenRequestBody {
-  OIDURLQueryComponent *query = [super tokenRequestBody];
+  OIDURLQueryComponent *query = [[OIDURLQueryComponent alloc] init];
 
-  [query addParameter:kDeviceCodeKey value:_deviceCode];
+  if (self.grantType) {
+    [query addParameter:kGrantTypeKey value:self.grantType];
+  }
+
+  if (self.deviceCode) {
+    [query addParameter:kDeviceCodeKey value:self.deviceCode];
+  }
+
+  [query addParameters:self.additionalParameters];
 
   return query;
 }
