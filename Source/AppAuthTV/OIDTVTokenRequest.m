@@ -26,14 +26,6 @@
  */
 static NSString *const kDeviceCodeKey = @"code";
 
-@interface OIDTVTokenRequest ()
-
-/*! @brief Designated initializer.
-    @param aDecoder NSCoder to unserialize the object from.
- */
-- (instancetype)initWithCoder:(NSCoder *)aDecoder NS_DESIGNATED_INITIALIZER;
-
-@end
 
 @implementation OIDTVTokenRequest
 
