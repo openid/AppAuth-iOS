@@ -17,14 +17,14 @@
  */
 
 #import "OIDTVAuthorizationRequestTests.h"
-#import "OIDTVAuthorizationRequest.h"
-#import "OIDTVServiceConfiguration.h"
 
 #if SWIFT_PACKAGE
-@import AppAuthCore;
+@import AppAuthTV;
 #else
 #import "Source/AppAuthCore/OIDScopeUtilities.h"
 #import "Source/AppAuthCore/OIDURLQueryComponent.h"
+#import "Source/AppAuthTV/OIDTVAuthorizationRequest.h"
+#import "Source/AppAuthTV/OIDTVServiceConfiguration.h"
 #endif
 
 // Ignore warnings about "Use of GNU statement expression extension" which is raised by our use of
