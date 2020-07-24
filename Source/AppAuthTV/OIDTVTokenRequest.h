@@ -20,6 +20,9 @@
 
 #import <Foundation/Foundation.h>
 
+@class OIDServiceConfiguration;
+@class OIDTVServiceConfiguration;
+
 NS_ASSUME_NONNULL_BEGIN
 
 @interface OIDTVTokenRequest : OIDTokenRequest
