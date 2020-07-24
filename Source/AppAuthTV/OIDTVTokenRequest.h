@@ -16,11 +16,9 @@
        limitations under the License.
 */
 
+#import "OIDTokenRequest.h"
+
 #import <Foundation/Foundation.h>
-
-#import "OIDTVTokenRequest.h"
-
-@class OIDTVServiceConfiguration;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -32,8 +30,42 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property(nonatomic, readonly, nullable) NSString *deviceCode;
 
--(instancetype) initWithConfiguration:(OIDTVServiceConfiguration *)configuration grantType:(NSString *)grantType deviceCode:(NSString *)deviceCode clientID:(NSString *)clientID clientSecret:(NSString *)clientSecret additionalParameters:(NSDictionary<NSString *,NSString *> *)additionalParameters
-    NS_DESIGNATED_INITIALIZER
+- (instancetype)init NS_UNAVAILABLE;
+
+- (instancetype)initWithConfiguration:(OIDServiceConfiguration *)configuration
+                            grantType:(NSString *)grantType
+                    authorizationCode:(nullable NSString *)code
+                          redirectURL:(nullable NSURL *)redirectURL
+                             clientID:(NSString *)clientID
+                         clientSecret:(nullable NSString *)clientSecret
+                               scopes:(nullable NSArray<NSString *> *)scopes
+                         refreshToken:(nullable NSString *)refreshToken
+                         codeVerifier:(nullable NSString *)codeVerifier
+                 additionalParameters:
+                     (nullable NSDictionary<NSString *, NSString *> *)additionalParameters
+    NS_UNAVAILABLE;
+
+- (instancetype)initWithConfiguration:(OIDServiceConfiguration *)configuration
+                            grantType:(NSString *)grantType
+                    authorizationCode:(nullable NSString *)code
+                          redirectURL:(nullable NSURL *)redirectURL
+                             clientID:(NSString *)clientID
+                         clientSecret:(nullable NSString *)clientSecret
+                                scope:(nullable NSString *)scope
+                         refreshToken:(nullable NSString *)refreshToken
+                         codeVerifier:(nullable NSString *)codeVerifier
+                 additionalParameters:
+                     (nullable NSDictionary<NSString *, NSString *> *)additionalParameters
+    NS_UNAVAILABLE;
+
+- (instancetype)initWithConfiguration:(OIDTVServiceConfiguration *)configuration
+                            grantType:(NSString *)grantType
+                           deviceCode:(NSString *)deviceCode
+                             clientID:(NSString *)clientID
+                         clientSecret:(NSString *)clientSecret
+                 additionalParameters:(NSDictionary<NSString *, NSString *> *)additionalParameters
+    NS_DESIGNATED_INITIALIZER;
+
 @end
 
 NS_ASSUME_NONNULL_END

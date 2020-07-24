@@ -17,6 +17,8 @@
 */
 
 #import "OIDTVServiceConfiguration.h"
+
+#import "OIDDefines.h"
 #import "OIDTVTokenRequest.h"
 #import "OIDURLQueryComponent.h"
 
@@ -24,7 +26,65 @@
  */
 static NSString *const kDeviceCodeKey = @"code";
 
+@interface OIDTVTokenRequest ()
+
+/*! @brief Designated initializer.
+    @param aDecoder NSCoder to unserialize the object from.
+ */
+- (instancetype)initWithCoder:(NSCoder *)aDecoder NS_DESIGNATED_INITIALIZER;
+
+@end
+
 @implementation OIDTVTokenRequest
+
+- (instancetype)init OID_UNAVAILABLE_USE_INITIALIZER(@selector
+                                                     (initWithConfiguration:
+                                                                    grantType:
+                                                                   deviceCode:
+                                                                     clientID:
+                                                                 clientSecret:
+                                                         additionalParameters:
+                                                             ))
+
+- (instancetype)initWithConfiguration:(OIDServiceConfiguration *)configuration
+                            grantType:(NSString *)grantType
+                    authorizationCode:(nullable NSString *)code
+                          redirectURL:(nullable NSURL *)redirectURL
+                             clientID:(NSString *)clientID
+                         clientSecret:(nullable NSString *)clientSecret
+                               scopes:(nullable NSArray<NSString *> *)scopes
+                         refreshToken:(nullable NSString *)refreshToken
+                         codeVerifier:(nullable NSString *)codeVerifier
+                 additionalParameters:
+                     (nullable NSDictionary<NSString *, NSString *> *)additionalParameters
+    OID_UNAVAILABLE_USE_INITIALIZER(@selector
+                                    (initWithConfiguration:
+                                                   grantType:
+                                                  deviceCode:
+                                                    clientID:
+                                                clientSecret:
+                                        additionalParameters:
+                                            ))
+
+- (instancetype)initWithConfiguration:(OIDServiceConfiguration *)configuration
+                            grantType:(NSString *)grantType
+                    authorizationCode:(nullable NSString *)code
+                          redirectURL:(nullable NSURL *)redirectURL
+                             clientID:(NSString *)clientID
+                         clientSecret:(nullable NSString *)clientSecret
+                                scope:(nullable NSString *)scope
+                         refreshToken:(nullable NSString *)refreshToken
+                         codeVerifier:(nullable NSString *)codeVerifier
+                 additionalParameters:
+                     (nullable NSDictionary<NSString *, NSString *> *)additionalParameters
+    OID_UNAVAILABLE_USE_INITIALIZER(@selector
+    (initWithConfiguration:
+                   grantType:
+                  deviceCode:
+                    clientID:
+                clientSecret:
+        additionalParameters:
+            ))
 
 - (instancetype)initWithConfiguration:(OIDTVServiceConfiguration *)configuration
                             grantType:(NSString *)grantType
@@ -38,7 +98,7 @@ static NSString *const kDeviceCodeKey = @"code";
                           redirectURL:[[NSURL alloc] initWithString:@""]
                              clientID:clientID
                          clientSecret:clientSecret
-                               scopes:nil
+                                scope:nil
                          refreshToken:nil
                          codeVerifier:nil
                  additionalParameters:additionalParameters];
@@ -65,7 +125,7 @@ static NSString *const kDeviceCodeKey = @"code";
   return YES;
 }
 
--(instancetype) initWithCoder:(NSCoder *)aDecoder {
+- (instancetype)initWithCoder:(NSCoder *)aDecoder {
   self = [super initWithCoder:aDecoder];
   if (self) {
     NSString *deviceCode = [aDecoder decodeObjectOfClass:[NSString class] forKey:kDeviceCodeKey];
@@ -81,9 +141,9 @@ static NSString *const kDeviceCodeKey = @"code";
 
 - (OIDURLQueryComponent *)tokenRequestBody {
   OIDURLQueryComponent *query = [super tokenRequestBody];
-  
+
   [query addParameter:kDeviceCodeKey value:_deviceCode];
-  
+
   return query;
 }
 
