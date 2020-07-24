@@ -16,10 +16,10 @@
        limitations under the License.
 */
 
-#import "OIDTVServiceConfiguration.h"
+#import "OIDTVTokenRequest.h"
 
 #import "OIDDefines.h"
-#import "OIDTVTokenRequest.h"
+#import "OIDTVServiceConfiguration.h"
 #import "OIDURLQueryComponent.h"
 
 /*! @brief The key for the @c deviceCode  property for NSSecureCoding and request body.
@@ -73,13 +73,13 @@ static NSString *const kGrantTypeKey = @"grant_type";
                  additionalParameters:
                      (nullable NSDictionary<NSString *, NSString *> *)additionalParameters
     OID_UNAVAILABLE_USE_INITIALIZER(@selector
-    (initWithConfiguration:
-                   grantType:
-                  deviceCode:
-                    clientID:
-                clientSecret:
-        additionalParameters:
-            ))
+                                     (initWithConfiguration:
+                                                   grantType:
+                                                  deviceCode:
+                                                    clientID:
+                                                clientSecret:
+                                        additionalParameters:
+                                              ))
 
 - (instancetype)initWithConfiguration:(OIDTVServiceConfiguration *)configuration
                             grantType:(NSString *)grantType
