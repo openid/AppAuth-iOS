@@ -31,8 +31,11 @@ NS_ASSUME_NONNULL_BEGIN
     @remarks device_code
     @see https://tools.ietf.org/html/rfc8628#section-3.4
  */
-@property(nonatomic, readonly, nullable) NSString *deviceCode;
+@property(nonatomic, readonly) NSString *deviceCode;
 
+/*! @internal
+   @brief Unavailable. Please use @c initWithConfiguration:grantType:deviceCode:clientID:clientSecret:additionalParameters: or @c initWithCoder:.
+*/
 - (instancetype)init NS_UNAVAILABLE;
 
 - (instancetype)initWithConfiguration:(OIDServiceConfiguration *)configuration
