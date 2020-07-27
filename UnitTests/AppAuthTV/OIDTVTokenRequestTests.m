@@ -18,9 +18,12 @@
 
 #import "OIDTVTokenRequestTests.h"
 
+#import "OIDTVTokenRequest.h"
+
 #if SWIFT_PACKAGE
 @import AppAuthTV;
 #else
+#import "Source/AppAuthCore/OIDScopeUtils.h"
 #import "Source/AppAuthTV/OIDTVAuthorizationResponse.h"
 #import "Source/AppAuthTV/OIDTVServiceConfiguration.h"
 #import "Source/AppAuthTV/OIDTVTokenRequest.h"
@@ -112,7 +115,9 @@ static NSString *const kHTTPContentTypeHeaderValue =
                                                   clientSecret:kTestClientSecret
                                                         scopes:testScopes
                                           additionalParameters:testAdditionalParameters];
+}
 
+-(instancetype) testInstance {
   
 }
 
