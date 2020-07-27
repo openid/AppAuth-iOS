@@ -34,10 +34,17 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic, readonly) NSString *deviceCode;
 
 /*! @internal
-   @brief Unavailable. Please use @c initWithConfiguration:grantType:deviceCode:clientID:clientSecret:additionalParameters: or @c initWithCoder:.
+    @brief Unavailable. Please use
+        @c initWithConfiguration:deviceCode:clientID:clientSecret:additionalParameters:
+        or @c initWithCoder:.
 */
 - (instancetype)init NS_UNAVAILABLE;
 
+/*! @internal
+    @brief Unavailable. Please use
+        @c initWithConfiguration:deviceCode:clientID:clientSecret:additionalParameters:
+        or @c initWithCoder:.
+*/
 - (instancetype)initWithConfiguration:(OIDServiceConfiguration *)configuration
                             grantType:(NSString *)grantType
                     authorizationCode:(nullable NSString *)code
@@ -48,9 +55,14 @@ NS_ASSUME_NONNULL_BEGIN
                          refreshToken:(nullable NSString *)refreshToken
                          codeVerifier:(nullable NSString *)codeVerifier
                  additionalParameters:
-                     (nullable NSDictionary<NSString *, NSString *> *)additionalParameters
-    NS_UNAVAILABLE;
+                     (nullable NSDictionary<NSString *, NSString *> *)
+                         additionalParameters NS_UNAVAILABLE;
 
+/*! @internal
+    @brief Unavailable. Please use
+        @c initWithConfiguration:deviceCode:clientID:clientSecret:additionalParameters:
+        or @c initWithCoder:.
+*/
 - (instancetype)initWithConfiguration:(OIDServiceConfiguration *)configuration
                             grantType:(NSString *)grantType
                     authorizationCode:(nullable NSString *)code
@@ -61,15 +73,22 @@ NS_ASSUME_NONNULL_BEGIN
                          refreshToken:(nullable NSString *)refreshToken
                          codeVerifier:(nullable NSString *)codeVerifier
                  additionalParameters:
-                     (nullable NSDictionary<NSString *, NSString *> *)additionalParameters
-    NS_UNAVAILABLE;
+                    (nullable NSDictionary<NSString *, NSString *> *)
+                         additionalParameters NS_UNAVAILABLE;
 
+/*! @brief Designated initializer.
+    @param configuration The service's configuration.
+    @param deviceCode The device verification code received from the authorization server.
+    @param clientID The client identifier.
+    @param clientSecret The client secret (nullable).
+    @param additionalParameters The client's additional token request parameters.
+*/
 - (instancetype)initWithConfiguration:(OIDTVServiceConfiguration *)configuration
-                            grantType:(NSString *)grantType
                            deviceCode:(NSString *)deviceCode
                              clientID:(NSString *)clientID
-                         clientSecret:(NSString *)clientSecret
-                 additionalParameters:(NSDictionary<NSString *, NSString *> *)additionalParameters
+                         clientSecret:(nullable NSString *)clientSecret
+                 additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)
+                                          additionalParameters
     NS_DESIGNATED_INITIALIZER;
 
 /*! @brief Designated initializer for NSSecureCoding.

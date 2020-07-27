@@ -33,13 +33,12 @@ static NSString *const kGrantTypeKey = @"grant_type";
 /*! @brief Value for @c grant_type key in the request body
     @see https://tools.ietf.org/html/rfc8628#section-3.4
  */
-NSString *const OIDTVDeviceTokenGrantType = @"urn:ietf:params:oauth:grant-type:device_code";\
+static NSString *const kOIDTVDeviceTokenGrantType = @"urn:ietf:params:oauth:grant-type:device_code";
 
 @implementation OIDTVTokenRequest
 
 - (instancetype)init OID_UNAVAILABLE_USE_INITIALIZER(@selector
                                                      (initWithConfiguration:
-                                                                    grantType:
                                                                    deviceCode:
                                                                      clientID:
                                                                  clientSecret:
@@ -59,7 +58,6 @@ NSString *const OIDTVDeviceTokenGrantType = @"urn:ietf:params:oauth:grant-type:d
                      (nullable NSDictionary<NSString *, NSString *> *)additionalParameters
     OID_UNAVAILABLE_USE_INITIALIZER(@selector
                                     (initWithConfiguration:
-                                                   grantType:
                                                   deviceCode:
                                                     clientID:
                                                 clientSecret:
@@ -79,7 +77,6 @@ NSString *const OIDTVDeviceTokenGrantType = @"urn:ietf:params:oauth:grant-type:d
                      (nullable NSDictionary<NSString *, NSString *> *)additionalParameters
     OID_UNAVAILABLE_USE_INITIALIZER(@selector
                                      (initWithConfiguration:
-                                                   grantType:
                                                   deviceCode:
                                                     clientID:
                                                 clientSecret:
@@ -87,13 +84,12 @@ NSString *const OIDTVDeviceTokenGrantType = @"urn:ietf:params:oauth:grant-type:d
                                               ))
 
 - (instancetype)initWithConfiguration:(OIDTVServiceConfiguration *)configuration
-                            grantType:(NSString *)grantType
                            deviceCode:(NSString *)deviceCode
                              clientID:(NSString *)clientID
                          clientSecret:(NSString *)clientSecret
                  additionalParameters:(NSDictionary<NSString *, NSString *> *)additionalParameters {
   self = [super initWithConfiguration:configuration
-                            grantType:grantType
+                            grantType:kOIDTVDeviceTokenGrantType
                     authorizationCode:nil
                           redirectURL:[[NSURL alloc] initWithString:@""]
                              clientID:clientID
