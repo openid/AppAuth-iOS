@@ -18,12 +18,11 @@
 
 #import "OIDTVTokenRequestTests.h"
 
-#import "OIDTVTokenRequest.h"
 
 #if SWIFT_PACKAGE
 @import AppAuthTV;
 #else
-#import "Source/AppAuthCore/OIDScopeUtils.h"
+#import "Source/AppAuthCore/OIDScopeUtilities.h"
 #import "Source/AppAuthTV/OIDTVAuthorizationResponse.h"
 #import "Source/AppAuthTV/OIDTVServiceConfiguration.h"
 #import "Source/AppAuthTV/OIDTVTokenRequest.h"
@@ -86,6 +85,11 @@ static NSString *const kHTTPContentTypeHeaderKey = @"Content-Type";
  */
 static NSString *const kHTTPContentTypeHeaderValue =
     @"application/x-www-form-urlencoded; charset=UTF-8";
+
+/*! @brief Test value for the @c clientID property.
+ */
+static NSString *const kTestDeviceCode = @"ThisIsACode Lol";
+
 @implementation OIDTVTokenRequestTests
 
 - (OIDTVServiceConfiguration *)testServiceConfiguration {
@@ -118,7 +122,14 @@ static NSString *const kHTTPContentTypeHeaderValue =
 }
 
 -(instancetype) testInstance {
-  
+  OIDTVServiceConfiguration *service = [self testServiceConfiguration];
+  OIDTVTokenRequest *tokenRequest = [[OIDTVTokenRequest alloc] initWithConfiguration:service
+                                                                          deviceCode: kTestDeviceCode
+                                                                            clientID:kTestClientID
+                                                                        clientSecret:kTestClientSecret
+                                                           kTestAdditionalParameters:@{kTestAdditionalParameterKey:
+                                                                                         kTestAdditionalParameterValue
+                                                           }]
 }
 
 @end
