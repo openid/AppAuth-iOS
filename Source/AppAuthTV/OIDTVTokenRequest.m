@@ -22,13 +22,18 @@
 #import "OIDTVServiceConfiguration.h"
 #import "OIDURLQueryComponent.h"
 
-/*! @brief The key for the @c deviceCode  property for NSSecureCoding and request body.
+/*! @brief The key for the @c deviceCode  property for @c NSSecureCoding and request body.
  */
 static NSString *const kDeviceCodeKey = @"code";
 
-/*! @brief Key used to encode the @c grantType property for @c NSSecureCoding
+/*! @brief Key used to encode the @c grantType property for @c NSSecureCoding and request body.
  */
 static NSString *const kGrantTypeKey = @"grant_type";
+
+/*! @brief Value for @c grant_type key in the request body
+    @see https://tools.ietf.org/html/rfc8628#section-3.4
+ */
+NSString *const OIDTVDeviceTokenGrantType = @"urn:ietf:params:oauth:grant-type:device_code";\
 
 @implementation OIDTVTokenRequest
 
