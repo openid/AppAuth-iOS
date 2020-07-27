@@ -22,7 +22,7 @@
 #import "OIDTVServiceConfiguration.h"
 #import "OIDURLQueryComponent.h"
 
-/*! @brief The key for the @c deviceCode  property for @c NSSecureCoding and request body.
+/*! @brief The key for the @c deviceCode property for @c NSSecureCoding and request body.
  */
 static NSString *const kDeviceCodeKey = @"code";
 
