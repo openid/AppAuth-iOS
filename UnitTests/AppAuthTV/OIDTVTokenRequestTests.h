@@ -28,7 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /*! @brief Creates a new @c OIDTokenRequest for testing.
  */
-- (OIDTVTokenRequest *)testInstance;
+- (OIDTVTokenRequest *)testTokenRequest;
 
 @end
 
