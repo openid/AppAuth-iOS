@@ -26,9 +26,25 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @interface OIDTVTokenRequestTests : XCTestCase
 
-/*! @brief Creates a new @c OIDTokenRequest for testing.
- */
-- (OIDTVTokenRequest *)testTokenRequest;
+/*! @brief Tests the initializer
+*/
+- (void)testInitializer;
+
+/*! @brief Tests the @c NSCopying implementation by round-tripping an instance through the copying
+* process and checking to make sure the source and destination both contain the @c deviceCode.
+*/
+- (void)testCopying;
+
+/*! @brief Tests the @c NSSecureCoding implementation by round-tripping an instance through the
+* coding process and checking to make sure the source and destination both contain the
+* @c deviceCode
+*/
+- (void)testSecureCoding;
+
+/*! @brief Tests the @c URLRequest method to verify that the body parameters
+ * include the correct grant type, device code and additional parameters.
+*/
+- (void)testURLRequest;
 
 @end
 

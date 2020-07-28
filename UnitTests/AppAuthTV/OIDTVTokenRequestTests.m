@@ -148,8 +148,7 @@ static NSString *const kOIDTVDeviceTokenGrantType =
 }
 
 /*! @brief Tests the @c NSCopying implementation by round-tripping an instance through the copying
-* process and checking to make sure the source and destination both contain the
-* @c deviceCode
+* process and checking to make sure the source and destination both contain the @c deviceCode.
 */
 - (void)testCopying {
   OIDTVTokenRequest *request = [self testTokenRequest];
