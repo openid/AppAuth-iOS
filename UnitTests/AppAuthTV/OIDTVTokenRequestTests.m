@@ -27,14 +27,15 @@
 #import "Source/AppAuthTV/OIDTVTokenRequest.h"
 #endif
 
-// Ignore warnings about "Use of GNU statement expression extension" which is raised by our use of
-// the XCTAssert___ macros.
+// Ignore warnings about "Use of GNU statement expression extension" which is
+// raised by our use of the XCTAssert___ macros.
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wgnu"
 
 /*! @brief Test value for the @c TVAuthorizationEndpoint property.
  */
-static NSString *const kTestTVAuthorizationEndpoint = @"https://www.example.com/device/code";
+static NSString *const kTestTVAuthorizationEndpoint =
+    @"https://www.example.com/device/code";
 
 /*! @brief Test value for the @c tokenEndpoint property.
  */
@@ -60,60 +61,42 @@ static NSString *const kTestClientID = @"ClientID";
  */
 static NSString *const kTestClientSecret = @"ClientSecret";
 
-/*! @brief Test key for the @c scope parameter in the HTTP request.
- */
-static NSString *const kTestScopeKey = @"scope";
-
-/*! @brief Test value for the @c scope property.
- */
-static NSString *const kTestScope = @"Scope";
-
-/*! @brief Test value for the @c scope property.
- */
-static NSString *const kTestScopeA = @"ScopeA";
-
-/*! @brief Expected HTTP Method for the authorization @c URLRequest
- */
-static NSString *const kHTTPPost = @"POST";
-
-/*! @brief Expected @c ContentType header key for the authorization @c URLRequest
- */
-static NSString *const kHTTPContentTypeHeaderKey = @"Content-Type";
-
-/*! @brief Expected @c ContentType header value for the authorization @c URLRequest
- */
-static NSString *const kHTTPContentTypeHeaderValue =
-    @"application/x-www-form-urlencoded; charset=UTF-8";
-
-/*! @brief The key for the @c deviceCode property for @c NSSecureCoding and request body.
+/*! @brief The key for the @c deviceCode property for @c NSSecureCoding and
+ * request body.
  */
 static NSString *const kDeviceCodeKey = @"device_code";
 
-/*! @brief The value for the @c deviceCode property for @c NSSecureCoding and request body.
+/*! @brief The value for the @c deviceCode property for @c NSSecureCoding and
+ * request body.
  */
 static NSString *const kDeviceCodeValue = @"DEVICECODEEEE";
 
-/*! @brief Key used to encode the @c grantType property for @c NSSecureCoding and request body.
+/*! @brief Key used to encode the @c grantType property for @c NSSecureCoding
+ * and request body.
  */
 static NSString *const kGrantTypeKey = @"grant_type";
 
 /*! @brief Value for @c grant_type key in the request body
     @see https://tools.ietf.org/html/rfc8628#section-3.4
  */
-static NSString *const kOIDTVDeviceTokenGrantType = @"urn:ietf:params:oauth:grant-type:device_code";
-
+static NSString *const kOIDTVDeviceTokenGrantType =
+    @"urn:ietf:params:oauth:grant-type:device_code";
 
 @implementation OIDTVTokenRequestTests
 
-- (NSDictionary<NSString *, NSString *> *)bodyParametersFromURLRequest:(NSURLRequest *)URLRequest {
+- (NSDictionary<NSString *, NSString *> *)bodyParametersFromURLRequest:
+    (NSURLRequest *)URLRequest {
   NSString *bodyString = [[NSString alloc] initWithData:URLRequest.HTTPBody
                                                encoding:NSUTF8StringEncoding];
-  NSArray<NSString *> *bodyParameterStrings = [bodyString componentsSeparatedByString:@"&"];
+  NSArray<NSString *> *bodyParameterStrings =
+      [bodyString componentsSeparatedByString:@"&"];
 
-  NSMutableDictionary<NSString *, NSString *> *bodyParameters = [[NSMutableDictionary alloc] init];
+  NSMutableDictionary<NSString *, NSString *> *bodyParameters =
+      [[NSMutableDictionary alloc] init];
 
   for (NSString *paramString in bodyParameterStrings) {
-    NSArray<NSString *> *components = [paramString componentsSeparatedByString:@"="];
+    NSArray<NSString *> *components =
+        [paramString componentsSeparatedByString:@"="];
 
     if (components.count == 2) {
       bodyParameters[components[0]] = components[1];
@@ -123,13 +106,14 @@ static NSString *const kOIDTVDeviceTokenGrantType = @"urn:ietf:params:oauth:gran
   return bodyParameters;
 }
 
-
 - (OIDTVServiceConfiguration *)testServiceConfiguration {
   NSURL *tokenEndpoint = [NSURL URLWithString:kTestTokenEndpoint];
-  NSURL *TVAuthorizationEndpoint = [NSURL URLWithString:kTestTVAuthorizationEndpoint];
+  NSURL *TVAuthorizationEndpoint =
+      [NSURL URLWithString:kTestTVAuthorizationEndpoint];
 
-  // Pass in an empty authorizationEndpoint since only the TVAuthorizationEndpoint and tokenEndpoint
-  // are used for the TV authentication flow.
+  // Pass in an empty authorizationEndpoint since only the
+  // TVAuthorizationEndpoint and tokenEndpoint are used for the TV
+  // authentication flow.
   OIDTVServiceConfiguration *configuration = [[OIDTVServiceConfiguration alloc]
       initWithAuthorizationEndpoint:[[NSURL alloc] initWithString:@""]
             TVAuthorizationEndpoint:TVAuthorizationEndpoint
@@ -137,60 +121,61 @@ static NSString *const kOIDTVDeviceTokenGrantType = @"urn:ietf:params:oauth:gran
   return configuration;
 }
 
-
-//
-//- (OIDTVAuthorizationResponse *)testAuthResponse {
-//  OIDTVServiceConfiguration *serviceConfiguration = [self testServiceConfiguration];
-//  NSArray<NSString *> *testScopes = @[ kTestScope, kTestScopeA ];
-//  NSString *testScopeString = [OIDScopeUtilities scopesWithArray:testScopes];
-//  NSDictionary<NSString *, NSString *> *testAdditionalParameters =
-//      @{kTestAdditionalParameterKey : kTestAdditionalParameterValue};
-//
-//  return [[OIDTVAuthorizationRequest alloc] initWithConfiguration:serviceConfiguration
-//                                                      clientId:kTestClientID
-//                                                  clientSecret:kTestClientSecret
-//                                                        scopes:testScopes
-//                                          additionalParameters:testAdditionalParameters];
-//}
-
--(OIDTVTokenRequest *) testInstance {
+- (OIDTVTokenRequest *)testInstance {
   OIDTVServiceConfiguration *service = [self testServiceConfiguration];
-  return [[OIDTVTokenRequest alloc] initWithConfiguration:service
-                                                                          deviceCode: kTestDeviceCode
-                                                                            clientID:kTestClientID
-                                                                        clientSecret:kTestClientSecret
-                                                           additionalParameters:@{kTestAdditionalParameterKey:
-                                                                                         kTestAdditionalParameterValue
-                                                           }];
+  return [[OIDTVTokenRequest alloc]
+      initWithConfiguration:service
+                 deviceCode:kDeviceCodeValue
+                   clientID:kTestClientID
+               clientSecret:kTestClientSecret
+       additionalParameters:@{
+         kTestAdditionalParameterKey : kTestAdditionalParameterValue
+       }];
 }
 
-//todo test the copy
+- (void)testInitializer {
+  OIDTVTokenRequest *request = [self testInstance];
+  NSURL *requestTVAuthorizationEndpoint =
+  ((OIDTVServiceConfiguration *)request.configuration).TVAuthorizationEndpoint;
+  
+  XCTAssertEqualObjects(requestTVAuthorizationEndpoint, [self testServiceConfiguration].TVAuthorizationEndpoint);
+  XCTAssertEqualObjects(request.deviceCode, kDeviceCodeValue);
+  XCTAssertEqualObjects(request.grantType, kOIDTVDeviceTokenGrantType);
+  XCTAssertEqualObjects(request.clientID, kTestClientID);
+  XCTAssertEqualObjects(request.clientSecret, kTestClientSecret);
+  XCTAssertEqualObjects(request.additionalParameters, @{kTestAdditionalParameterKey:kTestAdditionalParameterValue});
+}
 
--(void)testCopying {
+// todo test the copy
+
+- (void)testCopying {
   OIDTVTokenRequest *request = [self testInstance];
   OIDTVTokenRequest *requestCopy = [request copy];
-  
+
   XCTAssertEqualObjects(requestCopy.deviceCode, request.deviceCode);
 }
 // todo test URLRequest includes the thing
 
--(void)testSecureCoding {
+- (void)testSecureCoding {
   OIDTVTokenRequest *request = [self testInstance];
   NSData *data = [NSKeyedArchiver archivedDataWithRootObject:request];
-  OIDTVTokenRequest *requestDecoded = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+  OIDTVTokenRequest *requestDecoded =
+      [NSKeyedUnarchiver unarchiveObjectWithData:data];
   XCTAssertEqualObjects(requestDecoded.deviceCode, request.deviceCode);
 }
 
--(void)testURLRequest {
+- (void)testURLRequest {
   OIDTVTokenRequest *request = [self testInstance];
-  
-  NSURLRequest *URLRequest = [request URLRequest]; //TODO should this be redeclared
+
+  NSURLRequest *URLRequest =
+      [request URLRequest];
 
   NSDictionary<NSString *, NSString *> *bodyParameters =
       [self bodyParametersFromURLRequest:URLRequest];
-  NSDictionary<NSString *, NSString *> *expectedParameters = @{kGrantTypeKey : kOIDTVDeviceTokenGrantType,
-                                                               kDeviceCodeKey : kDeviceCodeValue,
-                                                               kTestAdditionalParameterKey: kTestAdditionalParameterValue}
+  NSDictionary<NSString *, NSString *> *expectedParameters = @{
+    kGrantTypeKey : kOIDTVDeviceTokenGrantType,
+    kDeviceCodeKey : kDeviceCodeValue,
+    kTestAdditionalParameterKey : kTestAdditionalParameterValue
   };
 
   XCTAssertEqualObjects(bodyParameters, expectedParameters);
