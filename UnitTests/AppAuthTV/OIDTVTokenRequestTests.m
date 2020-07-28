@@ -17,12 +17,11 @@
  */
 
 #import "OIDTVTokenRequestTests.h"
-
-
 #if SWIFT_PACKAGE
 @import AppAuthTV;
 #else
 #import "Source/AppAuthCore/OIDScopeUtilities.h"
+#import "Source/AppAuthTV/OIDTVAuthorizationRequest.h"
 #import "Source/AppAuthTV/OIDTVAuthorizationResponse.h"
 #import "Source/AppAuthTV/OIDTVServiceConfiguration.h"
 #import "Source/AppAuthTV/OIDTVTokenRequest.h"
@@ -106,31 +105,50 @@ static NSString *const kTestDeviceCode = @"ThisIsACode Lol";
 }
 
 
+//
+//- (OIDTVAuthorizationResponse *)testAuthResponse {
+//  OIDTVServiceConfiguration *serviceConfiguration = [self testServiceConfiguration];
+//  NSArray<NSString *> *testScopes = @[ kTestScope, kTestScopeA ];
+//  NSString *testScopeString = [OIDScopeUtilities scopesWithArray:testScopes];
+//  NSDictionary<NSString *, NSString *> *testAdditionalParameters =
+//      @{kTestAdditionalParameterKey : kTestAdditionalParameterValue};
+//
+//  return [[OIDTVAuthorizationRequest alloc] initWithConfiguration:serviceConfiguration
+//                                                      clientId:kTestClientID
+//                                                  clientSecret:kTestClientSecret
+//                                                        scopes:testScopes
+//                                          additionalParameters:testAdditionalParameters];
+//}
 
-- (OIDTVAuthorizationResponse *)testAuthResponse {
-  OIDTVServiceConfiguration *serviceConfiguration = [self testServiceConfiguration];
-  NSArray<NSString *> *testScopes = @[ kTestScope, kTestScopeA ];
-  NSString *testScopeString = [OIDScopeUtilities scopesWithArray:testScopes];
-  NSDictionary<NSString *, NSString *> *testAdditionalParameters =
-      @{kTestAdditionalParameterKey : kTestAdditionalParameterValue};
-
-  return [[OIDTVAuthorizationRequest alloc] initWithConfiguration:serviceConfiguration
-                                                      clientId:kTestClientID
-                                                  clientSecret:kTestClientSecret
-                                                        scopes:testScopes
-                                          additionalParameters:testAdditionalParameters];
-}
-
--(instancetype) testInstance {
+-(OIDTVTokenRequest *) testInstance {
   OIDTVServiceConfiguration *service = [self testServiceConfiguration];
-  OIDTVTokenRequest *tokenRequest = [[OIDTVTokenRequest alloc] initWithConfiguration:service
+  return [[OIDTVTokenRequest alloc] initWithConfiguration:service
                                                                           deviceCode: kTestDeviceCode
                                                                             clientID:kTestClientID
                                                                         clientSecret:kTestClientSecret
-                                                           kTestAdditionalParameters:@{kTestAdditionalParameterKey:
+                                                           additionalParameters:@{kTestAdditionalParameterKey:
                                                                                          kTestAdditionalParameterValue
-                                                           }]
+                                                           }];
 }
+
+//todo test the copy
+
+-(void)testCopying {
+  OIDTVTokenRequest *request = [self testInstance];
+  OIDTVTokenRequest *requestCopy = [request copy];
+  
+  XCTAssertEqualObjects(requestCopy.deviceCode, request.deviceCode);
+}
+// todo test securecoding
+// todo test URLRequest includes the thing
+
+-(void)testSecureCoding {
+  OIDTVTokenRequest *request = [self testInstance];
+  NSData *data = [NSKeyedArchiver archivedDataWithRootObject:request];
+  OIDTVTokenRequest *requestDecoded = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+  XCTAssertEqualObjects(requestDecoded.deviceCode, request.deviceCode);
+}
+
 
 @end
 
