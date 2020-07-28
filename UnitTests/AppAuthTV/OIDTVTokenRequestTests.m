@@ -164,8 +164,7 @@ static NSString *const kOIDTVDeviceTokenGrantType =
 - (void)testSecureCoding {
   OIDTVTokenRequest *request = [self testTokenRequest];
   NSData *data = [NSKeyedArchiver archivedDataWithRootObject:request];
-  OIDTVTokenRequest *requestDecoded =
-      [NSKeyedUnarchiver unarchiveObjectWithData:data];
+  OIDTVTokenRequest *requestDecoded = [NSKeyedUnarchiver unarchiveObjectWithData:data];
   XCTAssertEqualObjects(requestDecoded.deviceCode, request.deviceCode);
 }
 
