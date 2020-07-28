@@ -142,9 +142,7 @@ static NSString *const kOIDTVDeviceTokenGrantType = @"urn:ietf:params:oauth:gran
     [query addParameter:kGrantTypeKey value:self.grantType];
   }
 
-  if (self.deviceCode) {
-    [query addParameter:kDeviceCodeKey value:self.deviceCode];
-  }
+  [query addParameter:kDeviceCodeKey value:self.deviceCode];
 
   [query addParameters:self.additionalParameters];
 
