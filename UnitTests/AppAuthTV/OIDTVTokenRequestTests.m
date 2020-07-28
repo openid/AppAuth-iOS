@@ -85,11 +85,44 @@ static NSString *const kHTTPContentTypeHeaderKey = @"Content-Type";
 static NSString *const kHTTPContentTypeHeaderValue =
     @"application/x-www-form-urlencoded; charset=UTF-8";
 
-/*! @brief Test value for the @c clientID property.
+/*! @brief The key for the @c deviceCode property for @c NSSecureCoding and request body.
  */
-static NSString *const kTestDeviceCode = @"ThisIsACode Lol";
+static NSString *const kDeviceCodeKey = @"device_code";
+
+/*! @brief The value for the @c deviceCode property for @c NSSecureCoding and request body.
+ */
+static NSString *const kDeviceCodeValue = @"DEVICECODEEEE";
+
+/*! @brief Key used to encode the @c grantType property for @c NSSecureCoding and request body.
+ */
+static NSString *const kGrantTypeKey = @"grant_type";
+
+/*! @brief Value for @c grant_type key in the request body
+    @see https://tools.ietf.org/html/rfc8628#section-3.4
+ */
+static NSString *const kOIDTVDeviceTokenGrantType = @"urn:ietf:params:oauth:grant-type:device_code";
+
 
 @implementation OIDTVTokenRequestTests
+
+- (NSDictionary<NSString *, NSString *> *)bodyParametersFromURLRequest:(NSURLRequest *)URLRequest {
+  NSString *bodyString = [[NSString alloc] initWithData:URLRequest.HTTPBody
+                                               encoding:NSUTF8StringEncoding];
+  NSArray<NSString *> *bodyParameterStrings = [bodyString componentsSeparatedByString:@"&"];
+
+  NSMutableDictionary<NSString *, NSString *> *bodyParameters = [[NSMutableDictionary alloc] init];
+
+  for (NSString *paramString in bodyParameterStrings) {
+    NSArray<NSString *> *components = [paramString componentsSeparatedByString:@"="];
+
+    if (components.count == 2) {
+      bodyParameters[components[0]] = components[1];
+    }
+  }
+
+  return bodyParameters;
+}
+
 
 - (OIDTVServiceConfiguration *)testServiceConfiguration {
   NSURL *tokenEndpoint = [NSURL URLWithString:kTestTokenEndpoint];
@@ -139,7 +172,6 @@ static NSString *const kTestDeviceCode = @"ThisIsACode Lol";
   
   XCTAssertEqualObjects(requestCopy.deviceCode, request.deviceCode);
 }
-// todo test securecoding
 // todo test URLRequest includes the thing
 
 -(void)testSecureCoding {
@@ -149,6 +181,20 @@ static NSString *const kTestDeviceCode = @"ThisIsACode Lol";
   XCTAssertEqualObjects(requestDecoded.deviceCode, request.deviceCode);
 }
 
+-(void)testURLRequest {
+  OIDTVTokenRequest *request = [self testInstance];
+  
+  NSURLRequest *URLRequest = [request URLRequest]; //TODO should this be redeclared
+
+  NSDictionary<NSString *, NSString *> *bodyParameters =
+      [self bodyParametersFromURLRequest:URLRequest];
+  NSDictionary<NSString *, NSString *> *expectedParameters = @{kGrantTypeKey : kOIDTVDeviceTokenGrantType,
+                                                               kDeviceCodeKey : kDeviceCodeValue,
+                                                               kTestAdditionalParameterKey: kTestAdditionalParameterValue}
+  };
+
+  XCTAssertEqualObjects(bodyParameters, expectedParameters);
+}
 
 @end
 
