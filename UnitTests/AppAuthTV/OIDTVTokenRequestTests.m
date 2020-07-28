@@ -17,6 +17,7 @@
  */
 
 #import "OIDTVTokenRequestTests.h"
+
 #if SWIFT_PACKAGE
 @import AppAuthTV;
 #else
@@ -75,7 +76,7 @@ static NSString *const kDeviceCodeValue = @"DeviceCode";
  */
 static NSString *const kGrantTypeKey = @"grant_type";
 
-/*! @brief Value for @c grant_type key in the HTTP request body
+/*! @brief Value for the @c grant_type key in the HTTP request body
     @see https://tools.ietf.org/html/rfc8628#section-3.4
  */
 static NSString *const kOIDTVDeviceTokenGrantType =
@@ -107,8 +108,7 @@ static NSString *const kOIDTVDeviceTokenGrantType =
 
 - (OIDTVServiceConfiguration *)testServiceConfiguration {
   NSURL *tokenEndpoint = [NSURL URLWithString:kTestTokenEndpoint];
-  NSURL *TVAuthorizationEndpoint =
-      [NSURL URLWithString:kTestTVAuthorizationEndpoint];
+  NSURL *TVAuthorizationEndpoint = [NSURL URLWithString:kTestTVAuthorizationEndpoint];
 
   // Pass in an empty authorizationEndpoint since only the
   // TVAuthorizationEndpoint and tokenEndpoint are used for the TV
@@ -127,9 +127,7 @@ static NSString *const kOIDTVDeviceTokenGrantType =
                  deviceCode:kDeviceCodeValue
                    clientID:kTestClientID
                clientSecret:kTestClientSecret
-       additionalParameters:@{
-         kTestAdditionalParameterKey : kTestAdditionalParameterValue
-       }];
+       additionalParameters:@{kTestAdditionalParameterKey : kTestAdditionalParameterValue}];
 }
 
 /*! @brief Tests the initializer
@@ -139,12 +137,14 @@ static NSString *const kOIDTVDeviceTokenGrantType =
   NSURL *requestTVAuthorizationEndpoint =
   ((OIDTVServiceConfiguration *)request.configuration).TVAuthorizationEndpoint;
   
-  XCTAssertEqualObjects(requestTVAuthorizationEndpoint, [self testServiceConfiguration].TVAuthorizationEndpoint);
+  XCTAssertEqualObjects(requestTVAuthorizationEndpoint,
+                        [self testServiceConfiguration].TVAuthorizationEndpoint);
   XCTAssertEqualObjects(request.deviceCode, kDeviceCodeValue);
   XCTAssertEqualObjects(request.grantType, kOIDTVDeviceTokenGrantType);
   XCTAssertEqualObjects(request.clientID, kTestClientID);
   XCTAssertEqualObjects(request.clientSecret, kTestClientSecret);
-  XCTAssertEqualObjects(request.additionalParameters, @{kTestAdditionalParameterKey:kTestAdditionalParameterValue});
+  XCTAssertEqualObjects(request.additionalParameters,
+                        @{kTestAdditionalParameterKey:kTestAdditionalParameterValue});
 }
 
 /*! @brief Tests the @c NSCopying implementation by round-tripping an instance through the copying
