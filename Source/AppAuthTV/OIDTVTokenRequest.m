@@ -24,7 +24,7 @@
 
 /*! @brief The key for the @c deviceCode property for @c NSSecureCoding and request body.
  */
-static NSString *const kDeviceCodeKey = @"code";
+static NSString *const kDeviceCodeKey = @"device_code";
 
 /*! @brief Key used to encode the @c grantType property for @c NSSecureCoding and request body.
  */
