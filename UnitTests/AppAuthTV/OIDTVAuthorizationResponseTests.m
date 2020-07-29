@@ -172,7 +172,7 @@ static NSString *const kRequestKey = @"request";
 }
 
 - (OIDTVAuthorizationResponse *)testAuthorizationResponse {
-  OIDTVAuthorizationResponse *response =
+  return 
       [[OIDTVAuthorizationResponse alloc] initWithRequest:[self testAuthorizationRequest]
                                                parameters:@{
                                                  kVerificationURLKey : kVerificationURLValue,
