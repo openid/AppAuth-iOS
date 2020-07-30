@@ -21,6 +21,7 @@
 #import "OIDDefines.h"
 #import "OIDFieldMapping.h"
 #import "OIDTokenRequest.h"
+#import "OIDTVTokenRequest.h"
 
 #import "OIDTVAuthorizationRequest.h"
 
@@ -135,8 +136,8 @@ static NSString *const kRequestKey = @"request";
 
 - (OIDTokenRequest *)tokenPollRequestWithAdditionalParameters:
     (NSDictionary<NSString *, NSString *> *)additionalParameters {
-  OIDTokenRequest *pollRequest =
-      [[OIDTokenRequest alloc] initWithConfiguration:self.request.configuration
+  OIDTVTokenRequest *pollRequest =
+      [[OIDTVTokenRequest alloc] initWithConfiguration:self.request.configuration
                                            grantType:OIDTVDeviceTokenGrantType
                                    authorizationCode:_deviceCode
                                          redirectURL:[[NSURL alloc] initWithString:@""]

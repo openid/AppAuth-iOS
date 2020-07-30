@@ -202,7 +202,7 @@ static NSString *const kRequestKey = @"request";
 - (void)testSecureCoding {
   OIDTVAuthorizationResponse *response = [self testAuthorizationResponse];
 
-  NSData *data = [NSKeyedArchiver archivedDataWithRootObject:authRequest];
+  NSData *data = [NSKeyedArchiver archivedDataWithRootObject:response];
   OIDTVAuthorizationRequest *authRequestCopy = [NSKeyedUnarchiver unarchiveObjectWithData:data];
 
   NSURL *authRequestCopyTVAuthorizationEndpoint =
