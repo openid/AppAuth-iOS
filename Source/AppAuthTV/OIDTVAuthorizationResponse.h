@@ -35,13 +35,13 @@ extern NSString *const OIDTVDeviceTokenGrantType;
  */
 @interface OIDTVAuthorizationResponse : OIDAuthorizationResponse
 
-/*! @brief The verification URL that should be displayed to the user instructing them to visit the
-        URL and enter the code.
-    @remarks verification_url
+/*! @brief The verification URI that should be displayed to the user instructing them to visit the
+        URI and enter the code.
+    @remarks verification_uri
  */
-@property(nonatomic, readonly, nullable) NSString *verificationURL;
+@property(nonatomic, readonly, nullable) NSString *verificationURI;
 
-/*! @brief The code that should be displayed to the user which they enter at the @c verificationURL.
+/*! @brief The code that should be displayed to the user which they enter at the @c verificationURI.
     @remarks user_code
  */
 @property(nonatomic, readonly, nullable) NSString *userCode;
