@@ -18,12 +18,15 @@
 
 #import "OIDTVAuthorizationResponseTests.h"
 
+
+//TODO move these imports down below into the macro
 #import "OIDTVAuthorizationRequest.h"
 #import "OIDTVAuthorizationResponse.h"
 #import "OIDTVServiceConfiguration.h"
+#import "OIDTVTokenRequest.h"
 
 #if SWIFT_PACKAGE
-@import AppAuthCore;
+@import AppAuthTV;
 #else
 #import "Source/AppAuthCore/OIDScopeUtilities.h"
 #import "Source/AppAuthCore/OIDURLQueryComponent.h"
@@ -82,8 +85,6 @@ static NSString *const kHTTPContentTypeHeaderKey = @"Content-Type";
 static NSString *const kHTTPContentTypeHeaderValue =
     @"application/x-www-form-urlencoded; charset=UTF-8";
 
-NSString *const OIDTVDeviceTokenGrantType = @"http://oauth.net/grant_type/device/1.0";
-
 /*! @brief The key for the @c verificationURL property in the incoming parameters and for
         @c NSSecureCoding.
  */
@@ -112,7 +113,7 @@ static NSString *const kDeviceCodeKey = @"device_code";
 /*! @brief The value for the @c deviceCode property in the incoming parameters and for
         @c NSSecureCoding.
  */
-static NSString *const kDeviceCodeValue = @"AH-1Ng3aOrHEvOZNGDB1PeyLdY3Ol1wIsxZuslF8vOgUnED7yPWSjoPBeuqRFPpt3Cg31GfwVawwW6QnURS9ZDQAfy9V3tctQA";
+static NSString *const kDeviceCodeValue = @"DeviceCode";
 
 /*! @brief The key for the @c expirationDate property in the incoming parameters and for
         @c NSSecureCoding.
@@ -122,7 +123,7 @@ static NSString *const kExpiresInKey = @"expires_in";
 /*! @brief The value for the @c expirationDate property in the incoming parameters and for
         @c NSSecureCoding.
  */
-static NSString *const kExpiresInValue = @"1800";
+static long long const kExpiresInValue = 1800;
 
 /*! @brief The key for the @c interval property in the incoming parameters and for
         @c NSSecureCoding.
@@ -175,9 +176,25 @@ static NSString *const kRequestKey = @"request";
                                                  kVerificationURLKey : kVerificationURLValue,
                                                  kUserCodeKey : kUserCodeValue,
                                                  kDeviceCodeKey : kDeviceCodeValue,
-                                                 kExpiresInKey : kExpiresInValue,
-                                                 kIntervalKey : kIntervalValue
+                                                 kExpiresInKey : @(kExpiresInValue),
+                                                 kIntervalKey : kIntervalValue,
+                                                 kTestAdditionalParameterKey :kTestAdditionalParameterValue
                                                }];
+}
+
+-(void)testInitializer {
+  OIDTVAuthorizationResponse *response = [self testAuthorizationResponse];
+
+  XCTAssertEqualObjects(response.deviceCode, kDeviceCodeValue);
+  XCTAssertEqualObjects(response.interval, kIntervalValue);
+  XCTAssertEqualObjects(response.userCode, kUserCodeValue);
+  XCTAssertEqualObjects(response.verificationURL, kVerificationURLValue);
+
+  // Should be ~ kTestExpirationSeconds seconds. Avoiding swizzling NSDate here for certainty
+  // to keep dependencies down, and simply making an assumption that this check will be executed
+  // relatively quickly after the initialization above (less than 5 seconds.)
+  NSTimeInterval expiration = [response.accessTokenExpirationDate timeIntervalSinceNow];
+  XCTAssert(expiration > kExpiresInValue - 5 && expiration <= kExpiresInValue, @"");
 }
 
 /*! @brief Tests the @c NSCopying implementation by round-tripping an instance through the copying
@@ -188,7 +205,8 @@ static NSString *const kRequestKey = @"request";
   OIDTVAuthorizationResponse *response = [self testAuthorizationResponse];
   
   OIDTVAuthorizationResponse *responseCopy = [response copy];
-  
+
+  XCTAssertEqualObjects(response, responseCopy);
   
 }
 
@@ -197,24 +215,33 @@ static NSString *const kRequestKey = @"request";
  * @c TODO
  */
 - (void)testSecureCoding {
-  OIDTVAuthorizationResponse *response = [self testAuthorizationResponse];
-
-  NSData *data = [NSKeyedArchiver archivedDataWithRootObject:response];
-  OIDTVAuthorizationRequest *authRequestCopy = [NSKeyedUnarchiver unarchiveObjectWithData:data];
-
-  NSURL *authRequestCopyTVAuthorizationEndpoint =
-      ((OIDTVServiceConfiguration *)authRequestCopy.configuration).TVAuthorizationEndpoint;
-
-  XCTAssertEqualObjects(authRequestCopyTVAuthorizationEndpoint,
-                        serviceConfiguration.TVAuthorizationEndpoint);
+//  OIDTVAuthorizationResponse *response = [self testAuthorizationResponse];
+//
+//  NSData *data = [NSKeyedArchiver archivedDataWithRootObject:response];
+//  OIDTVAuthorizationRequest *responseCopy = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+//
+//  NSURL *authRequestCopyTVAuthorizationEndpoint =
+//      ((OIDTVServiceConfiguration *)authRequestCopy.configuration).TVAuthorizationEndpoint;
+//
+//  XCTAssertEqualObjects(authRequestCopyTVAuthorizationEndpoint,
+//                        serviceConfiguration.TVAuthorizationEndpoint);
 }
 
--(void) testTokenPollRequest() {
-  //This just calls the following with nil additionalParameters, so..
+-(void) testTokenPollRequest {
+  OIDTVAuthorizationResponse *testResponse = [self testAuthorizationResponse];
+  OIDTVTokenRequest *pollRequestA = [testResponse tokenPollRequest];
+  OIDTVTokenRequest *pollRequestB = [testResponse tokenPollRequestWithAdditionalParameters:nil];
+  XCTAssertEqualObjects(pollRequestA, pollRequestB);
 }
 
--(void) testTokenPollRequestWithAdditionalParameters() {
-  //???
+-(void) testTokenPollRequestWithAdditionalParameters {
+  OIDTVAuthorizationResponse *testResponse = [self testAuthorizationResponse];
+  NSDictionary *dict = @{kAdditionalParametersKey: kTestAdditionalParameterValue};
+  OIDTVTokenRequest *pollRequest = [testResponse tokenPollRequestWithAdditionalParameters:dict];
+  XCTAssertEqualObjects(pollRequest.deviceCode, kDeviceCodeValue);
+  XCTAssertEqualObjects(pollRequest.clientID, kTestClientID);
+  XCTAssertEqualObjects(pollRequest.clientSecret, kTestClientSecret);
+  XCTAssertEqualObjects(pollRequest.additionalParameters, dict);
 }
 
 @end

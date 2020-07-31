@@ -25,8 +25,6 @@ NS_ASSUME_NONNULL_BEGIN
 /*! @brief Unit tests for @c OIDTVAuthorizationResponse.
  */
 @interface OIDTVAuthorizationResponseTests : XCTestCase
-- (OIDTVAuthorizationResponse *)testAuthorizationResponse;
-
 /*! @brief Tests the initializer
  */
 - (void)testInitializer;
@@ -43,17 +41,6 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)testSecureCoding;
 
-/*! @brief Tests the @c URLRequest method on a request with no scopes or additional parameters
- */
-- (void)testURLRequestBasicClientAuth;
-
-/*! @brief Tests the @c URLRequest method on a request with two scopes and no additional parameters
- */
-- (void)testURLRequestScopes;
-
-/*! @brief Tests the @c URLRequest method on a request with two scopes and one additional parameter
- */
-- (void)testURLRequestAdditionalParams;
 @end
 
 NS_ASSUME_NONNULL_END
