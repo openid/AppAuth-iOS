@@ -164,6 +164,15 @@ NSString *const kErrorCodeSlowDown = @"slow_down";
     // Starting polling interval (may be increased if a slow down message is received).
     __block NSTimeInterval interval = [TVAuthorizationResponse.interval doubleValue];
 
+    // If no interval is set, use default value of 5 as per RFC.
+    // If interval is set to 0, use value of 1 to prevent infinite polling.
+
+    if (TVAuthorizationResponse.interval == nil) {
+        interval = 5;
+    } else if (interval == 0) {
+        interval = 1;
+    }
+
     // Polls the token endpoint until the authorization completes or expires.
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
       do {
