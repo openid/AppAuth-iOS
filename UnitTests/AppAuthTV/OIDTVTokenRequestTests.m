@@ -112,8 +112,7 @@ static NSString *const kOIDTVDeviceTokenGrantType =
   // TVAuthorizationEndpoint and tokenEndpoint are used for the TV
   // authentication flow.
   OIDTVServiceConfiguration *configuration = [[OIDTVServiceConfiguration alloc]
-      initWithAuthorizationEndpoint:[[NSURL alloc] initWithString:@""]
-            TVAuthorizationEndpoint:TVAuthorizationEndpoint
+      initWithTVAuthorizationEndpoint:TVAuthorizationEndpoint
                       tokenEndpoint:tokenEndpoint];
   return configuration;
 }
