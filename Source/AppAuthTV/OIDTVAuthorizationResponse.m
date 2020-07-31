@@ -142,13 +142,12 @@ static NSString *const kRequestKey = @"request";
 
 - (OIDTVTokenRequest *)tokenPollRequestWithAdditionalParameters:
     (NSDictionary<NSString *, NSString *> *)additionalParameters {
-  OIDTVTokenRequest *pollRequest =
-      [[OIDTVTokenRequest alloc] initWithConfiguration:(OIDTVServiceConfiguration *) self.request.configuration
-                                          deviceCode:_deviceCode
-                                            clientID:self.request.clientID
-                                        clientSecret:self.request.clientSecret
-                                additionalParameters:additionalParameters];
-  return pollRequest;
+  return [[OIDTVTokenRequest alloc]
+      initWithConfiguration:(OIDTVServiceConfiguration *) self.request.configuration
+                 deviceCode:_deviceCode
+                   clientID:self.request.clientID
+               clientSecret:self.request.clientSecret
+       additionalParameters:additionalParameters];
 }
 
 @end
