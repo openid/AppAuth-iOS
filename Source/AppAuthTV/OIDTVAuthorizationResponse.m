@@ -24,12 +24,17 @@
 
 #import "OIDTVAuthorizationRequest.h"
 
-NSString *const OIDTVDeviceTokenGrantType = @"http://oauth.net/grant_type/device/1.0";
+NSString *const OIDTVDeviceTokenGrantType = @"urn:ietf:params:oauth:grant-type:device_code";
 
-/*! @brief The key for the @c verificationURL property in the incoming parameters and for
+/*! @brief The key for the @c verificationURI property in the incoming parameters and for
         @c NSSecureCoding.
  */
-static NSString *const kVerificationURLKey = @"verification_url";
+static NSString *const kVerificationURIKey = @"verification_uri";
+
+/*! @brief An alternative key for the @c verificationURI property in the incoming parameters and for
+        @c NSSecureCoding. If "verification_uri" is not found in the response, a "verification_url" key is considered equivalent.
+ */
+static NSString *const kVerificationURIAlternativeKey = @"verification_url";
 
 /*! @brief The key for the @c userCode property in the incoming parameters and for
         @c NSSecureCoding.
@@ -69,8 +74,10 @@ static NSString *const kRequestKey = @"request";
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
     fieldMap = [NSMutableDictionary dictionary];
-    fieldMap[kVerificationURLKey] =
-        [[OIDFieldMapping alloc] initWithName:@"_verificationURL" type:[NSString class]];
+    fieldMap[kVerificationURIKey] =
+        [[OIDFieldMapping alloc] initWithName:@"_verificationURI" type:[NSString class]];
+    fieldMap[kVerificationURIAlternativeKey] =
+      [[OIDFieldMapping alloc] initWithName:@"_verificationURI" type:[NSString class]];
     fieldMap[kUserCodeKey] =
         [[OIDFieldMapping alloc] initWithName:@"_userCode" type:[NSString class]];
     fieldMap[kDeviceCodeKey] =
@@ -85,6 +92,7 @@ static NSString *const kRequestKey = @"request";
           NSNumber *valueAsNumber = (NSNumber *)value;
           return [NSDate dateWithTimeIntervalSinceNow:[valueAsNumber longLongValue]];
         }];
+      
     fieldMap[kIntervalKey] =
         [[OIDFieldMapping alloc] initWithName:@"_interval" type:[NSNumber class]];
   });
@@ -112,13 +120,13 @@ static NSString *const kRequestKey = @"request";
 #pragma mark - NSObject overrides
 
 - (NSString *)description {
-  return [NSString stringWithFormat:@"<%@: %p, verificationURL: %@, userCode: \"%@\", deviceCode: "
+  return [NSString stringWithFormat:@"<%@: %p, verificationURI: %@, userCode: \"%@\", deviceCode: "
                                      "\"%@\", interval: %@, expirationDate: %@, "
                                      "additionalParameters: %@, "
                                      "request: %@>",
                                     NSStringFromClass([self class]),
                                     (void *)self,
-                                    _verificationURL,
+                                    _verificationURI,
                                     _userCode,
                                     _deviceCode,
                                     _interval,
@@ -138,14 +146,14 @@ static NSString *const kRequestKey = @"request";
   OIDTokenRequest *pollRequest =
       [[OIDTokenRequest alloc] initWithConfiguration:self.request.configuration
                                            grantType:OIDTVDeviceTokenGrantType
-                                   authorizationCode:_deviceCode
-                                         redirectURL:[[NSURL alloc] init]
+                                   authorizationCode:nil // it will essentially send
+                                         redirectURL:nil
                                             clientID:self.request.clientID
                                         clientSecret:self.request.clientSecret
                                               scopes:nil
                                         refreshToken:nil
                                         codeVerifier:nil
-                                additionalParameters:nil];
+                                additionalParameters:@{@"device_code": _deviceCode}];
   return pollRequest;
 }
 
