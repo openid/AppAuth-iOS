@@ -169,9 +169,9 @@ NSString *const kErrorCodeSlowDown = @"slow_down";
     // If interval is set to 0, use value of 1 to prevent infinite polling.
 
     if (TVAuthorizationResponse.interval == nil) {
-        interval = 5;
-    } else if (interval == 0) {
-        interval = 1;
+      interval = 5.0;
+    } else if (interval == 0.0) {
+      interval = 1.0;
     }
 
     // Polls the token endpoint until the authorization completes or expires.
