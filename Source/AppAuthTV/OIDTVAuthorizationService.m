@@ -27,6 +27,7 @@
 #import "OIDTVAuthorizationRequest.h"
 #import "OIDTVAuthorizationResponse.h"
 #import "OIDTVServiceConfiguration.h"
+#import "OIDTVTokenRequest.h"
 
 /*! @brief The authorization pending error code.
     @see https://tools.ietf.org/html/rfc8628#section-3.5
