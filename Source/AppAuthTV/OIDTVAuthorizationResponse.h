@@ -78,7 +78,7 @@ NS_ASSUME_NONNULL_BEGIN
     @return A @c OIDTVTokenRequest suitable for polling the token endpoint.
     @see https://tools.ietf.org/html/rfc8628#section-3.4
  */
-- (nullable OIDTokenRequest *)tokenPollRequest;
+- (nullable OIDTVTokenRequest *)tokenPollRequest;
 
 /*! @brief Creates a token request suitable for polling the token endpoint with the @c deviceCode.
     @param additionalParameters Additional parameters for the token request.
