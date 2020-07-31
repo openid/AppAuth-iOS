@@ -20,10 +20,9 @@
 
 #import "OIDDefines.h"
 #import "OIDFieldMapping.h"
+
 #import "OIDTVTokenRequest.h"
-
 #import "OIDTVAuthorizationRequest.h"
-
 
 /*! @brief The key for the @c verificationURI property in the incoming parameters and for
         @c NSSecureCoding.
@@ -31,9 +30,15 @@
 static NSString *const kVerificationURIKey = @"verification_uri";
 
 /*! @brief An alternative key for the @c verificationURI property in the incoming parameters and for
-        @c NSSecureCoding. If "verification_uri" is not found in the response, a "verification_url" key is considered equivalent.
+        @c NSSecureCoding. If "verification_uri" is not found in the response, a "verification_url"
+        key is considered equivalent.
  */
 static NSString *const kVerificationURIAlternativeKey = @"verification_url";
+
+/*! @brief An alternative key for the @c verificationURIComplete property in the incoming parameters
+        and for @c NSSecureCoding.
+ */
+static NSString *const kVerificationURICompleteKey = @"verification_uri_complete";
 
 /*! @brief The key for the @c userCode property in the incoming parameters and for
         @c NSSecureCoding.
@@ -77,6 +82,8 @@ static NSString *const kRequestKey = @"request";
         [[OIDFieldMapping alloc] initWithName:@"_verificationURI" type:[NSString class]];
     fieldMap[kVerificationURIAlternativeKey] =
       [[OIDFieldMapping alloc] initWithName:@"_verificationURI" type:[NSString class]];
+    fieldMap[kVerificationURICompleteKey] =
+      [[OIDFieldMapping alloc] initWithName:@"_verificationURIComplete" type:[NSString class]];
     fieldMap[kUserCodeKey] =
         [[OIDFieldMapping alloc] initWithName:@"_userCode" type:[NSString class]];
     fieldMap[kDeviceCodeKey] =
@@ -119,13 +126,15 @@ static NSString *const kRequestKey = @"request";
 #pragma mark - NSObject overrides
 
 - (NSString *)description {
-  return [NSString stringWithFormat:@"<%@: %p, verificationURI: %@, userCode: \"%@\", deviceCode: "
+  return [NSString stringWithFormat:@"<%@: %p, verificationURI: %@, verificationURIComplete: %@, "
+                                     "userCode: \"%@\", deviceCode: "
                                      "\"%@\", interval: %@, expirationDate: %@, "
                                      "additionalParameters: %@, "
                                      "request: %@>",
                                     NSStringFromClass([self class]),
                                     (void *)self,
                                     _verificationURI,
+                                    _verificationURIComplete,
                                     _userCode,
                                     _deviceCode,
                                     _interval,
