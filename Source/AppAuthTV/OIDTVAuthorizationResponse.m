@@ -35,8 +35,8 @@ static NSString *const kVerificationURIKey = @"verification_uri";
  */
 static NSString *const kVerificationURIAlternativeKey = @"verification_url";
 
-/*! @brief An alternative key for the @c verificationURIComplete property in the incoming parameters
-        and for @c NSSecureCoding.
+/*! @brief The key for the @c verificationURIComplete property in the incoming parameters and for
+        @c NSSecureCoding.
  */
 static NSString *const kVerificationURICompleteKey = @"verification_uri_complete";
 
