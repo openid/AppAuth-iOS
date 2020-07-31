@@ -27,7 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /*! @brief The block that is called when the TV authorization has initialized.
     @param response The authorization response, or nil if there was an error. Display
-        @c OIDTVAuthorizationResponse.userCode and @c OIDTVAuthorizationResponse.verificationURL to
+        @c OIDTVAuthorizationResponse.userCode and @c OIDTVAuthorizationResponse.verificationURI to
         the user so they can action the request.
     @param error The error if an error occurred.
  */
