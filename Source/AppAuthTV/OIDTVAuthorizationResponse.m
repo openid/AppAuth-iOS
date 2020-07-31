@@ -24,7 +24,6 @@
 
 #import "OIDTVAuthorizationRequest.h"
 
-NSString *const OIDTVDeviceTokenGrantType = @"urn:ietf:params:oauth:grant-type:device_code";
 
 /*! @brief The key for the @c verificationURI property in the incoming parameters and for
         @c NSSecureCoding.

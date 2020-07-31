@@ -25,11 +25,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/*! @brief The @c grant_type  value for the the TV authorization flow.
-    @see https://tools.ietf.org/html/rfc8628#section-3.4
- */
-extern NSString *const OIDTVDeviceTokenGrantType;
-
 /*! @brief Represents the response to a TV authorization request.
     @see https://tools.ietf.org/html/rfc8628#section-3.5
  */
