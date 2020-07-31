@@ -160,7 +160,7 @@ NSString *const kErrorCodeSlowDown = @"slow_down";
     });
 
     // Creates the token request that will be used to poll the token endpoint.
-    OIDTokenRequest *pollRequest = [TVAuthorizationResponse tokenPollRequest];
+    OIDTVTokenRequest *pollRequest = [TVAuthorizationResponse tokenPollRequest];
 
     // Starting polling interval (may be increased if a slow down message is received).
     __block NSTimeInterval interval = [TVAuthorizationResponse.interval doubleValue];
