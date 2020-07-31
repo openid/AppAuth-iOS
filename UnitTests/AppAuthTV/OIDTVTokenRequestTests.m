@@ -62,8 +62,7 @@ static NSString *const kTestClientID = @"ClientID";
  */
 static NSString *const kTestClientSecret = @"ClientSecret";
 
-/*! @brief Key for the @c deviceCode property for @c NSSecureCoding and
- *  the HTTP request body.
+/*! @brief Key for the @c deviceCode property for @c NSSecureCoding and the HTTP request body.
  */
 static NSString *const kDeviceCodeKey = @"device_code";
 
@@ -71,13 +70,12 @@ static NSString *const kDeviceCodeKey = @"device_code";
  */
 static NSString *const kDeviceCodeValue = @"DeviceCode";
 
-/*! @brief Key for the @c grantType property for @c NSSecureCoding and
- *  the HTTP request body.
+/*! @brief Key for the @c grantType property for @c NSSecureCoding and the HTTP request body.
  */
 static NSString *const kGrantTypeKey = @"grant_type";
 
 /*! @brief Value for the @c grant_type key in the HTTP request body
-    @see https://tools.ietf.org/html/rfc8628#section-3.4
+ *  @see https://tools.ietf.org/html/rfc8628#section-3.4
  */
 static NSString *const kOIDTVDeviceTokenGrantType =
     @"urn:ietf:params:oauth:grant-type:device_code";
@@ -148,8 +146,8 @@ static NSString *const kOIDTVDeviceTokenGrantType =
 }
 
 /*! @brief Tests the @c NSCopying implementation by round-tripping an instance through the copying
-* process and checking to make sure the source and destination both contain the @c deviceCode.
-*/
+ *      process and checking to make sure the source and destination both contain the @c deviceCode.
+ */
 - (void)testCopying {
   OIDTVTokenRequest *request = [self testTokenRequest];
   OIDTVTokenRequest *requestCopy = [request copy];
@@ -158,9 +156,9 @@ static NSString *const kOIDTVDeviceTokenGrantType =
 }
 
 /*! @brief Tests the @c NSSecureCoding implementation by round-tripping an instance through the
-* coding process and checking to make sure the source and destination both contain the
-* @c deviceCode
-*/
+ *      coding process and checking to make sure the source and destination both contain the
+ *      @c deviceCode
+ */
 - (void)testSecureCoding {
   OIDTVTokenRequest *request = [self testTokenRequest];
   NSData *data = [NSKeyedArchiver archivedDataWithRootObject:request];
@@ -168,9 +166,9 @@ static NSString *const kOIDTVDeviceTokenGrantType =
   XCTAssertEqualObjects(requestDecoded.deviceCode, request.deviceCode);
 }
 
-/*! @brief Tests the @c URLRequest method to verify that the body parameters
- * include the correct grant type, device code and additional parameters.
-*/
+/*! @brief Tests the @c URLRequest method to verify that the body parameters include the correct
+ *      grant type, device code and additional parameters.
+ */
 - (void)testURLRequest {
   OIDTVTokenRequest *request = [self testTokenRequest];
 
