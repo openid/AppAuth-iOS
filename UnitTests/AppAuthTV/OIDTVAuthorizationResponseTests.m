@@ -29,9 +29,6 @@
 #import "Source/AppAuthCore/OIDURLQueryComponent.h"
 #endif
 
-
-NSString *const OIDTVDeviceTokenGrantType = @"http://oauth.net/grant_type/device/1.0";
-
 /*! @brief Test value for the @c TVAuthorizationEndpoint property.
  */
 static NSString *const kTestTVAuthorizationEndpoint = @"https://www.example.com/device/code";
