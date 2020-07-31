@@ -48,12 +48,10 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithDiscoveryDocument:(OIDServiceDiscovery *)discoveryDocument NS_UNAVAILABLE;
 
 /*! @brief Designated initializer.
-    @param authorizationEndpoint The authorization endpoint URI.
     @param TVAuthorizationEndpoint The TV authorization endpoint URI.
     @param tokenEndpoint The token exchange and refresh endpoint URI.
  */
-- (instancetype)initWithAuthorizationEndpoint:(NSURL *)authorizationEndpoint
-                      TVAuthorizationEndpoint:(NSURL *)TVAuthorizationEndpoint
+- (instancetype)initWithTVAuthorizationEndpoint:(NSURL *)TVAuthorizationEndpoint
                                 tokenEndpoint:(NSURL *)tokenEndpoint NS_DESIGNATED_INITIALIZER;
 
 @end

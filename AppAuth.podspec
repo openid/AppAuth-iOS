@@ -70,7 +70,7 @@ It follows the OAuth 2.0 for Native Apps best current practice
 
   # Subspec for the full AppAuth library, including platform-dependant external user agents.
   s.subspec 'TV' do |tv|
-    tv.source_files = "Source/AppAuthTV/*.{h,m}"
+    tv.source_files = "Source/AppAuthTV.h", "Source/AppAuthTV/*.{h,m}"
     tv.dependency 'AppAuth/Core'
   end
 

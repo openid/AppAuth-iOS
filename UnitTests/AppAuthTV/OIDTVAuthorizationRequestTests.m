@@ -93,10 +93,9 @@ static NSString *const kHTTPContentTypeHeaderValue =
 
   // Pass in an empty authorizationEndpoint since only the TVAuthorizationEndpoint and tokenEndpoint
   // are used for the TV authentication flow.
-  OIDTVServiceConfiguration *configuration =
-      [[OIDTVServiceConfiguration alloc] initWithAuthorizationEndpoint:[[NSURL alloc] init]
-                                               TVAuthorizationEndpoint:TVAuthorizationEndpoint
-                                                         tokenEndpoint:tokenEndpoint];
+  OIDTVServiceConfiguration *configuration = [[OIDTVServiceConfiguration alloc]
+      initWithTVAuthorizationEndpoint:TVAuthorizationEndpoint
+                      tokenEndpoint:tokenEndpoint];
   return configuration;
 }
 
