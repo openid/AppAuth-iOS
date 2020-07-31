@@ -21,7 +21,7 @@
 #import "OIDAuthorizationResponse.h"
 
 @class OIDTVAuthorizationRequest;
-@class OIDTokenRequest;
+@class OIDTVTokenRequest;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -74,17 +74,17 @@ extern NSString *const OIDTVDeviceTokenGrantType;
     NS_DESIGNATED_INITIALIZER;
 
 /*! @brief Creates a token request suitable for polling the token endpoint with the @c deviceCode.
-    @return A @c OIDTokenRequest suitable for polling the token endpoint.
+    @return A @c OIDTVTokenRequest suitable for polling the token endpoint.
     @see https://tools.ietf.org/html/rfc8628#section-3.4
  */
 - (nullable OIDTokenRequest *)tokenPollRequest;
 
 /*! @brief Creates a token request suitable for polling the token endpoint with the @c deviceCode.
     @param additionalParameters Additional parameters for the token request.
-    @return A @c OIDTokenRequest suitable for polling the token endpoint.
+    @return A @c OIDTVTokenRequest suitable for polling the token endpoint.
     @see https://tools.ietf.org/html/rfc8628#section-3.4
  */
-- (nullable OIDTokenRequest *)tokenPollRequestWithAdditionalParameters:
+- (nullable OIDTVTokenRequest *)tokenPollRequestWithAdditionalParameters:
     (nullable NSDictionary<NSString *, NSString *> *)additionalParameters;
 
 @end

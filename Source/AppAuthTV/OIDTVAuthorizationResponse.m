@@ -20,7 +20,7 @@
 
 #import "OIDDefines.h"
 #import "OIDFieldMapping.h"
-#import "OIDTokenRequest.h"
+#import "OIDTVTokenRequest.h"
 
 #import "OIDTVAuthorizationRequest.h"
 
@@ -137,23 +137,18 @@ static NSString *const kRequestKey = @"request";
 
 #pragma mark -
 
-- (OIDTokenRequest *)tokenPollRequest {
+- (OIDTVTokenRequest *)tokenPollRequest {
   return [self tokenPollRequestWithAdditionalParameters:nil];
 }
 
-- (OIDTokenRequest *)tokenPollRequestWithAdditionalParameters:
+- (OIDTVTokenRequest *)tokenPollRequestWithAdditionalParameters:
     (NSDictionary<NSString *, NSString *> *)additionalParameters {
-  OIDTokenRequest *pollRequest =
-      [[OIDTokenRequest alloc] initWithConfiguration:self.request.configuration
-                                           grantType:OIDTVDeviceTokenGrantType
-                                   authorizationCode:nil // it will essentially send
-                                         redirectURL:nil
+  OIDTVTokenRequest *pollRequest =
+      [[OIDTVTokenRequest alloc] initWithConfiguration:(OIDTVServiceConfiguration *) self.request.configuration
+                                          deviceCode:_deviceCode
                                             clientID:self.request.clientID
                                         clientSecret:self.request.clientSecret
-                                              scopes:nil
-                                        refreshToken:nil
-                                        codeVerifier:nil
-                                additionalParameters:@{@"device_code": _deviceCode}];
+                                additionalParameters:additionalParameters];
   return pollRequest;
 }
 
