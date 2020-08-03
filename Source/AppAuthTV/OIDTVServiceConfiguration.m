@@ -38,16 +38,14 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation OIDTVServiceConfiguration
 
 - (instancetype)init
-    OID_UNAVAILABLE_USE_INITIALIZER(
-        @selector(initWithTVAuthorizationEndpoint:tokenEndpoint:))
+    OID_UNAVAILABLE_USE_INITIALIZER(@selector(initWithTVAuthorizationEndpoint:tokenEndpoint:))
 
 - (instancetype)initWithAuthorizationEndpoint:(NSURL *)authorizationEndpoint
                                 tokenEndpoint:(NSURL *)tokenEndpoint
-    OID_UNAVAILABLE_USE_INITIALIZER(
-        @selector(initWithTVAuthorizationEndpoint:tokenEndpoint:))
+    OID_UNAVAILABLE_USE_INITIALIZER(@selector(initWithTVAuthorizationEndpoint:tokenEndpoint:))
 
 - (instancetype)initWithTVAuthorizationEndpoint:(NSURL *)TVAuthorizationEndpoint
-                                tokenEndpoint:(NSURL *)tokenEndpoint {
+                                  tokenEndpoint:(NSURL *)tokenEndpoint {
   self = [super initWithAuthorizationEndpoint:[[NSURL alloc] initWithString:@""]
                                 tokenEndpoint:tokenEndpoint];
   if (self) {
