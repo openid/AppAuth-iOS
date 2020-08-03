@@ -1,7 +1,7 @@
 /*! @file OIDTVAuthorizationRequestTests.m
     @brief AppAuth iOS SDK
     @copyright
-        Copyright 2015 Google Inc. All Rights Reserved.
+        Copyright 2020 Google Inc. All Rights Reserved.
     @copydetails
         Licensed under the Apache License, Version 2.0 (the "License");
         you may not use this file except in compliance with the License.
@@ -88,12 +88,30 @@ static NSString *const kHTTPContentTypeHeaderValue =
 /*! @brief The key for the @c verificationURL property in the incoming parameters and for
         @c NSSecureCoding.
  */
-static NSString *const kVerificationURLKey = @"verification_url";
-
-/*! @brief The value for the @c verificationURL property in the incoming parameters and for
+/*! @brief The key for the @c verificationURI property in the incoming parameters and for
         @c NSSecureCoding.
  */
-static NSString *const kVerificationURLValue = @"ttps://www.example.com/device";
+static NSString *const kVerificationURIKey = @"verification_uri";
+
+/*! @brief An alternative key for the @c verificationURI property in the incoming parameters and for
+        @c NSSecureCoding. If "verification_uri" is not found in the response, a "verification_url"
+        key is considered equivalent.
+ */
+static NSString *const kVerificationURIAlternativeKey = @"verification_url";
+
+/*! @brief The test value for the @c verificationURL and @c verificationURI property in the incoming parameters and for @c NSSecureCoding.
+ */
+static NSString *const kVerificationTestURL = @"https://www.example.com/device";
+
+/*! @brief The key for the @c verificationURIComplete property in the incoming parameters and for
+        @c NSSecureCoding.
+ */
+static NSString *const kVerificationURICompleteKey = @"verification_uri_complete";
+
+/*! @brief The key for the @c verificationURIComplete property in the incoming parameters and for
+        @c NSSecureCoding.
+ */
+static NSString *const kVerificationTestURIComplete = @"https://www.example.com/device/UserCode";
 
 /*! @brief The key for the @c userCode property in the incoming parameters and for
         @c NSSecureCoding.
@@ -152,8 +170,7 @@ static NSString *const kRequestKey = @"request";
   // Pass in an empty authorizationEndpoint since only the TVAuthorizationEndpoint and tokenEndpoint
   // are used for the TV authentication flow.
   OIDTVServiceConfiguration *configuration =
-      [[OIDTVServiceConfiguration alloc] initWithAuthorizationEndpoint:[[NSURL alloc] init]
-                                               TVAuthorizationEndpoint:TVAuthorizationEndpoint
+      [[OIDTVServiceConfiguration alloc] initWithTVAuthorizationEndpoint:TVAuthorizationEndpoint
                                                          tokenEndpoint:tokenEndpoint];
   return configuration;
 }
@@ -173,7 +190,7 @@ static NSString *const kRequestKey = @"request";
   return 
       [[OIDTVAuthorizationResponse alloc] initWithRequest:[self testAuthorizationRequest]
                                                parameters:@{
-                                                 kVerificationURLKey : kVerificationURLValue,
+                                                 kVerificationURIKey : kVerificationTestURL,
                                                  kUserCodeKey : kUserCodeValue,
                                                  kDeviceCodeKey : kDeviceCodeValue,
                                                  kExpiresInKey : @(kExpiresInValue),
@@ -188,7 +205,9 @@ static NSString *const kRequestKey = @"request";
   XCTAssertEqualObjects(response.deviceCode, kDeviceCodeValue);
   XCTAssertEqualObjects(response.interval, kIntervalValue);
   XCTAssertEqualObjects(response.userCode, kUserCodeValue);
-  XCTAssertEqualObjects(response.verificationURI, kVerificationURIValue);
+  XCTAssertEqualObjects(response.verificationURIComplete, kVerificationTestURIComplete);
+  XCTAssertEqualObjects(response.verificationURI, kVerificationTestURL);
+
 
   // Should be ~ kTestExpirationSeconds seconds. Avoiding swizzling NSDate here for certainty
   // to keep dependencies down, and simply making an assumption that this check will be executed
