@@ -70,7 +70,7 @@ NS_ASSUME_NONNULL_BEGIN
         @c #additionalParameters dictionary.
  */
 - (instancetype)initWithRequest:(OIDTVAuthorizationRequest *)request
-    parameters:(NSDictionary<NSString *, NSObject<NSCopying> *> *)parameters
+                     parameters:(NSDictionary<NSString *, NSObject<NSCopying> *> *)parameters
     NS_DESIGNATED_INITIALIZER;
 
 /*! @brief Creates a token request suitable for polling the token endpoint with the @c deviceCode.

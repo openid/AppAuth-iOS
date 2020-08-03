@@ -78,29 +78,29 @@ static NSString *const kRequestKey = @"request";
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
     fieldMap = [NSMutableDictionary dictionary];
-    fieldMap[kVerificationURIKey] =
-        [[OIDFieldMapping alloc] initWithName:@"_verificationURI" type:[NSString class]];
+    fieldMap[kVerificationURIKey] = [[OIDFieldMapping alloc] initWithName:@"_verificationURI"
+                                                                     type:[NSString class]];
     fieldMap[kVerificationURIAlternativeKey] =
-      [[OIDFieldMapping alloc] initWithName:@"_verificationURI" type:[NSString class]];
+        [[OIDFieldMapping alloc] initWithName:@"_verificationURI" type:[NSString class]];
     fieldMap[kVerificationURICompleteKey] =
-      [[OIDFieldMapping alloc] initWithName:@"_verificationURIComplete" type:[NSString class]];
-    fieldMap[kUserCodeKey] =
-        [[OIDFieldMapping alloc] initWithName:@"_userCode" type:[NSString class]];
-    fieldMap[kDeviceCodeKey] =
-        [[OIDFieldMapping alloc] initWithName:@"_deviceCode" type:[NSString class]];
-    fieldMap[kExpiresInKey] =
-        [[OIDFieldMapping alloc] initWithName:@"_expirationDate"
-                                         type:[NSDate class]
-                                   conversion:^id _Nullable(NSObject *_Nullable value) {
-          if (![value isKindOfClass:[NSNumber class]]) {
-            return value;
-          }
-          NSNumber *valueAsNumber = (NSNumber *)value;
-          return [NSDate dateWithTimeIntervalSinceNow:[valueAsNumber longLongValue]];
-        }];
-      
-    fieldMap[kIntervalKey] =
-        [[OIDFieldMapping alloc] initWithName:@"_interval" type:[NSNumber class]];
+        [[OIDFieldMapping alloc] initWithName:@"_verificationURIComplete" type:[NSString class]];
+    fieldMap[kUserCodeKey] = [[OIDFieldMapping alloc] initWithName:@"_userCode"
+                                                              type:[NSString class]];
+    fieldMap[kDeviceCodeKey] = [[OIDFieldMapping alloc] initWithName:@"_deviceCode"
+                                                                type:[NSString class]];
+    fieldMap[kExpiresInKey] = [[OIDFieldMapping alloc]
+        initWithName:@"_expirationDate"
+                type:[NSDate class]
+          conversion:^id _Nullable(NSObject *_Nullable value) {
+            if (![value isKindOfClass:[NSNumber class]]) {
+              return value;
+            }
+            NSNumber *valueAsNumber = (NSNumber *)value;
+            return [NSDate dateWithTimeIntervalSinceNow:[valueAsNumber longLongValue]];
+          }];
+
+    fieldMap[kIntervalKey] = [[OIDFieldMapping alloc] initWithName:@"_interval"
+                                                              type:[NSNumber class]];
   });
   return fieldMap;
 }
@@ -108,7 +108,7 @@ static NSString *const kRequestKey = @"request";
 #pragma mark - Initializers
 
 - (instancetype)initWithRequest:(OIDTVAuthorizationRequest *)request
-    parameters:(NSDictionary<NSString *, NSObject<NSCopying> *> *)parameters {
+                     parameters:(NSDictionary<NSString *, NSObject<NSCopying> *> *)parameters {
   self = [super initWithRequest:request parameters:parameters];
   return self;
 }
