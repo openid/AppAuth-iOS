@@ -68,7 +68,7 @@
                               scopes:scopes
                          redirectURL:[[NSURL alloc] initWithString:@""]
                         responseType:OIDResponseTypeCode
-                 additionalParameters:additionalParameters];
+                additionalParameters:additionalParameters];
 }
 
 #pragma mark - NSObject overrides
