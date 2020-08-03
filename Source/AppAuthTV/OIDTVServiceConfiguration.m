@@ -48,7 +48,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithTVAuthorizationEndpoint:(NSURL *)TVAuthorizationEndpoint
                                 tokenEndpoint:(NSURL *)tokenEndpoint {
-  self = [super initWithAuthorizationEndpoint:[[NSURL alloc] initWithString:@""] tokenEndpoint:tokenEndpoint];
+  self = [super initWithAuthorizationEndpoint:[[NSURL alloc] initWithString:@""]
+                                tokenEndpoint:tokenEndpoint];
   if (self) {
     _TVAuthorizationEndpoint = [TVAuthorizationEndpoint copy];
   }
