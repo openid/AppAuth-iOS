@@ -103,7 +103,7 @@ static NSString *const kUserCodeKey = @"user_code";
 /*! @brief The value for the @c userCode property in the incoming parameters and for
         @c NSSecureCoding.
  */
-static NSString *const kUserCodeValue = @"ABCD-EFGH";
+static NSString *const kUserCodeValue = @"UserCode";
 
 /*! @brief The key for the @c deviceCode property in the incoming parameters and for
         @c NSSecureCoding.
@@ -188,7 +188,7 @@ static NSString *const kRequestKey = @"request";
   XCTAssertEqualObjects(response.deviceCode, kDeviceCodeValue);
   XCTAssertEqualObjects(response.interval, kIntervalValue);
   XCTAssertEqualObjects(response.userCode, kUserCodeValue);
-  XCTAssertEqualObjects(response.verificationURL, kVerificationURLValue);
+  XCTAssertEqualObjects(response.verificationURI, kVerificationURIValue);
 
   // Should be ~ kTestExpirationSeconds seconds. Avoiding swizzling NSDate here for certainty
   // to keep dependencies down, and simply making an assumption that this check will be executed
