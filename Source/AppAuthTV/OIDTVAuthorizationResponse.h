@@ -36,8 +36,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property(nonatomic, readonly, nullable) NSString *verificationURI;
 
-/*! @brief A complete verification URI which may include the user code or something similar to allow
-        for verification without entering the user code.
+/*! @brief A complete verification URI to allow for verification without entering the user code.
     @remarks verification_uri
  */
 @property(nonatomic, readonly, nullable) NSString *verificationURIComplete;
