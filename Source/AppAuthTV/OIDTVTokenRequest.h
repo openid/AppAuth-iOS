@@ -55,8 +55,8 @@ NS_ASSUME_NONNULL_BEGIN
                          refreshToken:(nullable NSString *)refreshToken
                          codeVerifier:(nullable NSString *)codeVerifier
                  additionalParameters:
-                     (nullable NSDictionary<NSString *, NSString *> *)
-                         additionalParameters NS_UNAVAILABLE;
+                     (nullable NSDictionary<NSString *, NSString *> *)additionalParameters
+    NS_UNAVAILABLE;
 
 /*! @internal
     @brief Unavailable. Please use
@@ -73,8 +73,8 @@ NS_ASSUME_NONNULL_BEGIN
                          refreshToken:(nullable NSString *)refreshToken
                          codeVerifier:(nullable NSString *)codeVerifier
                  additionalParameters:
-                    (nullable NSDictionary<NSString *, NSString *> *)
-                         additionalParameters NS_UNAVAILABLE;
+                     (nullable NSDictionary<NSString *, NSString *> *)additionalParameters
+    NS_UNAVAILABLE;
 
 /*! @brief Designated initializer.
     @param configuration The service's configuration.
@@ -87,8 +87,8 @@ NS_ASSUME_NONNULL_BEGIN
                            deviceCode:(NSString *)deviceCode
                              clientID:(NSString *)clientID
                          clientSecret:(nullable NSString *)clientSecret
-                 additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)
-                                          additionalParameters
+                 additionalParameters:
+                     (nullable NSDictionary<NSString *, NSString *> *)additionalParameters
     NS_DESIGNATED_INITIALIZER;
 
 /*! @brief Designated initializer for NSSecureCoding.

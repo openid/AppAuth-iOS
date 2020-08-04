@@ -52,7 +52,7 @@ NS_ASSUME_NONNULL_BEGIN
     @param tokenEndpoint The token exchange and refresh endpoint URI.
  */
 - (instancetype)initWithTVAuthorizationEndpoint:(NSURL *)TVAuthorizationEndpoint
-                                tokenEndpoint:(NSURL *)tokenEndpoint NS_DESIGNATED_INITIALIZER;
+                                  tokenEndpoint:(NSURL *)tokenEndpoint NS_DESIGNATED_INITIALIZER;
 
 @end
 

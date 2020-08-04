@@ -167,7 +167,6 @@ NSString *const kErrorCodeSlowDown = @"slow_down";
 
     // If no interval is set, use default value of 5 as per RFC.
     // If interval is set to 0, use value of 1 to prevent infinite polling.
-
     if (TVAuthorizationResponse.interval == nil) {
       interval = 5.0;
     } else if (interval == 0.0) {
