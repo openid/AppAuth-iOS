@@ -31,7 +31,8 @@ static NSString *const kVerificationURIKey = @"verification_uri";
 
 /*! @brief An alternative key for the @c verificationURI property in the incoming parameters and for
         @c NSSecureCoding. If "verification_uri" is not found in the response, a "verification_url"
-        key is considered equivalent.
+        key is considered equivalent. This is included for compatibility with legacy implementations
+        and should ideally be removed in the future.
  */
 static NSString *const kVerificationURIAlternativeKey = @"verification_url";
 
@@ -80,8 +81,6 @@ static NSString *const kRequestKey = @"request";
     fieldMap = [NSMutableDictionary dictionary];
     fieldMap[kVerificationURIKey] =
         [[OIDFieldMapping alloc] initWithName:@"_verificationURI" type:[NSString class]];
-    fieldMap[kVerificationURIAlternativeKey] =
-        [[OIDFieldMapping alloc] initWithName:@"_verificationURI" type:[NSString class]];
     fieldMap[kVerificationURICompleteKey] =
         [[OIDFieldMapping alloc] initWithName:@"_verificationURIComplete" type:[NSString class]];
     fieldMap[kUserCodeKey] =
@@ -98,9 +97,13 @@ static NSString *const kRequestKey = @"request";
           NSNumber *valueAsNumber = (NSNumber *)value;
           return [NSDate dateWithTimeIntervalSinceNow:[valueAsNumber longLongValue]];
         }];
-      
     fieldMap[kIntervalKey] =
         [[OIDFieldMapping alloc] initWithName:@"_interval" type:[NSNumber class]];
+
+    // Map the alternative verification URI key to "_verificationURI" to support legacy
+    // implementations using the alternative key
+    fieldMap[kVerificationURIAlternativeKey] =
+        [[OIDFieldMapping alloc] initWithName:@"_verificationURI" type:[NSString class]];
   });
   return fieldMap;
 }
