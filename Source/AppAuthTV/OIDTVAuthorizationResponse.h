@@ -21,27 +21,27 @@
 #import "OIDAuthorizationResponse.h"
 
 @class OIDTVAuthorizationRequest;
-@class OIDTokenRequest;
+@class OIDTVTokenRequest;
 
 NS_ASSUME_NONNULL_BEGIN
-
-/*! @brief The @c grant_type  value for the the TV authorization flow.
-    @see https://tools.ietf.org/html/rfc8628#section-3.4
- */
-extern NSString *const OIDTVDeviceTokenGrantType;
 
 /*! @brief Represents the response to a TV authorization request.
     @see https://tools.ietf.org/html/rfc8628#section-3.5
  */
 @interface OIDTVAuthorizationResponse : OIDAuthorizationResponse
 
-/*! @brief The verification URL that should be displayed to the user instructing them to visit the
-        URL and enter the code.
-    @remarks verification_url
+/*! @brief The verification URI that should be displayed to the user instructing them to visit the
+        URI and enter the code.
+    @remarks verification_uri
  */
-@property(nonatomic, readonly, nullable) NSString *verificationURL;
+@property(nonatomic, readonly, nullable) NSString *verificationURI;
 
-/*! @brief The code that should be displayed to the user which they enter at the @c verificationURL.
+/*! @brief A complete verification URI to allow for verification without entering the user code.
+    @remarks verification_uri
+ */
+@property(nonatomic, readonly, nullable) NSString *verificationURIComplete;
+
+/*! @brief The code that should be displayed to the user which they enter at the @c verificationURI.
     @remarks user_code
  */
 @property(nonatomic, readonly, nullable) NSString *userCode;
@@ -70,21 +70,21 @@ extern NSString *const OIDTVDeviceTokenGrantType;
         @c #additionalParameters dictionary.
  */
 - (instancetype)initWithRequest:(OIDTVAuthorizationRequest *)request
-    parameters:(NSDictionary<NSString *, NSObject<NSCopying> *> *)parameters
+                     parameters:(NSDictionary<NSString *, NSObject<NSCopying> *> *)parameters
     NS_DESIGNATED_INITIALIZER;
 
 /*! @brief Creates a token request suitable for polling the token endpoint with the @c deviceCode.
-    @return A @c OIDTokenRequest suitable for polling the token endpoint.
+    @return A @c OIDTVTokenRequest suitable for polling the token endpoint.
     @see https://tools.ietf.org/html/rfc8628#section-3.4
  */
-- (nullable OIDTokenRequest *)tokenPollRequest;
+- (nullable OIDTVTokenRequest *)tokenPollRequest;
 
 /*! @brief Creates a token request suitable for polling the token endpoint with the @c deviceCode.
     @param additionalParameters Additional parameters for the token request.
-    @return A @c OIDTokenRequest suitable for polling the token endpoint.
+    @return A @c OIDTVTokenRequest suitable for polling the token endpoint.
     @see https://tools.ietf.org/html/rfc8628#section-3.4
  */
-- (nullable OIDTokenRequest *)tokenPollRequestWithAdditionalParameters:
+- (nullable OIDTVTokenRequest *)tokenPollRequestWithAdditionalParameters:
     (nullable NSDictionary<NSString *, NSString *> *)additionalParameters;
 
 @end

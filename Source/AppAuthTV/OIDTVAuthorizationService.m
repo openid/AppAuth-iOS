@@ -27,6 +27,7 @@
 #import "OIDTVAuthorizationRequest.h"
 #import "OIDTVAuthorizationResponse.h"
 #import "OIDTVServiceConfiguration.h"
+#import "OIDTVTokenRequest.h"
 
 /*! @brief The authorization pending error code.
     @see https://tools.ietf.org/html/rfc8628#section-3.5
@@ -159,10 +160,18 @@ NSString *const kErrorCodeSlowDown = @"slow_down";
     });
 
     // Creates the token request that will be used to poll the token endpoint.
-    OIDTokenRequest *pollRequest = [TVAuthorizationResponse tokenPollRequest];
+    OIDTVTokenRequest *pollRequest = [TVAuthorizationResponse tokenPollRequest];
 
     // Starting polling interval (may be increased if a slow down message is received).
     __block NSTimeInterval interval = [TVAuthorizationResponse.interval doubleValue];
+
+    // If no interval is set, use default value of 5 as per RFC.
+    // If interval is set to 0, use value of 1 to prevent infinite polling.
+    if (TVAuthorizationResponse.interval == nil) {
+      interval = 5.0;
+    } else if (interval == 0.0) {
+      interval = 1.0;
+    }
 
     // Polls the token endpoint until the authorization completes or expires.
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
