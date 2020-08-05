@@ -125,11 +125,14 @@ static int const kTestInterval = 5;
                                                   clientSecret:kTestClientSecret
                                                         scopes:nil
                                           additionalParameters:nil];
-
   return request;
 }
 
-- (OIDTVAuthorizationResponse *)testAuthorizationResponse {  // TODO: one line return looks bad
+/*! @brief Returns an @c OIDTVAuthorizationResponse instance using the standard key for
+        @c verificationURI, with a @c verificationURIComplete value and additional parameter.
+    @returns an @c OIDTVAuthorizationResponse instance
+*/
+- (OIDTVAuthorizationResponse *)testAuthorizationResponse {
   OIDTVAuthorizationResponse *response = [[OIDTVAuthorizationResponse alloc]
       initWithRequest:[self testAuthorizationRequest]
            parameters:@{
@@ -141,7 +144,6 @@ static int const kTestInterval = 5;
              kIntervalKey : @(kTestInterval),
              kTestAdditionalParameterKey : kTestAdditionalParameterValue
            }];
-
   return response;
 }
 
@@ -185,9 +187,9 @@ static int const kTestInterval = 5;
   NSDictionary<NSString *, NSString *> *testAdditionalParameters =
       @{kTestAdditionalParameterKey : kTestAdditionalParameterValue};
 
-  // Tests that the alternative key used above maps to the verificationURI property,
-  // so subsequent tests can simply test using the testAuthorizationResponse instance
-  // method which uses the standard key.
+  // Tests that the alternative key used above maps to the verificationURI property, so
+  // subsequent tests can simply test using [self testAuthorizationResponse] which uses
+  // the standard key.
   XCTAssertEqualObjects(response.verificationURI, kTestVerificationURI);
 
   XCTAssertEqualObjects(response.verificationURIComplete, kTestVerificationURIComplete);

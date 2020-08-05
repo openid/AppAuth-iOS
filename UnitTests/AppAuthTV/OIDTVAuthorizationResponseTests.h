@@ -31,7 +31,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /*! @brief Tests the initializer using the alternative key for @c verificationURI.
  */
--(void)testInitializerAlternativeKey;
+- (void)testInitializerAlternativeKey;
 
 /*! @brief Tests the @c NSCopying implementation by round-tripping an instance through the copying
  *      process and checking to make sure the source and destination are equivalent.
@@ -43,13 +43,14 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)testSecureCoding;
 
-/*! @brief Tests @c tokenPollRequest method that takes no additional parameters.
+/*! @brief Tests the @c tokenPollRequest method that takes no additional parameters.
  */
--(void) testTokenPollRequest;
+- (void)testTokenPollRequest;
 
-/*! @brief Tests @c tokenPollRequestWithAdditionalParameters method with one additional parameter.
+/*! @brief Tests the @c tokenPollRequestWithAdditionalParameters method with one additional
+        parameter.
  */
--(void) testTokenPollRequestWithAdditionalParameters;
+- (void)testTokenPollRequestWithAdditionalParameters;
 @end
 
 NS_ASSUME_NONNULL_END
