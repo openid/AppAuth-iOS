@@ -53,68 +53,56 @@ static NSString *const kTestClientID = @"ClientID";
  */
 static NSString *const kTestClientSecret = @"ClientSecret";
 
-/*! @brief The key for the @c verificationURI property in the incoming parameters and for
-        @c NSSecureCoding.
+/*! @brief Key for the @c verificationURI property.
  */
 static NSString *const kVerificationURIKey = @"verification_uri";
 
-/*! @brief An alternative key for the @c verificationURI property in the incoming parameters and for
-        @c NSSecureCoding. If "verification_uri" is not found in the response, a "verification_url"
-        key is considered equivalent. TODO: Update these comments..
+/*! @brief Alternative key for the @c verificationURI property. If "verification_uri" is not found
+        in the response, a "verification_url" key is considered equivalent.
  */
 static NSString *const kVerificationURIAlternativeKey = @"verification_url";
 
-/*! @brief The test value for the @c verificationURL and @c verificationURI property in the incoming parameters and for @c NSSecureCoding.
+/*! @brief Test value for the @c verificationURI property.
  */
 static NSString *const kTestVerificationURI = @"https://www.example.com/device";
 
-/*! @brief The key for the @c verificationURIComplete property in the incoming parameters and for
-        @c NSSecureCoding.
+/*! @brief Key for the @c verificationURIComplete property.
  */
 static NSString *const kVerificationURICompleteKey = @"verification_uri_complete";
 
-/*! @brief The key for the @c verificationURIComplete property in the incoming parameters and for
-        @c NSSecureCoding.
+/*! @brief Test value for the @c verificationURIComplete property.
  */
 static NSString *const kTestVerificationURIComplete = @"https://www.example.com/device/UserCode";
 
-/*! @brief The key for the @c userCode property in the incoming parameters and for
-        @c NSSecureCoding.
+/*! @brief Key for the @c userCode property.
  */
 static NSString *const kUserCodeKey = @"user_code";
 
-/*! @brief The value for the @c userCode property in the incoming parameters and for
-        @c NSSecureCoding.
+/*! @brief Test value for the @c userCode property.
  */
 static NSString *const kTestUserCode = @"UserCode";
 
-/*! @brief The key for the @c deviceCode property in the incoming parameters and for
-        @c NSSecureCoding.
+/*! @brief Key for the @c deviceCode property.
  */
 static NSString *const kDeviceCodeKey = @"device_code";
 
-/*! @brief The value for the @c deviceCode property in the incoming parameters and for
-        @c NSSecureCoding.
+/*! @brief Test value for the @c deviceCode property.
  */
 static NSString *const kTestDeviceCode = @"DeviceCode";
 
-/*! @brief The key for the @c expirationDate property in the incoming parameters and for
-        @c NSSecureCoding.
+/*! @brief Key for the lifetime value used to compute the @c expirationDate property.
  */
 static NSString *const kExpiresInKey = @"expires_in";
 
-/*! @brief The value for the @c expirationDate property in the incoming parameters and for
-        @c NSSecureCoding.
+/*! @brief Test value for the lifetime value used to compute the @c expirationDate property.
  */
 static long long const kTestExpiresIn = 1800;
 
-/*! @brief The key for the @c interval property in the incoming parameters and for
-        @c NSSecureCoding.
+/*! @brief Key for the @c interval property.
  */
 static NSString *const kIntervalKey = @"interval";
 
-/*! @brief The value for the @c interval property in the incoming parameters and for
-        @c NSSecureCoding.
+/*! @brief Test value for the @c interval property.
  */
 static int const kTestInterval = 5;
 
