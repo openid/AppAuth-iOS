@@ -90,11 +90,11 @@ static NSString *const kDeviceCodeKey = @"device_code";
  */
 static NSString *const kTestDeviceCode = @"DeviceCode";
 
-/*! @brief Key for the lifetime value used to compute the @c expirationDate property.
+/*! @brief Key for the @c expirationDate property.
  */
 static NSString *const kExpiresInKey = @"expires_in";
 
-/*! @brief Test value for the lifetime value used to compute the @c expirationDate property.
+/*! @brief Test lifetime value used for the @c expirationDate property.
  */
 static long long const kTestExpiresIn = 1800;
 
