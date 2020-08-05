@@ -148,18 +148,18 @@ static int const kTestInterval = 5;
   NSDictionary<NSString *, NSString *> *testAdditionalParameters =
       @{kTestAdditionalParameterKey: kTestAdditionalParameterValue};
 
+  XCTAssertEqualObjects(response.verificationURI, kTestVerificationURI);
+  XCTAssertEqualObjects(response.verificationURIComplete, kTestVerificationURIComplete);
+  XCTAssertEqualObjects(response.userCode, kTestUserCode);
   XCTAssertEqualObjects(response.deviceCode, kTestDeviceCode);
   XCTAssertEqualObjects(response.interval, @(kTestInterval));
-  XCTAssertEqualObjects(response.userCode, kTestUserCode);
-  XCTAssertEqualObjects(response.verificationURIComplete, kTestVerificationURIComplete);
-  XCTAssertEqualObjects(response.verificationURI, kTestVerificationURI);
   XCTAssertEqualObjects(response.additionalParameters, testAdditionalParameters);
 
   // Should be ~ kExpiresInValue seconds. Avoiding swizzling NSDate here for certainty
   // to keep dependencies down, and simply making an assumption that this check will be executed
   // relatively quickly after the initialization above (less than 5 seconds.)
   NSTimeInterval expiration = [response.expirationDate timeIntervalSinceNow];
-  XCTAssert(expiration > kTestExpiresIn - 5 && expiration <= kTestExpiresIn, @"");
+  XCTAssert(expiration > kTestExpiresIn - 5 && expiration <= kTestExpiresIn);
 }
 
 /*! @brief Tests the initializer using the alternative key for @c verificationURI.
@@ -179,23 +179,23 @@ static int const kTestInterval = 5;
   NSDictionary<NSString *, NSString *> *testAdditionalParameters =
       @{kTestAdditionalParameterKey: kTestAdditionalParameterValue};
 
+  // Tests that the alternative key used above maps to the verificationURI property,
+  // so subsequent tests can simply test using the testAuthorizationResponse instance
+  // method which uses the standard key.
+  XCTAssertEqualObjects(response.verificationURI, kTestVerificationURI);
+
+  XCTAssertEqualObjects(response.verificationURIComplete, kTestVerificationURIComplete);
+  XCTAssertEqualObjects(response.userCode, kTestUserCode);
   XCTAssertEqualObjects(response.deviceCode, kTestDeviceCode);
   XCTAssertEqualObjects(response.interval, @(kTestInterval));
-  XCTAssertEqualObjects(response.userCode, kTestUserCode);
-  XCTAssertEqualObjects(response.verificationURIComplete, kTestVerificationURIComplete);
   XCTAssertEqualObjects(response.additionalParameters, testAdditionalParameters);
-
-  // This test confirms that "verification_url" maps to the "verificationURI" instance
-  // variable, so subsequent tests can simply test on a response with "verification_uri"
-  XCTAssertEqualObjects(response.verificationURI, kTestVerificationURI);
 
   // Should be ~ kExpiresInValue seconds. Avoiding swizzling NSDate here for certainty
   // to keep dependencies down, and simply making an assumption that this check will be executed
   // relatively quickly after the initialization above (less than 5 seconds.)
   NSTimeInterval expiration = [response.expirationDate timeIntervalSinceNow];
-  XCTAssert(expiration > kTestExpiresIn - 5 && expiration <= kTestExpiresIn, @"");
+  XCTAssert(expiration > kTestExpiresIn - 5 && expiration <= kTestExpiresIn);
 }
-
 
 /*! @brief Tests the @c NSCopying implementation by round-tripping an instance through the copying
  *      process and checking to make sure the source and destination are equivalent.
@@ -205,7 +205,7 @@ static int const kTestInterval = 5;
   OIDTVAuthorizationResponse *responseCopy = [response copy];
 
   NSDictionary<NSString *, NSString *> *testAdditionalParameters =
-  @{kTestAdditionalParameterKey: kTestAdditionalParameterValue};
+      @{kTestAdditionalParameterKey: kTestAdditionalParameterValue};
 
   XCTAssertEqualObjects(responseCopy.request, response.request);
   XCTAssertEqualObjects(responseCopy.deviceCode, kTestDeviceCode);
@@ -225,7 +225,7 @@ static int const kTestInterval = 5;
   OIDTVAuthorizationResponse *responseCopy = [NSKeyedUnarchiver unarchiveObjectWithData:data];
 
   NSDictionary<NSString *, NSString *> *testAdditionalParameters =
-  @{kTestAdditionalParameterKey: kTestAdditionalParameterValue};
+      @{kTestAdditionalParameterKey: kTestAdditionalParameterValue};
 
   // Not a full test of the request deserialization, but should be sufficient as a smoke test
   // to make sure the request IS actually getting serialized and deserialized in the
@@ -239,10 +239,9 @@ static int const kTestInterval = 5;
   XCTAssertEqualObjects(responseCopy.verificationURIComplete, kTestVerificationURIComplete);
   XCTAssertEqualObjects(responseCopy.verificationURI, kTestVerificationURI);
   XCTAssertEqualObjects(responseCopy.additionalParameters, testAdditionalParameters);
-
 }
 
-/*! @brief Tests @c tokenPollRequest method that takes no additional parameters.
+/*! @brief Tests the @c tokenPollRequest method that takes no additional parameters.
  */
 -(void) testTokenPollRequest {
   OIDTVAuthorizationResponse *testResponse = [self testAuthorizationResponse];
@@ -255,7 +254,8 @@ static int const kTestInterval = 5;
   XCTAssertEqualObjects(pollRequest.additionalParameters, @{});
 }
 
-/*! @brief Tests @c tokenPollRequestWithAdditionalParameters method with one additional parameter.
+/*! @brief Tests the @c tokenPollRequestWithAdditionalParameters method with one additional
+         parameter.
  */
 -(void) testTokenPollRequestWithAdditionalParameters {
   OIDTVAuthorizationResponse *testResponse = [self testAuthorizationResponse];
