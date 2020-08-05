@@ -25,22 +25,31 @@ NS_ASSUME_NONNULL_BEGIN
 /*! @brief Unit tests for @c OIDTVAuthorizationResponse.
  */
 @interface OIDTVAuthorizationResponseTests : XCTestCase
-/*! @brief Tests the initializer
+/*! @brief Tests the initializer using the standard key for @c verificationURI.
  */
 - (void)testInitializer;
 
+/*! @brief Tests the initializer using the alternative key for @c verificationURI.
+ */
+-(void)testInitializerAlternativeKey;
+
 /*! @brief Tests the @c NSCopying implementation by round-tripping an instance through the copying
- * process and checking to make sure the source and destination both contain the
- * @c TVAuthorizationEndpoint
+ *      process and checking to make sure the source and destination are equivalent.
  */
 - (void)testCopying;
 
 /*! @brief Tests the @c NSSecureCoding implementation by round-tripping an instance through the
- * coding process and checking to make sure the source and destination both contain the
- * @c TVAuthorizationEndpoint
+ *      coding process and checking to make sure the source and destination are equivalent.
  */
 - (void)testSecureCoding;
 
+/*! @brief Tests @c tokenPollRequest method that takes no additional parameters.
+ */
+-(void) testTokenPollRequest;
+
+/*! @brief Tests @c tokenPollRequestWithAdditionalParameters method with one additional parameter.
+ */
+-(void) testTokenPollRequestWithAdditionalParameters;
 @end
 
 NS_ASSUME_NONNULL_END

@@ -138,8 +138,8 @@ static int const kTestInterval = 5;
                                              additionalParameters:nil];
 }
 
-- (OIDTVAuthorizationResponse *)testAuthorizationResponse {
-  return 
+- (OIDTVAuthorizationResponse *)testAuthorizationResponse { //TODO: one line return looks bad
+  return
       [[OIDTVAuthorizationResponse alloc] initWithRequest:[self testAuthorizationRequest]
                                                parameters:@{
                                                  kVerificationURIKey : kTestVerificationURI,
@@ -152,6 +152,30 @@ static int const kTestInterval = 5;
                                                }];
 }
 
+/*! @brief Tests the initializer using the standard key for @c verificationURI.
+ */
+-(void)testInitializer {
+  OIDTVAuthorizationResponse *response = [self testAuthorizationResponse];
+
+  NSDictionary<NSString *, NSString *> *testAdditionalParameters =
+      @{kTestAdditionalParameterKey: kTestAdditionalParameterValue};
+
+  XCTAssertEqualObjects(response.deviceCode, kTestDeviceCode);
+  XCTAssertEqualObjects(response.interval, @(kTestInterval));
+  XCTAssertEqualObjects(response.userCode, kTestUserCode);
+  XCTAssertEqualObjects(response.verificationURIComplete, kTestVerificationURIComplete);
+  XCTAssertEqualObjects(response.verificationURI, kTestVerificationURI);
+  XCTAssertEqualObjects(response.additionalParameters, testAdditionalParameters);
+
+  // Should be ~ kExpiresInValue seconds. Avoiding swizzling NSDate here for certainty
+  // to keep dependencies down, and simply making an assumption that this check will be executed
+  // relatively quickly after the initialization above (less than 5 seconds.)
+  NSTimeInterval expiration = [response.expirationDate timeIntervalSinceNow];
+  XCTAssert(expiration > kTestExpiresIn - 5 && expiration <= kTestExpiresIn, @"");
+}
+
+/*! @brief Tests the initializer using the alternative key for @c verificationURI.
+ */
 -(void)testInitializerAlternativeKey {
   OIDTVAuthorizationResponse *response = [[OIDTVAuthorizationResponse alloc] initWithRequest:[self testAuthorizationRequest]
     parameters:@{
@@ -184,28 +208,9 @@ static int const kTestInterval = 5;
   XCTAssert(expiration > kTestExpiresIn - 5 && expiration <= kTestExpiresIn, @"");
 }
 
--(void)testInitializer {
-  OIDTVAuthorizationResponse *response = [self testAuthorizationResponse];
-
-  NSDictionary<NSString *, NSString *> *testAdditionalParameters =
-      @{kTestAdditionalParameterKey: kTestAdditionalParameterValue};
-
-  XCTAssertEqualObjects(response.deviceCode, kTestDeviceCode);
-  XCTAssertEqualObjects(response.interval, @(kTestInterval));
-  XCTAssertEqualObjects(response.userCode, kTestUserCode);
-  XCTAssertEqualObjects(response.verificationURIComplete, kTestVerificationURIComplete);
-  XCTAssertEqualObjects(response.verificationURI, kTestVerificationURI);
-  XCTAssertEqualObjects(response.additionalParameters, testAdditionalParameters);
-
-  // Should be ~ kExpiresInValue seconds. Avoiding swizzling NSDate here for certainty
-  // to keep dependencies down, and simply making an assumption that this check will be executed
-  // relatively quickly after the initialization above (less than 5 seconds.)
-  NSTimeInterval expiration = [response.expirationDate timeIntervalSinceNow];
-  XCTAssert(expiration > kTestExpiresIn - 5 && expiration <= kTestExpiresIn, @"");
-}
 
 /*! @brief Tests the @c NSCopying implementation by round-tripping an instance through the copying
- * process and checking to make sure the source and destination both contain the
+ *      process and checking to make sure the source and destination are equivalent.
  */
 - (void)testCopying {
   OIDTVAuthorizationResponse *response = [self testAuthorizationResponse];
@@ -224,7 +229,7 @@ static int const kTestInterval = 5;
 }
 
 /*! @brief Tests the @c NSSecureCoding implementation by round-tripping an instance through the
- * coding process and checking to make sure the source and destination both contain the
+ *      coding process and checking to make sure the source and destination are equivalent.
  */
 - (void)testSecureCoding {
   OIDTVAuthorizationResponse *response = [self testAuthorizationResponse];
@@ -249,7 +254,8 @@ static int const kTestInterval = 5;
 
 }
 
-// TODO comment these and others
+/*! @brief Tests @c tokenPollRequest method that takes no additional parameters.
+ */
 -(void) testTokenPollRequest {
   OIDTVAuthorizationResponse *testResponse = [self testAuthorizationResponse];
 
@@ -261,6 +267,8 @@ static int const kTestInterval = 5;
   XCTAssertEqualObjects(pollRequest.additionalParameters, @{});
 }
 
+/*! @brief Tests @c tokenPollRequestWithAdditionalParameters method with one additional parameter.
+ */
 -(void) testTokenPollRequestWithAdditionalParameters {
   OIDTVAuthorizationResponse *testResponse = [self testAuthorizationResponse];
 
