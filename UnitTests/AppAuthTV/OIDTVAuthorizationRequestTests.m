@@ -91,12 +91,9 @@ static NSString *const kHTTPContentTypeHeaderValue =
   NSURL *tokenEndpoint = [NSURL URLWithString:kTestTokenEndpoint];
   NSURL *TVAuthorizationEndpoint = [NSURL URLWithString:kTestTVAuthorizationEndpoint];
 
-  // Pass in an empty authorizationEndpoint since only the TVAuthorizationEndpoint and tokenEndpoint
-  // are used for the TV authentication flow.
-  OIDTVServiceConfiguration *configuration = [[OIDTVServiceConfiguration alloc]
-      initWithAuthorizationEndpoint:[[NSURL alloc] initWithString:@""]
-            TVAuthorizationEndpoint:TVAuthorizationEndpoint
-                      tokenEndpoint:tokenEndpoint];
+  OIDTVServiceConfiguration *configuration =
+      [[OIDTVServiceConfiguration alloc] initWithTVAuthorizationEndpoint:TVAuthorizationEndpoint
+                                                           tokenEndpoint:tokenEndpoint];
   return configuration;
 }
 

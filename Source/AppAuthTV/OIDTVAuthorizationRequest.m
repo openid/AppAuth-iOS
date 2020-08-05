@@ -66,9 +66,9 @@
                             clientId:clientID
                         clientSecret:clientSecret
                               scopes:scopes
-                         redirectURL:[[NSURL alloc] init]
+                         redirectURL:[[NSURL alloc] initWithString:@""]
                         responseType:OIDResponseTypeCode
-                 additionalParameters:additionalParameters];
+                additionalParameters:additionalParameters];
 }
 
 #pragma mark - NSObject overrides
