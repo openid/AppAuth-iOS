@@ -18,18 +18,15 @@
 
 #import "OIDTVAuthorizationResponseTests.h"
 
-
-//TODO move these imports down below into the macro
-#import "OIDTVAuthorizationRequest.h"
-#import "OIDTVAuthorizationResponse.h"
-#import "OIDTVServiceConfiguration.h"
-#import "OIDTVTokenRequest.h"
-
 #if SWIFT_PACKAGE
 @import AppAuthTV;
 #else
 #import "Source/AppAuthCore/OIDScopeUtilities.h"
 #import "Source/AppAuthCore/OIDURLQueryComponent.h"
+#import "Source/AppAuthTV/OIDTVAuthorizationRequest.h"
+#import "Source/AppAuthTV/OIDTVAuthorizationResponse.h"
+#import "Source/AppAuthTV/OIDTVServiceConfiguration.h"
+#import "Source/AppAuthTV/OIDTVTokenRequest.h"
 #endif
 
 /*! @brief Test value for the @c TVAuthorizationEndpoint property.
@@ -60,34 +57,6 @@ static NSString *const kTestClientID = @"ClientID";
  */
 static NSString *const kTestClientSecret = @"ClientSecret";
 
-/*! @brief Test key for the @c scope parameter in the HTTP request.
- */
-static NSString *const kTestScopeKey = @"scope";
-
-/*! @brief Test value for the @c scope property.
- */
-static NSString *const kTestScope = @"Scope";
-
-/*! @brief Test value for the @c scope property.
- */
-static NSString *const kTestScopeA = @"ScopeA";
-
-/*! @brief Expected HTTP Method for the authorization @c URLRequest
- */
-static NSString *const kHTTPPost = @"POST";
-
-/*! @brief Expected @c ContentType header key for the authorization @c URLRequest
- */
-static NSString *const kHTTPContentTypeHeaderKey = @"Content-Type";
-
-/*! @brief Expected @c ContentType header value for the authorization @c URLRequest
- */
-static NSString *const kHTTPContentTypeHeaderValue =
-    @"application/x-www-form-urlencoded; charset=UTF-8";
-
-/*! @brief The key for the @c verificationURL property in the incoming parameters and for
-        @c NSSecureCoding.
- */
 /*! @brief The key for the @c verificationURI property in the incoming parameters and for
         @c NSSecureCoding.
  */
@@ -95,7 +64,7 @@ static NSString *const kVerificationURIKey = @"verification_uri";
 
 /*! @brief An alternative key for the @c verificationURI property in the incoming parameters and for
         @c NSSecureCoding. If "verification_uri" is not found in the response, a "verification_url"
-        key is considered equivalent.
+        key is considered equivalent. TODO: Update these comments..
  */
 static NSString *const kVerificationURIAlternativeKey = @"verification_url";
 
@@ -151,7 +120,7 @@ static NSString *const kIntervalKey = @"interval";
 /*! @brief The value for the @c interval property in the incoming parameters and for
         @c NSSecureCoding.
  */
-static NSString *const kIntervalValue = @"5"; //TODO: need to later test if it handles 0 appropriately, with the new logic
+static int const kIntervalValue = 5;
 
 /*! @brief Key used to encode the @c additionalParameters property for @c NSSecureCoding
  */
@@ -176,14 +145,11 @@ static NSString *const kRequestKey = @"request";
 }
 
 - (OIDTVAuthorizationRequest *)testAuthorizationRequest {
-  NSArray<NSString *> *testScopes = @[ kTestScope, kTestScopeA ];
-  NSDictionary<NSString *, NSString *> *testAdditionalParameters =
-      @{kTestAdditionalParameterKey : kTestAdditionalParameterValue};
   return [[OIDTVAuthorizationRequest alloc] initWithConfiguration:[self testServiceConfiguration]
                                                          clientId:kTestClientID
                                                      clientSecret:kTestClientSecret
-                                                           scopes:testScopes
-                                             additionalParameters:testAdditionalParameters];
+                                                           scopes:nil
+                                             additionalParameters:nil];
 }
 
 - (OIDTVAuthorizationResponse *)testAuthorizationResponse {
@@ -191,59 +157,66 @@ static NSString *const kRequestKey = @"request";
       [[OIDTVAuthorizationResponse alloc] initWithRequest:[self testAuthorizationRequest]
                                                parameters:@{
                                                  kVerificationURIKey : kVerificationTestURL,
+                                                 kVerificationURICompleteKey :kVerificationTestURIComplete,
                                                  kUserCodeKey : kUserCodeValue,
                                                  kDeviceCodeKey : kDeviceCodeValue,
                                                  kExpiresInKey : @(kExpiresInValue),
-                                                 kIntervalKey : kIntervalValue,
+                                                 kIntervalKey : @(kIntervalValue),
                                                  kTestAdditionalParameterKey :kTestAdditionalParameterValue
                                                }];
 }
 
--(void)testInitializer {
+-(void)testInitializer { //TODO: Test both variants, with the verification_uri and url...
   OIDTVAuthorizationResponse *response = [self testAuthorizationResponse];
 
   XCTAssertEqualObjects(response.deviceCode, kDeviceCodeValue);
-  XCTAssertEqualObjects(response.interval, kIntervalValue);
+  XCTAssertEqualObjects(response.interval, @(kIntervalValue));
   XCTAssertEqualObjects(response.userCode, kUserCodeValue);
   XCTAssertEqualObjects(response.verificationURIComplete, kVerificationTestURIComplete);
   XCTAssertEqualObjects(response.verificationURI, kVerificationTestURL);
 
-
-  // Should be ~ kTestExpirationSeconds seconds. Avoiding swizzling NSDate here for certainty
+  // Should be ~ kExpiresInValue seconds. Avoiding swizzling NSDate here for certainty
   // to keep dependencies down, and simply making an assumption that this check will be executed
   // relatively quickly after the initialization above (less than 5 seconds.)
-  NSTimeInterval expiration = [response.accessTokenExpirationDate timeIntervalSinceNow];
+  NSTimeInterval expiration = [response.expirationDate timeIntervalSinceNow];
   XCTAssert(expiration > kExpiresInValue - 5 && expiration <= kExpiresInValue, @"");
 }
 
 /*! @brief Tests the @c NSCopying implementation by round-tripping an instance through the copying
  * process and checking to make sure the source and destination both contain the
- * @c TODO
  */
 - (void)testCopying {
   OIDTVAuthorizationResponse *response = [self testAuthorizationResponse];
   
   OIDTVAuthorizationResponse *responseCopy = [response copy];
 
-  XCTAssertEqualObjects(response, responseCopy);
-  
+  XCTAssertEqualObjects(responseCopy.request, response.request);
+  XCTAssertEqualObjects(responseCopy.deviceCode, kDeviceCodeValue);
+  XCTAssertEqualObjects(responseCopy.interval, @(kIntervalValue));
+  XCTAssertEqualObjects(responseCopy.userCode, kUserCodeValue);
+  XCTAssertEqualObjects(responseCopy.verificationURIComplete, kVerificationTestURIComplete);
+  XCTAssertEqualObjects(responseCopy.verificationURI, kVerificationTestURL);
 }
 
 /*! @brief Tests the @c NSSecureCoding implementation by round-tripping an instance through the
  * coding process and checking to make sure the source and destination both contain the
- * @c TODO
  */
 - (void)testSecureCoding {
-//  OIDTVAuthorizationResponse *response = [self testAuthorizationResponse];
-//
-//  NSData *data = [NSKeyedArchiver archivedDataWithRootObject:response];
-//  OIDTVAuthorizationRequest *responseCopy = [NSKeyedUnarchiver unarchiveObjectWithData:data];
-//
-//  NSURL *authRequestCopyTVAuthorizationEndpoint =
-//      ((OIDTVServiceConfiguration *)authRequestCopy.configuration).TVAuthorizationEndpoint;
-//
-//  XCTAssertEqualObjects(authRequestCopyTVAuthorizationEndpoint,
-//                        serviceConfiguration.TVAuthorizationEndpoint);
+  OIDTVAuthorizationResponse *response = [self testAuthorizationResponse];
+  NSData *data = [NSKeyedArchiver archivedDataWithRootObject:response];
+  OIDTVAuthorizationResponse *responseCopy = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+
+  // Not a full test of the request deserialization, but should be sufficient as a smoke test
+  // to make sure the request IS actually getting serialized and deserialized in the
+  // NSSecureCoding implementation. We'll leave it up to the OIDAuthorizationRequest tests to make
+  // sure the NSSecureCoding implementation of that class is correct.
+  XCTAssertNotNil(responseCopy.request);
+
+  XCTAssertEqualObjects(responseCopy.deviceCode, kDeviceCodeValue);
+  XCTAssertEqualObjects(responseCopy.interval, @(kIntervalValue));
+  XCTAssertEqualObjects(responseCopy.userCode, kUserCodeValue);
+  XCTAssertEqualObjects(responseCopy.verificationURIComplete, kVerificationTestURIComplete);
+  XCTAssertEqualObjects(responseCopy.verificationURI, kVerificationTestURL);
 }
 
 -(void) testTokenPollRequest {
