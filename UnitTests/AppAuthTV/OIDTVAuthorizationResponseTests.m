@@ -114,42 +114,44 @@ static int const kTestInterval = 5;
 
   OIDTVServiceConfiguration *configuration =
       [[OIDTVServiceConfiguration alloc] initWithTVAuthorizationEndpoint:TVAuthorizationEndpoint
-                                                         tokenEndpoint:tokenEndpoint];
+                                                           tokenEndpoint:tokenEndpoint];
   return configuration;
 }
 
 - (OIDTVAuthorizationRequest *)testAuthorizationRequest {
-  OIDTVAuthorizationRequest *request = [[OIDTVAuthorizationRequest alloc] initWithConfiguration:[self testServiceConfiguration]
-                                                         clientId:kTestClientID
-                                                     clientSecret:kTestClientSecret
-                                                           scopes:nil
-                                             additionalParameters:nil];
+  OIDTVAuthorizationRequest *request =
+      [[OIDTVAuthorizationRequest alloc] initWithConfiguration:[self testServiceConfiguration]
+                                                      clientId:kTestClientID
+                                                  clientSecret:kTestClientSecret
+                                                        scopes:nil
+                                          additionalParameters:nil];
 
   return request;
 }
 
-- (OIDTVAuthorizationResponse *)testAuthorizationResponse { //TODO: one line return looks bad
-  OIDTVAuthorizationResponse *response = [[OIDTVAuthorizationResponse alloc] initWithRequest:[self testAuthorizationRequest]
-                                               parameters:@{
-                                                 kVerificationURIKey : kTestVerificationURI,
-                                                 kVerificationURICompleteKey :kTestVerificationURIComplete,
-                                                 kUserCodeKey : kTestUserCode,
-                                                 kDeviceCodeKey : kTestDeviceCode,
-                                                 kExpiresInKey : @(kTestExpiresIn),
-                                                 kIntervalKey : @(kTestInterval),
-                                                 kTestAdditionalParameterKey :kTestAdditionalParameterValue
-                                               }];
+- (OIDTVAuthorizationResponse *)testAuthorizationResponse {  // TODO: one line return looks bad
+  OIDTVAuthorizationResponse *response = [[OIDTVAuthorizationResponse alloc]
+      initWithRequest:[self testAuthorizationRequest]
+           parameters:@{
+             kVerificationURIKey : kTestVerificationURI,
+             kVerificationURICompleteKey : kTestVerificationURIComplete,
+             kUserCodeKey : kTestUserCode,
+             kDeviceCodeKey : kTestDeviceCode,
+             kExpiresInKey : @(kTestExpiresIn),
+             kIntervalKey : @(kTestInterval),
+             kTestAdditionalParameterKey : kTestAdditionalParameterValue
+           }];
 
   return response;
 }
 
 /*! @brief Tests the initializer using the standard key for @c verificationURI.
  */
--(void)testInitializer {
+- (void)testInitializer {
   OIDTVAuthorizationResponse *response = [self testAuthorizationResponse];
 
   NSDictionary<NSString *, NSString *> *testAdditionalParameters =
-      @{kTestAdditionalParameterKey: kTestAdditionalParameterValue};
+      @{kTestAdditionalParameterKey : kTestAdditionalParameterValue};
 
   XCTAssertEqualObjects(response.verificationURI, kTestVerificationURI);
   XCTAssertEqualObjects(response.verificationURIComplete, kTestVerificationURIComplete);
@@ -167,20 +169,21 @@ static int const kTestInterval = 5;
 
 /*! @brief Tests the initializer using the alternative key for @c verificationURI.
  */
--(void)testInitializerAlternativeKey {
-  OIDTVAuthorizationResponse *response = [[OIDTVAuthorizationResponse alloc] initWithRequest:[self testAuthorizationRequest]
-    parameters:@{
-      kVerificationURIAlternativeKey : kTestVerificationURI,
-      kVerificationURICompleteKey :kTestVerificationURIComplete,
-      kUserCodeKey : kTestUserCode,
-      kDeviceCodeKey : kTestDeviceCode,
-      kExpiresInKey : @(kTestExpiresIn),
-      kIntervalKey : @(kTestInterval),
-      kTestAdditionalParameterKey :kTestAdditionalParameterValue
-    }];
+- (void)testInitializerAlternativeKey {
+  OIDTVAuthorizationResponse *response = [[OIDTVAuthorizationResponse alloc]
+      initWithRequest:[self testAuthorizationRequest]
+           parameters:@{
+             kVerificationURIAlternativeKey : kTestVerificationURI,
+             kVerificationURICompleteKey : kTestVerificationURIComplete,
+             kUserCodeKey : kTestUserCode,
+             kDeviceCodeKey : kTestDeviceCode,
+             kExpiresInKey : @(kTestExpiresIn),
+             kIntervalKey : @(kTestInterval),
+             kTestAdditionalParameterKey : kTestAdditionalParameterValue
+           }];
 
   NSDictionary<NSString *, NSString *> *testAdditionalParameters =
-      @{kTestAdditionalParameterKey: kTestAdditionalParameterValue};
+      @{kTestAdditionalParameterKey : kTestAdditionalParameterValue};
 
   // Tests that the alternative key used above maps to the verificationURI property,
   // so subsequent tests can simply test using the testAuthorizationResponse instance
@@ -208,7 +211,7 @@ static int const kTestInterval = 5;
   OIDTVAuthorizationResponse *responseCopy = [response copy];
 
   NSDictionary<NSString *, NSString *> *testAdditionalParameters =
-      @{kTestAdditionalParameterKey: kTestAdditionalParameterValue};
+      @{kTestAdditionalParameterKey : kTestAdditionalParameterValue};
 
   XCTAssertEqualObjects(responseCopy.request, response.request);
   XCTAssertEqualObjects(responseCopy.deviceCode, kTestDeviceCode);
@@ -228,7 +231,7 @@ static int const kTestInterval = 5;
   OIDTVAuthorizationResponse *responseCopy = [NSKeyedUnarchiver unarchiveObjectWithData:data];
 
   NSDictionary<NSString *, NSString *> *testAdditionalParameters =
-      @{kTestAdditionalParameterKey: kTestAdditionalParameterValue};
+      @{kTestAdditionalParameterKey : kTestAdditionalParameterValue};
 
   // Not a full test of the request deserialization, but should be sufficient as a smoke test
   // to make sure the request IS actually getting serialized and deserialized in the
@@ -246,7 +249,7 @@ static int const kTestInterval = 5;
 
 /*! @brief Tests the @c tokenPollRequest method that takes no additional parameters.
  */
--(void) testTokenPollRequest {
+- (void)testTokenPollRequest {
   OIDTVAuthorizationResponse *testResponse = [self testAuthorizationResponse];
 
   OIDTVTokenRequest *pollRequest = [testResponse tokenPollRequest];
@@ -260,13 +263,14 @@ static int const kTestInterval = 5;
 /*! @brief Tests the @c tokenPollRequestWithAdditionalParameters method with one additional
          parameter.
  */
--(void) testTokenPollRequestWithAdditionalParameters {
+- (void)testTokenPollRequestWithAdditionalParameters {
   OIDTVAuthorizationResponse *testResponse = [self testAuthorizationResponse];
 
   NSDictionary<NSString *, NSString *> *testAdditionalParameters =
-      @{kTestAdditionalParameterKey: kTestAdditionalParameterValue};
+      @{kTestAdditionalParameterKey : kTestAdditionalParameterValue};
 
-  OIDTVTokenRequest *pollRequest = [testResponse tokenPollRequestWithAdditionalParameters:testAdditionalParameters];
+  OIDTVTokenRequest *pollRequest =
+      [testResponse tokenPollRequestWithAdditionalParameters:testAdditionalParameters];
 
   XCTAssertEqualObjects(pollRequest.deviceCode, kTestDeviceCode);
   XCTAssertEqualObjects(pollRequest.clientID, kTestClientID);
