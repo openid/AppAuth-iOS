@@ -119,16 +119,17 @@ static int const kTestInterval = 5;
 }
 
 - (OIDTVAuthorizationRequest *)testAuthorizationRequest {
-  return [[OIDTVAuthorizationRequest alloc] initWithConfiguration:[self testServiceConfiguration]
+  OIDTVAuthorizationRequest *request = [[OIDTVAuthorizationRequest alloc] initWithConfiguration:[self testServiceConfiguration]
                                                          clientId:kTestClientID
                                                      clientSecret:kTestClientSecret
                                                            scopes:nil
                                              additionalParameters:nil];
+
+  return request;
 }
 
 - (OIDTVAuthorizationResponse *)testAuthorizationResponse { //TODO: one line return looks bad
-  return
-      [[OIDTVAuthorizationResponse alloc] initWithRequest:[self testAuthorizationRequest]
+  OIDTVAuthorizationResponse *response = [[OIDTVAuthorizationResponse alloc] initWithRequest:[self testAuthorizationRequest]
                                                parameters:@{
                                                  kVerificationURIKey : kTestVerificationURI,
                                                  kVerificationURICompleteKey :kTestVerificationURIComplete,
@@ -138,6 +139,8 @@ static int const kTestInterval = 5;
                                                  kIntervalKey : @(kTestInterval),
                                                  kTestAdditionalParameterKey :kTestAdditionalParameterValue
                                                }];
+
+  return response;
 }
 
 /*! @brief Tests the initializer using the standard key for @c verificationURI.
