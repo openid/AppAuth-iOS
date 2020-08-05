@@ -229,7 +229,7 @@ static int const kTestInterval = 5;
 
   // Not a full test of the request deserialization, but should be sufficient as a smoke test
   // to make sure the request IS actually getting serialized and deserialized in the
-  // NSSecureCoding implementation. We'll leave it up to the OIDAuthorizationRequest tests to make
+  // NSSecureCoding implementation. We'll leave it up to the OIDTVAuthorizationRequest tests to make
   // sure the NSSecureCoding implementation of that class is correct.
   XCTAssertNotNil(responseCopy.request);
 
