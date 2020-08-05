@@ -166,6 +166,34 @@ static NSString *const kRequestKey = @"request";
                                                }];
 }
 
+-(void)testInitializerAlternativeKey {
+  OIDTVAuthorizationResponse *response = [[OIDTVAuthorizationResponse alloc] initWithRequest:[self testAuthorizationRequest]
+    parameters:@{
+      kVerificationURIAlternativeKey : kVerificationTestURL,
+      kVerificationURICompleteKey :kVerificationTestURIComplete,
+      kUserCodeKey : kUserCodeValue,
+      kDeviceCodeKey : kDeviceCodeValue,
+      kExpiresInKey : @(kExpiresInValue),
+      kIntervalKey : @(kIntervalValue),
+      kTestAdditionalParameterKey :kTestAdditionalParameterValue
+    }];
+
+  XCTAssertEqualObjects(response.deviceCode, kDeviceCodeValue);
+  XCTAssertEqualObjects(response.interval, @(kIntervalValue));
+  XCTAssertEqualObjects(response.userCode, kUserCodeValue);
+  XCTAssertEqualObjects(response.verificationURIComplete, kVerificationTestURIComplete);
+
+  // This test confirms that "verification_url" maps to the "verificationURI" instance
+  // variable, so subsequent tests can simply test on a reponse with "verification_uri"
+  XCTAssertEqualObjects(response.verificationURI, kVerificationTestURL);
+
+  // Should be ~ kExpiresInValue seconds. Avoiding swizzling NSDate here for certainty
+  // to keep dependencies down, and simply making an assumption that this check will be executed
+  // relatively quickly after the initialization above (less than 5 seconds.)
+  NSTimeInterval expiration = [response.expirationDate timeIntervalSinceNow];
+  XCTAssert(expiration > kExpiresInValue - 5 && expiration <= kExpiresInValue, @"");
+}
+
 -(void)testInitializer { //TODO: Test both variants, with the verification_uri and url...
   OIDTVAuthorizationResponse *response = [self testAuthorizationResponse];
 
@@ -221,19 +249,21 @@ static NSString *const kRequestKey = @"request";
 
 -(void) testTokenPollRequest {
   OIDTVAuthorizationResponse *testResponse = [self testAuthorizationResponse];
-  OIDTVTokenRequest *pollRequestA = [testResponse tokenPollRequest];
-  OIDTVTokenRequest *pollRequestB = [testResponse tokenPollRequestWithAdditionalParameters:nil];
-  XCTAssertEqualObjects(pollRequestA, pollRequestB);
+  OIDTVTokenRequest *pollRequest = [testResponse tokenPollRequest];
+  XCTAssertEqualObjects(pollRequest.deviceCode, kDeviceCodeValue);
+  XCTAssertEqualObjects(pollRequest.clientID, kTestClientID);
+  XCTAssertEqualObjects(pollRequest.clientSecret, kTestClientSecret);
+  XCTAssertEqualObjects(pollRequest.additionalParameters, @{});
 }
 
 -(void) testTokenPollRequestWithAdditionalParameters {
   OIDTVAuthorizationResponse *testResponse = [self testAuthorizationResponse];
-  NSDictionary *dict = @{kAdditionalParametersKey: kTestAdditionalParameterValue};
-  OIDTVTokenRequest *pollRequest = [testResponse tokenPollRequestWithAdditionalParameters:dict];
+  NSDictionary *testParams = @{kAdditionalParametersKey: kTestAdditionalParameterValue};
+  OIDTVTokenRequest *pollRequest = [testResponse tokenPollRequestWithAdditionalParameters:testParams];
   XCTAssertEqualObjects(pollRequest.deviceCode, kDeviceCodeValue);
   XCTAssertEqualObjects(pollRequest.clientID, kTestClientID);
   XCTAssertEqualObjects(pollRequest.clientSecret, kTestClientSecret);
-  XCTAssertEqualObjects(pollRequest.additionalParameters, dict);
+  XCTAssertEqualObjects(pollRequest.additionalParameters, testParams);
 }
 
 @end
