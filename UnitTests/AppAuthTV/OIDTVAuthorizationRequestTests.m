@@ -139,7 +139,7 @@ static NSString *const kHTTPContentTypeHeaderValue =
   XCTAssertEqualObjects(authRequest.scope, testScopeString);
   XCTAssertEqualObjects(authRequest.additionalParameters, testAdditionalParameters);
   XCTAssertEqualObjects(authRequest.responseType, OIDResponseTypeCode);
-  XCTAssertEqualObjects(authRequest.redirectURL, [[NSURL alloc] init]);
+  XCTAssertEqualObjects(authRequest.redirectURL, [[NSURL alloc] initWithString:@""]);
   XCTAssertEqualObjects(authRequestTVAuthorizationEndpoint,
                         serviceConfiguration.TVAuthorizationEndpoint);
 }
