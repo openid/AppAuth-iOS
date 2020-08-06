@@ -25,6 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 /*! @brief Unit tests for @c OIDTVAuthorizationResponse.
  */
 @interface OIDTVAuthorizationResponseTests : XCTestCase
+
 /*! @brief Tests the initializer using the standard key for @c verificationURI.
  */
 - (void)testInitializer;
@@ -51,6 +52,7 @@ NS_ASSUME_NONNULL_BEGIN
         parameter.
  */
 - (void)testTokenPollRequestWithAdditionalParameters;
+
 @end
 
 NS_ASSUME_NONNULL_END

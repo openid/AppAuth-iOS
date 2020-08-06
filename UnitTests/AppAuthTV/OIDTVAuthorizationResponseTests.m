@@ -1,4 +1,4 @@
-/*! @file OIDTVAuthorizationRequestTests.m
+/*! @file OIDTVAuthorizationResponseTests.m
     @brief AppAuth iOS SDK
     @copyright
         Copyright 2020 Google Inc. All Rights Reserved.
