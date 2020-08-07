@@ -21,11 +21,11 @@
 #import <AppAuth/AppAuthCore.h>
 #import <AppAuth/AppAuthTV.h>
 
-/*! @brief The OAuth client ID.
+/*! @brief OAuth client ID.
  */
 static NSString *const kClientID = @"YOUR_CLIENT_ID";
 
-/*! @brief The OAuth client secret.
+/*! @brief OAuth client secret.
  */
 static NSString *const kClientSecret = @"YOUR_CLIENT_SECRET";
 
@@ -119,9 +119,8 @@ static NSString *const kExampleAuthStateKey = @"authState";
   }
 
   // builds authentication request
-  NSURL *tokenEndpoint = [NSURL URLWithString:kTokenEndpoint];
   NSURL *TVAuthorizationEndpoint = [NSURL URLWithString:kTVAuthorizationEndpoint];
-
+  NSURL *tokenEndpoint = [NSURL URLWithString:kTokenEndpoint];
 
   __weak __typeof(self) weakSelf = self;
 
@@ -134,7 +133,6 @@ static NSString *const kExampleAuthStateKey = @"authState";
                                                   clientSecret:kClientSecret
                                                         scopes:@[ OIDScopeOpenID, OIDScopeProfile ]
                                           additionalParameters:nil];
-
 
   _cancelBlock = [OIDTVAuthorizationService authorizeTVRequest:request
       initialization:^(OIDTVAuthorizationResponse *_Nullable response,
@@ -218,9 +216,9 @@ static NSString *const kExampleAuthStateKey = @"authState";
 /*! @brief Forgets the authentication state, used to sign-out the user.
 */
 - (IBAction)clearAuthState:(nullable id)sender {
-    [self setAuthState:nil];
-    [self logMessage:@"Authorization state cleared."];
-    _cancelSignInButton.hidden = TRUE;
+  [self setAuthState:nil];
+  [self logMessage:@"Authorization state cleared."];
+  _cancelSignInButton.hidden = TRUE;
 }
 
 - (IBAction)clearLog:(nullable id)sender {
@@ -230,88 +228,88 @@ static NSString *const kExampleAuthStateKey = @"authState";
 /*! @brief Performs an authenticated API call.
 */
 - (IBAction)userinfo:(nullable id)sender {
-    NSURL *userinfoEndpoint = [NSURL URLWithString:kUserInfoEndpoint];
-    NSString *currentAccessToken = _authState.lastTokenResponse.accessToken;
+  NSURL *userinfoEndpoint = [NSURL URLWithString:kUserInfoEndpoint];
+  NSString *currentAccessToken = _authState.lastTokenResponse.accessToken;
 
-    [self logMessage:@"Performing userinfo request"];
+  [self logMessage:@"Performing userinfo request"];
 
-    [_authState performActionWithFreshTokens:^(NSString *_Nonnull accessToken,
-                                               NSString *_Nonnull idToken,
-                                               NSError *_Nullable error) {
-      if (error) {
-        [self logMessage:@"Error fetching fresh tokens: %@", [error localizedDescription]];
-        return;
-      }
+  [_authState performActionWithFreshTokens:^(NSString *_Nonnull accessToken,
+                                             NSString *_Nonnull idToken,
+                                             NSError *_Nullable error) {
+    if (error) {
+      [self logMessage:@"Error fetching fresh tokens: %@", [error localizedDescription]];
+      return;
+    }
 
-      // log whether a token refresh occurred
-      if (![currentAccessToken isEqual:accessToken]) {
-        [self logMessage:@"Access token was refreshed automatically (%@ to %@)",
-                           currentAccessToken,
-                           accessToken];
-      } else {
-        [self logMessage:@"Access token was fresh and not updated [%@]", accessToken];
-      }
+    // log whether a token refresh occurred
+    if (![currentAccessToken isEqual:accessToken]) {
+      [self logMessage:@"Access token was refreshed automatically (%@ to %@)",
+                         currentAccessToken,
+                         accessToken];
+    } else {
+      [self logMessage:@"Access token was fresh and not updated [%@]", accessToken];
+    }
 
-      // creates request to the userinfo endpoint, with access token in the Authorization header
-      NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:userinfoEndpoint];
-      NSString *authorizationHeaderValue = [NSString stringWithFormat:@"Bearer %@", accessToken];
-      [request addValue:authorizationHeaderValue forHTTPHeaderField:@"Authorization"];
+    // creates request to the userinfo endpoint, with access token in the Authorization header
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:userinfoEndpoint];
+    NSString *authorizationHeaderValue = [NSString stringWithFormat:@"Bearer %@", accessToken];
+    [request addValue:authorizationHeaderValue forHTTPHeaderField:@"Authorization"];
 
-      NSURLSessionConfiguration *configuration =
-          [NSURLSessionConfiguration defaultSessionConfiguration];
-      NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration
-                                                            delegate:nil
-                                                       delegateQueue:nil];
+    NSURLSessionConfiguration *configuration =
+        [NSURLSessionConfiguration defaultSessionConfiguration];
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration
+                                                          delegate:nil
+                                                     delegateQueue:nil];
 
-      // performs HTTP request
-      NSURLSessionDataTask *postDataTask =
-          [session dataTaskWithRequest:request
-                     completionHandler:^(NSData *_Nullable data,
-                                         NSURLResponse *_Nullable response,
-                                         NSError *_Nullable error) {
-        dispatch_async(dispatch_get_main_queue(), ^() {
-          if (error) {
-            [self logMessage:@"HTTP request failed %@", error];
-            return;
+    // performs HTTP request
+    NSURLSessionDataTask *postDataTask =
+        [session dataTaskWithRequest:request
+                   completionHandler:^(NSData *_Nullable data,
+                                       NSURLResponse *_Nullable response,
+                                       NSError *_Nullable error) {
+      dispatch_async(dispatch_get_main_queue(), ^() {
+        if (error) {
+          [self logMessage:@"HTTP request failed %@", error];
+          return;
+        }
+        if (![response isKindOfClass:[NSHTTPURLResponse class]]) {
+          [self logMessage:@"Non-HTTP response"];
+          return;
+        }
+
+        NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
+        id jsonDictionaryOrArray =
+            [NSJSONSerialization JSONObjectWithData:data options:0 error:NULL];
+
+        if (httpResponse.statusCode != 200) {
+          // server replied with an error
+          NSString *responseText = [[NSString alloc] initWithData:data
+                                                         encoding:NSUTF8StringEncoding];
+          if (httpResponse.statusCode == 401) {
+            // "401 Unauthorized" generally indicates there is an issue with the authorization
+            // grant. Puts OIDAuthState into an error state.
+            NSError *oauthError =
+                [OIDErrorUtilities resourceServerAuthorizationErrorWithCode:0
+                                                              errorResponse:jsonDictionaryOrArray
+                                                            underlyingError:error];
+            [self->_authState updateWithAuthorizationError:oauthError];
+            // log error
+            [self logMessage:@"Authorization Error (%@). Response: %@", oauthError, responseText];
+          } else {
+            [self logMessage:@"HTTP: %d. Response: %@",
+                             (int)httpResponse.statusCode,
+                             responseText];
           }
-          if (![response isKindOfClass:[NSHTTPURLResponse class]]) {
-            [self logMessage:@"Non-HTTP response"];
-            return;
-          }
+          return;
+        }
 
-          NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
-          id jsonDictionaryOrArray =
-              [NSJSONSerialization JSONObjectWithData:data options:0 error:NULL];
-
-          if (httpResponse.statusCode != 200) {
-            // server replied with an error
-            NSString *responseText = [[NSString alloc] initWithData:data
-                                                           encoding:NSUTF8StringEncoding];
-            if (httpResponse.statusCode == 401) {
-              // "401 Unauthorized" generally indicates there is an issue with the authorization
-              // grant. Puts OIDAuthState into an error state.
-              NSError *oauthError =
-                  [OIDErrorUtilities resourceServerAuthorizationErrorWithCode:0
-                                                                errorResponse:jsonDictionaryOrArray
-                                                              underlyingError:error];
-              [self->_authState updateWithAuthorizationError:oauthError];
-              // log error
-              [self logMessage:@"Authorization Error (%@). Response: %@", oauthError, responseText];
-            } else {
-              [self logMessage:@"HTTP: %d. Response: %@",
-                               (int)httpResponse.statusCode,
-                               responseText];
-            }
-            return;
-          }
-
-          // success response
-          [self logMessage:@"Success: %@", jsonDictionaryOrArray];
-        });
-      }];
-
-      [postDataTask resume];
+        // success response
+        [self logMessage:@"Success: %@", jsonDictionaryOrArray];
+      });
     }];
+
+    [postDataTask resume];
+  }];
 }
 
 /*! @brief Logs a message to stdout and the textfield.
@@ -347,4 +345,3 @@ static NSString *const kExampleAuthStateKey = @"authState";
 }
 
 @end
-
