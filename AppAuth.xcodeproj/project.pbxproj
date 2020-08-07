@@ -155,6 +155,7 @@
 		2D93865024B38840009A12D7 /* OIDTVAuthorizationResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D47AAD8249A87010059B5A4 /* OIDTVAuthorizationResponse.m */; };
 		2D93865124B38840009A12D7 /* OIDTVAuthorizationService.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D47AAE0249A87020059B5A4 /* OIDTVAuthorizationService.m */; };
 		2D93865224B38840009A12D7 /* OIDTVServiceConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D47AADA249A87010059B5A4 /* OIDTVServiceConfiguration.m */; };
+		2DA8D82624C6190400FDFB34 /* OIDTVAuthorizationResponseTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DA8D82424C6190300FDFB34 /* OIDTVAuthorizationResponseTests.m */; };
 		2DEB065624CA1D9300DF47E7 /* OIDTVTokenRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = 2DEB065424CA1D9300DF47E7 /* OIDTVTokenRequest.h */; };
 		2DEB065724CA1D9300DF47E7 /* OIDTVTokenRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DEB065524CA1D9300DF47E7 /* OIDTVTokenRequest.m */; };
 		2DEB066124CF5CE000DF47E7 /* OIDTVTokenRequestTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DEB066024CF5CE000DF47E7 /* OIDTVTokenRequestTests.m */; };
@@ -774,6 +775,8 @@
 		2D9385B724B37CAD009A12D7 /* AppAuthTV.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AppAuthTV.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D9385B924B37CAD009A12D7 /* AppAuthTV.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppAuthTV.h; sourceTree = "<group>"; };
 		2D9385BA24B37CAD009A12D7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2DA8D82424C6190300FDFB34 /* OIDTVAuthorizationResponseTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OIDTVAuthorizationResponseTests.m; sourceTree = "<group>"; };
+		2DA8D82524C6190400FDFB34 /* OIDTVAuthorizationResponseTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OIDTVAuthorizationResponseTests.h; sourceTree = "<group>"; };
 		2DEB065424CA1D9300DF47E7 /* OIDTVTokenRequest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OIDTVTokenRequest.h; sourceTree = "<group>"; };
 		2DEB065524CA1D9300DF47E7 /* OIDTVTokenRequest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OIDTVTokenRequest.m; sourceTree = "<group>"; };
 		2DEB065F24CF5CDF00DF47E7 /* OIDTVTokenRequestTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OIDTVTokenRequestTests.h; sourceTree = "<group>"; };
@@ -1096,6 +1099,8 @@
 			children = (
 				2D81120324C1036700984DA7 /* OIDTVAuthorizationRequestTests.h */,
 				2D81120024C1036700984DA7 /* OIDTVAuthorizationRequestTests.m */,
+				2DA8D82524C6190400FDFB34 /* OIDTVAuthorizationResponseTests.h */,
+				2DA8D82424C6190300FDFB34 /* OIDTVAuthorizationResponseTests.m */,
 				2DEB065F24CF5CDF00DF47E7 /* OIDTVTokenRequestTests.h */,
 				2DEB066024CF5CE000DF47E7 /* OIDTVTokenRequestTests.m */,
 			);
@@ -2189,6 +2194,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2D81120C24C103F300984DA7 /* OIDScopesTests.m in Sources */,
+				2DA8D82624C6190400FDFB34 /* OIDTVAuthorizationResponseTests.m in Sources */,
 				2D81121224C103F300984DA7 /* OIDURLQueryComponentTests.m in Sources */,
 				2DEB066224CF5CFB00DF47E7 /* OIDTVTokenRequestTests.m in Sources */,
 				2D81120D24C103F300984DA7 /* OIDServiceConfigurationTests.m in Sources */,
