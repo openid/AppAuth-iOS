@@ -125,8 +125,8 @@ static NSString *const kExampleAuthStateKey = @"authState";
   __weak __typeof(self) weakSelf = self;
 
   OIDTVServiceConfiguration *configuration =
-    [[OIDTVServiceConfiguration alloc] initWithTVAuthorizationEndpoint: TVAuthorizationEndpoint
-                                                         tokenEndpoint: tokenEndpoint];
+    [[OIDTVServiceConfiguration alloc] initWithTVAuthorizationEndpoint:TVAuthorizationEndpoint
+                                                         tokenEndpoint:tokenEndpoint];
   OIDTVAuthorizationRequest *request =
       [[OIDTVAuthorizationRequest alloc] initWithConfiguration:configuration
                                                       clientId:kClientID
