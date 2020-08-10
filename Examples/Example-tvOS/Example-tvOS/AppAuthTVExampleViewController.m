@@ -112,6 +112,7 @@ static NSString *const kExampleAuthStateKey = @"authState";
 }
 
 /*! @brief Initiates the sign-in.
+    @param sender IBAction sender.
 */
 - (IBAction)signin:(id)sender {
   if (_cancelBlock) {
@@ -160,6 +161,7 @@ static NSString *const kExampleAuthStateKey = @"authState";
 }
 
 /*! @brief Cancels the active sign-in (if any), has no effect if a sign-in isn't in progress.
+    @param sender IBAction sender.
 */
 - (IBAction)cancelSignIn:(nullable id)sender {
   if (_cancelBlock) {
@@ -214,6 +216,7 @@ static NSString *const kExampleAuthStateKey = @"authState";
 }
 
 /*! @brief Forgets the authentication state, used to sign-out the user.
+    @param sender IBAction sender.
 */
 - (IBAction)clearAuthState:(nullable id)sender {
   [self setAuthState:nil];
@@ -226,6 +229,7 @@ static NSString *const kExampleAuthStateKey = @"authState";
 }
 
 /*! @brief Performs an authenticated API call.
+    @param sender IBAction sender.
 */
 - (IBAction)userinfo:(nullable id)sender {
   NSURL *userinfoEndpoint = [NSURL URLWithString:kUserInfoEndpoint];

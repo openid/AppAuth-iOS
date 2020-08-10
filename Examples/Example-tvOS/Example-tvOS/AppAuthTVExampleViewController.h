@@ -20,6 +20,8 @@
 
 @class OIDAuthState;
 
+NS_ASSUME_NONNULL_BEGIN
+
 /*! @brief An example app that uses the TV authorization flow to obtain authorization from the user
         and make an authorized API call.
  */
@@ -38,21 +40,25 @@
 @property(nonatomic, nullable) OIDAuthState *authState;
 
 /*! @brief Initiates the sign-in.
+    @param sender IBAction sender.
  */
 - (IBAction)signin:(nullable id)sender;
 
 /*! @brief Cancels the active sign-in (if any), has no effect if a sign-in isn't in progress.
+    @param sender IBAction sender.
  */
 - (IBAction)cancelSignIn:(nullable id)sender;
 
 /*! @brief Forgets the authentication state, used to sign-out the user.
+    @param sender IBAction sender.
  */
 - (IBAction)clearAuthState:(nullable id)sender;
 
 /*! @brief Performs an authenticated API call.
+    @param sender IBAction sender.
  */
 - (IBAction)userinfo:(nullable id)sender;
 
 @end
 
-
+NS_ASSUME_NONNULL_END
