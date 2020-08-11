@@ -72,30 +72,35 @@ static NSString *const kExampleAuthStateKey = @"authState";
 }
 
 - (void)verifyConfig {
-  #if !defined(NS_BLOCK_ASSERTIONS)
-    // The example needs to be configured with your own client details.
-    // See: https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-tvOS/README.md
+#if !defined(NS_BLOCK_ASSERTIONS)
+  // The example needs to be configured with your own client details.
+  // See: https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-tvOS/README.md
 
-    NSAssert(![kClientID isEqualToString:@"YOUR_CLIENT_ID"],
-             @"Update kClientID with your own client ID. "
-              "Instructions: https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-tvOS/README.md");
+  NSAssert(![kClientID isEqualToString:@"YOUR_CLIENT_ID"],
+           @"Update kClientID with your own client ID. "
+            "Instructions: "
+            "https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-tvOS/README.md");
 
-    NSAssert(![kClientSecret isEqualToString:@"YOUR_CLIENT_SECRET"],
-             @"Update kClientSecret with your own client secret. "
-              "Instructions: https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-tvOS/README.md");
+  NSAssert(![kClientSecret isEqualToString:@"YOUR_CLIENT_SECRET"],
+           @"Update kClientSecret with your own client secret. "
+            "Instructions: "
+            "https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-tvOS/README.md");
 
-    NSAssert(![kTVAuthorizationEndpoint isEqualToString:@"https://oauth.example.com/device"],
-            @"Update kTVAuthorizationEndpoint with your own TV authorization endpoint. "
-             "Instructions: https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-tvOS/README.md");
+  NSAssert(![kTVAuthorizationEndpoint isEqualToString:@"https://oauth.example.com/device"],
+           @"Update kTVAuthorizationEndpoint with your own TV authorization endpoint. "
+            "Instructions: "
+            "https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-tvOS/README.md");
 
-    NSAssert(![kTokenEndpoint isEqualToString:@"https://oauth.example.com/token"],
-            @"Update kTokenEndpoint with your own token endpoint. "
-             "Instructions: https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-tvOS/README.md");
+  NSAssert(![kTokenEndpoint isEqualToString:@"https://oauth.example.com/token"],
+           @"Update kTokenEndpoint with your own token endpoint. "
+            "Instructions: "
+            "https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-tvOS/README.md");
 
-    NSAssert(![kUserInfoEndpoint isEqualToString:@"https://oauth.example.com/userinfo"],
-             @"Update kUserInfoEndpoint with your own user info endpoint. "
-              "Instructions: https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-tvOS/README.md");
-  #endif // !defined(NS_BLOCK_ASSERTIONS)
+  NSAssert(![kUserInfoEndpoint isEqualToString:@"https://oauth.example.com/userinfo"],
+           @"Update kUserInfoEndpoint with your own user info endpoint. "
+            "Instructions: "
+            "https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-tvOS/README.md");
+#endif  // !defined(NS_BLOCK_ASSERTIONS)
 }
 
 - (void)stateChanged {
@@ -126,8 +131,8 @@ static NSString *const kExampleAuthStateKey = @"authState";
   __weak __typeof(self) weakSelf = self;
 
   OIDTVServiceConfiguration *configuration =
-    [[OIDTVServiceConfiguration alloc] initWithTVAuthorizationEndpoint:TVAuthorizationEndpoint
-                                                         tokenEndpoint:tokenEndpoint];
+      [[OIDTVServiceConfiguration alloc] initWithTVAuthorizationEndpoint:TVAuthorizationEndpoint
+                                                           tokenEndpoint:tokenEndpoint];
   OIDTVAuthorizationRequest *request =
       [[OIDTVAuthorizationRequest alloc] initWithConfiguration:configuration
                                                       clientId:kClientID
@@ -135,30 +140,30 @@ static NSString *const kExampleAuthStateKey = @"authState";
                                                         scopes:@[ OIDScopeOpenID, OIDScopeProfile ]
                                           additionalParameters:nil];
 
-  OIDTVAuthorizationInitialization initBlock = ^(OIDTVAuthorizationResponse *_Nullable response,
-                       NSError *_Nullable error) {
-    if (response) {
-      [weakSelf logMessage:@"Authorization response: %@", response];
-      weakSelf.signInView.hidden = NO;
-      weakSelf.cancelSignInButton.hidden = NO;
-      weakSelf.verificationURLLabel.text = response.verificationURI;
-      weakSelf.userCodeLabel.text = response.userCode;
-    } else {
-      [weakSelf logMessage:@"Initialization error %@", error];
-    }
-  };
+  OIDTVAuthorizationInitialization initBlock =
+      ^(OIDTVAuthorizationResponse *_Nullable response, NSError *_Nullable error) {
+        if (response) {
+          [weakSelf logMessage:@"Authorization response: %@", response];
+          weakSelf.signInView.hidden = NO;
+          weakSelf.cancelSignInButton.hidden = NO;
+          weakSelf.verificationURLLabel.text = response.verificationURI;
+          weakSelf.userCodeLabel.text = response.userCode;
+        } else {
+          [weakSelf logMessage:@"Initialization error %@", error];
+        }
+      };
 
-  OIDTVAuthorizationCompletion completionBlock = ^(OIDAuthState *_Nullable authState,
-                 NSError *_Nullable error) {
-    weakSelf.signInView.hidden = YES;
-    if (authState) {
-      [weakSelf setAuthState:authState];
-      [weakSelf logMessage:@"Token response: %@", authState.lastTokenResponse];
-    } else {
-      [weakSelf setAuthState:nil];
-      [weakSelf logMessage:@"Error: %@", error];
-    }
-  };
+  OIDTVAuthorizationCompletion completionBlock =
+      ^(OIDAuthState *_Nullable authState, NSError *_Nullable error) {
+        weakSelf.signInView.hidden = YES;
+        if (authState) {
+          [weakSelf setAuthState:authState];
+          [weakSelf logMessage:@"Token response: %@", authState.lastTokenResponse];
+        } else {
+          [weakSelf setAuthState:nil];
+          [weakSelf logMessage:@"Error: %@", error];
+        }
+      };
 
   _cancelBlock = [OIDTVAuthorizationService authorizeTVRequest:request
                                                 initialization:initBlock
@@ -190,9 +195,8 @@ static NSString *const kExampleAuthStateKey = @"authState";
  */
 - (void)saveState {
   // for production usage consider using the OS Keychain instead
-  NSData *archivedAuthState = [ NSKeyedArchiver archivedDataWithRootObject:_authState];
-  [[NSUserDefaults standardUserDefaults] setObject:archivedAuthState
-                                            forKey:kExampleAuthStateKey];
+  NSData *archivedAuthState = [NSKeyedArchiver archivedDataWithRootObject:_authState];
+  [[NSUserDefaults standardUserDefaults] setObject:archivedAuthState forKey:kExampleAuthStateKey];
   [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
@@ -213,7 +217,7 @@ static NSString *const kExampleAuthStateKey = @"authState";
   _signedInButtons.hidden = !_signInButtons.hidden;
 }
 
-- (void) updateSignInUIWithResponse:(OIDTVAuthorizationResponse *)response {
+- (void)updateSignInUIWithResponse:(OIDTVAuthorizationResponse *)response {
   _signInView.hidden = NO;
   _cancelSignInButton.hidden = NO;
   _verificationURLLabel.text = response.verificationURI;
@@ -243,8 +247,7 @@ static NSString *const kExampleAuthStateKey = @"authState";
   [self logMessage:@"Performing userinfo request"];
 
   [_authState performActionWithFreshTokens:^(NSString *_Nonnull accessToken,
-                                             NSString *_Nonnull idToken,
-                                             NSError *_Nullable error) {
+                                             NSString *_Nonnull idToken, NSError *_Nullable error) {
     if (error) {
       [self logMessage:@"Error fetching fresh tokens: %@", [error localizedDescription]];
       return;
@@ -252,9 +255,8 @@ static NSString *const kExampleAuthStateKey = @"authState";
 
     // log whether a token refresh occurred
     if (![currentAccessToken isEqual:accessToken]) {
-      [self logMessage:@"Access token was refreshed automatically (%@ to %@)",
-                         currentAccessToken,
-                         accessToken];
+      [self logMessage:@"Access token was refreshed automatically (%@ to %@)", currentAccessToken,
+                       accessToken];
     } else {
       [self logMessage:@"Access token was fresh and not updated [%@]", accessToken];
     }
@@ -271,51 +273,51 @@ static NSString *const kExampleAuthStateKey = @"authState";
                                                      delegateQueue:nil];
 
     // performs HTTP request
-    NSURLSessionDataTask *postDataTask =
-        [session dataTaskWithRequest:request
-                   completionHandler:^(NSData *_Nullable data,
-                                       NSURLResponse *_Nullable response,
-                                       NSError *_Nullable error) {
-      dispatch_async(dispatch_get_main_queue(), ^() {
-        if (error) {
-          [self logMessage:@"HTTP request failed %@", error];
-          return;
-        }
-        if (![response isKindOfClass:[NSHTTPURLResponse class]]) {
-          [self logMessage:@"Non-HTTP response"];
-          return;
-        }
+    NSURLSessionDataTask *postDataTask = [session
+        dataTaskWithRequest:request
+          completionHandler:^(NSData *_Nullable data, NSURLResponse *_Nullable response,
+                              NSError *_Nullable error) {
+            dispatch_async(dispatch_get_main_queue(), ^() {
+              if (error) {
+                [self logMessage:@"HTTP request failed %@", error];
+                return;
+              }
+              if (![response isKindOfClass:[NSHTTPURLResponse class]]) {
+                [self logMessage:@"Non-HTTP response"];
+                return;
+              }
 
-        NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
-        id jsonDictionaryOrArray =
-            [NSJSONSerialization JSONObjectWithData:data options:0 error:NULL];
+              NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
+              id jsonDictionaryOrArray = [NSJSONSerialization JSONObjectWithData:data
+                                                                         options:0
+                                                                           error:NULL];
 
-        if (httpResponse.statusCode != 200) {
-          // server replied with an error
-          NSString *responseText = [[NSString alloc] initWithData:data
-                                                         encoding:NSUTF8StringEncoding];
-          if (httpResponse.statusCode == 401) {
-            // "401 Unauthorized" generally indicates there is an issue with the authorization
-            // grant. Puts OIDAuthState into an error state.
-            NSError *oauthError =
-                [OIDErrorUtilities resourceServerAuthorizationErrorWithCode:0
-                                                              errorResponse:jsonDictionaryOrArray
-                                                            underlyingError:error];
-            [self->_authState updateWithAuthorizationError:oauthError];
-            // log error
-            [self logMessage:@"Authorization Error (%@). Response: %@", oauthError, responseText];
-          } else {
-            [self logMessage:@"HTTP: %d. Response: %@",
-                             (int)httpResponse.statusCode,
-                             responseText];
-          }
-          return;
-        }
+              if (httpResponse.statusCode != 200) {
+                // server replied with an error
+                NSString *responseText = [[NSString alloc] initWithData:data
+                                                               encoding:NSUTF8StringEncoding];
+                if (httpResponse.statusCode == 401) {
+                  // "401 Unauthorized" generally indicates there is an issue with the authorization
+                  // grant. Puts OIDAuthState into an error state.
+                  NSError *oauthError = [OIDErrorUtilities
+                      resourceServerAuthorizationErrorWithCode:0
+                                                 errorResponse:jsonDictionaryOrArray
+                                               underlyingError:error];
+                  [self->_authState updateWithAuthorizationError:oauthError];
+                  // log error
+                  [self logMessage:@"Authorization Error (%@). Response: %@", oauthError,
+                                   responseText];
+                } else {
+                  [self logMessage:@"HTTP: %d. Response: %@", (int)httpResponse.statusCode,
+                                   responseText];
+                }
+                return;
+              }
 
-        // success response
-        [self logMessage:@"Success: %@", jsonDictionaryOrArray];
-      });
-    }];
+              // success response
+              [self logMessage:@"Success: %@", jsonDictionaryOrArray];
+            });
+          }];
 
     [postDataTask resume];
   }];
@@ -324,7 +326,7 @@ static NSString *const kExampleAuthStateKey = @"authState";
 /*! @brief Logs a message to stdout and the textfield.
     @param format The format string and arguments.
  */
-- (void)logMessage:(NSString *)format, ... NS_FORMAT_FUNCTION(1,2) {
+- (void)logMessage:(NSString *)format, ... NS_FORMAT_FUNCTION(1, 2) {
   // gets message as string
   va_list argp;
   va_start(argp, format);
@@ -340,14 +342,14 @@ static NSString *const kExampleAuthStateKey = @"authState";
   NSString *dateString = [dateFormatter stringFromDate:[NSDate date]];
   NSString *logLine = [NSString stringWithFormat:@"\n%@: %@", dateString, log];
   UIFont *systemFont = [UIFont systemFontOfSize:36.0f];
-  NSDictionary * fontAttributes =
+  NSDictionary *fontAttributes =
       [[NSDictionary alloc] initWithObjectsAndKeys:systemFont, NSFontAttributeName, nil];
-  NSMutableAttributedString* logLineAttr =
+  NSMutableAttributedString *logLineAttr =
       [[NSMutableAttributedString alloc] initWithString:logLine attributes:fontAttributes];
   [[_logTextView textStorage] appendAttributedString:logLineAttr];
 
   // Scroll to bottom
-  if(_logTextView.text.length > 0 ) {
+  if (_logTextView.text.length > 0) {
     NSRange bottom = NSMakeRange(_logTextView.text.length - 1, 1);
     [_logTextView scrollRangeToVisible:bottom];
   }
