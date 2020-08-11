@@ -135,8 +135,7 @@ static NSString *const kExampleAuthStateKey = @"authState";
                                                         scopes:@[ OIDScopeOpenID, OIDScopeProfile ]
                                           additionalParameters:nil];
 
-  _cancelBlock = [OIDTVAuthorizationService authorizeTVRequest:request
-      initialization:^(OIDTVAuthorizationResponse *_Nullable response,
+  OIDTVAuthorizationInitialization initBlock = ^(OIDTVAuthorizationResponse *_Nullable response,
                        NSError *_Nullable error) {
     if (response) {
       [weakSelf logMessage:@"Authorization response: %@", response];
@@ -147,7 +146,9 @@ static NSString *const kExampleAuthStateKey = @"authState";
     } else {
       [weakSelf logMessage:@"Initialization error %@", error];
     }
-  } completion:^(OIDAuthState *_Nullable authState,
+  };
+
+  OIDTVAuthorizationCompletion completionBlock = ^(OIDAuthState *_Nullable authState,
                  NSError *_Nullable error) {
     weakSelf.signInView.hidden = YES;
     if (authState) {
@@ -157,7 +158,11 @@ static NSString *const kExampleAuthStateKey = @"authState";
       [weakSelf setAuthState:nil];
       [weakSelf logMessage:@"Error: %@", error];
     }
-  }];
+  };
+
+  _cancelBlock = [OIDTVAuthorizationService authorizeTVRequest:request
+                                                initialization:initBlock
+                                                    completion:completionBlock];
 }
 
 /*! @brief Cancels the active sign-in (if any), has no effect if a sign-in isn't in progress.
