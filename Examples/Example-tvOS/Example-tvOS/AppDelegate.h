@@ -16,8 +16,12 @@
 
 #import <UIKit/UIKit.h>
 
+/*! @brief The example application's delegate.
+ */
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
+/*! @brief The example application's @c UIWindow.
+ */
 @property (strong, nonatomic) UIWindow *window;
 
 @end

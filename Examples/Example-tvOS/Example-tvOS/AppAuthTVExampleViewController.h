@@ -22,8 +22,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/*! @brief An example app that uses the TV authorization flow to obtain authorization from the user
-        and make an authorized API call.
+/*! @brief The example application's view controller.
  */
 @interface AppAuthTVExampleViewController : UIViewController
 
