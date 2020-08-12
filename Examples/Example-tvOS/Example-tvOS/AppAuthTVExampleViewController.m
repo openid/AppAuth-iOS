@@ -283,10 +283,10 @@ static NSString *const kExampleAuthStateKey = @"authState";
   NSURL *userinfoEndpoint;
 
   if (shouldDiscoverEndpoints) {
-    userinfoEndpoint = [NSURL URLWithString:kUserInfoEndpoint];
-  } else {
     userinfoEndpoint = _authState.lastAuthorizationResponse.request.configuration.discoveryDocument
                            .userinfoEndpoint;
+  } else {
+    userinfoEndpoint = [NSURL URLWithString:kUserInfoEndpoint];
   }
 
   NSString *currentAccessToken = _authState.lastTokenResponse.accessToken;
