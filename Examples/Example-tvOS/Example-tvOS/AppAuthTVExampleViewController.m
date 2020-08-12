@@ -21,11 +21,11 @@
 #import <AppAuth/AppAuthCore.h>
 #import <AppAuth/AppAuthTV.h>
 
-/*! @brief Indicates whether (TRUE) to discover endpoints from @c kIssuer or (FALSE) to use the
+/*! @brief Indicates whether (YES) to discover endpoints from @c kIssuer or (NO) to use the
         @c kTVAuthorizationEndpoint, @c kTokenEndpoint, and @c kUserInfoEndpoint values defined
         below.
  */
-static bool const shouldDiscoverEndpoints = TRUE;
+static BOOL const shouldDiscoverEndpoints = YES;
 
 /*! @brief OAuth client ID.
  */
