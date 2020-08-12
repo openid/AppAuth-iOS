@@ -48,7 +48,7 @@ NS_ASSUME_NONNULL_BEGIN
     @remarks device_authorization_endpoint
     @seealso http://openid.net/specs/openid-connect-core-1_0.html#AuthorizationEndpoint
  */
-@property(nonatomic, readonly) NSURL *deviceAuthorizationEndpoint;
+@property(nonatomic, readonly, nullable) NSURL *deviceAuthorizationEndpoint;
 
 /*! @brief URL of the OP's OAuth 2.0 Token Endpoint. This is REQUIRED unless only the Implicit Flow
         is used.

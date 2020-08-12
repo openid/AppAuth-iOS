@@ -218,7 +218,7 @@ static NSString *const kOPTosURIKey = @"op_tos_uri";
   return [NSURL URLWithString:_discoveryDictionary[kAuthorizationEndpointKey]];
 }
 
-- (NSURL *)deviceAuthorizationEndpoint {
+- (nullable NSURL *)deviceAuthorizationEndpoint {
   return [NSURL URLWithString:_discoveryDictionary[kDeviceAuthorizationEndpointKey]];
 }
 
