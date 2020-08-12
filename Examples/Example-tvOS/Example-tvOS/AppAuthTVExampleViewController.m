@@ -21,6 +21,10 @@
 #import <AppAuth/AppAuthCore.h>
 #import <AppAuth/AppAuthTV.h>
 
+/*! @brief The OIDC issuer from which the configuration will be discovered.
+ */
+static NSString *const kIssuer = @"https://issuer.example.com";
+
 /*! @brief OAuth client ID.
  */
 static NSString *const kClientID = @"YOUR_CLIENT_ID";
@@ -28,18 +32,6 @@ static NSString *const kClientID = @"YOUR_CLIENT_ID";
 /*! @brief OAuth client secret.
  */
 static NSString *const kClientSecret = @"YOUR_CLIENT_SECRET";
-
-/*! @brief Device authorization endpoint.
- */
-static NSString *const kTVAuthorizationEndpoint = @"https://oauth.example.com/device";
-
-/*! @brief Token endpoint.
- */
-static NSString *const kTokenEndpoint = @"https://oauth.example.com/token";
-
-/*! @brief User info endpoint.
- */
-static NSString *const kUserInfoEndpoint = @"https://oauth.example.com/userinfo";
 
 /*! @brief NSCoding key for the authorization property.
  */
