@@ -21,7 +21,7 @@
 #import <AppAuth/AppAuthCore.h>
 #import <AppAuth/AppAuthTV.h>
 
-/*! @brief Indicates whether (YES) to discover endpoints from @c kIssuer or (NO) to use the
+/*! @brief Indicates whether YES to discover endpoints from @c kIssuer or NO to use the
         @c kTVAuthorizationEndpoint, @c kTokenEndpoint, and @c kUserInfoEndpoint values defined
         below.
  */
