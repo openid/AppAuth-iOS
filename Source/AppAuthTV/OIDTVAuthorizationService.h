@@ -75,7 +75,6 @@ typedef void (^OIDTVAuthorizationCancelBlock)(void);
 + (void)discoverServiceConfigurationForIssuer:(NSURL *)issuerURL
                                    completion:(OIDTVDiscoveryCallback)completion;
 
-
 /*! @brief Convenience method for creating an authorization service configuration from an OpenID
         Connect compliant identity provider's discovery document.
     @param discoveryURL The URL of the service provider's OpenID Connect discovery document.
