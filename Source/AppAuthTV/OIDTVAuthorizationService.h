@@ -25,6 +25,14 @@ NS_ASSUME_NONNULL_BEGIN
 @class OIDTVAuthorizationResponse;
 @class OIDTVServiceConfiguration;
 
+/*! @brief Represents the type of block used as a callback for creating a service configuration from
+        a remote OpenID Connect Discovery document.
+    @param configuration The service configuration, if available.
+    @param error The error if an error occurred.
+ */
+typedef void (^OIDTVDiscoveryCallback)(OIDTVServiceConfiguration *_Nullable configuration,
+                                     NSError *_Nullable error);
+
 /*! @brief The block that is called when the TV authorization has initialized.
     @param response The authorization response, or nil if there was an error. Display
         @c OIDTVAuthorizationResponse.userCode and @c OIDTVAuthorizationResponse.verificationURI to
@@ -52,6 +60,31 @@ typedef void (^OIDTVAuthorizationCancelBlock)(void);
 /*! @brief Performs authorization flows designed for TVs and other limited input devices.
  */
 @interface OIDTVAuthorizationService : NSObject
+/*! @internal
+    @brief Unavailable. This class should not be initialized.
+ */
+- (instancetype)init NS_UNAVAILABLE;
+
+/*! @brief Convenience method for creating an authorization service configuration from an OpenID
+        Connect compliant issuer URL.
+    @param issuerURL The service provider's OpenID Connect issuer.
+    @param completion A block which will be invoked when the authorization service configuration has
+        been created, or when an error has occurred.
+    @see https://openid.net/specs/openid-connect-discovery-1_0.html
+ */
++ (void)discoverServiceConfigurationForIssuer:(NSURL *)issuerURL
+                                   completion:(OIDTVDiscoveryCallback)completion;
+
+
+/*! @brief Convenience method for creating an authorization service configuration from an OpenID
+        Connect compliant identity provider's discovery document.
+    @param discoveryURL The URL of the service provider's OpenID Connect discovery document.
+    @param completion A block which will be invoked when the authorization service configuration has
+        been created, or when an error has occurred.
+    @see https://openid.net/specs/openid-connect-discovery-1_0.html
+ */
++ (void)discoverServiceConfigurationForDiscoveryURL:(NSURL *)discoveryURL
+                                         completion:(OIDTVDiscoveryCallback)completion;
 
 /*! @brief Starts a TV authorization flow with the given request and polls for a response.
     @param request The TV authorization request to initiate.

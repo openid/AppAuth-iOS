@@ -23,6 +23,8 @@
 #import "OIDDefines.h"
 #import "OIDErrorUtilities.h"
 #import "OIDURLQueryComponent.h"
+#import "OIDURLSessionProvider.h"
+#import "OIDServiceDiscovery.h"
 
 #import "OIDTVAuthorizationRequest.h"
 #import "OIDTVAuthorizationResponse.h"
@@ -39,7 +41,93 @@ NSString *const kErrorCodeAuthorizationPending = @"authorization_pending";
  */
 NSString *const kErrorCodeSlowDown = @"slow_down";
 
+/*! @brief Path appended to an OpenID Connect issuer for discovery
+    @see https://openid.net/specs/openid-connect-discovery-1_0.html#ProviderConfig
+ */
+static NSString *const kOpenIDConfigurationWellKnownPath = @".well-known/openid-configuration";
+
 @implementation OIDTVAuthorizationService
+
+#pragma mark Discovery
++ (void)discoverServiceConfigurationForIssuer:(NSURL *)issuerURL
+                                   completion:(OIDTVDiscoveryCallback)completion {
+  NSURL *fullDiscoveryURL =
+      [issuerURL URLByAppendingPathComponent:kOpenIDConfigurationWellKnownPath];
+
+  [[self class] discoverServiceConfigurationForDiscoveryURL:fullDiscoveryURL
+                                                 completion:completion];
+}
+
++ (void)discoverServiceConfigurationForDiscoveryURL:(NSURL *)discoveryURL
+    completion:(OIDTVDiscoveryCallback)completion {
+
+  NSURLSession *session = [OIDURLSessionProvider session];
+  NSURLSessionDataTask *task =
+      [session dataTaskWithURL:discoveryURL
+             completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+    // If we got any sort of error, just report it.
+    if (error || !data) {
+      NSString *errorDescription =
+          [NSString stringWithFormat:@"Connection error fetching discovery document '%@': %@.",
+                                     discoveryURL,
+                                     error.localizedDescription];
+      error = [OIDErrorUtilities errorWithCode:OIDErrorCodeNetworkError
+                               underlyingError:error
+                                   description:errorDescription];
+      dispatch_async(dispatch_get_main_queue(), ^{
+        completion(nil, error);
+      });
+      return;
+    }
+
+    NSHTTPURLResponse *urlResponse = (NSHTTPURLResponse *)response;
+
+    // Check for non-200 status codes.
+    // https://openid.net/specs/openid-connect-discovery-1_0.html#ProviderConfigurationResponse
+    if (urlResponse.statusCode != 200) {
+      NSError *URLResponseError = [OIDErrorUtilities HTTPErrorWithHTTPResponse:urlResponse
+                                                                          data:data];
+      NSString *errorDescription =
+          [NSString stringWithFormat:@"Non-200 HTTP response (%d) fetching discovery document "
+                                     "'%@'.",
+                                     (int)urlResponse.statusCode,
+                                     discoveryURL];
+      error = [OIDErrorUtilities errorWithCode:OIDErrorCodeNetworkError
+                               underlyingError:URLResponseError
+                                   description:errorDescription];
+      dispatch_async(dispatch_get_main_queue(), ^{
+        completion(nil, error);
+      });
+      return;
+    }
+
+    // Construct an OIDServiceDiscovery with the received JSON.
+    OIDServiceDiscovery *discovery =
+        [[OIDServiceDiscovery alloc] initWithJSONData:data error:&error];
+    if (error || !discovery) {
+      NSString *errorDescription =
+          [NSString stringWithFormat:@"JSON error parsing document at '%@': %@",
+                                     discoveryURL,
+                                     error.localizedDescription];
+      error = [OIDErrorUtilities errorWithCode:OIDErrorCodeNetworkError
+                               underlyingError:error
+                                   description:errorDescription];
+      dispatch_async(dispatch_get_main_queue(), ^{
+        completion(nil, error);
+      });
+      return;
+    }
+
+    // Create our service configuration with the discovery document and return it.
+    OIDTVServiceConfiguration *configuration =
+        [[OIDTVServiceConfiguration alloc] initWithDiscoveryDocument:discovery];
+    dispatch_async(dispatch_get_main_queue(), ^{
+      completion(configuration, nil);
+    });
+  }];
+  [task resume];
+}
+
 
 #pragma mark - Initializers
 
@@ -235,5 +323,6 @@ NSString *const kErrorCodeSlowDown = @"slow_down";
 
   return cancelBlock;
 }
+
 
 @end
