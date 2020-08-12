@@ -65,6 +65,15 @@ static NSString *const kOpenIDConfigurationWellKnownPath = @".well-known/openid-
   [OIDAuthorizationService discoverServiceConfigurationForDiscoveryURL:discoveryURL
       completion:^(OIDServiceConfiguration * _Nullable configuration, NSError * _Nullable error) {
     if (configuration) {
+      if (configuration.discoveryDocument.deviceAuthorizationEndpoint == nil) {
+        NSError *missingEndpointError = [OIDErrorUtilities
+              errorWithCode:OIDErrorCodeInvalidDiscoveryDocument
+            underlyingError:nil
+                description:@"Discovery document does not contain device authorization endpoint."];
+
+        completion(nil, missingEndpointError);
+      }
+
       // Create an OIDTVServiceConfiguration from the discovery document of the configuration
       OIDTVServiceConfiguration *TVConfiguration = [[OIDTVServiceConfiguration alloc]
           initWithDiscoveryDocument:configuration.discoveryDocument];
