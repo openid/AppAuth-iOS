@@ -30,13 +30,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 /*! @internal
     @brief Unavailable. Please use
-        @c initWithAuthorizationEndpoint:TVAuthorizationEndpoint:tokenEndpoint:
+        @c initWithTVAuthorizationEndpoint:tokenEndpoint:
  */
 - (instancetype)init NS_UNAVAILABLE;
 
 /*! @internal
     @brief Unavailable. Please use
-        @c initWithAuthorizationEndpoint:TVAuthorizationEndpoint:tokenEndpoint:
+        @c initWithTVAuthorizationEndpoint:tokenEndpoint:
  */
 - (instancetype)initWithAuthorizationEndpoint:(NSURL *)authorizationEndpoint
                                 tokenEndpoint:(NSURL *)tokenEndpoint NS_UNAVAILABLE;

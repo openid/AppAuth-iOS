@@ -22,9 +22,9 @@
 #import "OIDAuthState.h"
 #import "OIDDefines.h"
 #import "OIDErrorUtilities.h"
+#import "OIDServiceDiscovery.h"
 #import "OIDURLQueryComponent.h"
 #import "OIDURLSessionProvider.h"
-#import "OIDServiceDiscovery.h"
 
 #import "OIDTVAuthorizationRequest.h"
 #import "OIDTVAuthorizationResponse.h"
