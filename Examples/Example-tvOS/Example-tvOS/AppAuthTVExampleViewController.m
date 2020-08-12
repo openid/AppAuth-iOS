@@ -76,6 +76,11 @@ static NSString *const kExampleAuthStateKey = @"authState";
   // The example needs to be configured with your own client details.
   // See: https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-tvOS/README.md
 
+  NSAssert(![kIssuer isEqualToString:@"https://issuer.example.com"],
+           @"Update kIssuer with your own issuer. "
+            "Instructions: "
+            "https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-tvOS/README.md");
+
   NSAssert(![kClientID isEqualToString:@"YOUR_CLIENT_ID"],
            @"Update kClientID with your own client ID. "
             "Instructions: "
@@ -83,21 +88,6 @@ static NSString *const kExampleAuthStateKey = @"authState";
 
   NSAssert(![kClientSecret isEqualToString:@"YOUR_CLIENT_SECRET"],
            @"Update kClientSecret with your own client secret. "
-            "Instructions: "
-            "https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-tvOS/README.md");
-
-  NSAssert(![kTVAuthorizationEndpoint isEqualToString:@"https://oauth.example.com/device"],
-           @"Update kTVAuthorizationEndpoint with your own TV authorization endpoint. "
-            "Instructions: "
-            "https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-tvOS/README.md");
-
-  NSAssert(![kTokenEndpoint isEqualToString:@"https://oauth.example.com/token"],
-           @"Update kTokenEndpoint with your own token endpoint. "
-            "Instructions: "
-            "https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-tvOS/README.md");
-
-  NSAssert(![kUserInfoEndpoint isEqualToString:@"https://oauth.example.com/userinfo"],
-           @"Update kUserInfoEndpoint with your own user info endpoint. "
             "Instructions: "
             "https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-tvOS/README.md");
 #endif  // !defined(NS_BLOCK_ASSERTIONS)
@@ -116,23 +106,10 @@ static NSString *const kExampleAuthStateKey = @"authState";
   [self logMessage:@"Received authorization error: %@", error];
 }
 
-/*! @brief Initiates the sign-in.
-    @param sender IBAction sender.
-*/
-- (IBAction)signin:(id)sender {
-  if (_cancelBlock) {
-    [self cancelSignIn:nil];
-  }
-
+-(void) performAuthorizationWithConfiguration:(OIDTVServiceConfiguration *) configuration {
   // builds authentication request
-  NSURL *TVAuthorizationEndpoint = [NSURL URLWithString:kTVAuthorizationEndpoint];
-  NSURL *tokenEndpoint = [NSURL URLWithString:kTokenEndpoint];
-
   __weak __typeof(self) weakSelf = self;
 
-  OIDTVServiceConfiguration *configuration =
-      [[OIDTVServiceConfiguration alloc] initWithTVAuthorizationEndpoint:TVAuthorizationEndpoint
-                                                           tokenEndpoint:tokenEndpoint];
   OIDTVAuthorizationRequest *request =
       [[OIDTVAuthorizationRequest alloc] initWithConfiguration:configuration
                                                       clientId:kClientID
@@ -168,6 +145,32 @@ static NSString *const kExampleAuthStateKey = @"authState";
   _cancelBlock = [OIDTVAuthorizationService authorizeTVRequest:request
                                                 initialization:initBlock
                                                     completion:completionBlock];
+}
+
+/*! @brief Initiates the sign-in.
+    @param sender IBAction sender.
+*/
+- (IBAction)signin:(id)sender {
+  if (_cancelBlock) {
+    [self cancelSignIn:nil];
+  }
+
+  NSURL *issuer = [NSURL URLWithString:kIssuer];
+
+  // Discover endpoints
+  [OIDTVAuthorizationService discoverServiceConfigurationForIssuer:issuer
+      completion:^(OIDTVServiceConfiguration *_Nullable configuration, NSError *_Nullable error) {
+    if (!configuration) {
+      [self logMessage:@"Error retrieving discovery document: %@", [error localizedDescription]];
+      [self setAuthState:nil];
+      return;
+    }
+
+    [self logMessage:@"Got configuration: %@", configuration];
+
+    // Perform authorization flow
+    [self performAuthorizationWithConfiguration:configuration];
+   }];
 }
 
 /*! @brief Cancels the active sign-in (if any), has no effect if a sign-in isn't in progress.
@@ -241,7 +244,7 @@ static NSString *const kExampleAuthStateKey = @"authState";
     @param sender IBAction sender.
 */
 - (IBAction)userinfo:(nullable id)sender {
-  NSURL *userinfoEndpoint = [NSURL URLWithString:kUserInfoEndpoint];
+  NSURL *userinfoEndpoint = _authState.lastAuthorizationResponse.request.configuration.discoveryDocument.userinfoEndpoint;
   NSString *currentAccessToken = _authState.lastTokenResponse.accessToken;
 
   [self logMessage:@"Performing userinfo request"];
