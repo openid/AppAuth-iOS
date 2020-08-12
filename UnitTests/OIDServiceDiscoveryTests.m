@@ -154,50 +154,58 @@ static NSString *const kOPTosURIKey = @"op_tos_uri";
 
 // from https://accounts.google.com/.well-known/openid-configuration
 static NSString *const kDiscoveryDocument =
-    @"{\"issuer\":\"https://accounts.google.com\",\"authorization_endpoint\":\"https://account"
-     "s.google.com/o/oauth2/v2/auth\",\"device_authorization_endpoint\":\"https://oauth2.googleapis"
-     ".com/device/code\",\"token_endpoint\":\"https://www.googleapis.com/oauth2/v4/to"
-     "ken\",\"userinfo_endpoint\":\"https://www.googleapis.com/oauth2/v3/userinfo\",\"revocation_e"
-     "ndpoint\":\"https://accounts.google.com/o/oauth2/revoke\",\"jwks_uri\":\"https://www.googlea"
-     "pis.com/oauth2/v3/certs\",\"response_types_supported\":[\"code\",\"token\",\"id_token\",\"co"
-     "de token\",\"code id_token\",\"token id_token\",\"code token id_token\",\"none\"],\"subject_"
-     "types_supported\":[\"public\"],\"id_token_signing_alg_values_supported\":[\"RS256\"],\"scope"
-     "s_supported\":[\"openid\",\"email\",\"profile\"],\"token_endpoint_auth_methods_supported\":["
-     "\"client_secret_post\",\"client_secret_basic\"],\"claims_supported\":[\"aud\",\"email\",\"em"
-     "ail_verified\",\"exp\",\"family_name\",\"given_name\",\"iat\",\"iss\",\"locale\",\"name\",\""
-     "picture\",\"sub\"]}";
+    @"{\"issuer\":\"https://accounts.google.com\",\"authorization_endpoint\":\"https://"
+    @"accounts.google.com/o/oauth2/v2/auth\",\"device_authorization_endpoint\":\"https://"
+    @"oauth2.googleapis.com/device/code\",\"token_endpoint\":\"https://oauth2.googleapis.com/"
+    @"token\",\"userinfo_endpoint\":\"https://openidconnect.googleapis.com/v1/"
+    @"userinfo\",\"revocation_endpoint\":\"https://oauth2.googleapis.com/"
+    @"revoke\",\"jwks_uri\":\"https://www.googleapis.com/oauth2/v3/"
+    @"certs\",\"response_types_supported\":[\"code\",\"token\",\"id_token\",\"codetoken\",\"codeid_"
+    @"token\",\"tokenid_token\",\"codetokenid_token\",\"none\"],\"subject_types_supported\":["
+    @"\"public\"],\"id_token_signing_alg_values_supported\":[\"RS256\"],\"scopes_supported\":["
+    @"\"openid\",\"email\",\"profile\"],\"token_endpoint_auth_methods_supported\":[\"client_secret_"
+    @"post\",\"client_secret_basic\"],\"claims_supported\":[\"aud\",\"email\",\"email_verified\","
+    @"\"exp\",\"family_name\",\"given_name\",\"iat\",\"iss\",\"locale\",\"name\",\"picture\","
+    @"\"sub\"],\"code_challenge_methods_supported\":[\"plain\",\"S256\"],\"grant_types_supported\":"
+    @"[\"authorization_code\",\"refresh_token\",\"urn:ietf:params:oauth:grant-type:device_code\","
+    @"\"urn:ietf:params:oauth:grant-type:jwt-bearer\"]}";
 
 // from https://accounts.google.com/.well-known/openid-configuration with authorization_endpoint
 // removed
 static NSString *const kDiscoveryDocumentMissingField =
-    @"{\"issuer\":\"https://accounts.google.com\",\"device_authorization_endpoint\":\"https://oauth2.googleapis"
-      ".com/device/code\",\"token_endpoint\":\"https://www.googleapis.com/oauth2/v4/to"
-      "ken\",\"userinfo_endpoint\":\"https://www.googleapis.com/oauth2/v3/userinfo\",\"revocation_e"
-      "ndpoint\":\"https://accounts.google.com/o/oauth2/revoke\",\"jwks_uri\":\"https://www.googlea"
-      "pis.com/oauth2/v3/certs\",\"response_types_supported\":[\"code\",\"token\",\"id_token\",\"co"
-      "de token\",\"code id_token\",\"token id_token\",\"code token id_token\",\"none\"],\"subject_"
-      "types_supported\":[\"public\"],\"id_token_signing_alg_values_supported\":[\"RS256\"],\"scope"
-      "s_supported\":[\"openid\",\"email\",\"profile\"],\"token_endpoint_auth_methods_supported\":["
-      "\"client_secret_post\",\"client_secret_basic\"],\"claims_supported\":[\"aud\",\"email\",\"em"
-      "ail_verified\",\"exp\",\"family_name\",\"given_name\",\"iat\",\"iss\",\"locale\",\"name\",\""
-      "picture\",\"sub\"]}";
+    @"{\"issuer\":\"https://accounts.google.com\",\"device_authorization_endpoint\":\"https://"
+    @"oauth2.googleapis.com/device/code\",\"token_endpoint\":\"https://oauth2.googleapis.com/"
+    @"token\",\"userinfo_endpoint\":\"https://openidconnect.googleapis.com/v1/"
+    @"userinfo\",\"revocation_endpoint\":\"https://oauth2.googleapis.com/"
+    @"revoke\",\"jwks_uri\":\"https://www.googleapis.com/oauth2/v3/"
+    @"certs\",\"response_types_supported\":[\"code\",\"token\",\"id_token\",\"codetoken\",\"codeid_"
+    @"token\",\"tokenid_token\",\"codetokenid_token\",\"none\"],\"subject_types_supported\":["
+    @"\"public\"],\"id_token_signing_alg_values_supported\":[\"RS256\"],\"scopes_supported\":["
+    @"\"openid\",\"email\",\"profile\"],\"token_endpoint_auth_methods_supported\":[\"client_secret_"
+    @"post\",\"client_secret_basic\"],\"claims_supported\":[\"aud\",\"email\",\"email_verified\","
+    @"\"exp\",\"family_name\",\"given_name\",\"iat\",\"iss\",\"locale\",\"name\",\"picture\","
+    @"\"sub\"],\"code_challenge_methods_supported\":[\"plain\",\"S256\"],\"grant_types_supported\":"
+    @"[\"authorization_code\",\"refresh_token\",\"urn:ietf:params:oauth:grant-type:device_code\","
+    @"\"urn:ietf:params:oauth:grant-type:jwt-bearer\"]}";
 
-  // from https://accounts.google.com/.well-known/openid-configuration with authorization_endpoint
-  // and token_endpoint set to JSON 'null'
+// from https://accounts.google.com/.well-known/openid-configuration with authorization_endpoint
+// and token_endpoint set to JSON 'null'
 static NSString *const kDiscoveryDocumentNullField =
-    @"{\"issuer\":\"https://accounts.google.com\",\"authorization_endpoint\":null,"
-     "\"token_endpoint\":null"
-     ",\"device_authorization_endpoint\":\"https://oauth2.googleapis"
-     ".com/device/code\",\"userinfo_endpoint\":\"https://www.googleapis.com/oauth2/v3/"
-     "userinfo\",\"revocation_e"
-     "ndpoint\":\"https://accounts.google.com/o/oauth2/revoke\",\"jwks_uri\":\"https://www.googlea"
-     "pis.com/oauth2/v3/certs\",\"response_types_supported\":[\"code\",\"token\",\"id_token\",\"co"
-     "de token\",\"code id_token\",\"token id_token\",\"code token id_token\",\"none\"],\"subject_"
-     "types_supported\":[\"public\"],\"id_token_signing_alg_values_supported\":[\"RS256\"],\"scope"
-     "s_supported\":[\"openid\",\"email\",\"profile\"],\"token_endpoint_auth_methods_supported\":["
-     "\"client_secret_post\",\"client_secret_basic\"],\"claims_supported\":[\"aud\",\"email\",\"em"
-     "ail_verified\",\"exp\",\"family_name\",\"given_name\",\"iat\",\"iss\",\"locale\",\"name\",\""
-     "picture\",\"sub\"]}";
+    @"{\"issuer\":\"https://"
+    @"accounts.google.com\",\"authorization_endpoint\":null,\"device_authorization_endpoint\":"
+    @"\"https://oauth2.googleapis.com/device/"
+    @"code\",\"token_endpoint\":null,\"userinfo_endpoint\":\"https://openidconnect.googleapis.com/"
+    @"v1/userinfo\",\"revocation_endpoint\":\"https://oauth2.googleapis.com/"
+    @"revoke\",\"jwks_uri\":\"https://www.googleapis.com/oauth2/v3/"
+    @"certs\",\"response_types_supported\":[\"code\",\"token\",\"id_token\",\"codetoken\",\"codeid_"
+    @"token\",\"tokenid_token\",\"codetokenid_token\",\"none\"],\"subject_types_supported\":["
+    @"\"public\"],\"id_token_signing_alg_values_supported\":[\"RS256\"],\"scopes_supported\":["
+    @"\"openid\",\"email\",\"profile\"],\"token_endpoint_auth_methods_supported\":[\"client_secret_"
+    @"post\",\"client_secret_basic\"],\"claims_supported\":[\"aud\",\"email\",\"email_verified\","
+    @"\"exp\",\"family_name\",\"given_name\",\"iat\",\"iss\",\"locale\",\"name\",\"picture\","
+    @"\"sub\"],\"code_challenge_methods_supported\":[\"plain\",\"S256\"],\"grant_types_supported\":"
+    @"[\"authorization_code\",\"refresh_token\",\"urn:ietf:params:oauth:grant-type:device_code\","
+    @"\"urn:ietf:params:oauth:grant-type:jwt-bearer\"]}";
 
 static NSString *const kDiscoveryDocumentNotDictionary =
     @"[\"code\",\"token\",\"id_token\",\"code token\",\"code id_token\",\"token id_token\",\"code to"
