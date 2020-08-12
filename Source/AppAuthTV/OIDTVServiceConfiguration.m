@@ -85,7 +85,6 @@ NS_ASSUME_NONNULL_BEGIN
   [aCoder encodeObject:_TVAuthorizationEndpoint forKey:kTVAuthorizationEndpointKey];
 }
 
-
 #pragma mark - description
 
 - (NSString *)description {
