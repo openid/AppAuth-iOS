@@ -41,10 +41,12 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithAuthorizationEndpoint:(NSURL *)authorizationEndpoint
                                 tokenEndpoint:(NSURL *)tokenEndpoint NS_UNAVAILABLE;
 
-/*! @param discoveryDocument The discovery document from which to extract the required OAuth
+/*! @brief Designated initializer.
+    @param discoveryDocument The discovery document from which to extract the required OAuth
        configuration.
 */
-- (instancetype)initWithDiscoveryDocument:(OIDServiceDiscovery *)discoveryDocument NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithDiscoveryDocument:(OIDServiceDiscovery *)discoveryDocument
+    NS_DESIGNATED_INITIALIZER;
 
 /*! @brief Designated initializer.
     @param TVAuthorizationEndpoint The TV authorization endpoint URI.

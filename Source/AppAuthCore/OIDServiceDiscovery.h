@@ -44,9 +44,9 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property(nonatomic, readonly) NSURL *authorizationEndpoint;
 
-/*! @brief REQUIRED. URL of the OP's OAuth 2.0 Authorization Endpoint.
+/*! @brief OPTIONAL. URL of the OP's OAuth 2.0 Device Authorization Endpoint.
     @remarks device_authorization_endpoint
-    @seealso http://openid.net/specs/openid-connect-core-1_0.html#AuthorizationEndpoint
+    @seealso https://tools.ietf.org/html/rfc8628#section-4
  */
 @property(nonatomic, readonly, nullable) NSURL *deviceAuthorizationEndpoint;
 
