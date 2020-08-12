@@ -60,73 +60,20 @@ static NSString *const kOpenIDConfigurationWellKnownPath = @".well-known/openid-
 }
 
 + (void)discoverServiceConfigurationForDiscoveryURL:(NSURL *)discoveryURL
-    completion:(OIDTVDiscoveryCallback)completion {
+                                         completion:(OIDTVDiscoveryCallback)completion {
+  // Call the corresponding discovery method in OIDAuthorizationService
+  [OIDAuthorizationService discoverServiceConfigurationForDiscoveryURL:discoveryURL
+      completion:^(OIDServiceConfiguration * _Nullable configuration, NSError * _Nullable error) {
+    if (configuration) {
+      // Create an OIDTVServiceConfiguration from the discovery document of the configuration
+      OIDTVServiceConfiguration *TVConfiguration = [[OIDTVServiceConfiguration alloc]
+          initWithDiscoveryDocument:configuration.discoveryDocument];
 
-  NSURLSession *session = [OIDURLSessionProvider session];
-  NSURLSessionDataTask *task =
-      [session dataTaskWithURL:discoveryURL
-             completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-    // If we got any sort of error, just report it.
-    if (error || !data) {
-      NSString *errorDescription =
-          [NSString stringWithFormat:@"Connection error fetching discovery document '%@': %@.",
-                                     discoveryURL,
-                                     error.localizedDescription];
-      error = [OIDErrorUtilities errorWithCode:OIDErrorCodeNetworkError
-                               underlyingError:error
-                                   description:errorDescription];
-      dispatch_async(dispatch_get_main_queue(), ^{
-        completion(nil, error);
-      });
-      return;
+      completion(TVConfiguration, nil);
+    } else {
+      completion(nil, error);
     }
-
-    NSHTTPURLResponse *urlResponse = (NSHTTPURLResponse *)response;
-
-    // Check for non-200 status codes.
-    // https://openid.net/specs/openid-connect-discovery-1_0.html#ProviderConfigurationResponse
-    if (urlResponse.statusCode != 200) {
-      NSError *URLResponseError = [OIDErrorUtilities HTTPErrorWithHTTPResponse:urlResponse
-                                                                          data:data];
-      NSString *errorDescription =
-          [NSString stringWithFormat:@"Non-200 HTTP response (%d) fetching discovery document "
-                                     "'%@'.",
-                                     (int)urlResponse.statusCode,
-                                     discoveryURL];
-      error = [OIDErrorUtilities errorWithCode:OIDErrorCodeNetworkError
-                               underlyingError:URLResponseError
-                                   description:errorDescription];
-      dispatch_async(dispatch_get_main_queue(), ^{
-        completion(nil, error);
-      });
-      return;
-    }
-
-    // Construct an OIDServiceDiscovery with the received JSON.
-    OIDServiceDiscovery *discovery =
-        [[OIDServiceDiscovery alloc] initWithJSONData:data error:&error];
-    if (error || !discovery) {
-      NSString *errorDescription =
-          [NSString stringWithFormat:@"JSON error parsing document at '%@': %@",
-                                     discoveryURL,
-                                     error.localizedDescription];
-      error = [OIDErrorUtilities errorWithCode:OIDErrorCodeNetworkError
-                               underlyingError:error
-                                   description:errorDescription];
-      dispatch_async(dispatch_get_main_queue(), ^{
-        completion(nil, error);
-      });
-      return;
-    }
-
-    // Create our service configuration with the discovery document and return it.
-    OIDTVServiceConfiguration *configuration =
-        [[OIDTVServiceConfiguration alloc] initWithDiscoveryDocument:discovery];
-    dispatch_async(dispatch_get_main_queue(), ^{
-      completion(configuration, nil);
-    });
   }];
-  [task resume];
 }
 
 #pragma mark - Initializers

@@ -25,9 +25,9 @@ NS_ASSUME_NONNULL_BEGIN
 @class OIDTVAuthorizationResponse;
 @class OIDTVServiceConfiguration;
 
-/*! @brief Represents the type of block used as a callback for creating a service configuration from
+/*! @brief Represents the type of block used as a callback for creating a TV service configuration from
         a remote OpenID Connect Discovery document.
-    @param configuration The service configuration, if available.
+    @param configuration The TV service configuration, if available.
     @param error The error if an error occurred.
  */
 typedef void (^OIDTVDiscoveryCallback)(OIDTVServiceConfiguration *_Nullable configuration,
