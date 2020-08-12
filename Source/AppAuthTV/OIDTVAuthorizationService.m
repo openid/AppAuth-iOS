@@ -48,7 +48,8 @@ static NSString *const kOpenIDConfigurationWellKnownPath = @".well-known/openid-
 
 @implementation OIDTVAuthorizationService
 
-#pragma mark Discovery
+#pragma mark OIDC Discovery
+
 + (void)discoverServiceConfigurationForIssuer:(NSURL *)issuerURL
                                    completion:(OIDTVDiscoveryCallback)completion {
   NSURL *fullDiscoveryURL =
@@ -127,7 +128,6 @@ static NSString *const kOpenIDConfigurationWellKnownPath = @".well-known/openid-
   }];
   [task resume];
 }
-
 
 #pragma mark - Initializers
 
@@ -323,6 +323,5 @@ static NSString *const kOpenIDConfigurationWellKnownPath = @".well-known/openid-
 
   return cancelBlock;
 }
-
 
 @end

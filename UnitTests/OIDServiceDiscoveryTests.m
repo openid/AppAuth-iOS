@@ -92,7 +92,7 @@ static NSString *const kOPTosURIKey = @"op_tos_uri";
   return @{
     kIssuerKey : @"http://www.example.com/issuer",
     kAuthorizationEndpointKey : @"http://www.example.com/authorization",
-    kDeviceAuthorizationEndpointKey : @"http://www.example.com/authorization",
+    kDeviceAuthorizationEndpointKey : @"http://www.example.com/device",
     kTokenEndpointKey : @"http://www.example.com/token",
     kJWKSURLKey : @"http://www.example.com/jwks",
     kResponseTypesSupportedKey : @"Response Types Supported",

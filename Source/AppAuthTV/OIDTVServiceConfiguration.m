@@ -18,8 +18,8 @@
 
 #import "OIDTVServiceConfiguration.h"
 
-#import "OIDServiceDiscovery.h"
 #import "OIDDefines.h"
+#import "OIDServiceDiscovery.h"
 
 /*! @brief The key for the @c TVAuthorizationEndpoint property.
  */
