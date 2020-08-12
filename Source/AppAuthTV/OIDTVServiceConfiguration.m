@@ -56,8 +56,12 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (instancetype)initWithDiscoveryDocument:(OIDServiceDiscovery *)discoveryDocument {
-  return [self initWithTVAuthorizationEndpoint:discoveryDocument.deviceAuthorizationEndpoint
-                                 tokenEndpoint:discoveryDocument.tokenEndpoint];
+  self = [super initWithDiscoveryDocument:discoveryDocument];
+
+  if (self) {
+    _TVAuthorizationEndpoint = [discoveryDocument.deviceAuthorizationEndpoint copy];
+  }
+  return self;
 }
 
 #pragma mark - NSSecureCoding
