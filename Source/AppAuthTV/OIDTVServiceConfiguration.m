@@ -18,6 +18,7 @@
 
 #import "OIDTVServiceConfiguration.h"
 
+#import "OIDServiceDiscovery.h"
 #import "OIDDefines.h"
 
 /*! @brief The key for the @c TVAuthorizationEndpoint property.
@@ -54,6 +55,11 @@ NS_ASSUME_NONNULL_BEGIN
   return self;
 }
 
+- (instancetype)initWithDiscoveryDocument:(OIDServiceDiscovery *)discoveryDocument {
+  return [self initWithTVAuthorizationEndpoint:discoveryDocument.deviceAuthorizationEndpoint
+                                 tokenEndpoint:discoveryDocument.tokenEndpoint];
+}
+
 #pragma mark - NSSecureCoding
 
 + (BOOL)supportsSecureCoding {
@@ -74,6 +80,7 @@ NS_ASSUME_NONNULL_BEGIN
   [super encodeWithCoder:aCoder];
   [aCoder encodeObject:_TVAuthorizationEndpoint forKey:kTVAuthorizationEndpointKey];
 }
+
 
 #pragma mark - description
 
