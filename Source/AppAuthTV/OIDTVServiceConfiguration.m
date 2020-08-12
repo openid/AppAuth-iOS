@@ -45,21 +45,21 @@ NS_ASSUME_NONNULL_BEGIN
                                 tokenEndpoint:(NSURL *)tokenEndpoint
     OID_UNAVAILABLE_USE_INITIALIZER(@selector(initWithTVAuthorizationEndpoint:tokenEndpoint:))
 
+- (instancetype)initWithDiscoveryDocument:(OIDServiceDiscovery *)discoveryDocument {
+  self = [super initWithDiscoveryDocument:discoveryDocument];
+
+  if (self) {
+    _TVAuthorizationEndpoint = [discoveryDocument.deviceAuthorizationEndpoint copy];
+  }
+  return self;
+}
+
 - (instancetype)initWithTVAuthorizationEndpoint:(NSURL *)TVAuthorizationEndpoint
                                   tokenEndpoint:(NSURL *)tokenEndpoint {
   self = [super initWithAuthorizationEndpoint:[[NSURL alloc] initWithString:@""]
                                 tokenEndpoint:tokenEndpoint];
   if (self) {
     _TVAuthorizationEndpoint = [TVAuthorizationEndpoint copy];
-  }
-  return self;
-}
-
-- (instancetype)initWithDiscoveryDocument:(OIDServiceDiscovery *)discoveryDocument {
-  self = [super initWithDiscoveryDocument:discoveryDocument];
-
-  if (self) {
-    _TVAuthorizationEndpoint = [discoveryDocument.deviceAuthorizationEndpoint copy];
   }
   return self;
 }
