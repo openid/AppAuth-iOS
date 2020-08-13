@@ -167,7 +167,7 @@ static NSString *const kExampleAuthStateKey = @"authState";
   }
 }
 
--(void) performAuthorizationWithConfiguration:(OIDTVServiceConfiguration *) configuration {
+- (void)performAuthorizationWithConfiguration:(OIDTVServiceConfiguration *) configuration {
   // builds authentication request
   __weak __typeof(self) weakSelf = self;
 
@@ -207,7 +207,6 @@ static NSString *const kExampleAuthStateKey = @"authState";
                                                 initialization:initBlock
                                                     completion:completionBlock];
 }
-
 
 /*! @brief Cancels the active sign-in (if any), has no effect if a sign-in isn't in progress.
     @param sender IBAction sender.

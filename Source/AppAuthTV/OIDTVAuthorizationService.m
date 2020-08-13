@@ -64,24 +64,26 @@ static NSString *const kOpenIDConfigurationWellKnownPath = @".well-known/openid-
   // Call the corresponding discovery method in OIDAuthorizationService
   [OIDAuthorizationService discoverServiceConfigurationForDiscoveryURL:discoveryURL
       completion:^(OIDServiceConfiguration * _Nullable configuration, NSError * _Nullable error) {
-    if (configuration) {
-      if (configuration.discoveryDocument.deviceAuthorizationEndpoint == nil) {
-        NSError *missingEndpointError = [OIDErrorUtilities
-              errorWithCode:OIDErrorCodeInvalidDiscoveryDocument
-            underlyingError:nil
-                description:@"Discovery document does not contain device authorization endpoint."];
-
-        completion(nil, missingEndpointError);
-      }
-
-      // Create an OIDTVServiceConfiguration from the discovery document of the configuration
-      OIDTVServiceConfiguration *TVConfiguration = [[OIDTVServiceConfiguration alloc]
-          initWithDiscoveryDocument:configuration.discoveryDocument];
-
-      completion(TVConfiguration, nil);
-    } else {
+    if (configuration == nil) {
       completion(nil, error);
+      return;
     }
+
+    if (configuration.discoveryDocument.deviceAuthorizationEndpoint == nil) {
+      NSError *missingEndpointError = [OIDErrorUtilities
+            errorWithCode:OIDErrorCodeInvalidDiscoveryDocument
+          underlyingError:nil
+              description:@"Discovery document does not contain device authorization endpoint."];
+
+      completion(nil, missingEndpointError);
+      return;
+    }
+
+    // Create an OIDTVServiceConfiguration from the discovery document of the configuration
+    OIDTVServiceConfiguration *TVConfiguration = [[OIDTVServiceConfiguration alloc]
+        initWithDiscoveryDocument:configuration.discoveryDocument];
+
+    completion(TVConfiguration, nil);
   }];
 }
 
