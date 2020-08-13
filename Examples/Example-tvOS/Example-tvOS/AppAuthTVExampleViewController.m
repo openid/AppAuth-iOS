@@ -21,6 +21,12 @@
 #import <AppAuth/AppAuthCore.h>
 #import <AppAuth/AppAuthTV.h>
 
+/*! @brief Indicates whether YES to discover endpoints from @c kIssuer or NO to use the
+        @c kTVAuthorizationEndpoint, @c kTokenEndpoint, and @c kUserInfoEndpoint values defined
+        below.
+ */
+static BOOL const shouldDiscoverEndpoints = YES;
+
 /*! @brief OAuth client ID.
  */
 static NSString *const kClientID = @"YOUR_CLIENT_ID";
@@ -29,17 +35,21 @@ static NSString *const kClientID = @"YOUR_CLIENT_ID";
  */
 static NSString *const kClientSecret = @"YOUR_CLIENT_SECRET";
 
+/*! @brief The OIDC issuer from which the configuration will be discovered.
+ */
+static NSString *const kIssuer = @"https://issuer.example.com";
+
 /*! @brief Device authorization endpoint.
  */
-static NSString *const kTVAuthorizationEndpoint = @"https://oauth.example.com/device";
+static NSString *const kTVAuthorizationEndpoint = @"https://www.example.com/device";
 
 /*! @brief Token endpoint.
  */
-static NSString *const kTokenEndpoint = @"https://oauth.example.com/token";
+static NSString *const kTokenEndpoint = @"https://www.example.com/token";
 
 /*! @brief User info endpoint.
  */
-static NSString *const kUserInfoEndpoint = @"https://oauth.example.com/userinfo";
+static NSString *const kUserInfoEndpoint = @"https://www.example.com/userinfo";
 
 /*! @brief NSCoding key for the authorization property.
  */
@@ -73,9 +83,6 @@ static NSString *const kExampleAuthStateKey = @"authState";
 
 - (void)verifyConfig {
 #if !defined(NS_BLOCK_ASSERTIONS)
-  // The example needs to be configured with your own client details.
-  // See: https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-tvOS/README.md
-
   NSAssert(![kClientID isEqualToString:@"YOUR_CLIENT_ID"],
            @"Update kClientID with your own client ID. "
             "Instructions: "
@@ -86,20 +93,27 @@ static NSString *const kExampleAuthStateKey = @"authState";
             "Instructions: "
             "https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-tvOS/README.md");
 
-  NSAssert(![kTVAuthorizationEndpoint isEqualToString:@"https://oauth.example.com/device"],
-           @"Update kTVAuthorizationEndpoint with your own TV authorization endpoint. "
-            "Instructions: "
-            "https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-tvOS/README.md");
+  if (shouldDiscoverEndpoints) {
+    NSAssert(![kIssuer isEqualToString:@"https://issuer.example.com"],
+            @"Update kIssuer with your own issuer. "
+             "Instructions: "
+             "https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-tvOS/README.md");
+  } else {
+    NSAssert(![kTVAuthorizationEndpoint isEqualToString:@"https://www.example.com/device"],
+             @"Update kTVAuthorizationEndpoint with your own TV authorization endpoint. "
+              "Instructions: "
+              "https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-tvOS/README.md");
 
-  NSAssert(![kTokenEndpoint isEqualToString:@"https://oauth.example.com/token"],
-           @"Update kTokenEndpoint with your own token endpoint. "
-            "Instructions: "
-            "https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-tvOS/README.md");
+    NSAssert(![kTokenEndpoint isEqualToString:@"https://www.example.com/token"],
+             @"Update kTokenEndpoint with your own token endpoint. "
+              "Instructions: "
+              "https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-tvOS/README.md");
 
-  NSAssert(![kUserInfoEndpoint isEqualToString:@"https://oauth.example.com/userinfo"],
-           @"Update kUserInfoEndpoint with your own user info endpoint. "
-            "Instructions: "
-            "https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-tvOS/README.md");
+    NSAssert(![kUserInfoEndpoint isEqualToString:@"https://www.example.com/userinfo"],
+             @"Update kUserInfoEndpoint with your own user info endpoint. "
+              "Instructions: "
+              "https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-tvOS/README.md");
+  }
 #endif  // !defined(NS_BLOCK_ASSERTIONS)
 }
 
@@ -115,7 +129,6 @@ static NSString *const kExampleAuthStateKey = @"authState";
 - (void)authState:(OIDAuthState *)state didEncounterAuthorizationError:(nonnull NSError *)error {
   [self logMessage:@"Received authorization error: %@", error];
 }
-
 /*! @brief Initiates the sign-in.
     @param sender IBAction sender.
 */
@@ -124,15 +137,40 @@ static NSString *const kExampleAuthStateKey = @"authState";
     [self cancelSignIn:nil];
   }
 
-  // builds authentication request
-  NSURL *TVAuthorizationEndpoint = [NSURL URLWithString:kTVAuthorizationEndpoint];
-  NSURL *tokenEndpoint = [NSURL URLWithString:kTokenEndpoint];
+  if (shouldDiscoverEndpoints) {
+    NSURL *issuer = [NSURL URLWithString:kIssuer];
 
+    // Discover endpoints
+    [OIDTVAuthorizationService discoverServiceConfigurationForIssuer:issuer
+        completion:^(OIDTVServiceConfiguration *_Nullable configuration, NSError *_Nullable error) {
+      if (!configuration) {
+        [self logMessage:@"Error retrieving discovery document: %@", [error localizedDescription]];
+        [self setAuthState:nil];
+        return;
+      }
+
+      [self logMessage:@"Got configuration: %@", configuration];
+
+      // Perform authorization flow
+      [self performAuthorizationWithConfiguration:configuration];
+     }];
+  } else {
+    NSURL *TVAuthorizationEndpoint = [NSURL URLWithString:kTVAuthorizationEndpoint];
+    NSURL *tokenEndpoint = [NSURL URLWithString:kTokenEndpoint];
+
+    OIDTVServiceConfiguration *configuration =
+        [[OIDTVServiceConfiguration alloc] initWithTVAuthorizationEndpoint:TVAuthorizationEndpoint
+                                                             tokenEndpoint:tokenEndpoint];
+
+    // Perform authorization flow
+    [self performAuthorizationWithConfiguration:configuration];
+  }
+}
+
+- (void)performAuthorizationWithConfiguration:(OIDTVServiceConfiguration *)configuration {
+  // builds authentication request
   __weak __typeof(self) weakSelf = self;
 
-  OIDTVServiceConfiguration *configuration =
-      [[OIDTVServiceConfiguration alloc] initWithTVAuthorizationEndpoint:TVAuthorizationEndpoint
-                                                           tokenEndpoint:tokenEndpoint];
   OIDTVAuthorizationRequest *request =
       [[OIDTVAuthorizationRequest alloc] initWithConfiguration:configuration
                                                       clientId:kClientID
@@ -241,7 +279,15 @@ static NSString *const kExampleAuthStateKey = @"authState";
     @param sender IBAction sender.
 */
 - (IBAction)userinfo:(nullable id)sender {
-  NSURL *userinfoEndpoint = [NSURL URLWithString:kUserInfoEndpoint];
+  NSURL *userinfoEndpoint;
+
+  if (shouldDiscoverEndpoints) {
+    userinfoEndpoint = _authState.lastAuthorizationResponse.request.configuration.discoveryDocument
+                           .userinfoEndpoint;
+  } else {
+    userinfoEndpoint = [NSURL URLWithString:kUserInfoEndpoint];
+  }
+
   NSString *currentAccessToken = _authState.lastTokenResponse.accessToken;
 
   [self logMessage:@"Performing userinfo request"];

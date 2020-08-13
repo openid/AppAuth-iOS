@@ -22,7 +22,9 @@
 #import "OIDAuthState.h"
 #import "OIDDefines.h"
 #import "OIDErrorUtilities.h"
+#import "OIDServiceDiscovery.h"
 #import "OIDURLQueryComponent.h"
+#import "OIDURLSessionProvider.h"
 
 #import "OIDTVAuthorizationRequest.h"
 #import "OIDTVAuthorizationResponse.h"
@@ -39,7 +41,51 @@ NSString *const kErrorCodeAuthorizationPending = @"authorization_pending";
  */
 NSString *const kErrorCodeSlowDown = @"slow_down";
 
+/*! @brief Path appended to an OpenID Connect issuer for discovery
+    @see https://openid.net/specs/openid-connect-discovery-1_0.html#ProviderConfig
+ */
+static NSString *const kOpenIDConfigurationWellKnownPath = @".well-known/openid-configuration";
+
 @implementation OIDTVAuthorizationService
+
+#pragma mark OIDC Discovery
+
++ (void)discoverServiceConfigurationForIssuer:(NSURL *)issuerURL
+                                   completion:(OIDTVDiscoveryCallback)completion {
+  NSURL *fullDiscoveryURL =
+      [issuerURL URLByAppendingPathComponent:kOpenIDConfigurationWellKnownPath];
+
+  [[self class] discoverServiceConfigurationForDiscoveryURL:fullDiscoveryURL
+                                                 completion:completion];
+}
+
++ (void)discoverServiceConfigurationForDiscoveryURL:(NSURL *)discoveryURL
+                                         completion:(OIDTVDiscoveryCallback)completion {
+  // Call the corresponding discovery method in OIDAuthorizationService
+  [OIDAuthorizationService discoverServiceConfigurationForDiscoveryURL:discoveryURL
+      completion:^(OIDServiceConfiguration * _Nullable configuration, NSError * _Nullable error) {
+    if (configuration == nil) {
+      completion(nil, error);
+      return;
+    }
+
+    if (configuration.discoveryDocument.deviceAuthorizationEndpoint == nil) {
+      NSError *missingEndpointError = [OIDErrorUtilities
+            errorWithCode:OIDErrorCodeInvalidDiscoveryDocument
+          underlyingError:nil
+              description:@"Discovery document does not contain device authorization endpoint."];
+
+      completion(nil, missingEndpointError);
+      return;
+    }
+
+    // Create an OIDTVServiceConfiguration from the discovery document of the configuration
+    OIDTVServiceConfiguration *TVConfiguration = [[OIDTVServiceConfiguration alloc]
+        initWithDiscoveryDocument:configuration.discoveryDocument];
+
+    completion(TVConfiguration, nil);
+  }];
+}
 
 #pragma mark - Initializers
 

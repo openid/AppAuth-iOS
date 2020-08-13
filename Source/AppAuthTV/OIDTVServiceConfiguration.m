@@ -19,6 +19,7 @@
 #import "OIDTVServiceConfiguration.h"
 
 #import "OIDDefines.h"
+#import "OIDServiceDiscovery.h"
 
 /*! @brief The key for the @c TVAuthorizationEndpoint property.
  */
@@ -43,6 +44,20 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithAuthorizationEndpoint:(NSURL *)authorizationEndpoint
                                 tokenEndpoint:(NSURL *)tokenEndpoint
     OID_UNAVAILABLE_USE_INITIALIZER(@selector(initWithTVAuthorizationEndpoint:tokenEndpoint:))
+
+- (instancetype)initWithDiscoveryDocument:(OIDServiceDiscovery *)discoveryDocument {
+  self = [super initWithDiscoveryDocument:discoveryDocument];
+
+  if (self) {
+    if (discoveryDocument.deviceAuthorizationEndpoint == nil) {
+      NSLog(@"Warning: Discovery document used to initialize %@ "
+            @"does not contain device authorization endpoint.", self);
+    } else {
+      _TVAuthorizationEndpoint = [discoveryDocument.deviceAuthorizationEndpoint copy];
+    }
+  }
+  return self;
+}
 
 - (instancetype)initWithTVAuthorizationEndpoint:(NSURL *)TVAuthorizationEndpoint
                                   tokenEndpoint:(NSURL *)tokenEndpoint {
