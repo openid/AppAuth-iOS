@@ -65,8 +65,10 @@ typedef void (^OIDTVAuthorizationCancelBlock)(void);
  */
 - (instancetype)init NS_UNAVAILABLE;
 
-/*! @brief Convenience method for creating an authorization service configuration from an OpenID
-        Connect compliant issuer URL.
+/*! @brief Convenience method for creating a TV authorization service configuration from an OpenID
+        Connect compliant issuer URL. This method validates the presence of a device authorization
+        endpoint in the retrieved discovery document and instantiates an
+        @c OIDTVServiceConfiguration.
     @param issuerURL The service provider's OpenID Connect issuer.
     @param completion A block which will be invoked when the authorization service configuration has
         been created, or when an error has occurred.
@@ -75,8 +77,10 @@ typedef void (^OIDTVAuthorizationCancelBlock)(void);
 + (void)discoverServiceConfigurationForIssuer:(NSURL *)issuerURL
                                    completion:(OIDTVDiscoveryCallback)completion;
 
-/*! @brief Convenience method for creating an authorization service configuration from an OpenID
-        Connect compliant identity provider's discovery document.
+/*! @brief Convenience method for creating a TV authorization service configuration from an OpenID
+        Connect compliant identity provider's discovery document. This method validates the presence
+        of a device authorization endpoint in the retrieved discovery document and instantiates an
+        @c OIDTVServiceConfiguration.
     @param discoveryURL The URL of the service provider's OpenID Connect discovery document.
     @param completion A block which will be invoked when the authorization service configuration has
         been created, or when an error has occurred.

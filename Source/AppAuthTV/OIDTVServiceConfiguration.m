@@ -49,7 +49,12 @@ NS_ASSUME_NONNULL_BEGIN
   self = [super initWithDiscoveryDocument:discoveryDocument];
 
   if (self) {
-    _TVAuthorizationEndpoint = [discoveryDocument.deviceAuthorizationEndpoint copy];
+    if (discoveryDocument.deviceAuthorizationEndpoint == nil) {
+      NSLog(@"Warning: Discovery document used to initialize %@ "
+            @"does not contain device authorization endpoint.", self);
+    } else {
+      _TVAuthorizationEndpoint = [discoveryDocument.deviceAuthorizationEndpoint copy];
+    }
   }
   return self;
 }
