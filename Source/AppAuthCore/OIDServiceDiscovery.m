@@ -26,6 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 /*! Field keys associated with an OpenID Connect Discovery Document. */
 static NSString *const kIssuerKey = @"issuer";
 static NSString *const kAuthorizationEndpointKey = @"authorization_endpoint";
+static NSString *const kDeviceAuthorizationEndpointKey = @"device_authorization_endpoint";
 static NSString *const kTokenEndpointKey = @"token_endpoint";
 static NSString *const kUserinfoEndpointKey = @"userinfo_endpoint";
 static NSString *const kJWKSURLKey = @"jwks_uri";
@@ -215,6 +216,10 @@ static NSString *const kOPTosURIKey = @"op_tos_uri";
 
 - (NSURL *)authorizationEndpoint {
   return [NSURL URLWithString:_discoveryDictionary[kAuthorizationEndpointKey]];
+}
+
+- (nullable NSURL *)deviceAuthorizationEndpoint {
+  return [NSURL URLWithString:_discoveryDictionary[kDeviceAuthorizationEndpointKey]];
 }
 
 - (NSURL *)tokenEndpoint {
