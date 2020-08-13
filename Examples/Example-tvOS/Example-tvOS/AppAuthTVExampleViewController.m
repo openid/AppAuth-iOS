@@ -167,7 +167,7 @@ static NSString *const kExampleAuthStateKey = @"authState";
   }
 }
 
-- (void)performAuthorizationWithConfiguration:(OIDTVServiceConfiguration *) configuration {
+- (void)performAuthorizationWithConfiguration:(OIDTVServiceConfiguration *)configuration {
   // builds authentication request
   __weak __typeof(self) weakSelf = self;
 
