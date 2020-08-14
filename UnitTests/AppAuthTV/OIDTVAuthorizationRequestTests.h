@@ -33,14 +33,14 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)testInitializer;
 
 /*! @brief Tests the @c NSCopying implementation by round-tripping an instance through the copying
- * process and checking to make sure the source and destination both contain the
- * @c TVAuthorizationEndpoint
+ *      process and checking to make sure the source and destination both contain the
+ * @c deviceAuthorizationEndpoint
  */
 - (void)testCopying;
 
 /*! @brief Tests the @c NSSecureCoding implementation by round-tripping an instance through the
- * coding process and checking to make sure the source and destination both contain the
- * @c TVAuthorizationEndpoint
+ *      coding process and checking to make sure the source and destination both contain the
+ *      @c deviceAuthorizationEndpoint
  */
 - (void)testSecureCoding;
 

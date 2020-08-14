@@ -105,7 +105,7 @@
   OIDTVServiceConfiguration *tvConfiguration = (OIDTVServiceConfiguration *)self.configuration;
 
   NSMutableURLRequest *URLRequest =
-      [[NSURLRequest requestWithURL:tvConfiguration.TVAuthorizationEndpoint] mutableCopy];
+      [[NSURLRequest requestWithURL:tvConfiguration.deviceAuthorizationEndpoint] mutableCopy];
   URLRequest.HTTPMethod = kHTTPPost;
   [URLRequest setValue:kHTTPContentTypeHeaderValue forHTTPHeaderField:kHTTPContentTypeHeaderKey];
   NSString *bodyString = [query URLEncodedParameters];
