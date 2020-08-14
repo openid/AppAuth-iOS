@@ -22,7 +22,7 @@
 #import <AppAuth/AppAuthTV.h>
 
 /*! @brief Indicates whether YES to discover endpoints from @c kIssuer or NO to use the
-        @c kTVAuthorizationEndpoint, @c kTokenEndpoint, and @c kUserInfoEndpoint values defined
+        @c kDeviceAuthorizationEndpoint, @c kTokenEndpoint, and @c kUserInfoEndpoint values defined
         below.
  */
 static BOOL const shouldDiscoverEndpoints = YES;
@@ -41,7 +41,7 @@ static NSString *const kIssuer = @"https://issuer.example.com";
 
 /*! @brief Device authorization endpoint.
  */
-static NSString *const kTVAuthorizationEndpoint = @"https://www.example.com/device";
+static NSString *const kDeviceAuthorizationEndpoint = @"https://www.example.com/device";
 
 /*! @brief Token endpoint.
  */
@@ -99,8 +99,8 @@ static NSString *const kExampleAuthStateKey = @"authState";
              "Instructions: "
              "https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-tvOS/README.md");
   } else {
-    NSAssert(![kTVAuthorizationEndpoint isEqualToString:@"https://www.example.com/device"],
-             @"Update kTVAuthorizationEndpoint with your own TV authorization endpoint. "
+    NSAssert(![kDeviceAuthorizationEndpoint isEqualToString:@"https://www.example.com/device"],
+             @"Update kDeviceAuthorizationEndpoint with your own device authorization endpoint. "
               "Instructions: "
               "https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-tvOS/README.md");
 
@@ -155,12 +155,12 @@ static NSString *const kExampleAuthStateKey = @"authState";
       [self performAuthorizationWithConfiguration:configuration];
      }];
   } else {
-    NSURL *TVAuthorizationEndpoint = [NSURL URLWithString:kTVAuthorizationEndpoint];
+    NSURL *deviceAuthorizationEndpoint = [NSURL URLWithString:kDeviceAuthorizationEndpoint];
     NSURL *tokenEndpoint = [NSURL URLWithString:kTokenEndpoint];
 
-    OIDTVServiceConfiguration *configuration =
-        [[OIDTVServiceConfiguration alloc] initWithTVAuthorizationEndpoint:TVAuthorizationEndpoint
-                                                             tokenEndpoint:tokenEndpoint];
+    OIDTVServiceConfiguration *configuration = [[OIDTVServiceConfiguration alloc]
+        initWithDeviceAuthorizationEndpoint:deviceAuthorizationEndpoint
+                              tokenEndpoint:tokenEndpoint];
 
     // Perform authorization flow
     [self performAuthorizationWithConfiguration:configuration];
