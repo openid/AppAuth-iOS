@@ -41,7 +41,7 @@ API_AVAILABLE(macCatalyst(13)) API_UNAVAILABLE(ios)
     @param presentingViewController The view controller from which to present the
         \SFSafariViewController.
  */
-- (nullable instancetype)initWithPresentingViewController:
+- (nonnull instancetype)initWithPresentingViewController:
     (UIViewController *)presentingViewController
     NS_DESIGNATED_INITIALIZER;
 
