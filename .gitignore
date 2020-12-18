@@ -1,3 +1,10 @@
 Docs/
 xcuserdata/
 Carthage/
+.DS_Store
+*~
+c
+*.E
+Notability.xcworkspace/xcshareddata/Notability.xccheckout
+*.xccheckout
+*.gcno

@@ -108,6 +108,7 @@ static NSString *const kQueryStringParamAdditionalDisallowedCharacters = @"=&+";
 }
 
 - (void)addParameter:(NSString *)parameter value:(NSString *)value {
+  if( !value || !parameter ) { return; }
   NSMutableArray<NSString *> *parameterValues = _parameters[parameter];
   if (!parameterValues) {
     parameterValues = [NSMutableArray array];
