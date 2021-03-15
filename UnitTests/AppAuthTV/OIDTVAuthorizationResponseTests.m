@@ -29,9 +29,9 @@
 #import "Source/AppAuthTV/OIDTVTokenRequest.h"
 #endif
 
-/*! @brief Test value for the @c TVAuthorizationEndpoint property.
+/*! @brief Test value for the @c deviceAuthorizationEndpoint property.
  */
-static NSString *const kTestTVAuthorizationEndpoint = @"https://www.example.com/device/code";
+static NSString *const kTestDeviceAuthorizationEndpoint = @"https://www.example.com/device/code";
 
 /*! @brief Test value for the @c tokenEndpoint property.
  */
@@ -110,10 +110,10 @@ static int const kTestInterval = 5;
 
 - (OIDTVServiceConfiguration *)testServiceConfiguration {
   NSURL *tokenEndpoint = [NSURL URLWithString:kTestTokenEndpoint];
-  NSURL *TVAuthorizationEndpoint = [NSURL URLWithString:kTestTVAuthorizationEndpoint];
+  NSURL *deviceAuthorizationEndpoint = [NSURL URLWithString:kTestDeviceAuthorizationEndpoint];
 
   OIDTVServiceConfiguration *configuration =
-      [[OIDTVServiceConfiguration alloc] initWithTVAuthorizationEndpoint:TVAuthorizationEndpoint
+      [[OIDTVServiceConfiguration alloc] initWithDeviceAuthorizationEndpoint:deviceAuthorizationEndpoint
                                                            tokenEndpoint:tokenEndpoint];
   return configuration;
 }

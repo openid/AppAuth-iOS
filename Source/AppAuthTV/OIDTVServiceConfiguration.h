@@ -24,19 +24,19 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @interface OIDTVServiceConfiguration : OIDServiceConfiguration
 
-/*! @brief The TV authorization endpoint URI.
+/*! @brief The device authorization endpoint URI.
  */
-@property(nonatomic, readonly) NSURL *TVAuthorizationEndpoint;
+@property(nonatomic, readonly) NSURL *deviceAuthorizationEndpoint;
 
 /*! @internal
     @brief Unavailable. Please use
-        @c initWithTVAuthorizationEndpoint:tokenEndpoint:
+        @c initWithDeviceAuthorizationEndpoint:tokenEndpoint:
  */
 - (instancetype)init NS_UNAVAILABLE;
 
 /*! @internal
     @brief Unavailable. Please use
-        @c initWithTVAuthorizationEndpoint:tokenEndpoint:
+        @c initWithDeviceAuthorizationEndpoint:tokenEndpoint:
  */
 - (instancetype)initWithAuthorizationEndpoint:(NSURL *)authorizationEndpoint
                                 tokenEndpoint:(NSURL *)tokenEndpoint NS_UNAVAILABLE;
@@ -49,11 +49,12 @@ NS_ASSUME_NONNULL_BEGIN
     NS_DESIGNATED_INITIALIZER;
 
 /*! @brief Designated initializer.
-    @param TVAuthorizationEndpoint The TV authorization endpoint URI.
+    @param deviceAuthorizationEndpoint The device authorization endpoint URI.
     @param tokenEndpoint The token exchange and refresh endpoint URI.
  */
-- (instancetype)initWithTVAuthorizationEndpoint:(NSURL *)TVAuthorizationEndpoint
-                                  tokenEndpoint:(NSURL *)tokenEndpoint NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithDeviceAuthorizationEndpoint:(NSURL *)deviceAuthorizationEndpoint
+                                      tokenEndpoint:(NSURL *)tokenEndpoint
+    NS_DESIGNATED_INITIALIZER;
 
 @end
 

@@ -33,9 +33,9 @@
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wgnu"
 
-/*! @brief Test value for the @c TVAuthorizationEndpoint property.
+/*! @brief Test value for the @c deviceAuthorizationEndpoint property.
  */
-static NSString *const kTestTVAuthorizationEndpoint =
+static NSString *const kTestDeviceAuthorizationEndpoint =
     @"https://www.example.com/device/code";
 
 /*! @brief Test value for the @c tokenEndpoint property.
@@ -106,11 +106,11 @@ static NSString *const kOIDTVDeviceTokenGrantType =
 
 - (OIDTVServiceConfiguration *)testServiceConfiguration {
   NSURL *tokenEndpoint = [NSURL URLWithString:kTestTokenEndpoint];
-  NSURL *TVAuthorizationEndpoint = [NSURL URLWithString:kTestTVAuthorizationEndpoint];
+  NSURL *deviceAuthorizationEndpoint = [NSURL URLWithString:kTestDeviceAuthorizationEndpoint];
 
-  OIDTVServiceConfiguration *configuration =
-      [[OIDTVServiceConfiguration alloc] initWithTVAuthorizationEndpoint:TVAuthorizationEndpoint
-                                                           tokenEndpoint:tokenEndpoint];
+  OIDTVServiceConfiguration *configuration = [[OIDTVServiceConfiguration alloc]
+      initWithDeviceAuthorizationEndpoint:deviceAuthorizationEndpoint
+                            tokenEndpoint:tokenEndpoint];
   return configuration;
 }
 
@@ -128,11 +128,11 @@ static NSString *const kOIDTVDeviceTokenGrantType =
 */
 - (void)testInitializer {
   OIDTVTokenRequest *request = [self testTokenRequest];
-  NSURL *requestTVAuthorizationEndpoint =
-  ((OIDTVServiceConfiguration *)request.configuration).TVAuthorizationEndpoint;
-  
-  XCTAssertEqualObjects(requestTVAuthorizationEndpoint,
-                        [self testServiceConfiguration].TVAuthorizationEndpoint);
+  NSURL *requestDeviceAuthorizationEndpoint =
+      ((OIDTVServiceConfiguration *)request.configuration).deviceAuthorizationEndpoint;
+
+  XCTAssertEqualObjects(requestDeviceAuthorizationEndpoint,
+                        [self testServiceConfiguration].deviceAuthorizationEndpoint);
   XCTAssertEqualObjects(request.deviceCode, kDeviceCodeValue);
   XCTAssertEqualObjects(request.grantType, kOIDTVDeviceTokenGrantType);
   XCTAssertEqualObjects(request.clientID, kTestClientID);

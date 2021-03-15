@@ -21,9 +21,9 @@
 #import "OIDDefines.h"
 #import "OIDServiceDiscovery.h"
 
-/*! @brief The key for the @c TVAuthorizationEndpoint property.
+/*! @brief The key for the @c deviceAuthorizationEndpoint property.
  */
-static NSString *const kTVAuthorizationEndpointKey = @"TVAuthorizationEndpoint";
+static NSString *const kDeviceAuthorizationEndpointKey = @"deviceAuthorizationEndpoint";
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -39,11 +39,11 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation OIDTVServiceConfiguration
 
 - (instancetype)init
-    OID_UNAVAILABLE_USE_INITIALIZER(@selector(initWithTVAuthorizationEndpoint:tokenEndpoint:))
+    OID_UNAVAILABLE_USE_INITIALIZER(@selector(initWithDeviceAuthorizationEndpoint:tokenEndpoint:))
 
 - (instancetype)initWithAuthorizationEndpoint:(NSURL *)authorizationEndpoint
                                 tokenEndpoint:(NSURL *)tokenEndpoint
-    OID_UNAVAILABLE_USE_INITIALIZER(@selector(initWithTVAuthorizationEndpoint:tokenEndpoint:))
+    OID_UNAVAILABLE_USE_INITIALIZER(@selector(initWithDeviceAuthorizationEndpoint:tokenEndpoint:))
 
 - (instancetype)initWithDiscoveryDocument:(OIDServiceDiscovery *)discoveryDocument {
   self = [super initWithDiscoveryDocument:discoveryDocument];
@@ -53,18 +53,18 @@ NS_ASSUME_NONNULL_BEGIN
       NSLog(@"Warning: Discovery document used to initialize %@ "
             @"does not contain device authorization endpoint.", self);
     } else {
-      _TVAuthorizationEndpoint = [discoveryDocument.deviceAuthorizationEndpoint copy];
+      _deviceAuthorizationEndpoint = [discoveryDocument.deviceAuthorizationEndpoint copy];
     }
   }
   return self;
 }
 
-- (instancetype)initWithTVAuthorizationEndpoint:(NSURL *)TVAuthorizationEndpoint
-                                  tokenEndpoint:(NSURL *)tokenEndpoint {
+- (instancetype)initWithDeviceAuthorizationEndpoint:(NSURL *)deviceAuthorizationEndpoint
+                                      tokenEndpoint:(NSURL *)tokenEndpoint {
   self = [super initWithAuthorizationEndpoint:[[NSURL alloc] initWithString:@""]
                                 tokenEndpoint:tokenEndpoint];
   if (self) {
-    _TVAuthorizationEndpoint = [TVAuthorizationEndpoint copy];
+    _deviceAuthorizationEndpoint = [deviceAuthorizationEndpoint copy];
   }
   return self;
 }
@@ -78,25 +78,25 @@ NS_ASSUME_NONNULL_BEGIN
 - (nullable instancetype)initWithCoder:(NSCoder *)aDecoder {
   self = [super initWithCoder:aDecoder];
   if (self) {
-    NSURL *TVAuthorizationEndpoint = [aDecoder decodeObjectOfClass:[NSURL class]
-                                                            forKey:kTVAuthorizationEndpointKey];
-    _TVAuthorizationEndpoint = TVAuthorizationEndpoint;
+    NSURL *deviceAuthorizationEndpoint =
+        [aDecoder decodeObjectOfClass:[NSURL class] forKey:kDeviceAuthorizationEndpointKey];
+    _deviceAuthorizationEndpoint = deviceAuthorizationEndpoint;
   }
   return self;
 }
 
 - (void)encodeWithCoder:(NSCoder *)aCoder {
   [super encodeWithCoder:aCoder];
-  [aCoder encodeObject:_TVAuthorizationEndpoint forKey:kTVAuthorizationEndpointKey];
+  [aCoder encodeObject:_deviceAuthorizationEndpoint forKey:kDeviceAuthorizationEndpointKey];
 }
 
 #pragma mark - description
 
 - (NSString *)description {
-  return [NSString stringWithFormat:@"<%@: %p, TVAuthorizationEndpoint: %@ tokenEndpoint: %@>",
+  return [NSString stringWithFormat:@"<%@: %p, deviceAuthorizationEndpoint: %@ tokenEndpoint: %@>",
                                     NSStringFromClass([self class]),
                                     (void *)self,
-                                    _TVAuthorizationEndpoint,
+                                    _deviceAuthorizationEndpoint,
                                     self.tokenEndpoint];
 }
 
