@@ -32,6 +32,7 @@ static NSString *const kUserinfoEndpointKey = @"userinfo_endpoint";
 static NSString *const kJWKSURLKey = @"jwks_uri";
 static NSString *const kRegistrationEndpointKey = @"registration_endpoint";
 static NSString *const kEndSessionEndpointKey = @"end_session_endpoint";
+static NSString *const kRevocationEndpointKey = @"revocation_endpoint";
 static NSString *const kScopesSupportedKey = @"scopes_supported";
 static NSString *const kResponseTypesSupportedKey = @"response_types_supported";
 static NSString *const kResponseModesSupportedKey = @"response_modes_supported";
@@ -240,6 +241,10 @@ static NSString *const kOPTosURIKey = @"op_tos_uri";
 
 - (nullable NSURL *)endSessionEndpoint {
     return [NSURL URLWithString:_discoveryDictionary[kEndSessionEndpointKey]];
+}
+
+- (nullable NSURL *)revocationEndpoint {
+    return [NSURL URLWithString:_discoveryDictionary[kRevocationEndpointKey]];
 }
 
 - (nullable NSArray<NSString *> *)scopesSupported {

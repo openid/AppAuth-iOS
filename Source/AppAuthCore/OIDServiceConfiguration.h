@@ -54,6 +54,10 @@ typedef void (^OIDServiceConfigurationCreated)
  */
 @property(nonatomic, readonly, nullable) NSURL *endSessionEndpoint;
 
+/*! @brief The token revocation endpoint URI.
+ */
+@property(nonatomic, readonly, nullable) NSURL *revocationEndpoint;
+
 /*! @brief The discovery document.
  */
 @property(nonatomic, readonly, nullable) OIDServiceDiscovery *discoveryDocument;
@@ -107,6 +111,20 @@ typedef void (^OIDServiceConfigurationCreated)
                                        issuer:(nullable NSURL *)issuer
                          registrationEndpoint:(nullable NSURL *)registrationEndpoint
                            endSessionEndpoint:(nullable NSURL *)endSessionEndpoint;
+
+/*! @param authorizationEndpoint The authorization endpoint URI.
+    @param tokenEndpoint The token exchange and refresh endpoint URI.
+    @param issuer The OpenID Connect issuer.
+    @param registrationEndpoint The dynamic client registration endpoint URI.
+    @param endSessionEndpoint The end session endpoint (logout) URI.
+    @param revocationEndpoint The token revocation endpoint URI.
+ */
+- (instancetype)initWithAuthorizationEndpoint:(NSURL *)authorizationEndpoint
+                                tokenEndpoint:(NSURL *)tokenEndpoint
+                                       issuer:(nullable NSURL *)issuer
+                         registrationEndpoint:(nullable NSURL *)registrationEndpoint
+                           endSessionEndpoint:(nullable NSURL *)endSessionEndpoint
+                           revocationEndpoint:(nullable NSURL *)revocationEndpoint;
 
 /*! @param discoveryDocument The discovery document from which to extract the required OAuth
         configuration.
