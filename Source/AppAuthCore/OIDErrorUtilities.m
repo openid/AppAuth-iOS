@@ -152,6 +152,7 @@
       @"invalid_client": @(OIDErrorCodeOAuthInvalidClient),
       @"invalid_grant": @(OIDErrorCodeOAuthInvalidGrant),
       @"unsupported_grant_type": @(OIDErrorCodeOAuthUnsupportedGrantType),
+      @"unsupported_token_type": @(OIDErrorCodeOAuthUnsupportedTokenType),
       };
   NSNumber *code = errorCodes[errorCode];
   if (code) {
