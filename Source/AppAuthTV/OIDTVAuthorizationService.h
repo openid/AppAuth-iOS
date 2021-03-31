@@ -21,6 +21,8 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @class OIDAuthState;
+@class OIDRevokeTokenRequest;
+@class OIDRevokeTokenResponse;
 @class OIDTVAuthorizationRequest;
 @class OIDTVAuthorizationResponse;
 @class OIDTVServiceConfiguration;
@@ -56,6 +58,15 @@ typedef void (^OIDTVAuthorizationCompletion)
         concluded.
  */
 typedef void (^OIDTVAuthorizationCancelBlock)(void);
+
+/*! @brief Represents the type of block used as a callback for token revocation methods of
+        @c OIDTVAuthorizationService.
+    @param revokeTokenResponse The revoke token response, if available.
+    @param error The error if an error occurred.
+ */
+typedef void (^OIDRevokeTokenCallback)(OIDRevokeTokenResponse *_Nullable revokeTokenResponse,
+                                 NSError *_Nullable error);
+
 
 /*! @brief Performs authorization flows designed for TVs and other limited input devices.
  */
@@ -106,6 +117,16 @@ typedef void (^OIDTVAuthorizationCancelBlock)(void);
                                      initialization:(OIDTVAuthorizationInitialization)initialization
                                          completion:(OIDTVAuthorizationCompletion)completion;
 
+/*! @brief Performs a token revocation request.
+    @param request The revoke token request.
+    @param callback Block that is called on the success or failure of the token revocation.
+        The authorization server responds with HTTP status code 200 if the
+        token has been revoked successfully or if the client submitted an
+        invalid token.
+    @see https://tools.ietf.org/html/rfc7009
+ */
++ (void)performRevokeTokenRequest:(OIDRevokeTokenRequest *)request
+                         callback:(OIDRevokeTokenCallback)callback;
 @end
 
 NS_ASSUME_NONNULL_END

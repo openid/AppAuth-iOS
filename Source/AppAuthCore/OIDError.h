@@ -225,6 +225,11 @@ typedef NS_ENUM(NSInteger, OIDErrorCodeOAuth) {
       @see https://openid.net/specs/openid-connect-registration-1_0.html#RegistrationError
    */
   OIDErrorCodeOAuthInvalidClientMetadata = -13,
+  
+  /*! @remarks unsupported_token_type
+      @see https://tools.ietf.org/html/rfc7009#section-2.2.1
+   */
+  OIDErrorCodeOAuthUnsupportedTokenType = -14,
 
   /*! @brief An authorization error occurring on the client rather than the server. For example,
         due to a state mismatch or misconfiguration. Should be treated as an unrecoverable

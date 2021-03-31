@@ -42,6 +42,10 @@ static NSString *const kRegistrationEndpointKey = @"registrationEndpoint";
  */
 static NSString *const kEndSessionEndpointKey = @"endSessionEndpoint";
 
+/*! @brief The key for the @c revocationEndpoint property.
+ */
+static NSString *const kRevocationEndpointKey = @"revocationEndpoint";
+
 /*! @brief The key for the @c discoveryDocument property.
  */
 static NSString *const kDiscoveryDocumentKey = @"discoveryDocument";
@@ -55,6 +59,7 @@ NS_ASSUME_NONNULL_BEGIN
                                        issuer:(nullable NSURL *)issuer
                          registrationEndpoint:(nullable NSURL *)registrationEndpoint
                            endSessionEndpoint:(nullable NSURL *)endSessionEndpoint
+                           revocationEndpoint:(nullable NSURL *)revocationEndpoint
                             discoveryDocument:(nullable OIDServiceDiscovery *)discoveryDocument
                             NS_DESIGNATED_INITIALIZER;
 
@@ -72,7 +77,8 @@ NS_ASSUME_NONNULL_BEGIN
         tokenEndpoint:(NSURL *)tokenEndpoint
                issuer:(nullable NSURL *)issuer
  registrationEndpoint:(nullable NSURL *)registrationEndpoint
-   endSessionEndpoint:(nullable OIDServiceDiscovery *)endSessionEndpoint
+   endSessionEndpoint:(nullable NSURL *)endSessionEndpoint
+   revocationEndpoint:(nullable NSURL *)revocationEndpoint
     discoveryDocument:(nullable OIDServiceDiscovery *)discoveryDocument {
 
   self = [super init];
@@ -82,6 +88,7 @@ NS_ASSUME_NONNULL_BEGIN
     _issuer = [issuer copy];
     _registrationEndpoint = [registrationEndpoint copy];
     _endSessionEndpoint = [endSessionEndpoint copy];
+    _revocationEndpoint = [revocationEndpoint copy];
     _discoveryDocument = [discoveryDocument copy];
   }
   return self;
@@ -94,6 +101,7 @@ NS_ASSUME_NONNULL_BEGIN
                                       issuer:nil
                         registrationEndpoint:nil
                           endSessionEndpoint:nil
+                          revocationEndpoint:nil
                            discoveryDocument:nil];
 }
 
@@ -105,6 +113,7 @@ NS_ASSUME_NONNULL_BEGIN
                                       issuer:nil
                         registrationEndpoint:registrationEndpoint
                           endSessionEndpoint:nil
+                          revocationEndpoint:nil
                            discoveryDocument:nil];
 }
 
@@ -116,6 +125,7 @@ NS_ASSUME_NONNULL_BEGIN
                                       issuer:issuer
                         registrationEndpoint:nil
                           endSessionEndpoint:nil
+                          revocationEndpoint:nil
                            discoveryDocument:nil];
 }
 
@@ -128,6 +138,7 @@ NS_ASSUME_NONNULL_BEGIN
                                       issuer:issuer
                         registrationEndpoint:registrationEndpoint
                           endSessionEndpoint:nil
+                          revocationEndpoint:nil
                            discoveryDocument:nil];
 }
 
@@ -141,6 +152,22 @@ NS_ASSUME_NONNULL_BEGIN
                                       issuer:issuer
                         registrationEndpoint:registrationEndpoint
                           endSessionEndpoint:endSessionEndpoint
+                          revocationEndpoint:nil
+                           discoveryDocument:nil];
+}
+
+- (instancetype)initWithAuthorizationEndpoint:(NSURL *)authorizationEndpoint
+                                tokenEndpoint:(NSURL *)tokenEndpoint
+                                       issuer:(nullable NSURL *)issuer
+                         registrationEndpoint:(nullable NSURL *)registrationEndpoint
+                           endSessionEndpoint:(nullable NSURL *)endSessionEndpoint
+                           revocationEndpoint:(nullable NSURL *)revocationEndpoint {
+  return [self initWithAuthorizationEndpoint:authorizationEndpoint
+                               tokenEndpoint:tokenEndpoint
+                                      issuer:issuer
+                        registrationEndpoint:registrationEndpoint
+                          endSessionEndpoint:endSessionEndpoint
+                          revocationEndpoint:revocationEndpoint
                            discoveryDocument:nil];
 }
 
@@ -150,6 +177,7 @@ NS_ASSUME_NONNULL_BEGIN
                                       issuer:discoveryDocument.issuer
                         registrationEndpoint:discoveryDocument.registrationEndpoint
                           endSessionEndpoint:discoveryDocument.endSessionEndpoint
+                          revocationEndpoint:discoveryDocument.revocationEndpoint
                            discoveryDocument:discoveryDocument];
 }
 
@@ -180,6 +208,8 @@ NS_ASSUME_NONNULL_BEGIN
                                                        forKey:kRegistrationEndpointKey];
   NSURL *endSessionEndpoint = [aDecoder decodeObjectOfClass:[NSURL class]
                                                        forKey:kEndSessionEndpointKey];
+  NSURL *revocationEndpoint = [aDecoder decodeObjectOfClass:[NSURL class]
+                                                       forKey:kRevocationEndpointKey];
   // We don't accept nil authorizationEndpoints or tokenEndpoints.
   if (!authorizationEndpoint || !tokenEndpoint) {
     return nil;
@@ -193,6 +223,7 @@ NS_ASSUME_NONNULL_BEGIN
                                       issuer:issuer
                         registrationEndpoint:registrationEndpoint
                           endSessionEndpoint:endSessionEndpoint
+                          revocationEndpoint:revocationEndpoint
                            discoveryDocument:discoveryDocument];
 }
 
@@ -203,6 +234,7 @@ NS_ASSUME_NONNULL_BEGIN
   [aCoder encodeObject:_registrationEndpoint forKey:kRegistrationEndpointKey];
   [aCoder encodeObject:_discoveryDocument forKey:kDiscoveryDocumentKey];
   [aCoder encodeObject:_endSessionEndpoint forKey:kEndSessionEndpointKey];
+  [aCoder encodeObject:_revocationEndpoint forKey:kRevocationEndpointKey];
 }
 
 #pragma mark - description
@@ -210,11 +242,13 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSString *)description {
   return [NSString stringWithFormat:
       @"OIDServiceConfiguration authorizationEndpoint: %@, tokenEndpoint: %@, "
-          "registrationEndpoint: %@, endSessionEndpoint: %@, discoveryDocument: [%@]",
+          "registrationEndpoint: %@, endSessionEndpoint: %@, revocationEndpoint: %@, "
+          "discoveryDocument: [%@]",
       _authorizationEndpoint,
       _tokenEndpoint,
       _registrationEndpoint,
       _endSessionEndpoint,
+      _revocationEndpoint,
       _discoveryDocument];
 }
 

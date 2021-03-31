@@ -22,6 +22,8 @@
 #import "OIDAuthState.h"
 #import "OIDDefines.h"
 #import "OIDErrorUtilities.h"
+#import "OIDRevokeTokenRequest.h"
+#import "OIDRevokeTokenResponse.h"
 #import "OIDServiceDiscovery.h"
 #import "OIDURLQueryComponent.h"
 #import "OIDURLSessionProvider.h"
@@ -281,5 +283,93 @@ static NSString *const kOpenIDConfigurationWellKnownPath = @".well-known/openid-
 
   return cancelBlock;
 }
+
++ (void)performRevokeTokenRequest:(OIDRevokeTokenRequest *)request
+                         callback:(OIDRevokeTokenCallback)callback {
+
+  NSURLRequest *URLRequest = [request URLRequest];
+  
+  AppAuthRequestTrace(@"Revoke Token Request: %@\nHeaders:%@\nHTTPBody: %@",
+                      URLRequest.URL,
+                      URLRequest.allHTTPHeaderFields,
+                      [[NSString alloc] initWithData:URLRequest.HTTPBody
+                                            encoding:NSUTF8StringEncoding]);
+
+  NSURLSession *session = [OIDURLSessionProvider session];
+  [[session dataTaskWithRequest:URLRequest
+              completionHandler:^(NSData *_Nullable data,
+                                  NSURLResponse *_Nullable response,
+                                  NSError *_Nullable error) {
+    if (error) {
+      // A network error or server error occurred.
+      NSString *errorDescription =
+          [NSString stringWithFormat:@"Connection error making revoke token request to '%@': %@.",
+                                     URLRequest.URL,
+                                     error.localizedDescription];
+      NSError *returnedError =
+          [OIDErrorUtilities errorWithCode:OIDErrorCodeNetworkError
+                           underlyingError:error
+                               description:errorDescription];
+      dispatch_async(dispatch_get_main_queue(), ^{
+        callback(nil, returnedError);
+      });
+      return;
+    }
+
+    NSHTTPURLResponse *HTTPURLResponse = (NSHTTPURLResponse *)response;
+    NSInteger statusCode = HTTPURLResponse.statusCode;
+    AppAuthRequestTrace(@"Revoke Token Response: HTTP Status %d\nHTTPBody: %@",
+                        (int)statusCode,
+                        [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
+    if (statusCode != 200) {
+      // A server error occurred.
+      NSError *serverError =
+          [OIDErrorUtilities HTTPErrorWithHTTPResponse:HTTPURLResponse data:data];
+
+      // HTTP 4xx may indicate an RFC6749 Section 5.2 error response, attempts to parse as such.
+      if (statusCode >= 400 && statusCode < 500) {
+        NSError *jsonDeserializationError;
+        NSDictionary<NSString *, NSObject<NSCopying> *> *json =
+            [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonDeserializationError];
+
+        // If the HTTP 4xx response parses as JSON and has an 'error' key, it's an OAuth error.
+        // These errors are special as they indicate a problem with the authorization grant.
+        if (json[OIDOAuthErrorFieldError]) {
+          NSError *oauthError =
+            [OIDErrorUtilities OAuthErrorWithDomain:OIDOAuthTokenErrorDomain
+                                      OAuthResponse:json
+                                    underlyingError:serverError];
+          dispatch_async(dispatch_get_main_queue(), ^{
+            callback(nil, oauthError);
+          });
+          return;
+        }
+      }
+
+      // Status code indicates this is an error, but not an RFC6749 Section 5.2 error.
+      NSString *errorDescription =
+          [NSString stringWithFormat:@"Non-200 HTTP response (%d) making token request to '%@'.",
+                                     (int)statusCode,
+                                      URLRequest.URL];
+      NSError *returnedError =
+          [OIDErrorUtilities errorWithCode:OIDErrorCodeServerError
+                           underlyingError:serverError
+                               description:errorDescription];
+      dispatch_async(dispatch_get_main_queue(), ^{
+        callback(nil, returnedError);
+      });
+      return;
+    }
+
+    OIDRevokeTokenResponse *revokeTokenResponse =
+        [[OIDRevokeTokenResponse alloc] initWithRequest:request];
+
+    // Success
+    dispatch_async(dispatch_get_main_queue(), ^{
+      callback(revokeTokenResponse, nil);
+    });
+  }] resume];
+}
+
 
 @end
