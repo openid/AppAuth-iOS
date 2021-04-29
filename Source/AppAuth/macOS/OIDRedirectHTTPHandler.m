@@ -27,29 +27,84 @@
 #import "OIDExternalUserAgentSession.h"
 #import "OIDLoopbackHTTPServer.h"
 
-/*! @brief Page that is returned following a completed authorization. Show your own page instead by
-        supplying a URL in @c initWithSuccessURL that the user will be redirected to.
+/*! @brief Template for page that is returned following a completed authorization or authorization error.
+        Show your own success page instead by supplying a URL in @c initWithSuccessURL that
+        the user will be redirected to.
  */
-static NSString *const kHTMLAuthorizationComplete =
-    @"<html><body>Authorization complete.<br> Return to the app.</body></html>";
+static NSString *const kHTMLPageTemplate = @""
+    "<!DOCTYPE html>"
+    "<html lang=\"en\" dir=\"ltr\" xmlns=\"http://www.w3.org/1999/xhtml\">"
+    "<head>"
+    "    <meta charset=\"utf-8\" />"
+    "    <title>%@</title>"
+    "    <style>"
+    "body {"
+    "    font-family: -apple-system, BlinkMacSystemFont, \"Avenir Next\", Avenir,"
+    "                 \"Nimbus Sans L\", Roboto, Noto, \"Segoe UI\", Arial,"
+    "                 Helvetica, \"Helvetica Neue\", sans-serif;"
+    "    margin: 0;"
+    "    height: 100vh;"
+    "    display: flex;"
+    "    align-items: center;"
+    "    justify-content: center;"
+    "    background: #ccc;"
+    "    color: #888;"
+    "}"
+    "main {"
+    "    padding: 1em 2em;"
+    "    text-align: center;"
+    "    border: 1pt solid #666;"
+    "    box-shadow: rgba(0, 0, 0, 0.2) 0px 1px 4px;"
+    "    border-color: #aaa;"
+    "    background: #ddd;"
+    "}"
+    "    </style>"
+    "</head>"
+    "<body class=\"finished\">"
+    "    <main>"
+    "        <h2>%@</h2>"
+    "        <p>%@</p>"
+    "    </main>"
+    "</body>"
+    "</html>";
 
-/*! @brief Error warning that the @c currentAuthorizationFlow is not set on this object (likely a
+/*! @brief Title, heading and message for HTML success page that is shown following a completed authorization.
+        Show your own page instead by supplying a URL in @c initWithSuccessURL that
+        the user will be redirected to.
+ */
+static NSString *const kStringsAuthorizationComplete[] =
+    {
+        @"Authorization Successful",
+        @"The client authorized succesfully",
+        @"You can now close this tab."
+    };
+
+/*! @brief Title, heading and message for HTML error page warning that the
+        @c currentAuthorizationFlow is not set on this object (likely a
         developer error, unless the user stumbled upon the loopback server before the authorization
         had started completely).
-    @description An object conforming to @c OIDExternalUserAgentSession is returned when the
+        @description An object conforming to @c OIDExternalUserAgentSession is returned when the
         authorization is presented with
         @c OIDAuthorizationService::presentAuthorizationRequest:callback:. It should be set to
         @c currentAuthorization when using a loopback redirect.
  */
-static NSString *const kHTMLErrorMissingCurrentAuthorizationFlow =
-    @"<html><body>AppAuth Error: No <code>currentAuthorizationFlow</code> is set on the "
-     "<code>OIDRedirectHTTPHandler</code>. Cannot process redirect.</body></html>";
+static NSString *const kStringsErrorMissingCurrentAuthorizationFlow[] =
+    {
+        @"Authorization Error",
+        @"Authorization Error",
+        @"AppAuth Error: No <code>currentAuthorizationFlow</code> is set on the "
+         "<code>OIDRedirectHTTPHandler</code>. Cannot process redirect."
+    };
 
-/*! @brief Error warning that the URL does not represent a valid redirect. This should be rare, may
-        happen if the user stumbles upon the loopback server randomly.
+/*! @brief Title, heading and message for HTML error page warning that the URL does not represent a
+        valid redirect. This should be rare, may happen if the user stumbles upon the loopback server randomly.
  */
-static NSString *const kHTMLErrorRedirectNotValid =
-    @"<html><body>AppAuth Error: Not a valid redirect.</body></html>";
+static NSString *const kStringsErrorRedirectNotValid[] =
+    {
+        @"Authorization Error",
+        @"Authorization Error",
+        @"AppAuth Error: Not a valid redirect."
+    };
 
 @implementation OIDRedirectHTTPHandler {
   HTTPServer *_httpServ;
@@ -134,19 +189,32 @@ static NSString *const kHTMLErrorRedirectNotValid =
     [self stopHTTPListener];
   }
 
-  // Responds to browser request.
-  NSString *bodyText = kHTMLAuthorizationComplete;
-  NSInteger httpResponseCode = (_successURL) ? 302 : 200;
-  // Returns an error page if a URL other than the expected redirect is requested.
-  if (!handled) {
-    if (_currentAuthorizationFlow) {
-      bodyText = kHTMLErrorRedirectNotValid;
-      httpResponseCode = 404;
-    } else {
-      bodyText = kHTMLErrorMissingCurrentAuthorizationFlow;
-      httpResponseCode = 400;
-    }
+  NSString *bodyText = @"";
+  NSInteger httpResponseCode = 0;
+
+  if (handled) {
+    bodyText = [NSString stringWithFormat:kHTMLPageTemplate,
+                kStringsAuthorizationComplete[0],
+                kStringsAuthorizationComplete[1],
+                kStringsAuthorizationComplete[2]];
+    httpResponseCode = (_successURL) ? 302 : 200;
+  } else if (_currentAuthorizationFlow) {
+    bodyText = [NSString stringWithFormat:kHTMLPageTemplate,
+                kStringsErrorMissingCurrentAuthorizationFlow[0],
+                kStringsErrorMissingCurrentAuthorizationFlow[1],
+                kStringsErrorMissingCurrentAuthorizationFlow[2]];
+    httpResponseCode = 404;
+  } else {
+    bodyText = [NSString stringWithFormat:kHTMLPageTemplate,
+                kStringsErrorRedirectNotValid[0],
+                kStringsErrorRedirectNotValid[1],
+                kStringsErrorRedirectNotValid[2]];
+    httpResponseCode = 400;
   }
+
+  NSAssert([bodyText length] > 0, @"bodyText is empty");
+  NSAssert(httpResponseCode > 0, @"httpResponseCode is %d, should be greater than 0", httpResponseCode);
+
   NSData *data = [bodyText dataUsingEncoding:NSUTF8StringEncoding];
 
   CFHTTPMessageRef response = CFHTTPMessageCreateResponse(kCFAllocatorDefault,
