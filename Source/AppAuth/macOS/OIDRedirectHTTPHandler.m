@@ -213,7 +213,7 @@ static NSString *const kStringsErrorRedirectNotValid[] =
   }
 
   NSAssert([bodyText length] > 0, @"bodyText is empty");
-  NSAssert(httpResponseCode > 0, @"httpResponseCode is %d, should be greater than 0", httpResponseCode);
+  NSAssert(httpResponseCode > 0, @"httpResponseCode is %ld, should be greater than 0", (long) httpResponseCode);
 
   NSData *data = [bodyText dataUsingEncoding:NSUTF8StringEncoding];
 
