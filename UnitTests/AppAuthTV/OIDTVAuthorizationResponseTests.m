@@ -281,5 +281,3 @@ static int const kTestInterval = 5;
 }
 
 @end
-
-#pragma GCC diagnostic pop
