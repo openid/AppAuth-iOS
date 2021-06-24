@@ -158,7 +158,6 @@
 		2DA8D82624C6190400FDFB34 /* OIDTVAuthorizationResponseTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DA8D82424C6190300FDFB34 /* OIDTVAuthorizationResponseTests.m */; };
 		2DEB065624CA1D9300DF47E7 /* OIDTVTokenRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = 2DEB065424CA1D9300DF47E7 /* OIDTVTokenRequest.h */; };
 		2DEB065724CA1D9300DF47E7 /* OIDTVTokenRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DEB065524CA1D9300DF47E7 /* OIDTVTokenRequest.m */; };
-		2DEB066124CF5CE000DF47E7 /* OIDTVTokenRequestTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DEB066024CF5CE000DF47E7 /* OIDTVTokenRequestTests.m */; };
 		2DEB066224CF5CFB00DF47E7 /* OIDTVTokenRequestTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DEB066024CF5CE000DF47E7 /* OIDTVTokenRequestTests.m */; };
 		340DAE571D5821A100EC285B /* OIDAuthorizationService+Mac.m in Sources */ = {isa = PBXBuildFile; fileRef = 340DAE261D581FE700EC285B /* OIDAuthorizationService+Mac.m */; };
 		340DAE581D5821A100EC285B /* OIDExternalUserAgentMac.m in Sources */ = {isa = PBXBuildFile; fileRef = 340DAE281D581FE700EC285B /* OIDExternalUserAgentMac.m */; };
@@ -2353,7 +2352,6 @@
 				340DAECB1D582DE100EC285B /* OIDAuthorizationService+IOS.m in Sources */,
 				341741E31C5D8243000EF209 /* OIDResponseTypes.m in Sources */,
 				341741E41C5D8243000EF209 /* OIDScopes.m in Sources */,
-				2DEB066124CF5CE000DF47E7 /* OIDTVTokenRequestTests.m in Sources */,
 				341741E71C5D8243000EF209 /* OIDServiceDiscovery.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
