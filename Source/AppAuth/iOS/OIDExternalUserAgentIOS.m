@@ -163,10 +163,17 @@ NS_ASSUME_NONNULL_BEGIN
       openedUserAgent = YES;
     }
   }
-  // iOS 8 and earlier, use mobile Safari
-  if (!openedUserAgent){
-    openedUserAgent = [[UIApplication sharedApplication] openURL:requestURL];
-  }
+// Xcode 13 beta 3 introduces a breaking change for APIs marked unavailable for iOS extensions
+// https://developer.apple.com/documentation/xcode-release-notes/xcode-13-beta-release-notes
+// The solution is to annotate apis that depend on APIs marked unavailable (sharedApplication, openURL).
+// An easier solution is to remove those APIs in the first place.
+// less than iOS 15, on Xcode 13
+#if __IPHONE_OS_VERSION_MAX_ALLOWED < 150000
+    // iOS 8 and earlier, use mobile Safari
+    if (!openedUserAgent){
+      openedUserAgent = [[UIApplication sharedApplication] openURL:requestURL];
+    }
+#endif
 
   if (!openedUserAgent) {
     [self cleanUp];
