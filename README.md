@@ -589,6 +589,10 @@ self.authState?.performAction() { (accessToken, idToken, error) in
 }
 ```
 
+This also updates the AuthState object with current access, id, and refresh tokens. 
+If you are storing your AuthState in persistent storage, you should write the updated 
+copy in the callback to this method.
+
 ### Custom User-Agents (iOS and macOS)
 
 Each OAuth flow involves presenting an external user-agent to the user, that
