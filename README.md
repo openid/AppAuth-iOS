@@ -711,6 +711,7 @@ appDelegate.currentAuthorizationFlow = OIDAuthState.authState(byPresenting: requ
         self.setAuthState(nil)
     }
 }
+.....
 ```
 
 That's it! With those two changes (which you can try on the included sample),
