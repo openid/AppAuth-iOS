@@ -326,7 +326,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /*! @internal
     @brief Unavailable. Please use @c initWithDictionary:error:, @c initWithJSON:error, or the
-        @c serviceDiscoveryWithURL:callback: factory method.
+        @c discoverServiceConfigurationForDiscoveryURL:callback: from @c OIDAuthorizationService.
  */
 - (nonnull instancetype)init NS_UNAVAILABLE;
 
