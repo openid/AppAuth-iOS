@@ -472,13 +472,17 @@ static const NSUInteger kExpiryTimeTolerance = 60;
     (nullable NSDictionary<NSString *, NSString *> *)additionalParameters
                        dispatchQueue:(dispatch_queue_t)dispatchQueue {
 
-  if ([self isTokenFresh]) {
-    // access token is valid within tolerance levels, perform action
-    dispatch_async(dispatchQueue, ^{
-      action(self.accessToken, self.idToken, nil);
-    });
-    return;
-  }
+   NSString * accessToken = self.accessToken;
+   NSString * idToken = self.idToken;
+   void (^block)(void) = ^(void){
+        action(accessToken, idToken, nil);
+     };
+    
+    if ([self isTokenFresh]) {
+      // access token is valid within tolerance levels, perform action
+      dispatch_async(dispatchQueue, block);
+      return;
+    }
 
   if (!_refreshToken) {
     // no refresh token available and token has expired
