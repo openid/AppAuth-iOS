@@ -27,12 +27,33 @@
 #import "OIDErrorUtilities.h"
 #import "OIDExternalUserAgentSession.h"
 #import "OIDExternalUserAgentRequest.h"
+#import <AuthenticationServices/AuthenticationServices.h>
+
 
 NS_ASSUME_NONNULL_BEGIN
+
+#if __MAC_OS_X_VERSION_MAX_ALLOWED >= 101500
+@interface OIDExternalUserAgentMac ()<ASWebAuthenticationPresentationContextProviding>
+@end
+#endif // __MAC_OS_X_VERSION_MAX_ALLOWED >= 101500
 
 @implementation OIDExternalUserAgentMac {
   BOOL _externalUserAgentFlowInProgress;
   __weak id<OIDExternalUserAgentSession> _session;
+
+  NSWindow *_presentingWindow;
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wpartial-availability"
+  ASWebAuthenticationSession *_webAuthenticationSession;
+#pragma clang diagnostic pop
+}
+
+- (instancetype)initWithPresentingWindow: (NSWindow *)presentingWindow {
+  self = [super init];
+  if (self) {
+    _presentingWindow = presentingWindow;
+  }
+  return self;
 }
 
 - (BOOL)presentExternalUserAgentRequest:(id<OIDExternalUserAgentRequest>)request
@@ -45,6 +66,38 @@ NS_ASSUME_NONNULL_BEGIN
   _externalUserAgentFlowInProgress = YES;
   _session = session;
   NSURL *requestURL = [request externalUserAgentRequestURL];
+
+  if (@available(macOS 10.15, *)) {
+    if (_presentingWindow) {
+      __weak OIDExternalUserAgentMac *weakSelf = self;
+      NSString *redirectScheme = request.redirectScheme;
+      ASWebAuthenticationSession *authenticationSession =
+        [[ASWebAuthenticationSession alloc] initWithURL:requestURL
+                                      callbackURLScheme:redirectScheme
+                                      completionHandler:^(NSURL * _Nullable callbackURL,
+                                                          NSError * _Nullable error) {
+        __strong OIDExternalUserAgentMac *strongSelf = weakSelf;
+        if (!strongSelf) {
+            return;
+        }
+        strongSelf->_webAuthenticationSession = nil;
+        if (callbackURL) {
+          [strongSelf->_session resumeExternalUserAgentFlowWithURL:callbackURL];
+        } else {
+          NSError *safariError =
+              [OIDErrorUtilities errorWithCode:OIDErrorCodeUserCanceledAuthorizationFlow
+                               underlyingError:error
+                                   description:nil];
+          [strongSelf->_session failExternalUserAgentFlowWithError:safariError];
+        }
+      }];
+
+      authenticationSession.presentationContextProvider = self;
+
+      _webAuthenticationSession = authenticationSession;
+      return [authenticationSession start];
+    }
+  }
 
   BOOL openedBrowser = [[NSWorkspace sharedWorkspace] openURL:requestURL];
   if (!openedBrowser) {
@@ -63,16 +116,37 @@ NS_ASSUME_NONNULL_BEGIN
     if (completion) completion();
     return;
   }
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wpartial-availability"
+  ASWebAuthenticationSession *webAuthenticationSession = _webAuthenticationSession;
+#pragma clang diagnostic pop
+
   // Ideally the browser tab with the URL should be closed here, but the AppAuth library does not
   // control the browser.
   [self cleanUp];
-  if (completion) completion();
+  if (webAuthenticationSession) {
+    // dismiss the ASWebAuthenticationSession
+    [webAuthenticationSession cancel];
+    if (completion) completion();
+  } else if (completion) {
+    completion();
+  }
 }
 
 - (void)cleanUp {
   _session = nil;
   _externalUserAgentFlowInProgress = NO;
+  _webAuthenticationSession = nil;
 }
+
+#if __MAC_OS_X_VERSION_MAX_ALLOWED >= 101500
+#pragma mark - ASWebAuthenticationPresentationContextProviding
+
+-(ASPresentationAnchor)presentationAnchorForWebAuthenticationSession:(ASWebAuthenticationSession *)session API_AVAILABLE(macosx(10.15)){
+  return _presentingWindow;
+}
+#endif // __MAC_OS_X_VERSION_MAX_ALLOWED >= 101500
 
 @end
 

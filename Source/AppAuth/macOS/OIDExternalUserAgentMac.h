@@ -20,6 +20,7 @@
 
 #if TARGET_OS_OSX
 
+#import <AppKit/AppKit.h>
 #import "OIDExternalUserAgent.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -28,6 +29,11 @@ NS_ASSUME_NONNULL_BEGIN
         present an external user-agent request.
  */
 @interface OIDExternalUserAgentMac : NSObject <OIDExternalUserAgent>
+
+/*! @brief The designated initializer.
+    @param presentingWindow The window from which to present the ASWebAuthenticationSession.
+ */
+- (instancetype)initWithPresentingWindow: (NSWindow *)presentingWindow API_AVAILABLE(macosx(10.15));
 
 @end
 
