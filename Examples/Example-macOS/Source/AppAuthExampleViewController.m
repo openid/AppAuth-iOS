@@ -212,19 +212,22 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
                                                   responseType:OIDResponseTypeCode
                                           additionalParameters:nil];
     // performs authentication request
-    self.appDelegate.currentAuthorizationFlow =
+    if (@available(macOS 10.15, *)) {
+      self.appDelegate.currentAuthorizationFlow =
         [OIDAuthState authStateByPresentingAuthorizationRequest:request
-                            callback:^(OIDAuthState *_Nullable authState,
-                                       NSError *_Nullable error) {
-      if (authState) {
-        [self setAuthState:authState];
-        [self logMessage:@"Got authorization tokens. Access token: %@",
-                         authState.lastTokenResponse.accessToken];
-      } else {
-        [self logMessage:@"Authorization error: %@", [error localizedDescription]];
-        [self setAuthState:nil];
-      }
-    }];
+                                               presentingWindow:self.view.window
+                                                       callback:^(OIDAuthState *_Nullable authState,
+                                                                  NSError *_Nullable error) {
+          [self processAuthState:authState error:error];
+      }];
+    } else {
+      self.appDelegate.currentAuthorizationFlow =
+      [OIDAuthState authStateByPresentingAuthorizationRequest:request
+                                                     callback:^(OIDAuthState *_Nullable authState,
+                                                                NSError *_Nullable error) {
+        [self processAuthState:authState error:error];
+      }];
+    }
   }];
 }
 
@@ -280,24 +283,21 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
                                           additionalParameters:nil];
     // performs authentication request
     __weak __typeof(self) weakSelf = self;
-    _redirectHTTPHandler.currentAuthorizationFlow =
-        [OIDAuthState authStateByPresentingAuthorizationRequest:request
-                            callback:^(OIDAuthState *_Nullable authState,
-                                       NSError *_Nullable error) {
-      // Brings this app to the foreground.
-      [[NSRunningApplication currentApplication]
-          activateWithOptions:(NSApplicationActivateAllWindows |
-                               NSApplicationActivateIgnoringOtherApps)];
 
-      // Processes the authorization response.
-      if (authState) {
-        [weakSelf logMessage:@"Got authorization tokens. Access token: %@",
-                         authState.lastTokenResponse.accessToken];
-      } else {
-        [weakSelf logMessage:@"Authorization error: %@", error.localizedDescription];
-      }
-      [weakSelf setAuthState:authState];
-    }];
+    if (@available(macOS 10.15, *)) {
+      _redirectHTTPHandler.currentAuthorizationFlow =
+        [OIDAuthState authStateByPresentingAuthorizationRequest:request
+                                               presentingWindow:self.view.window
+                                                       callback:^(OIDAuthState *_Nullable authState, NSError *_Nullable error) {
+        [self processHTTPRedirectAuthState:authState error:error weakSelfReference:weakSelf];
+      }];
+    } else {
+      _redirectHTTPHandler.currentAuthorizationFlow =
+        [OIDAuthState authStateByPresentingAuthorizationRequest:request
+                                                       callback:^(OIDAuthState *_Nullable authState, NSError *_Nullable error) {
+          [self processHTTPRedirectAuthState:authState error:error weakSelfReference:weakSelf];
+      }];
+    }
   }];
 }
 
@@ -488,7 +488,39 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
   NSString *dateString = [dateFormatter stringFromDate:[NSDate date]];
   NSString *logLine = [NSString stringWithFormat:@"\n%@: %@", dateString, log];
   NSAttributedString* logLineAttr = [[NSAttributedString alloc] initWithString:logLine];
-  [[_logTextView textStorage] appendAttributedString:logLineAttr];
+  dispatch_async(dispatch_get_main_queue(), ^{
+    [[_logTextView textStorage] appendAttributedString:logLineAttr];
+  });
+}
+
+- (void)processAuthState:(OIDAuthState *)authState
+                   error:(NSError *)error {
+  if (authState) {
+    [self setAuthState:authState];
+    [self logMessage:@"Got authorization tokens. Access token: %@",
+                     authState.lastTokenResponse.accessToken];
+  } else {
+    [self logMessage:@"Authorization error: %@", [error localizedDescription]];
+    [self setAuthState:nil];
+  }
+}
+
+- (void)processHTTPRedirectAuthState:(OIDAuthState *)authState
+                               error:(NSError *)error
+                   weakSelfReference:(AppAuthExampleViewController *)weakSelf {
+  // Brings this app to the foreground.
+  [[NSRunningApplication currentApplication]
+      activateWithOptions:(NSApplicationActivateAllWindows |
+                           NSApplicationActivateIgnoringOtherApps)];
+
+  // Processes the authorization response.
+  if (authState) {
+    [weakSelf logMessage:@"Got authorization tokens. Access token: %@",
+                     authState.lastTokenResponse.accessToken];
+  } else {
+    [weakSelf logMessage:@"Authorization error: %@", error.localizedDescription];
+  }
+  [weakSelf setAuthState:authState];
 }
 
 @end

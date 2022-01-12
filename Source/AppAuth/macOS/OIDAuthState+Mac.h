@@ -20,6 +20,7 @@
 
 #if TARGET_OS_OSX
 
+#import <AppKit/AppKit.h>
 #import "OIDAuthState.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -35,11 +36,18 @@ NS_ASSUME_NONNULL_BEGIN
         and update the OIDAuthState with the results (@c
         OIDAuthState.updateWithTokenResponse:error:).
     @param authorizationRequest The authorization request to present.
+    @param presentingWindow The window to present the authentication flow.
     @param callback The method called when the request has completed or failed.
     @return A @c OIDExternalUserAgentSession instance which will terminate when it
         receives a @c OIDExternalUserAgentSession.cancel message, or after processing a
         @c OIDExternalUserAgentSession.resumeExternalUserAgentFlowWithURL: message.
  */
++ (id<OIDExternalUserAgentSession>)
+    authStateByPresentingAuthorizationRequest:(OIDAuthorizationRequest *)authorizationRequest
+                             presentingWindow:(NSWindow *)presentingWindow
+                                     callback:(OIDAuthStateAuthorizationCallback)callback
+                                     API_AVAILABLE(macosx(10.15));
+
 + (id<OIDExternalUserAgentSession>)
     authStateByPresentingAuthorizationRequest:(OIDAuthorizationRequest *)authorizationRequest
                                      callback:(OIDAuthStateAuthorizationCallback)callback;
