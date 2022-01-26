@@ -329,23 +329,22 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
                                           additionalParameters:nil];
     // performs authentication request
     [self logMessage:@"Initiating authorization request %@", request];
-    self.appDelegate.currentAuthorizationFlow =
-        [OIDAuthorizationService presentAuthorizationRequest:request
-                            callback:^(OIDAuthorizationResponse *_Nullable authorizationResponse,
-                                       NSError *_Nullable error) {
 
-      if (authorizationResponse) {
-        OIDAuthState *authState =
-            [[OIDAuthState alloc] initWithAuthorizationResponse:authorizationResponse];
-        [self setAuthState:authState];
-
-        [self logMessage:@"Authorization response with code: %@",
-                         authorizationResponse.authorizationCode];
-        // could just call [self tokenExchange:nil] directly, but will let the user initiate it.
-      } else {
-        [self logMessage:@"Authorization error: %@", [error localizedDescription]];
-      }
-    }];
+    if (@available(macOS 10.15, *)) {
+      self.appDelegate.currentAuthorizationFlow =
+          [OIDAuthorizationService presentAuthorizationRequest:request
+                                              presentingWindow:self.view.window
+                                                      callback:^(OIDAuthorizationResponse *_Nullable authorizationResponse, NSError *_Nullable error) {
+        [self processAuthorizationResponse:authorizationResponse error:error];
+      }];
+    } else {
+      self.appDelegate.currentAuthorizationFlow =
+          [OIDAuthorizationService presentAuthorizationRequest:request
+                              callback:^(OIDAuthorizationResponse *_Nullable authorizationResponse,
+                                         NSError *_Nullable error) {
+        [self processAuthorizationResponse:authorizationResponse error:error];
+      }];
+    }
   }];
 }
 
@@ -521,6 +520,21 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
     [weakSelf logMessage:@"Authorization error: %@", error.localizedDescription];
   }
   [weakSelf setAuthState:authState];
+}
+
+- (void)processAuthorizationResponse:(OIDAuthorizationResponse *)authorizationResponse
+                               error:(NSError *)error {
+  if (authorizationResponse) {
+    OIDAuthState *authState =
+        [[OIDAuthState alloc] initWithAuthorizationResponse:authorizationResponse];
+    [self setAuthState:authState];
+
+    [self logMessage:@"Authorization response with code: %@",
+                     authorizationResponse.authorizationCode];
+    // could just call [self tokenExchange:nil] directly, but will let the user initiate it.
+  } else {
+    [self logMessage:@"Authorization error: %@", [error localizedDescription]];
+  }
 }
 
 @end
