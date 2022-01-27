@@ -72,6 +72,7 @@ NS_ASSUME_NONNULL_BEGIN
     
     _presentingViewController = presentingViewController;
   }
+  _prefersEphemeralWebBrowserSession = YES;
   return self;
 }
 
@@ -116,6 +117,7 @@ NS_ASSUME_NONNULL_BEGIN
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 130000
       if (@available(iOS 13.0, *)) {
           authenticationVC.presentationContextProvider = self;
+          authenticationVC.prefersEphemeralWebBrowserSession = self.prefersEphemeralWebBrowserSession;
       }
 #endif
       _webAuthenticationVC = authenticationVC;
