@@ -174,4 +174,4 @@ static NSString *const kHTMLErrorRedirectNotValid =
 
 @end
 
-#endif // TARGET_OS_MAC
+#endif // TARGET_OS_OSX
