@@ -41,16 +41,25 @@ NS_ASSUME_NONNULL_BEGIN
     @return A @c OIDExternalUserAgentSession instance which will terminate when it
         receives a @c OIDExternalUserAgentSession.cancel message, or after processing a
         @c OIDExternalUserAgentSession.resumeExternalUserAgentFlowWithURL: message.
+    @discussion This method adopts ASWebAuthenticationSession for macOS 10.15 and above or the default browser otherwise.
  */
 + (id<OIDExternalUserAgentSession>)
     authStateByPresentingAuthorizationRequest:(OIDAuthorizationRequest *)authorizationRequest
                              presentingWindow:(NSWindow *)presentingWindow
-                                     callback:(OIDAuthStateAuthorizationCallback)callback
-                                     API_AVAILABLE(macosx(10.15));
+                                     callback:(OIDAuthStateAuthorizationCallback)callback;
 
+/*! @param authorizationRequest The authorization request to present.
+    @param callback The method called when the request has completed or failed.
+    @return A @c OIDExternalUserAgentSession instance which will terminate when it
+        receives a @c OIDExternalUserAgentSession.cancel message, or after processing a
+        @c OIDExternalUserAgentSession.resumeExternalUserAgentFlowWithURL: message.
+    @discussion This method uses the default browser to present the authentication flow.
+ */
 + (id<OIDExternalUserAgentSession>)
     authStateByPresentingAuthorizationRequest:(OIDAuthorizationRequest *)authorizationRequest
-                                     callback:(OIDAuthStateAuthorizationCallback)callback;
+                                     callback:(OIDAuthStateAuthorizationCallback)callback
+    __deprecated_msg("For macOS 10.15 and above please use "
+        "authStateByPresentingAuthorizationRequest:presentingWindow:callback:");
 
 @end
 

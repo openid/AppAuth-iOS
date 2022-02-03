@@ -57,8 +57,9 @@ It follows the OAuth 2.0 for Native Apps best current practice
     externalUserAgent.ios.weak_frameworks   = "AuthenticationServices"
 
     # macOS
-    externalUserAgent.osx.source_files = "Source/AppAuth/macOS/**/*.{h,m}"
+    externalUserAgent.osx.source_files      = "Source/AppAuth/macOS/**/*.{h,m}"
     externalUserAgent.osx.deployment_target = '10.9'
+    externalUserAgent.osx.weak_frameworks   = "AuthenticationServices"
   end
   
   s.subspec 'EnterpriseUserAgent' do |enterpriseUserAgent|

@@ -30,8 +30,7 @@
     authStateByPresentingAuthorizationRequest:(OIDAuthorizationRequest *)authorizationRequest
                              presentingWindow:(NSWindow *)presentingWindow
                                      callback:(OIDAuthStateAuthorizationCallback)callback {
-  id<OIDExternalUserAgent> externalUserAgent = [[OIDExternalUserAgentMac alloc] initWithPresentingWindow:presentingWindow];
-
+  OIDExternalUserAgentMac *externalUserAgent = [[OIDExternalUserAgentMac alloc] initWithPresentingWindow:presentingWindow];
   return [self authStateByPresentingAuthorizationRequest:authorizationRequest
                                        externalUserAgent:externalUserAgent
                                                 callback:callback];

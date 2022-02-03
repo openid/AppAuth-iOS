@@ -29,20 +29,29 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @interface OIDAuthorizationService (Mac)
 
-/*! @brief Perform an authorization flow using the default browser.
+/*! @brief Perform an authorization flow.
     @param request The authorization request.
     @param presentingWindow The window to present the authentication flow.
     @param callback The method called when the request has completed or failed.
     @return A @c OIDExternalUserAgentSession instance which will terminate when it
         receives a @c OIDExternalUserAgentSession.cancel message, or after processing a
         @c OIDExternalUserAgentSession.resumeExternalUserAgentFlowWithURL: message.
+    @discussion This method adopts  ASWebAuthenticationSession for macOS 10.15 and above or the default browser otherwise.
  */
 + (id<OIDExternalUserAgentSession>) presentAuthorizationRequest:(OIDAuthorizationRequest *)request
                                                presentingWindow:(NSWindow *)presentingWindow
-                                                       callback:(OIDAuthorizationCallback)callback API_AVAILABLE(macosx(10.15));
+                                                       callback:(OIDAuthorizationCallback)callback;
 
+/*! @brief Perform an authorization flow using the default browser.
+    @param request The authorization request.
+    @param callback The method called when the request has completed or failed.
+    @return A @c OIDExternalUserAgentSession instance which will terminate when it
+        receives a @c OIDExternalUserAgentSession.cancel message, or after processing a
+        @c OIDExternalUserAgentSession.resumeExternalUserAgentFlowWithURL: message.
+ */
 + (id<OIDExternalUserAgentSession>)presentAuthorizationRequest:(OIDAuthorizationRequest *)request
-                                                      callback:(OIDAuthorizationCallback)callback;
+                                                      callback:(OIDAuthorizationCallback)callback
+    __deprecated_msg("For macOS 10.15 and above please use presentAuthorizationRequest:presentingWindow:callback:");
 
 @end
 

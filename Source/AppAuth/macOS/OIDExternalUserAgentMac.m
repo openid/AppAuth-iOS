@@ -32,10 +32,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#if __MAC_OS_X_VERSION_MAX_ALLOWED >= 101500
 @interface OIDExternalUserAgentMac ()<ASWebAuthenticationPresentationContextProviding>
 @end
-#endif // __MAC_OS_X_VERSION_MAX_ALLOWED >= 101500
 
 @implementation OIDExternalUserAgentMac {
   BOOL _externalUserAgentFlowInProgress;
@@ -48,12 +46,19 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma clang diagnostic pop
 }
 
-- (instancetype)initWithPresentingWindow: (NSWindow *)presentingWindow {
+- (instancetype)initWithPresentingWindow:(NSWindow *)presentingWindow {
   self = [super init];
   if (self) {
     _presentingWindow = presentingWindow;
   }
   return self;
+}
+
+- (instancetype)init {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wnonnull"
+  return [self initWithPresentingWindow:nil];
+#pragma clang diagnostic pop
 }
 
 - (BOOL)presentExternalUserAgentRequest:(id<OIDExternalUserAgentRequest>)request
@@ -140,13 +145,11 @@ NS_ASSUME_NONNULL_BEGIN
   _webAuthenticationSession = nil;
 }
 
-#if __MAC_OS_X_VERSION_MAX_ALLOWED >= 101500
 #pragma mark - ASWebAuthenticationPresentationContextProviding
 
 -(ASPresentationAnchor)presentationAnchorForWebAuthenticationSession:(ASWebAuthenticationSession *)session API_AVAILABLE(macosx(10.15)){
   return _presentingWindow;
 }
-#endif // __MAC_OS_X_VERSION_MAX_ALLOWED >= 101500
 
 @end
 

@@ -33,7 +33,9 @@ NS_ASSUME_NONNULL_BEGIN
 /*! @brief The designated initializer.
     @param presentingWindow The window from which to present the ASWebAuthenticationSession.
  */
-- (instancetype)initWithPresentingWindow: (NSWindow *)presentingWindow API_AVAILABLE(macosx(10.15));
+- (instancetype)initWithPresentingWindow:(NSWindow *)presentingWindow NS_DESIGNATED_INITIALIZER;
+
+- (instancetype)init __deprecated_msg("Use initWithPresentingWindow for macOS 10.15 and above.");
 
 @end
 
