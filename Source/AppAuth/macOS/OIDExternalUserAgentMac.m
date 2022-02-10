@@ -147,7 +147,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - ASWebAuthenticationPresentationContextProviding
 
--(ASPresentationAnchor)presentationAnchorForWebAuthenticationSession:(ASWebAuthenticationSession *)session API_AVAILABLE(macosx(10.15)){
+- (ASPresentationAnchor)presentationAnchorForWebAuthenticationSession:(ASWebAuthenticationSession *)session
+    API_AVAILABLE(macosx(10.15)) {
   return _presentingWindow;
 }
 
