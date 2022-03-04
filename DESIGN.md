@@ -69,7 +69,7 @@ every single branch of the spec.
 Non-standard protocols and parameters are not supported by AppAuth.  However, AppAuth, like the
 specs it implements, is largely extensible and you may be able to achieve what you need through
 these extension points. For example, simple additional parameters can be passed in the
-“additionalParameters” directory, and the TokenRequest can support other grant types. 
+“additionalParameters” dictionary, and the TokenRequest can support other grant types. 
 
 By way of example, the tvOS device flow support (which may actually be considered in-scope one day)
 was initially implemented on top of these extension points without needing to change AppAuth.
@@ -77,7 +77,7 @@ was initially implemented on top of these extension points without needing to ch
 ### Provider-specific workarounds, hacks or features
 
 AppAuth implements the pure authentication and authorization standards. Where these standards are
-clear in their meaning, errors in provider implementations are supported or worked around by
+clear in their meaning, errors in provider implementations are not supported or worked around by
 AppAuth.  
 
 Identity standards are well specified, and typically undergo years of review, including security
@@ -118,6 +118,3 @@ Expect review periods of 6 months to a year for integrating major new in-scope f
 priority as previously stated is stability and quality, not adding features as quickly as possible.
 While you work with us to integrate your feature, we highly encourage you to maintain your own fork
 so you and others can use the feature immediately – and gain valuable implementation experience.
-
-
-
