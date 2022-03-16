@@ -34,9 +34,12 @@ NS_ASSUME_NONNULL_BEGIN
 API_UNAVAILABLE(macCatalyst)
 @interface OIDExternalUserAgentIOS : NSObject<OIDExternalUserAgent>
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wnullability"
 - (nullable instancetype)init API_AVAILABLE(ios(11))
     __deprecated_msg("This method will not work on iOS 13, use "
                      "initWithPresentingViewController:presentingViewController");
+#pragma clang diagnostic pop
 
 /*! @brief The designated initializer.
     @param presentingViewController The view controller from which to present the
