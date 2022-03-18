@@ -17,8 +17,8 @@ jobs:
       matrix:
         flags: [
           "-scheme AppAuth-iOS -destination 'platform=iOS Simulator,name=iPhone 11,OS=13.0' -sdk 'iphonesimulator13.0'",
-          "-scheme AppAuth-macOS -destination 'platform=macOS,arch=x86_64' -sdk 'macosx10.15'",
-          "-scheme AppAuth_macOS -destination 'platform=macOS,arch=x86_64' -sdk 'macosx10.15'",
+          "-scheme AppAuth-macOS -destination 'platform=macOS,arch=x86_64' -sdk 'macosx12.1'",
+          "-scheme AppAuth_macOS -destination 'platform=macOS,arch=x86_64' -sdk 'macosx12.1'",
           "-scheme AppAuth-tvOS -destination 'platform=tvOS Simulator,name=Apple TV,OS=13.0' -sdk 'appletvsimulator13.0'",
           "-scheme AppAuth_tvOS -destination 'platform=tvOS Simulator,name=Apple TV,OS=13.0' -sdk 'appletvsimulator13.0'",
           "-scheme AppAuthTV -destination 'platform=tvOS Simulator,name=Apple TV,OS=13.0' -sdk 'appletvsimulator13.0'"
