@@ -31,6 +31,8 @@ jobs:
           -scheme AppAuth-Package \
           -sdk 'iphonesimulator' \
           -destination 'platform=iOS Simulator,name=iPhone 11' \
-          -enableCodeCoverage YES
+          -enableCodeCoverage YES \
+          GCC_INSTRUMENT_PROGRAM_FLOW_ARCS=YES \
+          GCC_GENERATE_TEST_COVERAGE_FILES=YES
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v2
