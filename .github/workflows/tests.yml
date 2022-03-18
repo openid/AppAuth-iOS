@@ -18,6 +18,6 @@ jobs:
     - name: Build unit test target
       run: swift build
     - name: Run unit test target
-      run: swift test
+      run: swift test --enable-code-coverage
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v2
