@@ -15,6 +15,8 @@ jobs:
     runs-on: macOS-latest
     steps:
     - uses: actions/checkout@v2
+    - name: Remove AppAuth.xcodeproj
+      run: rm -rf AppAuth.xcodeproj
     - name: Build unit test targets
       run: |
         xcodebuild build-for-testing \
