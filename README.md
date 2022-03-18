@@ -1,5 +1,5 @@
 ![AppAuth for iOS and macOS](https://rawgit.com/openid/AppAuth-iOS/master/appauth_lockup.svg)
-[![Build Status](https://travis-ci.org/openid/AppAuth-iOS.svg?branch=master)](https://travis-ci.org/openid/AppAuth-iOS)
+[![tests](https://github.com/openid/AppAuth-iOS/actions/workflows/tests.yml/badge.svg?event=push)](https://github.com/openid/AppAuth-iOS/actions/workflows/tests.yml)
 [![codecov](https://codecov.io/gh/openid/AppAuth-iOS/branch/master/graph/badge.svg)](https://codecov.io/gh/openid/AppAuth-iOS)
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-brightgreen.svg?style=flat)](https://github.com/Carthage/Carthage)
 [![SwiftPM compatible](https://img.shields.io/badge/SwiftPM-compatible-brightgreen.svg?style=flat)](https://swift.org/package-manager)
