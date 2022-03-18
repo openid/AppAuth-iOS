@@ -15,9 +15,18 @@ jobs:
     runs-on: macOS-latest
     steps:
     - uses: actions/checkout@v2
-    - name: Build unit test target
-      run: swift build
-    - name: Run unit test target
-      run: swift test --enable-code-coverage
+    - name: Build unit test targets
+      run: |
+        xcodebuild build-for-testing \
+          -scheme AppAuth \
+          -sdk 'iphonesimulator' \
+          -destination 'platform=iOS Simulator,name=iPhone 11' \
+    - name: Run unit test targets
+      run: |
+        xcodebuild test-without-building \
+          -scheme AppAuth \
+          -sdk 'iphonesimulator' \
+          -destination 'platform=iOS Simulator,name=iPhone 11' \
+          -enableCodeCoverage YES
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v2
