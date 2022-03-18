@@ -11,6 +11,24 @@ on:
 
 jobs:
 
+  pod-lib-lint:
+    runs-on: macOS-latest
+    strategy:
+      matrix:
+        flags: [
+          '',
+          '--use-libraries',
+          '--use-static-frameworks'
+        ]
+    steps:
+    - uses: actions/checkout@v2
+    - name: Update Bundler
+      run: bundle update --bundler
+    - name: Install Ruby gems with Bundler
+      run: bundle install
+    - name: Lint podspec using local source
+      run: pod lib lint --verbose ${{ matrix.flags }}
+
   spm-build-test:
     runs-on: macOS-latest
     steps:
