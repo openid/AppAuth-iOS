@@ -17,15 +17,9 @@ jobs:
     - uses: actions/checkout@v2
     - name: Remove AppAuth.xcodeproj
       run: rm -rf AppAuth.xcodeproj
-    - name: Build unit test targets
-      run: |
-        xcodebuild build-for-testing \
-          -scheme AppAuth \
-          -sdk 'iphonesimulator' \
-          -destination 'platform=iOS Simulator,name=iPhone 11' \
     - name: Run unit test targets
       run: |
-        xcodebuild test-without-building \
+        xcodebuild test \
           -scheme AppAuth \
           -sdk 'iphonesimulator' \
           -destination 'platform=iOS Simulator,name=iPhone 11' \
