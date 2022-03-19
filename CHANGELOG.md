@@ -2,7 +2,7 @@
 
 ## 1.5.0
 - Improved tvOS support. ([#111](https://github.com/openid/AppAuth-iOS/issues/111))
-- ASWebAuthencationSession on macOS. ([#675](https://github.com/openid/AppAuth-iOS/pull/675))
+- ASWebAuthenticationSession on macOS. ([#675](https://github.com/openid/AppAuth-iOS/pull/675))
 
 ## 1.4.0
 
