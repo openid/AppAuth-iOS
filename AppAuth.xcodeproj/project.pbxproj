@@ -803,8 +803,6 @@
 		343AAAAE1E83489A00F9D36E /* AppAuth_tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AppAuth_tvOSTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		343AAAC21E8348A900F9D36E /* AppAuth.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AppAuth.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		343AAACA1E8348AA00F9D36E /* AppAuth_macOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AppAuth_macOSTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		345AE745202D526800738D22 /* OIDExternalUserAgentIOSCustomBrowser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OIDExternalUserAgentIOSCustomBrowser.m; sourceTree = "<group>"; };
-		345AE746202D526800738D22 /* OIDExternalUserAgentIOSCustomBrowser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OIDExternalUserAgentIOSCustomBrowser.h; sourceTree = "<group>"; };
 		347423F61E7F4B5600D3E6D6 /* libAppAuth-watchOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libAppAuth-watchOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		348970972177B3B000ABEED4 /* AppAuthCoreTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AppAuthCoreTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3489709A2178F40600ABEED4 /* AppAuthCore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppAuthCore.h; sourceTree = "<group>"; };
@@ -992,23 +990,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		2D47AAD2249988770059B5A4 /* AppAuthEnterpriseUserAgent */ = {
-			isa = PBXGroup;
-			children = (
-				2D47AAD3249988B90059B5A4 /* iOS */,
-			);
-			path = AppAuthEnterpriseUserAgent;
-			sourceTree = "<group>";
-		};
-		2D47AAD3249988B90059B5A4 /* iOS */ = {
-			isa = PBXGroup;
-			children = (
-				345AE746202D526800738D22 /* OIDExternalUserAgentIOSCustomBrowser.h */,
-				345AE745202D526800738D22 /* OIDExternalUserAgentIOSCustomBrowser.m */,
-			);
-			path = iOS;
-			sourceTree = "<group>";
-		};
 		2D47AAD7249A86E30059B5A4 /* AppAuthTV */ = {
 			isa = PBXGroup;
 			children = (
@@ -1104,7 +1085,6 @@
 		341741AE1C5D8243000EF209 /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				2D47AAD2249988770059B5A4 /* AppAuthEnterpriseUserAgent */,
 				348970992178F40600ABEED4 /* CoreFramework */,
 				343AAA4C1E8345B600F9D36E /* Framework */,
 				2D9385B824B37CAD009A12D7 /* TVFramework */,
