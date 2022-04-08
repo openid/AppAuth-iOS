@@ -28,14 +28,14 @@ typedef void (^PostRegistrationCallback)(OIDServiceConfiguration *configuration,
 
 /*! @brief The OIDC issuer from which the configuration will be discovered.
  */
-static NSString *const kIssuer = @"https://api.multi.dev.or.janrain.com/00000000-0000-0000-0000-000000000000/login";
+static NSString *const kIssuer = @"https://login.myjanrain.com/00000000-0000-0000-0000-000000000000/login";
 
 /*! @brief The OAuth client ID.
     @discussion For client configuration instructions, see the README.
         Set to nil to use dynamic registration with this example.
     @see https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-iOS_ObjC/README.md
  */
-static NSString *const kClientID = @"04fd7ea8-6d74-4d8a-b020-03b2f4596ea3";
+static NSString *const kClientID = @"48df1831-3769-4be2-8b9f-6ae93af54db0";
 
 /*! @brief The OAuth redirect URI for the client @c kClientID.
     @discussion For client configuration instructions, see the README.
@@ -43,9 +43,9 @@ static NSString *const kClientID = @"04fd7ea8-6d74-4d8a-b020-03b2f4596ea3";
  */
 static NSString *const kRedirectURI = @"aic.com.gizmo.vagrant.testing://oauth2redirect/akamai-identity-cloud-provider";
 
-static NSString *const kLogoutURI = @"https://gizmo.janrain.test:8080/00000000-0000-0000-0000-000000000000/logout";
+static NSString *const kLogoutURI = @"https://login.myjanrain.com/00000000-0000-0000-0000-000000000000/auth-ui/logout";
 
-static NSString *const kProfileURI = @"https://gizmo.janrain.test:8080/00000000-0000-0000-0000-000000000000/profile";
+static NSString *const kProfileURI = @"https://login.myjanrain.com/00000000-0000-0000-0000-000000000000/auth-ui/profile";
 
 /*! @brief NSCoding key for the authState property.
  */
@@ -455,6 +455,7 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
 - (IBAction)openProfile:(nullable id)sender {
     [self logMessage:@"Profile Button Touched"];
     NSURL *profileURL = [NSURL URLWithString:kProfileURI];
+    NSURL *redirectURI = [NSURL URLWithString:kRedirectURI];
     
     NSDictionary *addParams = @{ @"client_id": kClientID};
     OIDServiceConfiguration *fakeConfig = [[OIDServiceConfiguration alloc]  initWithAuthorizationEndpoint:profileURL
@@ -465,7 +466,7 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
         
     OIDEndSessionRequest *request = [[OIDEndSessionRequest alloc] initWithConfiguration:fakeConfig
                                                                             idTokenHint:@""
-                                                                  postLogoutRedirectURL:[NSURL URLWithString:@""]
+                                                                  postLogoutRedirectURL:redirectURI
                                                                    additionalParameters:addParams];
         // performs logout request
     AppDelegate *appDelegate = (AppDelegate *) [UIApplication sharedApplication].delegate;
