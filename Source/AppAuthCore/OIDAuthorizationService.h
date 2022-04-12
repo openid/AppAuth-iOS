@@ -23,6 +23,7 @@
 @class OIDAuthorizationResponse;
 @class OIDEndSessionRequest;
 @class OIDEndSessionResponse;
+@class OIDIDTokenValidator;
 @class OIDRegistrationRequest;
 @class OIDRegistrationResponse;
 @class OIDServiceConfiguration;
@@ -89,6 +90,12 @@ typedef void (^OIDRegistrationCompletion)(OIDRegistrationResponse *_Nullable reg
         Configurations may be created manually, or via an OpenID Connect Discovery Document.
  */
 @property(nonatomic, readonly) OIDServiceConfiguration *configuration;
+
+/*! @brief The ID Token's validator instance used in the `performTokenRequest` methods.
+    @remarks Upon initialization the default validator (`[OIDIDTokenValidator new]`) is used.
+        When an empty validator is set, the ID Token validation will be skipped.
+ */
+@property(nonatomic, class, nullable) OIDIDTokenValidator *idTokenValidator;
 
 /*! @internal
     @brief Unavailable. This class should not be initialized.

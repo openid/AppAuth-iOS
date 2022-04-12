@@ -311,6 +311,22 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation OIDAuthorizationService
 
+static OIDIDTokenValidator *_idTokenValidator;
+
++ (void)initialize {
+  [super initialize];
+
+  _idTokenValidator = [OIDIDTokenValidator new];
+}
+
++ (nullable OIDIDTokenValidator *)idTokenValidator {
+  return _idTokenValidator;
+}
+
++ (void)setIdTokenValidator:(nullable OIDIDTokenValidator *)idTokenValidator {
+  _idTokenValidator = idTokenValidator;
+}
+
 + (void)discoverServiceConfigurationForIssuer:(NSURL *)issuerURL
                                    completion:(OIDDiscoveryCallback)completion {
   NSURL *fullDiscoveryURL =
@@ -532,9 +548,9 @@ NS_ASSUME_NONNULL_BEGIN
     }
 
     // If an ID Token is included in the response, validates the ID Token.
-    if (tokenResponse.idToken) {
-      NSError *idTokenValidationError = [[OIDIDTokenValidator new] validateIDTokenFromTokenResponse:tokenResponse
-                                                                              authorizationResponse:authorizationResponse];
+    if (tokenResponse.idToken && self.idTokenValidator) {
+      NSError *idTokenValidationError = [self.idTokenValidator validateIDTokenFromTokenResponse:tokenResponse
+                                                                          authorizationResponse:authorizationResponse];
       if (idTokenValidationError) {
         dispatch_async(dispatch_get_main_queue(), ^{
           callback(nil, idTokenValidationError);
