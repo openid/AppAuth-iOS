@@ -26,7 +26,7 @@
 #import "OIDErrorUtilities.h"
 #import "OIDExternalUserAgent.h"
 #import "OIDExternalUserAgentSession.h"
-#import "OIDIDToken.h"
+#import "OIDIDTokenValidator.h"
 #import "OIDRegistrationRequest.h"
 #import "OIDRegistrationResponse.h"
 #import "OIDServiceConfiguration.h"
@@ -40,11 +40,6 @@
     @see https://openid.net/specs/openid-connect-discovery-1_0.html#ProviderConfig
  */
 static NSString *const kOpenIDConfigurationWellKnownPath = @".well-known/openid-configuration";
-
-/*! @brief Max allowable iat (Issued At) time skew
-    @see https://openid.net/specs/openid-connect-core-1_0.html#IDTokenValidation
- */
-static int const kOIDAuthorizationSessionIATMaxSkew = 600;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -536,126 +531,16 @@ NS_ASSUME_NONNULL_BEGIN
       return;
     }
 
-    // If an ID Token is included in the response, validates the ID Token following the rules
-    // in OpenID Connect Core Section 3.1.3.7 for features that AppAuth directly supports
-    // (which excludes rules #1, #4, #5, #7, #8, #12, and #13). Regarding rule #6, ID Tokens
-    // received by this class are received via direct communication between the Client and the Token
-    // Endpoint, thus we are exercising the option to rely only on the TLS validation. AppAuth
-    // has a zero dependencies policy, and verifying the JWT signature would add a dependency.
-    // Users of the library are welcome to perform the JWT signature verification themselves should
-    // they wish.
+    // If an ID Token is included in the response, validates the ID Token.
     if (tokenResponse.idToken) {
-      OIDIDToken *idToken = [[OIDIDToken alloc] initWithIDTokenString:tokenResponse.idToken];
-      if (!idToken) {
-        NSError *invalidIDToken =
-          [OIDErrorUtilities errorWithCode:OIDErrorCodeIDTokenParsingError
-                           underlyingError:nil
-                               description:@"ID Token parsing failed"];
+      NSError *idTokenValidationError = [[OIDIDTokenValidator new] validateIDTokenFromTokenResponse:tokenResponse
+                                                                              authorizationResponse:authorizationResponse];
+      if (idTokenValidationError) {
         dispatch_async(dispatch_get_main_queue(), ^{
-          callback(nil, invalidIDToken);
+          callback(nil, idTokenValidationError);
         });
         return;
       }
-      
-      // OpenID Connect Core Section 3.1.3.7. rule #1
-      // Not supported: AppAuth does not support JWT encryption.
-
-      // OpenID Connect Core Section 3.1.3.7. rule #2
-      // Validates that the issuer in the ID Token matches that of the discovery document.
-      NSURL *issuer = tokenResponse.request.configuration.issuer;
-      if (issuer && ![idToken.issuer isEqual:issuer]) {
-        NSError *invalidIDToken =
-          [OIDErrorUtilities errorWithCode:OIDErrorCodeIDTokenFailedValidationError
-                           underlyingError:nil
-                               description:@"Issuer mismatch"];
-        dispatch_async(dispatch_get_main_queue(), ^{
-          callback(nil, invalidIDToken);
-        });
-        return;
-      }
-
-      // OpenID Connect Core Section 3.1.3.7. rule #3 & Section 2 azp Claim
-      // Validates that the aud (audience) Claim contains the client ID, or that the azp
-      // (authorized party) Claim matches the client ID.
-      NSString *clientID = tokenResponse.request.clientID;
-      if (![idToken.audience containsObject:clientID] &&
-          ![idToken.claims[@"azp"] isEqualToString:clientID]) {
-        NSError *invalidIDToken =
-          [OIDErrorUtilities errorWithCode:OIDErrorCodeIDTokenFailedValidationError
-                           underlyingError:nil
-                               description:@"Audience mismatch"];
-        dispatch_async(dispatch_get_main_queue(), ^{
-          callback(nil, invalidIDToken);
-        });
-        return;
-      }
-      
-      // OpenID Connect Core Section 3.1.3.7. rules #4 & #5
-      // Not supported.
-
-      // OpenID Connect Core Section 3.1.3.7. rule #6
-      // As noted above, AppAuth only supports the code flow which results in direct communication
-      // of the ID Token from the Token Endpoint to the Client, and we are exercising the option to
-      // use TSL server validation instead of checking the token signature. Users may additionally
-      // check the token signature should they wish.
-
-      // OpenID Connect Core Section 3.1.3.7. rules #7 & #8
-      // Not applicable. See rule #6.
-
-      // OpenID Connect Core Section 3.1.3.7. rule #9
-      // Validates that the current time is before the expiry time.
-      NSTimeInterval expiresAtDifference = [idToken.expiresAt timeIntervalSinceNow];
-      if (expiresAtDifference < 0) {
-        NSError *invalidIDToken =
-            [OIDErrorUtilities errorWithCode:OIDErrorCodeIDTokenFailedValidationError
-                             underlyingError:nil
-                                 description:@"ID Token expired"];
-        dispatch_async(dispatch_get_main_queue(), ^{
-          callback(nil, invalidIDToken);
-        });
-        return;
-      }
-      
-      // OpenID Connect Core Section 3.1.3.7. rule #10
-      // Validates that the issued at time is not more than +/- 10 minutes on the current time.
-      NSTimeInterval issuedAtDifference = [idToken.issuedAt timeIntervalSinceNow];
-      if (fabs(issuedAtDifference) > kOIDAuthorizationSessionIATMaxSkew) {
-        NSString *message =
-            [NSString stringWithFormat:@"Issued at time is more than %d seconds before or after "
-                                        "the current time",
-                                       kOIDAuthorizationSessionIATMaxSkew];
-        NSError *invalidIDToken =
-          [OIDErrorUtilities errorWithCode:OIDErrorCodeIDTokenFailedValidationError
-                           underlyingError:nil
-                               description:message];
-        dispatch_async(dispatch_get_main_queue(), ^{
-          callback(nil, invalidIDToken);
-        });
-        return;
-      }
-
-      // Only relevant for the authorization_code response type
-      if ([tokenResponse.request.grantType isEqual:OIDGrantTypeAuthorizationCode]) {
-        // OpenID Connect Core Section 3.1.3.7. rule #11
-        // Validates the nonce.
-        NSString *nonce = authorizationResponse.request.nonce;
-        if (nonce && ![idToken.nonce isEqual:nonce]) {
-          NSError *invalidIDToken =
-          [OIDErrorUtilities errorWithCode:OIDErrorCodeIDTokenFailedValidationError
-                           underlyingError:nil
-                               description:@"Nonce mismatch"];
-          dispatch_async(dispatch_get_main_queue(), ^{
-            callback(nil, invalidIDToken);
-          });
-          return;
-        }
-      }
-      
-      // OpenID Connect Core Section 3.1.3.7. rules #12
-      // ACR is not directly supported by AppAuth.
-
-      // OpenID Connect Core Section 3.1.3.7. rules #12
-      // max_age is not directly supported by AppAuth.
     }
 
     // Success
