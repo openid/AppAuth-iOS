@@ -56,24 +56,24 @@ NS_ASSUME_NONNULL_BEGIN
                          registrationEndpoint:(nullable NSURL *)registrationEndpoint
                            endSessionEndpoint:(nullable NSURL *)endSessionEndpoint
                             discoveryDocument:(nullable OIDServiceDiscovery *)discoveryDocument
-                            NS_DESIGNATED_INITIALIZER;
+NS_DESIGNATED_INITIALIZER;
 
 @end
 
 @implementation OIDServiceConfiguration
 
 - (instancetype)init
-    OID_UNAVAILABLE_USE_INITIALIZER(@selector(
-        initWithAuthorizationEndpoint:
-                        tokenEndpoint:)
-    )
+OID_UNAVAILABLE_USE_INITIALIZER(@selector(
+                                          initWithAuthorizationEndpoint:
+                                          tokenEndpoint:)
+                                )
 
 - (instancetype)initWithAuthorizationEndpoint:(NSURL *)authorizationEndpoint
-        tokenEndpoint:(NSURL *)tokenEndpoint
-               issuer:(nullable NSURL *)issuer
- registrationEndpoint:(nullable NSURL *)registrationEndpoint
-   endSessionEndpoint:(nullable NSURL *)endSessionEndpoint
-    discoveryDocument:(nullable OIDServiceDiscovery *)discoveryDocument {
+                                tokenEndpoint:(NSURL *)tokenEndpoint
+                                       issuer:(nullable NSURL *)issuer
+                         registrationEndpoint:(nullable NSURL *)registrationEndpoint
+                           endSessionEndpoint:(nullable NSURL *)endSessionEndpoint
+                            discoveryDocument:(nullable OIDServiceDiscovery *)discoveryDocument {
 
   self = [super init];
   if (self) {
@@ -179,14 +179,14 @@ NS_ASSUME_NONNULL_BEGIN
   NSURL *registrationEndpoint = [aDecoder decodeObjectOfClass:[NSURL class]
                                                        forKey:kRegistrationEndpointKey];
   NSURL *endSessionEndpoint = [aDecoder decodeObjectOfClass:[NSURL class]
-                                                       forKey:kEndSessionEndpointKey];
+                                                     forKey:kEndSessionEndpointKey];
   // We don't accept nil authorizationEndpoints or tokenEndpoints.
   if (!authorizationEndpoint || !tokenEndpoint) {
     return nil;
   }
 
-  OIDServiceDiscovery *discoveryDocument = [aDecoder decodeObjectOfClass:[OIDServiceDiscovery class]
-                                                                  forKey:kDiscoveryDocumentKey];
+  OIDServiceDiscovery *discoveryDocument = [aDecoder decodeObjectOfClasses:[NSSet setWithObjects:[OIDServiceDiscovery class], [NSArray class], nil]
+                                                                    forKey:kDiscoveryDocumentKey];
 
   return [self initWithAuthorizationEndpoint:authorizationEndpoint
                                tokenEndpoint:tokenEndpoint
@@ -209,13 +209,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (NSString *)description {
   return [NSString stringWithFormat:
-      @"OIDServiceConfiguration authorizationEndpoint: %@, tokenEndpoint: %@, "
+          @"OIDServiceConfiguration authorizationEndpoint: %@, tokenEndpoint: %@, "
           "registrationEndpoint: %@, endSessionEndpoint: %@, discoveryDocument: [%@]",
-      _authorizationEndpoint,
-      _tokenEndpoint,
-      _registrationEndpoint,
-      _endSessionEndpoint,
-      _discoveryDocument];
+          _authorizationEndpoint,
+          _tokenEndpoint,
+          _registrationEndpoint,
+          _endSessionEndpoint,
+          _discoveryDocument];
 }
 
 @end
