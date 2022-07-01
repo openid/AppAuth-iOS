@@ -563,6 +563,16 @@ NS_ASSUME_NONNULL_BEGIN
       // OpenID Connect Core Section 3.1.3.7. rule #2
       // Validates that the issuer in the ID Token matches that of the discovery document.
       NSURL *issuer = tokenResponse.request.configuration.issuer;
+      if (issuer && [issuer.path containsString:@"{tenantid}"]) {
+        // The Azure AD discovery document's "issuer" value contains the special placeholder
+        // "{tenantid}". This needs to be replaced with the actual tenant ID of the authenticated
+        // user, from the "tid" claim of the ID token, before validation.
+        NSString *tid = idToken.claims[@"tid"];
+        if (tid) {
+          issuer = [NSURL URLWithString:[NSString stringWithFormat:@"%@://%@%@", issuer.scheme, issuer.host,
+                  [issuer.path stringByReplacingOccurrencesOfString:@"{tenantid}" withString:tid]]];
+        }
+      }
       if (issuer && ![idToken.issuer isEqual:issuer]) {
         NSError *invalidIDToken =
           [OIDErrorUtilities errorWithCode:OIDErrorCodeIDTokenFailedValidationError
