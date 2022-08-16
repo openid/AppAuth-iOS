@@ -1,0 +1,61 @@
+name: tests
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+  workflow_dispatch:
+
+jobs:
+
+  xcode-project-test:
+    runs-on: macOS-latest
+    strategy:
+      matrix:
+        flags: [
+          "-scheme AppAuth-iOS -destination 'platform=iOS Simulator,name=iPhone 11,OS=15.2' -sdk 'iphonesimulator15.2'",
+          "-scheme AppAuth-macOS -destination 'platform=macOS,arch=x86_64' -sdk 'macosx12.1'",
+          "-scheme AppAuth_macOS -destination 'platform=macOS,arch=x86_64' -sdk 'macosx12.1'",
+          "-scheme AppAuth-tvOS -destination 'platform=tvOS Simulator,name=Apple TV,OS=15.2' -sdk 'appletvsimulator15.2'",
+          "-scheme AppAuth_tvOS -destination 'platform=tvOS Simulator,name=Apple TV,OS=15.2' -sdk 'appletvsimulator15.2'",
+          "-scheme AppAuthTV -destination 'platform=tvOS Simulator,name=Apple TV,OS=15.2' -sdk 'appletvsimulator15.2'"
+        ]
+    steps:
+    - uses: actions/checkout@v2
+    - name: Run unit test targets
+      run: |
+        xcodebuild test \
+          -project AppAuth.xcodeproj \
+          ${{ matrix.flags }}
+
+  pod-lib-lint:
+    runs-on: macOS-latest
+    strategy:
+      matrix:
+        flags: [
+          '',
+          '--use-libraries',
+          '--use-static-frameworks'
+        ]
+    steps:
+    - uses: actions/checkout@v2
+    - name: Update Bundler
+      run: bundle update --bundler
+    - name: Install Ruby gems with Bundler
+      run: bundle install
+    - name: Lint podspec using local source
+      run: pod lib lint --verbose ${{ matrix.flags }}
+
+  spm-build-test:
+    runs-on: macOS-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build unit test target
+      run: swift build
+    - name: Run unit test target
+      run: swift test --enable-code-coverage
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v2

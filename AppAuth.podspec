@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "AppAuth"
-  s.version      = "1.4.0"
+  s.version      = "1.5.0"
   s.summary      = "AppAuth for iOS and macOS is a client SDK for communicating with OAuth 2.0 and OpenID Connect providers."
 
   s.description  = <<-DESC
@@ -57,17 +57,11 @@ It follows the OAuth 2.0 for Native Apps best current practice
     externalUserAgent.ios.weak_frameworks   = "AuthenticationServices"
 
     # macOS
-    externalUserAgent.osx.source_files = "Source/AppAuth/macOS/**/*.{h,m}"
+    externalUserAgent.osx.source_files      = "Source/AppAuth/macOS/**/*.{h,m}"
     externalUserAgent.osx.deployment_target = '10.9'
+    externalUserAgent.osx.weak_frameworks   = "AuthenticationServices"
   end
   
-  s.subspec 'EnterpriseUserAgent' do |enterpriseUserAgent|
-    enterpriseUserAgent.dependency 'AppAuth/Core'
-    
-    enterpriseUserAgent.ios.source_files = "Source/AppAuthEnterpriseUserAgent.h", "Source/AppAuthEnterpriseUserAgent/iOS/**/*.{h,m}"
-    enterpriseUserAgent.ios.deployment_target = "7.0"
-  end
-
   # Subspec for the full AppAuth library, including platform-dependant external user agents.
   s.subspec 'TV' do |tv|
     tv.source_files = "Source/AppAuthTV.h", "Source/AppAuthTV/*.{h,m}"
