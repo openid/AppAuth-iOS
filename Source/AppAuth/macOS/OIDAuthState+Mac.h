@@ -41,12 +41,38 @@ NS_ASSUME_NONNULL_BEGIN
     @return A @c OIDExternalUserAgentSession instance which will terminate when it
         receives a @c OIDExternalUserAgentSession.cancel message, or after processing a
         @c OIDExternalUserAgentSession.resumeExternalUserAgentFlowWithURL: message.
-    @discussion This method adopts ASWebAuthenticationSession for macOS 10.15 and above or the default browser otherwise.
+    @discussion This method adopts ASWebAuthenticationSession for macOS 10.15 and above or the
+        default browser otherwise.
  */
 + (id<OIDExternalUserAgentSession>)
     authStateByPresentingAuthorizationRequest:(OIDAuthorizationRequest *)authorizationRequest
                              presentingWindow:(NSWindow *)presentingWindow
                                      callback:(OIDAuthStateAuthorizationCallback)callback;
+
+/*! @brief Convenience method to create a @c OIDAuthState by presenting an authorization request
+        (optionally using an emphemeral browser session that shares no cookies or data with the
+        normal browser session) and performing the authorization code exchange in the case of code
+        flow requests. For the hybrid flow, the caller should validate the id_token and c_hash, then
+        perform the token request (@c OIDAuthorizationService.performTokenRequest:callback:)
+        and update the OIDAuthState with the results using
+        @c OIDAuthState.updateWithTokenResponse:error:.
+    @param authorizationRequest The authorization request to present.
+    @param presentingWindow The window to present the authentication flow.
+    @param prefersEphemeralSession Whether the caller prefers to use a private authentication
+        session. See @c ASWebAuthenticationSession.prefersEphemeralWebBrowserSession for more.
+    @param callback The method called when the request has completed or failed.
+    @return A @c OIDExternalUserAgentSession instance which will terminate when it
+        receives a @c OIDExternalUserAgentSession.cancel message, or after processing a
+        @c OIDExternalUserAgentSession.resumeExternalUserAgentFlowWithURL: message.
+    @discussion This method adopts ASWebAuthenticationSession for macOS 10.15 and above or the
+        default browser otherwise.
+ */
++ (id<OIDExternalUserAgentSession>)
+    authStateByPresentingAuthorizationRequest:(OIDAuthorizationRequest *)authorizationRequest
+                             presentingWindow:(NSWindow *)presentingWindow
+                      prefersEphemeralSession:(BOOL)prefersEphemeralSession
+                                     callback:(OIDAuthStateAuthorizationCallback)callback
+    API_AVAILABLE(macos(10.15));
 
 /*! @param authorizationRequest The authorization request to present.
     @param callback The method called when the request has completed or failed.

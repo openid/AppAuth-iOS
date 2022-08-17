@@ -35,6 +35,15 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (instancetype)initWithPresentingWindow:(NSWindow *)presentingWindow NS_DESIGNATED_INITIALIZER;
 
+/*! @brief Create an iOS user-agent which optionally uses a private authentication session.
+ @param presentingWindow The window from which to present the ASWebAuthenticationSession.
+ @param prefersEphemeralSession Whether the caller prefers to use a private authentication
+ session. See @c ASWebAuthenticationSession.prefersEphemeralWebBrowserSession for more.
+ */
+- (nullable instancetype)initWithPresentingWindow:(NSWindow *)presentingWindow
+                          prefersEphemeralSession:(BOOL)prefersEphemeralSession
+    API_AVAILABLE(macos(10.15));
+
 - (instancetype)init __deprecated_msg("Use initWithPresentingWindow for macOS 10.15 and above.");
 
 @end
