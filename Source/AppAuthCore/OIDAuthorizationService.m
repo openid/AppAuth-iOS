@@ -107,17 +107,19 @@ NS_ASSUME_NONNULL_BEGIN
 + (BOOL)URL:(NSURL *)URL matchesRedirectionURL:(NSURL *)redirectionURL {
   NSURL *standardizedURL = [URL standardizedURL];
   NSURL *standardizedRedirectURL = [redirectionURL standardizedURL];
-  NSString *trimmedStdUrlPath = [standardizedURL.path stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"/"]];
-  NSString *stdRedirectUrlPath = [standardizedRedirectURL.path stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"/"]];
-    
+  NSString *normalizedPath = [standardizedURL.path isEqualToString:@"/"] ? @""
+    : standardizedURL.path;
+  NSString *normalizedRedirectPath = [standardizedRedirectURL.path isEqualToString:@"/"] ? @""
+    : standardizedRedirectURL.path;
 
   return [standardizedURL.scheme caseInsensitiveCompare:standardizedRedirectURL.scheme] == NSOrderedSame
       && OIDIsEqualIncludingNil(standardizedURL.user, standardizedRedirectURL.user)
       && OIDIsEqualIncludingNil(standardizedURL.password, standardizedRedirectURL.password)
       && OIDIsEqualIncludingNil(standardizedURL.host, standardizedRedirectURL.host)
       && OIDIsEqualIncludingNil(standardizedURL.port, standardizedRedirectURL.port)
-      && OIDIsEqualIncludingNil(trimmedStdUrlPath, stdRedirectUrlPath);
+      && OIDIsEqualIncludingNil(normalizedPath, normalizedRedirectPath);
 }
+
 - (BOOL)shouldHandleURL:(NSURL *)URL {
   return [[self class] URL:URL matchesRedirectionURL:_request.redirectURL];
 }
