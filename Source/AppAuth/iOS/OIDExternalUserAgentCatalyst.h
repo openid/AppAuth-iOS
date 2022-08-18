@@ -45,7 +45,7 @@ API_AVAILABLE(macCatalyst(13)) API_UNAVAILABLE(ios)
     (UIViewController *)presentingViewController
     NS_DESIGNATED_INITIALIZER;
 
-/*! @brief Create a Catalyst user-agent which optionally uses a private authentication session.
+/*! @brief Create an external user-agent which optionally uses a private authentication session.
     @param presentingViewController The view controller from which to present the browser.
     @param prefersEphemeralSession Whether the caller prefers to use a private authentication
         session. See @c ASWebAuthenticationSession.prefersEphemeralWebBrowserSession for more.
