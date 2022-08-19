@@ -59,7 +59,7 @@ FOUNDATION_EXPORT const unsigned char AppAuthVersionString[];
 #import <AppAuth/OIDExternalUserAgentIOS.h>
 #import <AppAuth/OIDExternalUserAgentIOSCustomBrowser.h>
 #import "AppAuth/OIDExternalUserAgentCatalyst.h"
-#elif TARGET_OS_MAC
+#elif TARGET_OS_OSX
 #import <AppAuth/OIDAuthState+Mac.h>
 #import <AppAuth/OIDAuthorizationService+Mac.h>
 #import <AppAuth/OIDExternalUserAgentMac.h>

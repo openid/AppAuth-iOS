@@ -51,7 +51,7 @@
 #import "OIDExternalUserAgentIOS.h"
 #import "OIDExternalUserAgentIOSCustomBrowser.h"
 #import "OIDExternalUserAgentCatalyst.h"
-#elif TARGET_OS_MAC
+#elif TARGET_OS_OSX
 #import "OIDAuthState+Mac.h"
 #import "OIDAuthorizationService+Mac.h"
 #import "OIDExternalUserAgentMac.h"
@@ -75,7 +75,7 @@
     It follows the best practices set out in 
     [RFC 8252 - OAuth 2.0 for Native Apps](https://tools.ietf.org/html/rfc8252)
     including using `SFAuthenticationSession` and `SFSafariViewController` on iOS
-    for the auth request. `UIWebView` and `WKWebView` are explicitly *not*
+    for the auth request. Web view and `WKWebView` are explicitly *not*
     supported due to the security and usability reasons explained in
     [Section 8.12 of RFC 8252](https://tools.ietf.org/html/rfc8252#section-8.12).
 

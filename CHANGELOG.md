@@ -1,5 +1,21 @@
 # AppAuth for iOS and macOS Changelog
 
+## 1.5.0
+- Improved tvOS support. ([#111](https://github.com/openid/AppAuth-iOS/issues/111))
+- ASWebAuthenticationSession on macOS. ([#675](https://github.com/openid/AppAuth-iOS/pull/675))
+
+## 1.4.0
+
+### Added
+
+1. Support for Swift Package Manager
+
+## 1.3.1
+
+### Fixes
+
+1. Removed `UIWebView` reference in comment
+
 ## 1.3.0
 
 ### Notable Changes
