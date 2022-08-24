@@ -24,7 +24,7 @@ typealias PostRegistrationCallback = (_ configuration: OIDServiceConfiguration?,
 /**
  The OIDC issuer from which the configuration will be discovered.
 */
-let kIssuer: String = "https://issuer.example.com";
+let kIssuer: String = "https://api.multi.dev.or.janrain.com/00000000-0000-0000-0000-000000000000/login";
 
 /**
  The OAuth client ID.
@@ -32,20 +32,66 @@ let kIssuer: String = "https://issuer.example.com";
  For client configuration instructions, see the [README](https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-iOS_Swift-Carthage/README.md).
  Set to nil to use dynamic registration with this example.
 */
-let kClientID: String? = "YOUR_CLIENT_ID";
+let kClientID: String? = "cec9a504-a0ab-4b92-879b-711482a3f69b";
 
 /**
  The OAuth redirect URI for the client @c kClientID.
 
  For client configuration instructions, see the [README](https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-iOS_Swift-Carthage/README.md).
 */
-let kRedirectURI: String = "com.example.app:/oauth2redirect/example-provider";
+let kRedirectURI: String = "net.openid.appauthdemo://oauth2redirect";
+
+/**
+ The OAuth logout  URI for the client @c kClientID.
+ 
+ For client configuration instructions, see the [README](https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-iOS_Swift-Carthage/README.md).
+ */
+let kLogoutURI: String? = "https://api.multi.dev.or.janrain.com/00000000-0000-0000-0000-000000000000/auth-ui/logout";
+
+/**
+ The OAuth prompt specification.
+ 
+ For client configuration instructions, see the [README](https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-iOS_Swift-Carthage/README.md).
+ */
+let kPrompt: String? = nil;
+
+/**
+ The OAuth claims specification.
+ 
+ For client configuration instructions, see the [README](https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-iOS_Swift-Carthage/README.md).
+ */
+let kClaims: String? = nil;
+
+/**
+ The OAuth ACR claims specification.
+ 
+ For client configuration instructions, see the [README](https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-iOS_Swift-Carthage/README.md).
+ */
+let kAcrValues: String? = "urn:akamai-ic:nist:800-63-3:aal:1";
+
+/**
+ The OAuth scope specification.
+ 
+ For client configuration instructions, see the [README](https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-iOS_Swift-Carthage/README.md).
+ */
+let kScopes: [String] = [OIDScopeOpenID, OIDScopeProfile];
+
+/**
+ The additional paramaters configuration
+ 
+ For client configuration instructions, see the [README](https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-iOS_Swift-Carthage/README.md).
+ */
+var kAdditionalParamaters: [String : String] = [:];
 
 /**
  NSCoding key for the authState property.
 */
 let kAppAuthExampleAuthStateKey: String = "authState";
 
+/**
+ NSCoding key for the browserState property.
+ */
+let kAppAuthExampleBrowserStateKey: String = "browserState";
 
 class AppAuthExampleViewController: UIViewController {
 
@@ -57,13 +103,16 @@ class AppAuthExampleViewController: UIViewController {
     @IBOutlet private weak var trashButton: UIBarButtonItem!
 
     private var authState: OIDAuthState?
+    private var browserStateActive = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         self.validateOAuthConfiguration()
+        self.configureAdditionalParameters()
 
-        self.loadState()
+        self.loadAppState()
+        self.loadBrowserState()
         self.updateUI()
     }
 }
@@ -109,7 +158,21 @@ extension AppAuthExampleViewController {
                 "with the scheme of your redirect URI. Full instructions: " +
                 "https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-iOS_Swift-Carthage/README.md")
     }
-
+    
+    func configureAdditionalParameters() {
+                
+        if kPrompt != nil {
+            kAdditionalParamaters["prompt"] = kPrompt
+        }
+        
+        if kClaims != nil {
+            kAdditionalParamaters["claims"] = kClaims
+        }
+        
+        if kAcrValues != nil {
+            kAdditionalParamaters["acr_values"] = kAcrValues
+        }
+    }
 }
 
 //MARK: IBActions
@@ -311,25 +374,34 @@ extension AppAuthExampleViewController {
                                       message: nil,
                                       preferredStyle: UIAlertControllerStyle.actionSheet)
 
-        let clearAuthAction = UIAlertAction(title: "Clear OAuthState", style: .destructive) { (_: UIAlertAction) in
-            self.setAuthState(nil)
-            self.updateUI()
-        }
-        alert.addAction(clearAuthAction)
-        
-        let clearLogs = UIAlertAction(title: "Clear Logs", style: .default) { (_: UIAlertAction) in
-            DispatchQueue.main.async {
-                self.logTextView.text = ""
+        if authState != nil {
+            let clearAuthAction = UIAlertAction(title: "Clear App Session", style: .destructive) { (_: UIAlertAction) in
+                self.setAuthState(nil)
             }
+            alert.addAction(clearAuthAction)
+        }
+        
+        if browserStateActive {
+            let clearBrowserAction = UIAlertAction(title: "Clear Browser Session", style: .destructive) { (_: UIAlertAction) in
+                self.endBrowserSession()
+            }
+            alert.addAction(clearBrowserAction)
+        }
+        
+        if logTextView.hasText{
+            let clearLogs = UIAlertAction(title: "Clear Logs", style: .default) { (_: UIAlertAction) in
+                DispatchQueue.main.async {
+                    self.logTextView.text = ""
+                    self.updateUI()
+                }
+            }
+            alert.addAction(clearLogs)
         }
 
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-
-
-        alert.addAction(clearLogs)
         alert.addAction(cancelAction)
-        self.present(alert, animated: true, completion: nil)
-
+        
+        self.present(alert, animated: true)
     }
 }
 
@@ -383,11 +455,10 @@ extension AppAuthExampleViewController {
         let request = OIDAuthorizationRequest(configuration: configuration,
                                               clientId: clientID,
                                               clientSecret: clientSecret,
-                                              scopes: [OIDScopeOpenID, OIDScopeProfile],
+                                              scopes: kScopes,
                                               redirectURL: redirectURI,
                                               responseType: OIDResponseTypeCode,
-                                              additionalParameters: nil)
-
+                                              additionalParameters: kAdditionalParamaters)
         // performs authentication request
         logMessage("Initiating authorization request with scope: \(request.scope ?? "DEFAULT_SCOPE")")
 
@@ -395,6 +466,7 @@ extension AppAuthExampleViewController {
 
             if let authState = authState {
                 self.setAuthState(authState)
+                self.setBrowserStateActive(true)
                 self.logMessage("Got authorization tokens. Access token: \(authState.lastTokenResponse?.accessToken ?? "DEFAULT_TOKEN")")
             } else {
                 self.logMessage("Authorization error: \(error?.localizedDescription ?? "DEFAULT_ERROR")")
@@ -419,10 +491,10 @@ extension AppAuthExampleViewController {
         let request = OIDAuthorizationRequest(configuration: configuration,
                                               clientId: clientID,
                                               clientSecret: clientSecret,
-                                              scopes: [OIDScopeOpenID, OIDScopeProfile],
+                                              scopes: kScopes,
                                               redirectURL: redirectURI,
                                               responseType: OIDResponseTypeCode,
-                                              additionalParameters: nil)
+                                              additionalParameters: kAdditionalParamaters)
 
         // performs authentication request
         logMessage("Initiating authorization request with scope: \(request.scope ?? "DEFAULT_SCOPE")")
@@ -432,10 +504,86 @@ extension AppAuthExampleViewController {
             if let response = response {
                 let authState = OIDAuthState(authorizationResponse: response)
                 self.setAuthState(authState)
+                self.setBrowserStateActive(true)
                 self.logMessage("Authorization response with code: \(response.authorizationCode ?? "DEFAULT_CODE")")
                 // could just call [self tokenExchange:nil] directly, but will let the user initiate it.
             } else {
                 self.logMessage("Authorization error: \(error?.localizedDescription ?? "DEFAULT_ERROR")")
+            }
+        }
+    }
+    
+    func endBrowserSession() {
+
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
+            self.logMessage("Error accessing AppDelegate")
+            return
+        }
+        
+        guard let issuer = URL(string: kIssuer) else {
+            self.logMessage("Error creating URL for : \(kRedirectURI)")
+            return
+        }
+        
+        guard let clientId = kClientID else {
+            self.logMessage("Error accessing issuer")
+            return
+        }
+        
+        guard let redirectURI = URL(string: kRedirectURI) else {
+            self.logMessage("Error creating URL for : \(kRedirectURI)")
+            return
+        }
+        
+        guard let logoutUriString = kLogoutURI,
+              !logoutUriString.isEmpty,
+              let logoutUri = URL(string: logoutUriString)
+        else {
+            self.logMessage("Error accessing kLogoutUri")
+            return
+        }
+        
+        OIDAuthorizationService.discoverConfiguration(forIssuer: issuer) { configuration, error in
+            
+            if let error = error  {
+                self.logMessage("Error retrieving discovery document: \(error.localizedDescription)")
+                return
+            }
+            
+            guard let configuration = configuration else {
+                self.logMessage("Error retrieving discovery document. Error & Configuration both are NIL!")
+                return
+            }
+            
+            let tokenHint = self.authState?.lastTokenResponse?.idToken ?? ""
+            
+            // create the config for logout
+            let logoutConfig = OIDServiceConfiguration(
+                authorizationEndpoint: configuration.authorizationEndpoint,
+                tokenEndpoint: configuration.tokenEndpoint,
+                issuer: configuration.issuer,
+                registrationEndpoint: configuration.registrationEndpoint,
+                endSessionEndpoint: logoutUri)
+            
+            let logoutAdditionalParams = [
+                "client_id": clientId]
+            
+            // builds the end session request
+            let endSessionRequest = OIDEndSessionRequest(configuration: logoutConfig, idTokenHint: tokenHint, postLogoutRedirectURL: redirectURI, additionalParameters: logoutAdditionalParams)
+                    
+            guard let userAgent = OIDExternalUserAgentIOS(presenting: self) else {
+                self.logMessage("Error retrieving user agent")
+                return
+            }
+            
+            // opens the browser to clear auth session
+            appDelegate.currentAuthorizationFlow = OIDAuthorizationService.present(endSessionRequest, externalUserAgent: userAgent) { (response, error) in
+                if let logoutResponse = response {
+                    self.setBrowserStateActive(false)
+                    self.logMessage("Got logout response: \(logoutResponse)")
+                }  else {
+                    self.logMessage("Logout error: \(error?.localizedDescription ?? "DEFAULT_ERROR")")
+                }
             }
         }
     }
@@ -445,7 +593,7 @@ extension AppAuthExampleViewController {
 extension AppAuthExampleViewController: OIDAuthStateChangeDelegate, OIDAuthStateErrorDelegate {
 
     func didChange(_ state: OIDAuthState) {
-        self.stateChanged()
+        self.appStateChanged()
     }
 
     func authState(_ state: OIDAuthState, didEncounterAuthorizationError error: Error) {
@@ -456,7 +604,7 @@ extension AppAuthExampleViewController: OIDAuthStateChangeDelegate, OIDAuthState
 //MARK: Helper Methods
 extension AppAuthExampleViewController {
 
-    func saveState() {
+    func saveAppState() {
 
         var data: Data? = nil
 
@@ -469,14 +617,25 @@ extension AppAuthExampleViewController {
             userDefaults.synchronize()
         }
     }
+    
+    func saveBrowserState() {
 
-    func loadState() {
-        guard let data = UserDefaults(suiteName: "group.net.openid.appauth.Example")?.object(forKey: kAppAuthExampleAuthStateKey) as? Data else {
-            return
+        if let userDefaults = UserDefaults(suiteName: "group.net.openid.appauth.Example") {
+            userDefaults.set(browserStateActive, forKey: kAppAuthExampleBrowserStateKey)
+            userDefaults.synchronize()
         }
+    }
 
-        if let authState = NSKeyedUnarchiver.unarchiveObject(with: data) as? OIDAuthState {
+    func loadAppState() {
+        if let data = UserDefaults(suiteName: "group.net.openid.appauth.Example")?.object(forKey: kAppAuthExampleAuthStateKey) as? Data,
+           let authState = NSKeyedUnarchiver.unarchiveObject(with: data) as? OIDAuthState {
             self.setAuthState(authState)
+        }
+    }
+    
+    func loadBrowserState() {
+        if let browserData = UserDefaults(suiteName: "group.net.openid.appauth.Example")?.bool(forKey: kAppAuthExampleBrowserStateKey) {
+            self.setBrowserStateActive(browserData)
         }
     }
 
@@ -486,7 +645,15 @@ extension AppAuthExampleViewController {
         }
         self.authState = authState;
         self.authState?.stateChangeDelegate = self;
-        self.stateChanged()
+        self.appStateChanged()
+    }
+    
+    func setBrowserStateActive(_ browserState: Bool) {
+        if (self.browserStateActive == browserState) {
+            return;
+        }
+        self.browserStateActive = browserState;
+        self.browserStateChanged()
     }
 
     func updateUI() {
@@ -502,10 +669,24 @@ extension AppAuthExampleViewController {
             self.authManual.setTitle("1(A) Manual", for: .normal)
             self.userinfoButton.isEnabled = false
         }
+        
+        if self.browserStateActive ||
+            self.authState != nil ||
+            self.logTextView.hasText
+        {
+            self.trashButton.isEnabled = true
+        } else {
+            self.trashButton.isEnabled = false
+        }
     }
 
-    func stateChanged() {
-        self.saveState()
+    func appStateChanged() {
+        self.saveAppState()
+        self.updateUI()
+    }
+    
+    func browserStateChanged() {
+        self.saveBrowserState()
         self.updateUI()
     }
 
@@ -514,6 +695,9 @@ extension AppAuthExampleViewController {
         guard let message = message else {
             return
         }
+        
+        // check if log was empty to enable clearing
+        let isLogPreviouslyEmpty = logTextView.text.isEmpty
 
         print(message);
 
@@ -525,6 +709,13 @@ extension AppAuthExampleViewController {
         DispatchQueue.main.async {
             let logText = "\(self.logTextView.text ?? "")\n\(dateString): \(message)"
             self.logTextView.text = logText
+            
+            let range = NSMakeRange(self.logTextView.text.count - 1, 0)
+            self.logTextView.scrollRangeToVisible(range)
+            
+            if isLogPreviouslyEmpty {
+                self.updateUI()
+            }
         }
     }
 }

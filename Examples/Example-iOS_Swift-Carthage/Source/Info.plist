@@ -23,7 +23,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.example.app</string>
+				<string>net.openid.appauthdemo</string>
 			</array>
 		</dict>
 	</array>
