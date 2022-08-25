@@ -27,15 +27,13 @@ NS_ASSUME_NONNULL_BEGIN
 @interface AppAuthExampleViewController : UIViewController
 
 @property(nullable) IBOutlet UIButton *authAutoButton;
-@property(nullable) IBOutlet UIButton *authManual;
-@property(nullable) IBOutlet UIButton *authForce;
+@property(nullable) IBOutlet UIButton *authManualButton;
 @property(nullable) IBOutlet UIButton *codeExchangeButton;
 @property(nullable) IBOutlet UIButton *userinfoButton;
 @property(nullable) IBOutlet UIButton *clearAuthStateButton;
 @property(nullable) IBOutlet UITextView *logTextView;
-@property(nullable) IBOutlet UIButton *profile;
-@property(nullable) IBOutlet UIButton *logoutWithoutRedirect;
-@property(nullable) IBOutlet UIButton *lougoutRedirect;
+@property(nullable) IBOutlet UIButton *profileButton;
+@property(nullable) IBOutlet UIButton *logoutButton;
 
 /*! @brief The authorization state. This is the AppAuth object that you should keep around and
         serialize to disk.
@@ -73,11 +71,15 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (IBAction)clearLog:(nullable id)sender;
 
+/*! @brief Opens the user's profile in the browser object.
+ @param sender IBAction sender.
+ */
 - (IBAction)openProfile:(nullable id)sender;
 
-- (IBAction)logoutWithoutRedirect:(nullable id)sender;
-
-- (IBAction)logoutWithRedirect:(nullable id)sender;
+/*! @brief Logs the user out of the browser session object.
+ @param sender IBAction sender.
+ */
+- (IBAction)logout:(nullable id)sender;
 
 @end
 
