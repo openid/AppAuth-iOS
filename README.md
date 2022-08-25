@@ -180,14 +180,51 @@ OIDServiceConfiguration *configuration =
 // perform the auth request...
 ```
 
+You can optionally configure the logout and profile endpoints:
+
+<sub>Objective-C</sub>
+```objc
+static NSString *const kLogoutURI = @"https://login.myjanrain.com/00000000-0000-0000-0000-000000000000/auth-ui/logout";
+static NSString *const kProfileURI = @"https://login.myjanrain.com/00000000-0000-0000-0000-000000000000/auth-ui/profile";
+```
+
 <sub>Swift</sub>
 ```swift
-let authorizationEndpoint = URL(string: "https://accounts.google.com/o/oauth2/v2/auth")!
-let tokenEndpoint = URL(string: "https://www.googleapis.com/oauth2/v4/token")!
-let configuration = OIDServiceConfiguration(authorizationEndpoint: authorizationEndpoint,
-                                            tokenEndpoint: tokenEndpoint)
+let kLogoutURI: String? = "https://api.multi.dev.or.janrain.com/00000000-0000-0000-0000-000000000000/auth-ui/logout";
+let kProfileURI: String? = "https://api.multi.dev.or.janrain.com/00000000-0000-0000-0000-000000000000/auth-ui/profile";
+```
 
-// perform the auth request...
+You can also configure the Prompt, Claims, and ACR Values:
+
+<sub>Objective-C</sub>
+```objc
+static NSString *const kPrompt = "login";
+static NSString *const kClaims = nil;
+static NSString *const kAcrValues = @"urn:akamai-ic:nist:800-63-3:aal:1";
+```
+
+<sub>Swift</sub>
+```swift
+let kPrompt: String? = "login";
+let kClaims: String? = nil;
+let kAcrValues: String? = "urn:akamai-ic:nist:800-63-3:aal:1";
+```
+
+The Scopes can be configured as well:
+
+In Objective-C this is done in `setAdditionalParams` using the OIDScopes
+<sub>Objective-C</sub>
+```objc
+- (void)setAdditionalParams {
+  // set the scope parameters
+  kScopes = @[OIDScopeOpenID, OIDScopeProfile];
+}
+```
+
+In Swift this is set in the `kScopes` constant with the OIDScopes
+<sub>Swift</sub>
+```swift
+let kScopes: [String] = [OIDScopeOpenID, OIDScopeProfile];
 ```
 
 **tvOS**
