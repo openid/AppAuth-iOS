@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "AppAuth"
-  s.version      = "1.0.0"
+  s.version      = "1.5.0"
   s.summary      = "AppAuth for iOS and macOS is a client SDK for communicating with OAuth 2.0 and OpenID Connect providers."
 
   s.description  = <<-DESC
@@ -23,6 +23,7 @@ It follows the OAuth 2.0 for Native Apps best current practice
   s.license      = "Apache License, Version 2.0"
   s.authors      = { "William Denniss" => "wdenniss@google.com",
                      "Steven E Wright" => "stevewright@google.com",
+                     "Julien Bodet" => "julien.bodet92@gmail.com"
                    }
 
   # Note: While watchOS and tvOS are specified here, only iOS and macOS have
@@ -30,30 +31,42 @@ It follows the OAuth 2.0 for Native Apps best current practice
   #       classes of AppAuth with tokens on watchOS and tvOS, but currently the
   #       library won't help you obtain authorization grants on those platforms.
 
-  s.platforms    = { :ios => "7.0", :osx => "10.9", :watchos => "2.0", :tvos => "9.0" }
+  s.ios.deployment_target = "7.0"
+  s.osx.deployment_target = "10.9"
+  s.watchos.deployment_target = "2.0"
+  s.tvos.deployment_target = "9.0"
 
   s.source       = { :git => "https://github.com/openid/AppAuth-iOS.git", :tag => s.version }
   s.requires_arc = true
 
   # Subspec for the core AppAuth library classes only, suitable for extensions.
   s.subspec 'Core' do |core|
-     core.source_files = "Source/*.{h,m}"
-     core.exclude_files = "Source/AppAuth.h"
+     core.source_files = "Source/AppAuthCore.h", "Source/AppAuthCore/*.{h,m}"
   end
 
   # Subspec for the full AppAuth library, including platform-dependant external user agents.
   s.subspec 'ExternalUserAgent' do |externalUserAgent|
-
-    externalUserAgent.source_files = "Source/*.{h,m}"
+    externalUserAgent.dependency 'AppAuth/Core'
+    
+    externalUserAgent.source_files = "Source/AppAuth.h", "Source/AppAuth/*.{h,m}"
     
     # iOS
-    externalUserAgent.ios.source_files      = "Source/iOS/**/*.{h,m}"
+    externalUserAgent.ios.source_files      = "Source/AppAuth/iOS/**/*.{h,m}"
     externalUserAgent.ios.deployment_target = "7.0"
     externalUserAgent.ios.frameworks        = "SafariServices"
     externalUserAgent.ios.weak_frameworks   = "AuthenticationServices"
 
     # macOS
-    externalUserAgent.osx.source_files = "Source/macOS/**/*.{h,m}"
-    externalUserAgent.osx.deployment_target = '10.9'    
+    externalUserAgent.osx.source_files      = "Source/AppAuth/macOS/**/*.{h,m}"
+    externalUserAgent.osx.deployment_target = '10.9'
+    externalUserAgent.osx.weak_frameworks   = "AuthenticationServices"
   end
+  
+  # Subspec for the full AppAuth library, including platform-dependant external user agents.
+  s.subspec 'TV' do |tv|
+    tv.source_files = "Source/AppAuthTV.h", "Source/AppAuthTV/*.{h,m}"
+    tv.dependency 'AppAuth/Core'
+  end
+
+  s.default_subspecs = 'Core', 'ExternalUserAgent'
 end
