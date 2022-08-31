@@ -30,7 +30,6 @@
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <state key="normal" title="Authorize (Manual)"/>
                     <connections>
-                        <action selector="authManualButton:" destination="-1" eventType="touchUpInside" id="IgW-YN-5v0"/>
                         <action selector="authNoCodeExchange:" destination="-1" eventType="touchUpInside" id="Ve9-Ya-IqQ"/>
                     </connections>
                 </button>
@@ -114,11 +113,10 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EKp-TC-ZGM">
-                    <rect key="frame" x="190" y="140" width="121" height="30"/>
+                    <rect key="frame" x="190" y="140" width="138" height="30"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <state key="normal" title="Profile"/>
+                    <state key="normal" title="Profile Management"/>
                     <connections>
-                        <action selector="clearLog:" destination="-1" eventType="touchUpInside" id="Klf-aA-e9d"/>
                         <action selector="openProfile:" destination="-1" eventType="touchUpInside" id="xf6-HK-d8K"/>
                     </connections>
                 </button>
@@ -128,6 +126,14 @@
                     <state key="normal" title="Browser Logout"/>
                     <connections>
                         <action selector="logout:" destination="-1" eventType="touchUpInside" id="GFY-BN-LPk"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="leM-EF-ox5">
+                    <rect key="frame" x="190" y="198" width="161" height="30"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <state key="normal" title="Check Browser Session"/>
+                    <connections>
+                        <action selector="authWithAutoCodeExchange:" destination="-1" eventType="touchUpInside" id="6Ae-Dh-nae"/>
                     </connections>
                 </button>
             </subviews>
