@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		06375C8821A4E50E00338E3F /* AppAuthCore.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 06375C8721A4E50E00338E3F /* AppAuthCore.xcframework */; };
 		0646249B205F026300072191 /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0646249A205F026300072191 /* NotificationCenter.framework */; };
 		0646249E205F026300072191 /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0646249D205F026300072191 /* TodayViewController.swift */; };
 		064624A1205F026300072191 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0646249F205F026300072191 /* MainInterface.storyboard */; };
@@ -16,8 +15,10 @@
 		9F265BD31F9AC69300DC14BF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9F265BCB1F9AC69300DC14BF /* LaunchScreen.storyboard */; };
 		9F265BD41F9AC69300DC14BF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9F265BCD1F9AC69300DC14BF /* Main.storyboard */; };
 		9F265BD51F9AC69300DC14BF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F265BCF1F9AC69300DC14BF /* AppDelegate.swift */; };
-		9F265BDA1F9AE50400DC14BF /* AppAuth.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F265BD91F9AE50400DC14BF /* AppAuth.xcframework */; };
 		9FD378231FB7C6F800436204 /* AppAuthExampleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD378221FB7C6F800436204 /* AppAuthExampleViewController.swift */; };
+		F8B42DD628C1551500CC93EA /* AppAuth.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F265BD91F9AE50400DC14BF /* AppAuth.xcframework */; };
+		F8B42DD928C27DEA00CC93EA /* AppAuth.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F265BD91F9AE50400DC14BF /* AppAuth.xcframework */; };
+		F8B42DDA28C27DEA00CC93EA /* AppAuth.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9F265BD91F9AE50400DC14BF /* AppAuth.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,6 +41,17 @@
 				064624A5205F026300072191 /* Example_Extension.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F8B42DDB28C27DEA00CC93EA /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				F8B42DDA28C27DEA00CC93EA /* AppAuth.xcframework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -68,7 +80,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				06375C8821A4E50E00338E3F /* AppAuthCore.xcframework in Frameworks */,
+				F8B42DD628C1551500CC93EA /* AppAuth.xcframework in Frameworks */,
 				0646249B205F026300072191 /* NotificationCenter.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -77,7 +89,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9F265BDA1F9AE50400DC14BF /* AppAuth.xcframework in Frameworks */,
+				F8B42DD928C27DEA00CC93EA /* AppAuth.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -168,6 +180,7 @@
 				9F265B951F9AC5D600DC14BF /* Resources */,
 				9F265BDB1F9AE52C00DC14BF /* Carthage */,
 				064624A9205F026300072191 /* Embed App Extensions */,
+				F8B42DDB28C27DEA00CC93EA /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
