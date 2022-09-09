@@ -443,7 +443,7 @@ static NSString *const kDiscoveryDocumentNotDictionary =
     unarchived = [NSKeyedUnarchiver unarchiveObjectWithData:data];
   }
 
-  XCTAssertEqualObjects(discovery.discoveryDictionary, unarchived.discoveryDictionary, @"");
+  XCTAssertEqualObjects(discovery.discoveryDictionary, unarchived.discoveryDictionary);
 }
 
 /*! @brief To ensure backward compatibility, test our ability to decode the old encoding of @c OIDServiceDiscovery.
@@ -478,7 +478,7 @@ static NSString *const kDiscoveryDocumentNotDictionary =
     unarchived = [NSKeyedUnarchiver unarchiveObjectWithData:data];
   }
 
-  XCTAssertEqualObjects(discovery.discoveryDictionary, unarchived.discoveryDictionary, @"");
+  XCTAssertEqualObjects(discovery.discoveryDictionary, unarchived.discoveryDictionary);
 }
 
 /*! @brief Tests the NSCopying implementation by round-tripping an instance through the copying
