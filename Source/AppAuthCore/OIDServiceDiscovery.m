@@ -226,6 +226,8 @@ static NSString *const kOPTosURIKey = @"op_tos_uri";
 
 - (void)encodeWithCoder:(NSCoder *)aCoder {
   [aCoder encodeObject:_discoveryDictionary forKey:kDiscoveryDictionaryKey];
+  // Provide forward compatibilty by continuing to add the old encoding.
+  [_discoveryDictionary encodeWithCoder:aCoder];
 }
 
 #pragma mark - Properties
