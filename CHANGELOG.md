@@ -1,3 +1,7 @@
+# 1.6.0
+- Added a `prefersEphemeralSession` parameter for external user-agents. ([#645](https://github.com/openid/AppAuth-iOS/pull/645))
+- Fixed errors encountered when using secure coding to decode `OIDAuthState`. ([#656](https://github.com/openid/AppAuth-iOS/pull/656), [#721](https://github.com/openid/AppAuth-iOS/pull/721))
+
 # 1.5.0
 - Improved tvOS support. ([#111](https://github.com/openid/AppAuth-iOS/issues/111))
 - ASWebAuthenticationSession on macOS. ([#675](https://github.com/openid/AppAuth-iOS/pull/675))
