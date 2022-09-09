@@ -30,6 +30,42 @@
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wgnu"
 
+// Define a subclass of @c OIDServiceDiscovery that provides the old NSCoding decoding
+// implementation.
+@interface OIDServiceDiscoveryOldDecoding : OIDServiceDiscovery
+@end
+
+@implementation OIDServiceDiscoveryOldDecoding
+
++ (BOOL)supportsSecureCoding {
+  return YES;
+}
+
+- (nullable instancetype)initWithCoder:(NSCoder *)aDecoder {
+  NSError *error;
+  NSDictionary *dictionary = [[NSDictionary alloc] initWithCoder:aDecoder];
+  self = [self initWithDictionary:dictionary error:&error];
+  if (error) {
+    return nil;
+  }
+  return self;
+}
+
+@end
+
+// Define a subclass of @c OIDServiceDiscovery that provides the old NSCoding encoding
+// implementation.
+@interface OIDServiceDiscoveryOldEncoding : OIDServiceDiscovery
+@end
+
+@implementation OIDServiceDiscoveryOldEncoding
+
+- (void)encodeWithCoder:(NSCoder *)coder {
+  [self.discoveryDictionary encodeWithCoder:coder];
+}
+
+@end
+
 /*! Testing URL used when testing URL conversions. */
 static NSString *const kTestURL = @"http://www.google.com/";
 
@@ -110,7 +146,7 @@ static NSString *const kOPTosURIKey = @"op_tos_uri";
     kJWKSURLKey : @"http://www.example.com/jwks",
     kRegistrationEndpointKey : @"Registration Endpoint",
     kEndSessionEndpointKey : @"https://www.example.com/logout",
-    kScopesSupportedKey : @"Scopes Supported",
+    kScopesSupportedKey : @[ @"scope1", @"scope2" ],
     kResponseTypesSupportedKey : @"Response Types Supported",
     kResponseModesSupportedKey : @"Response Modes Supported",
     kGrantTypesSupportedKey : @"Grant Types Supported",
@@ -411,10 +447,97 @@ static NSString *const kDiscoveryDocumentNotDictionary =
   OIDServiceDiscovery *discovery =
       [[OIDServiceDiscovery alloc] initWithDictionary:serviceDiscoveryDictionary
                                                              error:&error];
-  NSData *data = [NSKeyedArchiver archivedDataWithRootObject:discovery];
-  OIDServiceDiscovery *unarchived = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+  NSData *data;
+  if (@available(iOS 11.0, macOS 10.13, tvOS 11.0, watchOS 4.0, *)) {
+    data = [NSKeyedArchiver archivedDataWithRootObject:discovery
+                                 requiringSecureCoding:YES
+                                                 error:&error];
+  } else {
+    data = [NSKeyedArchiver archivedDataWithRootObject:discovery];
+  }
+  
+  OIDServiceDiscovery *unarchived;
+  if (@available(iOS 11.0, macOS 10.13, tvOS 11.0, watchOS 4.0, *)) {
+    unarchived = [NSKeyedUnarchiver unarchivedObjectOfClass:[OIDServiceDiscovery class]
+                                                   fromData:data
+                                                      error:&error];
+  } else {
+    unarchived = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+  }
 
-  XCTAssertEqualObjects(discovery.discoveryDictionary, unarchived.discoveryDictionary, @"");
+  XCTAssertEqualObjects(discovery.discoveryDictionary, unarchived.discoveryDictionary);
+}
+
+/*! @brief To ensure backward compatibility, test our ability to decode the old encoding of
+        @c OIDServiceDiscovery.
+ */
+- (void)testSecureCodingDecodeOld {
+  NSError *error;
+  NSDictionary *serviceDiscoveryDictionary = [[self class] completeServiceDiscoveryDictionary];
+  OIDServiceDiscoveryOldEncoding *discovery =
+      [[OIDServiceDiscoveryOldEncoding alloc] initWithDictionary:serviceDiscoveryDictionary
+                                                           error:&error];
+  NSData *data;
+  if (@available(iOS 11.0, macOS 10.13, tvOS 11.0, watchOS 4.0, *)) {
+    data = [NSKeyedArchiver archivedDataWithRootObject:discovery
+                                 requiringSecureCoding:YES
+                                                 error:&error];
+  } else {
+    data = [NSKeyedArchiver archivedDataWithRootObject:discovery];
+  }
+  
+  OIDServiceDiscovery *unarchived;
+  if (@available(iOS 11.0, macOS 10.13, tvOS 11.0, watchOS 4.0, *)) {
+    NSSet<Class> *allowedClasses = [NSSet setWithArray:@[[OIDServiceDiscovery class],
+                                                         [NSDictionary class],
+                                                         [NSArray class],
+                                                         [NSString class],
+                                                         [NSNumber class],
+                                                         [NSNull class]]];
+    unarchived = [NSKeyedUnarchiver unarchivedObjectOfClasses:allowedClasses
+                                                     fromData:data
+                                                        error:&error];
+  } else {
+    unarchived = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+  }
+
+  XCTAssertEqualObjects(discovery.discoveryDictionary, unarchived.discoveryDictionary);
+}
+
+/*! @brief To ensure forward compatibility, test the ability of the old implementation to decode
+        the new encoding of @c OIDServiceDiscovery.
+ */
+- (void)testSecureCodingOldDecodeNew {
+  NSError *error;
+  NSDictionary *serviceDiscoveryDictionary = [[self class] completeServiceDiscoveryDictionary];
+  OIDServiceDiscoveryOldDecoding *discovery =
+      [[OIDServiceDiscoveryOldDecoding alloc] initWithDictionary:serviceDiscoveryDictionary
+                                                           error:&error];
+  NSData *data;
+  if (@available(iOS 11.0, macOS 10.13, tvOS 11.0, watchOS 4.0, *)) {
+    data = [NSKeyedArchiver archivedDataWithRootObject:discovery
+                                 requiringSecureCoding:YES
+                                                 error:&error];
+  } else {
+    data = [NSKeyedArchiver archivedDataWithRootObject:discovery];
+  }
+  
+  OIDServiceDiscovery *unarchived;
+  if (@available(iOS 11.0, macOS 10.13, tvOS 11.0, watchOS 4.0, *)) {
+    NSSet<Class> *allowedClasses = [NSSet setWithArray:@[[OIDServiceDiscoveryOldDecoding class],
+                                                         [NSDictionary class],
+                                                         [NSArray class],
+                                                         [NSString class],
+                                                         [NSNumber class],
+                                                         [NSNull class]]];
+    unarchived = [NSKeyedUnarchiver unarchivedObjectOfClasses:allowedClasses
+                                                     fromData:data
+                                                        error:&error];
+  } else {
+    unarchived = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+  }
+  XCTAssertNil(error);
+  XCTAssertEqualObjects(discovery.discoveryDictionary, unarchived.discoveryDictionary);
 }
 
 /*! @brief Tests the NSCopying implementation by round-tripping an instance through the copying
