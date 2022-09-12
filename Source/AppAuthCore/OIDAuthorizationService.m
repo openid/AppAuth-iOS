@@ -107,10 +107,13 @@ NS_ASSUME_NONNULL_BEGIN
 + (BOOL)URL:(NSURL *)URL matchesRedirectionURL:(NSURL *)redirectionURL {
   NSURL *standardizedURL = [URL standardizedURL];
   NSURL *standardizedRedirectURL = [redirectionURL standardizedURL];
+  // Some servers adds '/' to the end when there is no 'path'. To relax the equality rules below
+  // were decided to normalize pathes. So, pathes like '' are the same to '/' now.
+  // Read more https://github.com/openid/AppAuth-iOS/issues/446
   NSString *normalizedPath = [standardizedURL.path isEqualToString:@"/"] ? @""
-    : standardizedURL.path;
+      : standardizedURL.path;
   NSString *normalizedRedirectPath = [standardizedRedirectURL.path isEqualToString:@"/"] ? @""
-    : standardizedRedirectURL.path;
+      : standardizedRedirectURL.path;
 
   return [standardizedURL.scheme caseInsensitiveCompare:standardizedRedirectURL.scheme] == NSOrderedSame
       && OIDIsEqualIncludingNil(standardizedURL.user, standardizedRedirectURL.user)
