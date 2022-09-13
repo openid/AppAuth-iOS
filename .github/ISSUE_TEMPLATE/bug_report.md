@@ -1,6 +1,6 @@
 ---
-name: Bug report
-about: Submit a bug report for this project
+name: Bug Report
+about: Submit a bug report if something isn't working as expected.
 title: ""
 labels: bug, triage
 assignees: ""
