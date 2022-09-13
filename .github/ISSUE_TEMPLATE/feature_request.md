@@ -4,7 +4,6 @@ about: Suggest a new feature for this project
 title: ""
 labels: enhancement, triage
 assignees: ""
-
 ---
 
 **Is your feature request related to a problem you're having? Please describe.**
