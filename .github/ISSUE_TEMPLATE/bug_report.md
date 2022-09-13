@@ -1,10 +1,9 @@
 ---
-name: Bug report
-about: Create a bug report to help us improve
-title: ''
-labels: ''
-assignees: ''
-
+name: Bug Report
+about: Submit a bug report if something isn't working as expected.
+title: ""
+labels: bug, triage
+assignees: ""
 ---
 
 **Describe the bug**
@@ -13,7 +12,7 @@ A clear and concise description of what the bug is.
 **To Reproduce**
 Steps to reproduce the behavior:
 1. Go to '...'
-2. Click on '....'
+2. Tap on '....'
 3. Scroll down to '....'
 4. See error
 
