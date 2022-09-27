@@ -42,11 +42,18 @@ let kClientID: String? = "cec9a504-a0ab-4b92-879b-711482a3f69b";
 let kRedirectURI: String = "net.openid.appauthdemo://oauth2redirect";
 
 /**
- The OAuth logout  URI for the client @c kClientID.
+ The OAuth logout URI for the client @c kClientID.
  
  For client configuration instructions, see the [README](https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-iOS_Swift-Carthage/README.md).
  */
 let kLogoutURI: String? = "https://api.multi.dev.or.janrain.com/00000000-0000-0000-0000-000000000000/auth-ui/logout";
+
+/**
+ The Profile Management URI for the client @c kClientID.
+ 
+ For client configuration instructions, see the [README](https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-iOS_Swift-Carthage/README.md).
+ */
+let kProfileURI: String? = "https://api.multi.dev.or.janrain.com/00000000-0000-0000-0000-000000000000/auth-ui/profile";
 
 /**
  The OAuth prompt specification.
@@ -160,7 +167,7 @@ extension AppAuthExampleViewController {
     }
     
     func configureAdditionalParameters() {
-                
+
         if kPrompt != nil {
             kAdditionalParamaters["prompt"] = kPrompt
         }
@@ -214,7 +221,6 @@ extension AppAuthExampleViewController {
                 }
             }
         }
-
     }
 
     @IBAction func authNoCodeExchange(_ sender: UIButton) {
@@ -368,6 +374,44 @@ extension AppAuthExampleViewController {
         }
     }
 
+    @IBAction func profileManagement(_ sender: UIButton) {
+
+        guard let issuer = URL(string: kIssuer) else {
+            self.logMessage("Error creating URL for : \(kIssuer)")
+            return
+        }
+
+        self.logMessage("Fetching configuration for issuer: \(issuer)")
+
+        // discovers endpoints
+        OIDAuthorizationService.discoverConfiguration(forIssuer: issuer) { configuration, error in
+
+            guard let config = configuration else {
+                self.logMessage("Error retrieving discovery document: \(error?.localizedDescription ?? "DEFAULT_ERROR")")
+                self.setAuthState(nil)
+                return
+            }
+
+            self.logMessage("Got configuration: \(config)")
+
+            if let clientId = kClientID {
+                self.loadProfileManagement(configuration: config, clientID: clientId, clientSecret: nil)
+            } else {
+                self.doClientRegistration(configuration: config) { configuration, response in
+
+                    guard let configuration = configuration, let clientID = response?.clientID else {
+                        self.logMessage("Error retrieving configuration OR clientID")
+                        return
+                    }
+
+                    self.loadProfileManagement(configuration: configuration,
+                                               clientID: clientID,
+                                               clientSecret: response?.clientSecret)
+                }
+            }
+        }
+    }
+
     @IBAction func trashClicked(_ sender: UIBarButtonItem) {
 
         let alert = UIAlertController(title: nil,
@@ -512,6 +556,63 @@ extension AppAuthExampleViewController {
             }
         }
     }
+
+    func loadProfileManagement(configuration: OIDServiceConfiguration, clientID: String, clientSecret: String?) {
+        
+        guard let redirectURI = URL(string: kRedirectURI) else {
+            self.logMessage("Error creating URL for : \(kRedirectURI)")
+            return
+        }
+        
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
+            self.logMessage("Error accessing AppDelegate")
+            return
+        }
+        
+        guard let profileUriString = kProfileURI,
+              !profileUriString.isEmpty,
+              let profileUri = URL(string: profileUriString)
+        else {
+            self.logMessage("Error accessing kProfileUri")
+            return
+        }
+        
+        // create the config for profile management
+        let profileConfig = OIDServiceConfiguration(
+            authorizationEndpoint: profileUri,
+            tokenEndpoint: configuration.tokenEndpoint,
+            issuer: configuration.issuer,
+            registrationEndpoint: configuration.registrationEndpoint,
+            endSessionEndpoint: configuration.endSessionEndpoint)
+        
+        logMessage("Initiating profile management request with config: \(profileConfig)")
+        
+        // builds profile management request
+        let request = OIDAuthorizationRequest(configuration: profileConfig,
+                                              clientId: clientID,
+                                              clientSecret: clientSecret,
+                                              scopes: kScopes,
+                                              redirectURL: redirectURI,
+                                              responseType: OIDResponseTypeCode,
+                                              additionalParameters: kAdditionalParamaters)
+        // performs profile management request
+        logMessage("Initiating profile management request with scope: \(request.scope ?? "DEFAULT_SCOPE")")
+        
+        guard let userAgent = OIDExternalUserAgentIOS(presenting: self) else {
+            self.logMessage("Error retrieving user agent")
+            return
+        }
+        
+        appDelegate.currentAuthorizationFlow = OIDAuthorizationService.present(request, externalUserAgent: userAgent) { (response, error) in
+            
+            if let logoutResponse = response {
+                self.setBrowserStateActive(false)
+                self.logMessage("Got profile management response: \(logoutResponse)")
+            }  else {
+                self.logMessage("profile management error: \(error?.localizedDescription ?? "DEFAULT_ERROR")")
+            }
+        }
+    }
     
     func endBrowserSession() {
 
@@ -521,17 +622,17 @@ extension AppAuthExampleViewController {
         }
         
         guard let issuer = URL(string: kIssuer) else {
-            self.logMessage("Error creating URL for : \(kRedirectURI)")
+            self.logMessage("Error creating URL for : \(kIssuer)")
             return
+        }
+
+        guard let redirectURI = URL(string: kRedirectURI) else {
+          self.logMessage("Error creating URL for : \(kRedirectURI)")
+          return
         }
         
         guard let clientId = kClientID else {
-            self.logMessage("Error accessing issuer")
-            return
-        }
-        
-        guard let redirectURI = URL(string: kRedirectURI) else {
-            self.logMessage("Error creating URL for : \(kRedirectURI)")
+            self.logMessage("Error accessing clientId")
             return
         }
         
@@ -570,13 +671,13 @@ extension AppAuthExampleViewController {
             
             // builds the end session request
             let endSessionRequest = OIDEndSessionRequest(configuration: logoutConfig, idTokenHint: tokenHint, postLogoutRedirectURL: redirectURI, additionalParameters: logoutAdditionalParams)
-                    
+
             guard let userAgent = OIDExternalUserAgentIOS(presenting: self) else {
                 self.logMessage("Error retrieving user agent")
                 return
             }
             
-            // opens the browser to clear auth session
+            // opens the browser to clear auth sessionendSessionRequest  OIDEndSessionRequest  0x0000600000807930
             appDelegate.currentAuthorizationFlow = OIDAuthorizationService.present(endSessionRequest, externalUserAgent: userAgent) { (response, error) in
                 if let logoutResponse = response {
                     self.setBrowserStateActive(false)

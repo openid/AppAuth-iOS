@@ -27,7 +27,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>aic.com.gizmo.vagrant.testing</string>
+				<string>net.openid.appauthdemo</string>
 			</array>
 		</dict>
 	</array>

@@ -18,7 +18,7 @@
 
 import UIKit
 import NotificationCenter
-import AppAuthCore
+import AppAuth
 
 /**
  NSCoding key for the authState property.
