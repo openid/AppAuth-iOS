@@ -26,7 +26,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var currentAuthorizationFlow: OIDExternalUserAgentSession?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+
+        var isAuthorized = false
+
+        if let data = UserDefaults(suiteName: "group.net.openid.appauth.Example")?.object(forKey: kAppAuthExampleAuthStateKey) as? Data,
+           let authstate = NSKeyedUnarchiver.unarchiveObject(with: data) as? OIDAuthState {
+
+            if authstate.isAuthorized {
+                isAuthorized = true
+            }
+        }
+
+        if isAuthorized {
+            let appDelegateTemp = UIApplication.shared.delegate as? AppDelegate
+            appDelegateTemp?.window?.rootViewController = UIStoryboard(name: "Main", bundle: Bundle.main).instantiateInitialViewController()
+        } else {
+            let rootController = UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "AppAuthExampleViewController")
+            self.window?.rootViewController = rootController
+        }
+
         return true
     }
 
@@ -41,4 +59,3 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
 }
-
