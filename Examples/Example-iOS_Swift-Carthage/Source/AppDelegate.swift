@@ -37,12 +37,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
 
-        if isAuthorized {
-            let appDelegateTemp = UIApplication.shared.delegate as? AppDelegate
-            appDelegateTemp?.window?.rootViewController = UIStoryboard(name: "Main", bundle: Bundle.main).instantiateInitialViewController()
-        } else {
-            let rootController = UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "AppAuthExampleViewController")
-            self.window?.rootViewController = rootController
+        if !isAuthorized {
+            let loginViewController = UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "AppAuthExampleViewController")
+            self.window?.rootViewController = loginViewController
         }
 
         return true

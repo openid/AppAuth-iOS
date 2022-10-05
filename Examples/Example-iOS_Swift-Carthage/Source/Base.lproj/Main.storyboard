@@ -368,7 +368,7 @@
                         <outlet property="codeExchangeButton" destination="yKt-dA-rBi" id="KMY-Pm-eMD"/>
                         <outlet property="logTextView" destination="O9h-qU-yeX" id="N4A-9y-WeO"/>
                         <outlet property="profileButton" destination="dtw-d9-X94" id="31q-LA-MUS"/>
-                        <outlet property="refeshTokenButton" destination="EkC-qf-HP5" id="Tif-5R-kVq"/>
+                        <outlet property="refreshTokenButton" destination="EkC-qf-HP5" id="0sJ-Kq-pVs"/>
                         <outlet property="userinfoButton" destination="MW0-DI-DKv" id="A0G-RZ-Bjs"/>
                     </connections>
                 </viewController>

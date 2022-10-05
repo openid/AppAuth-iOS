@@ -37,7 +37,7 @@ class TokenViewController: UIViewController {
 
     @IBOutlet private weak var codeExchangeButton: UIButton!
     @IBOutlet private weak var userinfoButton: UIButton!
-    @IBOutlet private weak var refeshTokenButton: UIButton!
+    @IBOutlet private weak var refreshTokenButton: UIButton!
     @IBOutlet private weak var browserButton: UIButton!
     @IBOutlet private weak var profileButton: UIButton!
     @IBOutlet private weak var logTextView: UITextView!
@@ -619,7 +619,7 @@ extension TokenViewController {
 
         self.codeExchangeButton.isHidden = self.authState?.lastTokenResponse != nil
 
-        self.refeshTokenButton.isHidden = self.authState?.lastTokenResponse == nil
+        self.refreshTokenButton.isHidden = self.authState?.lastTokenResponse == nil
 
         if let authState = self.authState {
             self.userinfoButton.isEnabled = authState.isAuthorized
