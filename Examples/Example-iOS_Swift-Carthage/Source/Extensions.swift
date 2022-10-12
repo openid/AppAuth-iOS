@@ -11,11 +11,11 @@ import UIKit
 
 extension UIApplication {
 
-    static var loginAnimation: UIViewAnimationOptions = .transitionFlipFromRight
-    static var logoutAnimation: UIViewAnimationOptions = .transitionCrossDissolve
+    static var loginAnimation: UIView.AnimationOptions = .transitionFlipFromRight
+    static var logoutAnimation: UIView.AnimationOptions = .transitionCrossDissolve
 
     public static func setRootView(_ viewController: UIViewController,
-                                   options: UIViewAnimationOptions = .transitionFlipFromRight,
+                                   options: UIView.AnimationOptions = .transitionFlipFromRight,
                                    animated: Bool = true,
                                    duration: TimeInterval = 0.5,
                                    completion: (() -> Void)? = nil) {

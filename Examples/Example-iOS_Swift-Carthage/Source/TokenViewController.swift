@@ -24,14 +24,14 @@ import UIKit
 
  For client configuration instructions, see the [README](https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-iOS_Swift-Carthage/README.md).
  */
-let kLogoutURI: String? = "https://api.multi.dev.or.janrain.com/00000000-0000-0000-0000-000000000000/auth-ui/logout";
+let kLogoutURI: String? = "https://api.multi.dev.or.janrain.com/00000000-0000-0000-0000-000000000000/auth-ui/logout"
 
 /**
  The Profile Management URI for the client @c kClientID.
 
  For client configuration instructions, see the [README](https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-iOS_Swift-Carthage/README.md).
  */
-let kProfileURI: String? = "https://api.multi.dev.or.janrain.com/00000000-0000-0000-0000-000000000000/auth-ui/profile";
+let kProfileURI: String? = "https://api.multi.dev.or.janrain.com/00000000-0000-0000-0000-000000000000/auth-ui/profile"
 
 class TokenViewController: UIViewController {
 
@@ -65,15 +65,15 @@ extension TokenViewController {
 
         assert(kIssuer != "https://issuer.example.com",
                "Update kIssuer with your own issuer.\n" +
-               "Instructions: https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-iOS_Swift-Carthage/README.md");
+               "Instructions: https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-iOS_Swift-Carthage/README.md")
 
         assert(kClientID != "YOUR_CLIENT_ID",
                "Update kClientID with your own client ID.\n" +
-               "Instructions: https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-iOS_Swift-Carthage/README.md");
+               "Instructions: https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-iOS_Swift-Carthage/README.md")
 
         assert(kRedirectURI != "com.example.app:/oauth2redirect/example-provider",
                "Update kRedirectURI with your own redirect URI.\n" +
-               "Instructions: https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-iOS_Swift-Carthage/README.md");
+               "Instructions: https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-iOS_Swift-Carthage/README.md")
 
         // verifies that the custom URI scheme has been updated in the Info.plist
         guard let urlTypes: [AnyObject] = Bundle.main.object(forInfoDictionaryKey: "CFBundleURLTypes") as? [AnyObject], urlTypes.count > 0 else {
@@ -128,11 +128,11 @@ extension TokenViewController {
     @IBAction func authWithAutoCodeExchange(_ sender: UIButton) {
 
         guard let issuer = URL(string: kIssuer) else {
-            self.logMessage("Error creating URL for : \(kIssuer)")
+            logMessage("Error creating URL for : \(kIssuer)")
             return
         }
 
-        self.logMessage("Fetching configuration for issuer: \(issuer)")
+        logMessage("Fetching configuration for issuer: \(issuer)")
 
         // discovers endpoints
         discoverConfig() { configuration, clientId, clientSecret in
@@ -166,11 +166,11 @@ extension TokenViewController {
     @IBAction func codeExchange(_ sender: UIButton) {
 
         guard let tokenExchangeRequest = self.authState?.lastAuthorizationResponse.tokenExchangeRequest() else {
-            self.logMessage("Error creating authorization code exchange request")
+            logMessage("Error creating authorization code exchange request")
             return
         }
 
-        self.logMessage("Performing authorization code exchange with request \(tokenExchangeRequest)")
+        logMessage("Performing authorization code exchange with request \(tokenExchangeRequest)")
 
         OIDAuthorizationService.perform(tokenExchangeRequest) { response, error in
 
@@ -185,7 +185,7 @@ extension TokenViewController {
 
     @IBAction func userinfo(_ sender: UIButton) {
 
-        guard let userinfoEndpoint = self.authState?.lastAuthorizationResponse.request.configuration.discoveryDocument?.userinfoEndpoint else {
+        guard let userinfoEndpoint = authState?.lastAuthorizationResponse.request.configuration.discoveryDocument?.userinfoEndpoint else {
             logMessage("Userinfo endpoint not declared in discovery document")
             return
         }
@@ -194,7 +194,7 @@ extension TokenViewController {
 
         let currentAccessToken: String? = authState?.lastTokenResponse?.accessToken
 
-        self.authState?.performAction() { (accessToken, idToken, error) in
+        authState?.performAction() { (accessToken, idToken, error) in
 
             if error != nil  {
                 self.logMessage("Error fetching fresh tokens: \(error?.localizedDescription ?? "ERROR")")
@@ -273,7 +273,7 @@ extension TokenViewController {
 
     @IBAction func refreshToken(_ sender: UIButton) {
 
-        guard let tokenRefreshRequest = self.authState?.tokenRefreshRequest() else {
+        guard let tokenRefreshRequest = authState?.tokenRefreshRequest() else {
             logMessage("Error creating token refresh request")
             return
         }
@@ -284,21 +284,22 @@ extension TokenViewController {
 
             if let tokenResponse = response {
                 self.logMessage("Received token response with accessToken: \(tokenResponse.accessToken ?? "DEFAULT_TOKEN")")
+                self.authState?.update(with: tokenResponse, error: error)
             } else {
                 self.logMessage("Token refresh error: \(error?.localizedDescription ?? "DEFAULT_ERROR")")
+                self.setAuthState(nil)
             }
-            self.authState?.update(with: response, error: error)
         }
     }
 
     @IBAction func profileManagement(_ sender: UIButton) {
 
         guard let issuer = URL(string: kIssuer) else {
-            self.logMessage("Error creating URL for : \(kIssuer)")
+            logMessage("Error creating URL for : \(kIssuer)")
             return
         }
 
-        self.logMessage("Fetching configuration for issuer: \(issuer)")
+        logMessage("Fetching configuration for issuer: \(issuer)")
 
         // discovers endpoints
         discoverConfig() { configuration, clientId, clientSecret in
@@ -330,7 +331,7 @@ extension TokenViewController {
     }
 
     @IBAction func logout(_ sender: UIButton) {
-        self.endBrowserSession()
+        endBrowserSession()
     }
 
     @IBAction func clearLog(_ sender: UIButton) {
@@ -346,12 +347,12 @@ extension TokenViewController {
     func discoverConfig(callback: @escaping PostDiscoveryCallback) {
 
         guard let issuer = URL(string: kIssuer) else {
-            self.logMessage("Error creating URL for : \(kIssuer)")
+            logMessage("Error creating URL for : \(kIssuer)")
             updateUI()
             return
         }
 
-        self.logMessage("Fetching configuration for issuer: \(issuer)")
+        logMessage("Fetching configuration for issuer: \(issuer)")
 
         OIDAuthorizationService.discoverConfiguration(forIssuer: issuer) { configuration, error in
 
@@ -390,7 +391,7 @@ extension TokenViewController {
     func doClientRegistration(configuration: OIDServiceConfiguration, callback: @escaping PostRegistrationCallback) {
 
         guard let redirectURI = URL(string: kRedirectURI) else {
-            self.logMessage("Error creating URL for : \(kRedirectURI)")
+            logMessage("Error creating URL for : \(kRedirectURI)")
             return
         }
 
@@ -403,7 +404,7 @@ extension TokenViewController {
                                                                      additionalParameters: nil)
 
         // performs registration request
-        self.logMessage("Initiating registration request")
+        logMessage("Initiating registration request")
 
         OIDAuthorizationService.perform(request) { response, error in
 
@@ -421,12 +422,12 @@ extension TokenViewController {
     func doAuthWithAutoCodeExchange(configuration: OIDServiceConfiguration, clientID: String, clientSecret: String?) {
 
         guard let redirectURI = URL(string: kRedirectURI) else {
-            self.logMessage("Error creating URL for : \(kRedirectURI)")
+            logMessage("Error creating URL for : \(kRedirectURI)")
             return
         }
 
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
-            self.logMessage("Error accessing AppDelegate")
+            logMessage("Error accessing AppDelegate")
             return
         }
 
@@ -455,12 +456,12 @@ extension TokenViewController {
     func loadProfileManagement(configuration: OIDServiceConfiguration, clientID: String, clientSecret: String?) {
 
         guard let redirectURI = URL(string: kRedirectURI) else {
-            self.logMessage("Error creating URL for : \(kRedirectURI)")
+            logMessage("Error creating URL for : \(kRedirectURI)")
             return
         }
 
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
-            self.logMessage("Error accessing AppDelegate")
+            logMessage("Error accessing AppDelegate")
             return
         }
 
@@ -468,7 +469,7 @@ extension TokenViewController {
               !profileUriString.isEmpty,
               let profileUri = URL(string: profileUriString)
         else {
-            self.logMessage("Error accessing kProfileUri")
+            logMessage("Error accessing kProfileUri")
             return
         }
 
@@ -494,7 +495,7 @@ extension TokenViewController {
         logMessage("Initiating profile management request with scope: \(request.scope ?? "DEFAULT_SCOPE")")
 
         guard let userAgent = OIDExternalUserAgentIOS(presenting: self) else {
-            self.logMessage("Error retrieving user agent")
+            logMessage("Error retrieving user agent")
             return
         }
 
@@ -511,12 +512,12 @@ extension TokenViewController {
     func endBrowserSession() {
 
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
-            self.logMessage("Error accessing AppDelegate")
+            logMessage("Error accessing AppDelegate")
             return
         }
 
         guard let redirectURI = URL(string: kRedirectURI) else {
-            self.logMessage("Error creating URL for : \(kRedirectURI)")
+            logMessage("Error creating URL for : \(kRedirectURI)")
             return
         }
 
@@ -524,7 +525,7 @@ extension TokenViewController {
               !logoutUriString.isEmpty,
               let logoutUri = URL(string: logoutUriString)
         else {
-            self.logMessage("Error accessing kLogoutUri")
+            logMessage("Error accessing kLogoutUri")
             return
         }
 
@@ -574,11 +575,11 @@ extension TokenViewController {
 extension TokenViewController: OIDAuthStateChangeDelegate, OIDAuthStateErrorDelegate {
 
     func didChange(_ state: OIDAuthState) {
-        self.appStateChanged()
+        appStateChanged()
     }
 
     func authState(_ state: OIDAuthState, didEncounterAuthorizationError error: Error) {
-        self.logMessage("Received authorization error: \(error)")
+        logMessage("Received authorization error: \(error)")
     }
 }
 
@@ -602,35 +603,33 @@ extension TokenViewController {
     func loadAppState() {
         if let data = UserDefaults(suiteName: "group.net.openid.appauth.Example")?.object(forKey: kAppAuthExampleAuthStateKey) as? Data,
            let authState = NSKeyedUnarchiver.unarchiveObject(with: data) as? OIDAuthState {
-            self.setAuthState(authState)
+            setAuthState(authState)
         }
     }
 
     func setAuthState(_ authState: OIDAuthState?) {
         if (self.authState == authState) {
-            return;
+            return
         }
-        self.authState = authState;
-        self.authState?.stateChangeDelegate = self;
-        self.appStateChanged()
+        self.authState = authState
+        self.authState?.stateChangeDelegate = self
+        appStateChanged()
     }
 
     func updateUI() {
 
-        self.codeExchangeButton.isHidden = self.authState?.lastTokenResponse != nil
-
-        self.refreshTokenButton.isHidden = self.authState?.lastTokenResponse == nil
+        codeExchangeButton.isHidden = authState?.lastTokenResponse != nil
+        refreshTokenButton.isHidden = authState?.lastTokenResponse == nil
 
         if let authState = self.authState {
-            self.userinfoButton.isEnabled = authState.isAuthorized
-        } else {
-            self.userinfoButton.isEnabled = false
+            userinfoButton.isEnabled = authState.isAuthorized
+            profileButton.isEnabled = authState.isAuthorized
         }
     }
 
     func appStateChanged() {
-        self.saveAppState()
-        self.updateUI()
+        saveAppState()
+        updateUI()
     }
 
     func logMessage(_ message: String?) {
@@ -642,10 +641,10 @@ extension TokenViewController {
         // check if log was empty to enable clearing
         let isLogPreviouslyEmpty = logTextView.text.isEmpty
 
-        print(message);
+        print(message)
 
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "hh:mm:ss";
+        dateFormatter.dateFormat = "hh:mm:ss"
         let dateString = dateFormatter.string(from: Date())
 
         // appends to output log

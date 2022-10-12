@@ -10,16 +10,15 @@
 		0646249B205F026300072191 /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0646249A205F026300072191 /* NotificationCenter.framework */; };
 		0646249E205F026300072191 /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0646249D205F026300072191 /* TodayViewController.swift */; };
 		064624A1205F026300072191 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0646249F205F026300072191 /* MainInterface.storyboard */; };
-		064624A5205F026300072191 /* Example_Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 06462499205F026300072191 /* Example_Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		064624A5205F026300072191 /* Example_Extension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 06462499205F026300072191 /* Example_Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		9F265BD11F9AC69300DC14BF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9F265BC91F9AC69300DC14BF /* Assets.xcassets */; };
 		9F265BD31F9AC69300DC14BF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9F265BCB1F9AC69300DC14BF /* LaunchScreen.storyboard */; };
 		9F265BD41F9AC69300DC14BF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9F265BCD1F9AC69300DC14BF /* Main.storyboard */; };
 		9F265BD51F9AC69300DC14BF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F265BCF1F9AC69300DC14BF /* AppDelegate.swift */; };
 		9FD378231FB7C6F800436204 /* AppAuthExampleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD378221FB7C6F800436204 /* AppAuthExampleViewController.swift */; };
 		F82883DC28ECA8E800255633 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F82883DA28ECA8B800255633 /* Extensions.swift */; };
-		F864D70028D4BE0900C9E79C /* AppAuthCore.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 06375C8721A4E50E00338E3F /* AppAuthCore.xcframework */; };
-		F8B42DD928C27DEA00CC93EA /* AppAuth.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F265BD91F9AE50400DC14BF /* AppAuth.xcframework */; };
-		F8B42DDA28C27DEA00CC93EA /* AppAuth.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9F265BD91F9AE50400DC14BF /* AppAuth.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		F8AAA48828F75F35005BB4C1 /* AppAuthCore.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8AAA48128F75E94005BB4C1 /* AppAuthCore.xcframework */; };
+		F8AAA48B28F75F39005BB4C1 /* AppAuth.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8AAA47D28F75E8C005BB4C1 /* AppAuth.xcframework */; };
 		F8B42DDD28C7E4D600CC93EA /* TokenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8B42DDC28C7E4D600CC93EA /* TokenViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -34,32 +33,20 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		064624A9205F026300072191 /* Embed App Extensions */ = {
+		064624A9205F026300072191 /* Embed Foundation Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				064624A5205F026300072191 /* Example_Extension.appex in Embed App Extensions */,
+				064624A5205F026300072191 /* Example_Extension.appex in Embed Foundation Extensions */,
 			);
-			name = "Embed App Extensions";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		F8B42DDB28C27DEA00CC93EA /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				F8B42DDA28C27DEA00CC93EA /* AppAuth.xcframework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
+			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		06375C8721A4E50E00338E3F /* AppAuthCore.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = AppAuthCore.xcframework; path = Carthage/Build/AppAuthCore.xcframework; sourceTree = "<group>"; };
 		06462499205F026300072191 /* Example_Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = Example_Extension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		0646249A205F026300072191 /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
 		0646249D205F026300072191 /* TodayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewController.swift; sourceTree = "<group>"; };
@@ -73,9 +60,10 @@
 		9F265BCE1F9AC69300DC14BF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		9F265BCF1F9AC69300DC14BF /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9F265BD01F9AC69300DC14BF /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		9F265BD91F9AE50400DC14BF /* AppAuth.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = AppAuth.xcframework; path = Carthage/Build/AppAuth.xcframework; sourceTree = "<group>"; };
 		9FD378221FB7C6F800436204 /* AppAuthExampleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppAuthExampleViewController.swift; sourceTree = "<group>"; };
 		F82883DA28ECA8B800255633 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		F8AAA47D28F75E8C005BB4C1 /* AppAuth.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = AppAuth.xcframework; path = Carthage/Build/AppAuth.xcframework; sourceTree = "<group>"; };
+		F8AAA48128F75E94005BB4C1 /* AppAuthCore.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = AppAuthCore.xcframework; path = Carthage/Build/AppAuthCore.xcframework; sourceTree = "<group>"; };
 		F8B42DDC28C7E4D600CC93EA /* TokenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -84,7 +72,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F864D70028D4BE0900C9E79C /* AppAuthCore.xcframework in Frameworks */,
+				F8AAA48828F75F35005BB4C1 /* AppAuthCore.xcframework in Frameworks */,
 				0646249B205F026300072191 /* NotificationCenter.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -93,7 +81,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F8B42DD928C27DEA00CC93EA /* AppAuth.xcframework in Frameworks */,
+				F8AAA48B28F75F39005BB4C1 /* AppAuth.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -149,8 +137,8 @@
 		9F265BD81F9AE4CA00DC14BF /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				06375C8721A4E50E00338E3F /* AppAuthCore.xcframework */,
-				9F265BD91F9AE50400DC14BF /* AppAuth.xcframework */,
+				F8AAA48128F75E94005BB4C1 /* AppAuthCore.xcframework */,
+				F8AAA47D28F75E8C005BB4C1 /* AppAuth.xcframework */,
 				0646249A205F026300072191 /* NotificationCenter.framework */,
 			);
 			name = Frameworks;
@@ -166,7 +154,6 @@
 				06462495205F026300072191 /* Sources */,
 				06462496205F026300072191 /* Frameworks */,
 				06462497205F026300072191 /* Resources */,
-				06375C8921A4E56B00338E3F /* Carthage */,
 			);
 			buildRules = (
 			);
@@ -184,9 +171,7 @@
 				9F265B931F9AC5D600DC14BF /* Sources */,
 				9F265B941F9AC5D600DC14BF /* Frameworks */,
 				9F265B951F9AC5D600DC14BF /* Resources */,
-				9F265BDB1F9AE52C00DC14BF /* Carthage */,
-				064624A9205F026300072191 /* Embed App Extensions */,
-				F8B42DDB28C27DEA00CC93EA /* Embed Frameworks */,
+				064624A9205F026300072191 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
@@ -205,11 +190,12 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0920;
-				LastUpgradeCheck = 0900;
+				LastUpgradeCheck = 1400;
 				ORGANIZATIONNAME = "Google Inc.";
 				TargetAttributes = {
 					06462498205F026300072191 = {
 						CreatedOnToolsVersion = 9.2;
+						LastSwiftMigration = "";
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
@@ -219,6 +205,7 @@
 					};
 					9F265B961F9AC5D600DC14BF = {
 						CreatedOnToolsVersion = 9.0.1;
+						LastSwiftMigration = "";
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
@@ -267,41 +254,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		06375C8921A4E56B00338E3F /* Carthage */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 8;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = Carthage;
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 1;
-			shellPath = /bin/sh;
-			shellScript = "/usr/local/bin/carthage copy-frameworks\n";
-		};
-		9F265BDB1F9AE52C00DC14BF /* Carthage */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 8;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = Carthage;
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 1;
-			shellPath = /bin/sh;
-			shellScript = "/usr/local/bin/carthage copy-frameworks\n";
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		06462495205F026300072191 /* Sources */ = {
@@ -374,7 +326,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "net.openid.appauth.Example.Example-Extension";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -392,7 +344,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "net.openid.appauth.Example.Example-Extension";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -411,6 +363,7 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -418,8 +371,10 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -468,6 +423,7 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -475,8 +431,10 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -525,7 +483,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = net.openid.appauth.Example;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -550,7 +508,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = net.openid.appauth.Example;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

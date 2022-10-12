@@ -26,7 +26,7 @@ typealias PostDiscoveryCallback = (_ configuration: OIDServiceConfiguration?, _ 
 /**
  The OIDC issuer from which the configuration will be discovered.
  */
-let kIssuer: String = "https://api.multi.dev.or.janrain.com/00000000-0000-0000-0000-000000000000/login";
+let kIssuer: String = "https://api.multi.dev.or.janrain.com/00000000-0000-0000-0000-000000000000/login"
 
 /**
  The OAuth client ID.
@@ -34,54 +34,54 @@ let kIssuer: String = "https://api.multi.dev.or.janrain.com/00000000-0000-0000-0
  For client configuration instructions, see the [README](https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-iOS_Swift-Carthage/README.md).
  Set to nil to use dynamic registration with this example.
  */
-let kClientID: String? = "cec9a504-a0ab-4b92-879b-711482a3f69b";
+let kClientID: String? = "cec9a504-a0ab-4b92-879b-711482a3f69b"
 
 /**
  The OAuth redirect URI for the client @c kClientID.
 
  For client configuration instructions, see the [README](https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-iOS_Swift-Carthage/README.md).
  */
-let kRedirectURI: String = "net.openid.appauthdemo://oauth2redirect";
+let kRedirectURI: String = "net.openid.appauthdemo://oauth2redirect"
 
 /**
  The OAuth prompt specification.
  
  For client configuration instructions, see the [README](https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-iOS_Swift-Carthage/README.md).
  */
-let kPrompt: String? = nil;
+let kPrompt: String? = nil
 
 /**
  The OAuth claims specification.
  
  For client configuration instructions, see the [README](https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-iOS_Swift-Carthage/README.md).
  */
-let kClaims: String? = nil;
+let kClaims: String? = nil
 
 /**
  The OAuth ACR claims specification.
  
  For client configuration instructions, see the [README](https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-iOS_Swift-Carthage/README.md).
  */
-let kAcrValues: String? = "urn:akamai-ic:nist:800-63-3:aal:1";
+let kAcrValues: String? = "urn:akamai-ic:nist:800-63-3:aal:1"
 
 /**
  The OAuth scope specification.
  
  For client configuration instructions, see the [README](https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-iOS_Swift-Carthage/README.md).
  */
-let kScopes: [String] = [OIDScopeOpenID, OIDScopeProfile];
+let kScopes: [String] = [OIDScopeOpenID, OIDScopeProfile]
 
 /**
  The additional paramaters configuration
  
  For client configuration instructions, see the [README](https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-iOS_Swift-Carthage/README.md).
  */
-var kAdditionalParamaters: [String : String] = [:];
+var kAdditionalParamaters: [String : String] = [:]
 
 /**
  NSCoding key for the authState property.
  */
-let kAppAuthExampleAuthStateKey: String = "authState";
+let kAppAuthExampleAuthStateKey: String = "authState"
 
 class AppAuthExampleViewController: UIViewController {
 
@@ -112,15 +112,15 @@ extension AppAuthExampleViewController {
 
         assert(kIssuer != "https://issuer.example.com",
                "Update kIssuer with your own issuer.\n" +
-               "Instructions: https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-iOS_Swift-Carthage/README.md");
+               "Instructions: https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-iOS_Swift-Carthage/README.md")
 
         assert(kClientID != "YOUR_CLIENT_ID",
                "Update kClientID with your own client ID.\n" +
-               "Instructions: https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-iOS_Swift-Carthage/README.md");
+               "Instructions: https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-iOS_Swift-Carthage/README.md")
 
         assert(kRedirectURI != "com.example.app:/oauth2redirect/example-provider",
                "Update kRedirectURI with your own redirect URI.\n" +
-               "Instructions: https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-iOS_Swift-Carthage/README.md");
+               "Instructions: https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-iOS_Swift-Carthage/README.md")
 
         // verifies that the custom URI scheme has been updated in the Info.plist
         guard let urlTypes: [AnyObject] = Bundle.main.object(forInfoDictionaryKey: "CFBundleURLTypes") as? [AnyObject], urlTypes.count > 0 else {
@@ -460,10 +460,11 @@ extension AppAuthExampleViewController {
         updateUI(isLoading: false)
 
         if (self.authState == authState) {
-            return;
+            return
         }
-        self.authState = authState;
-        self.authState?.stateChangeDelegate = self;
+        
+        self.authState = authState
+        self.authState?.stateChangeDelegate = self
         appStateChanged()
     }
 
@@ -474,14 +475,12 @@ extension AppAuthExampleViewController {
     func updateUI(isLoading: Bool) {
 
         if isLoading {
-
             authActivityIndicator.startAnimating()
             UIView.animate(withDuration: 0.25, animations: {
                 self.authButton.alpha = 0.5
             })
 
         } else {
-            
             authActivityIndicator.stopAnimating()
             UIView.animate(withDuration: 0.25, animations: {
                 self.authButton.alpha = 1.0
@@ -499,7 +498,7 @@ extension AppAuthExampleViewController {
         }
 
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "hh:mm:ss";
+        dateFormatter.dateFormat = "hh:mm:ss"
         let dateString = dateFormatter.string(from: Date())
 
         // appends to output log

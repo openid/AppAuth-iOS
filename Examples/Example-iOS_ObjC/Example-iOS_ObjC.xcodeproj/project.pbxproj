@@ -18,9 +18,10 @@
 		346E917C1C29D42800D3620B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 346E917A1C29D42800D3620B /* LaunchScreen.storyboard */; };
 		346E91991C2A245000D3620B /* SafariServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 346E91981C2A245000D3620B /* SafariServices.framework */; };
 		34CB09BD1C42007600A54261 /* AppAuthExampleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34CB09BB1C42007600A54261 /* AppAuthExampleViewController.m */; };
-		34CB09BE1C42007600A54261 /* AppAuthExampleViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 34CB09BC1C42007600A54261 /* AppAuthExampleViewController.xib */; };
 		D0B5FA33D74A6F7924A47471 /* libPods-Example-iOS_ObjC_Extension.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 715EDB7EC4271193E47615ED /* libPods-Example-iOS_ObjC_Extension.a */; };
 		E46F8589CE9E5DDFA69D835B /* libPods-Example-iOS_ObjC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B61A918CBE7B8142CD7D8B3 /* libPods-Example-iOS_ObjC.a */; };
+		F82883E128EE117700255633 /* TokenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F82883E028EE117700255633 /* TokenViewController.m */; };
+		F82883E728EE160200255633 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F82883E528EE160200255633 /* Main.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,7 +72,7 @@
 		346E91691C29D42800D3620B /* Example-iOS_ObjC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Example-iOS_ObjC.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		346E916D1C29D42800D3620B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		346E916F1C29D42800D3620B /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		346E91701C29D42800D3620B /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		346E91701C29D42800D3620B /* AppDelegate.m */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		346E91781C29D42800D3620B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		346E917B1C29D42800D3620B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		346E917D1C29D42800D3620B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -79,7 +80,6 @@
 		3474C8DD1DFCB08E00F22B34 /* libAppAuth-iOS.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libAppAuth-iOS.a"; path = "../../build/Debug-iphoneos/libAppAuth-iOS.a"; sourceTree = "<group>"; };
 		34CB09BA1C42007600A54261 /* AppAuthExampleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppAuthExampleViewController.h; sourceTree = "<group>"; };
 		34CB09BB1C42007600A54261 /* AppAuthExampleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppAuthExampleViewController.m; sourceTree = "<group>"; };
-		34CB09BC1C42007600A54261 /* AppAuthExampleViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AppAuthExampleViewController.xib; sourceTree = "<group>"; };
 		3A18DF082AC2FA0980C9DE57 /* Pods-Example-iOS_ObjC_Extension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Example-iOS_ObjC_Extension.release.xcconfig"; path = "Pods/Target Support Files/Pods-Example-iOS_ObjC_Extension/Pods-Example-iOS_ObjC_Extension.release.xcconfig"; sourceTree = "<group>"; };
 		715EDB7EC4271193E47615ED /* libPods-Example-iOS_ObjC_Extension.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Example-iOS_ObjC_Extension.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		86C7660572AE6FF7A4D1592A /* Pods-Example-iOS_ObjC_Extension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Example-iOS_ObjC_Extension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Example-iOS_ObjC_Extension/Pods-Example-iOS_ObjC_Extension.debug.xcconfig"; sourceTree = "<group>"; };
@@ -87,6 +87,9 @@
 		C4C31DB4A4928F246AA03805 /* Pods-Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-Example/Pods-Example.release.xcconfig"; sourceTree = "<group>"; };
 		D9867DC6FA9089CD613D4728 /* Pods-Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Example/Pods-Example.debug.xcconfig"; sourceTree = "<group>"; };
 		ECBCCC4A1A779C83C72044F2 /* Pods-Example-iOS_ObjC.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Example-iOS_ObjC.release.xcconfig"; path = "Pods/Target Support Files/Pods-Example-iOS_ObjC/Pods-Example-iOS_ObjC.release.xcconfig"; sourceTree = "<group>"; };
+		F82883E028EE117700255633 /* TokenViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TokenViewController.m; sourceTree = "<group>"; };
+		F82883E628EE160200255633 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		F82883E828EE167500255633 /* TokenViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TokenViewController.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -162,7 +165,9 @@
 				346E916A1C29D42800D3620B /* Products */,
 				6DB0B0125441549B9E4A3E6C /* Pods */,
 			);
+			indentWidth = 2;
 			sourceTree = "<group>";
+			tabWidth = 2;
 		};
 		346E916A1C29D42800D3620B /* Products */ = {
 			isa = PBXGroup;
@@ -182,8 +187,10 @@
 				346E91701C29D42800D3620B /* AppDelegate.m */,
 				34CB09BA1C42007600A54261 /* AppAuthExampleViewController.h */,
 				34CB09BB1C42007600A54261 /* AppAuthExampleViewController.m */,
-				34CB09BC1C42007600A54261 /* AppAuthExampleViewController.xib */,
+				F82883E828EE167500255633 /* TokenViewController.h */,
+				F82883E028EE117700255633 /* TokenViewController.m */,
 				346E91781C29D42800D3620B /* Assets.xcassets */,
+				F82883E528EE160200255633 /* Main.storyboard */,
 				346E917A1C29D42800D3620B /* LaunchScreen.storyboard */,
 				346E917D1C29D42800D3620B /* Info.plist */,
 				06462428205EB35400072191 /* Example-iOS_ObjC.entitlements */,
@@ -301,6 +308,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -338,7 +346,7 @@
 			files = (
 				346E917C1C29D42800D3620B /* LaunchScreen.storyboard in Resources */,
 				346E91791C29D42800D3620B /* Assets.xcassets in Resources */,
-				34CB09BE1C42007600A54261 /* AppAuthExampleViewController.xib in Resources */,
+				F82883E728EE160200255633 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -404,6 +412,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F82883E128EE117700255633 /* TokenViewController.m in Sources */,
 				346E91711C29D42800D3620B /* AppDelegate.m in Sources */,
 				346E916E1C29D42800D3620B /* main.m in Sources */,
 				34CB09BD1C42007600A54261 /* AppAuthExampleViewController.m in Sources */,
@@ -442,6 +451,16 @@
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
 		};
+		F82883E528EE160200255633 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F82883E628EE160200255633 /* Base */,
+			);
+			indentWidth = 2;
+			name = Main.storyboard;
+			sourceTree = "<group>";
+			usesTabs = 0;
+		};
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
@@ -468,7 +487,7 @@
 				DEVELOPMENT_TEAM = "";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = "Example-iOS_ObjC_Extension/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "net.openid.appauth.Example.Example-iOS-ObjC-Extension";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -500,7 +519,7 @@
 				DEVELOPMENT_TEAM = "";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = "Example-iOS_ObjC_Extension/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "net.openid.appauth.Example.Example-iOS-ObjC-Extension";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -520,7 +539,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = Tests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = net.openid.AppAuthExampleTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -539,7 +558,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = Tests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = net.openid.AppAuthExampleTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -585,7 +604,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "../../Source/**";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -625,7 +644,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "../../Source/**";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -642,7 +661,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = Source/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = net.openid.appauth.Example;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -658,7 +677,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = Source/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = net.openid.appauth.Example;
 				PRODUCT_NAME = "$(TARGET_NAME)";
