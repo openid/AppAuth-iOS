@@ -50,7 +50,7 @@ static NSString *const kRedirectURI = @"net.openid.appauthdemo://oauth2redirect"
         Generally you will point them at a nice page on your site that instructs them to return to
         the app. It's best when that page is uncluttered and to the point.
  */
-static NSString *const kSuccessURLString = @"net.openid.appauthdemo://oauth2redirect";
+static NSString *const kSuccessURLString = @"";
 
 /*! @var kAppAuthExampleAuthStateKey
     @brief NSCoding key for the authState property.
@@ -123,20 +123,23 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
     @brief Refreshes UI, typically called after the auth state changed.
  */
 - (void)updateUI {
-  _userinfoButton.enabled = [_authState isAuthorized];
-  _clearAuthStateButton.enabled = _authState != nil;
-  _codeExchangeButton.enabled = _authState.lastAuthorizationResponse.authorizationCode
-                                && !_authState.lastTokenResponse;
-  // dynamically changes authorize button text depending on authorized state
-  if (!_authState) {
-    _authAutoButton.title = @"Authorize (Custom URI Scheme Redirect)";
-    _authManual.title = @"Authorize (Custom URI Scheme Redirect, Manual)";
-    _authAutoHTTPButton.title = @"Authorize (HTTP Redirect)";
-  } else {
-    _authAutoButton.title = @"Re-authorize (Custom URI Scheme Redirect)";
-    _authManual.title = @"Re-authorize (Custom URI Scheme, Manual)";
-    _authAutoHTTPButton.title = @"Re-authorize (HTTP Redirect)";
-  }
+
+  dispatch_async(dispatch_get_main_queue(), ^() {
+    self.userinfoButton.enabled = [_authState isAuthorized];
+    self.clearAuthStateButton.enabled = _authState != nil;
+    self.codeExchangeButton.enabled = _authState.lastAuthorizationResponse.authorizationCode
+    && !_authState.lastTokenResponse;
+    // dynamically changes authorize button text depending on authorized state
+    if (!self.authState) {
+      self.authAutoButton.title = @"Authorize (Custom URI Scheme Redirect)";
+      self.authManual.title = @"Authorize (Custom URI Scheme Redirect, Manual)";
+      self.authAutoHTTPButton.title = @"Authorize (HTTP Redirect)";
+    } else {
+      self.authAutoButton.title = @"Re-authorize (Custom URI Scheme Redirect)";
+      self.authManual.title = @"Re-authorize (Custom URI Scheme, Manual)";
+      self.authAutoHTTPButton.title = @"Re-authorize (HTTP Redirect)";
+    }
+  });
 }
 
 - (void)stateChanged {
