@@ -1,12 +1,15 @@
 {
   "images" : [
     {
-      "filename" : "AppAuth_Icon_1024.png",
+      "filename" : "AppAuth_logo.svg",
       "idiom" : "universal"
     }
   ],
   "info" : {
     "author" : "xcode",
     "version" : 1
+  },
+  "properties" : {
+    "preserves-vector-representation" : true
   }
 }
