@@ -29,7 +29,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property(nullable) IBOutlet NSButton *authAutoButton;
 @property(nullable) IBOutlet NSButton *authManual;
-@property(nullable) IBOutlet NSButton *authAutoHTTPButton;
 @property(nullable) IBOutlet NSButton *codeExchangeButton;
 @property(nullable) IBOutlet NSButton *userinfoButton;
 @property(nullable) IBOutlet NSButton *clearAuthStateButton;
@@ -55,12 +54,6 @@ NS_ASSUME_NONNULL_BEGIN
     @param sender IBAction sender.
  */
 - (IBAction)authNoCodeExchange:(nullable id)sender;
-
-/*! @brief Authorization code flow using @c OIDAuthState automatic code exchanges and a
-        loopback HTTP-based redirect.
-    @param sender IBAction sender.
- */
-- (IBAction)authWithAutoCodeExchangeHTTP:(nullable id)sender;
 
 /*! @brief Performs the authorization code exchange at the token endpoint.
     @param sender IBAction sender.
