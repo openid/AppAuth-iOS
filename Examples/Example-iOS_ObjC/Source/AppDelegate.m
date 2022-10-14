@@ -21,6 +21,8 @@
 #import "AppAuth.h"
 #import "AppAuthExampleViewController.h"
 
+static NSString *const kAppAuthExampleAuthStateKey = @"authState";
+
 @interface AppDelegate ()
 
 @end
@@ -30,10 +32,21 @@
 - (BOOL)application:(UIApplication *)application
     didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 
+  NSUserDefaults* userDefaults = [[NSUserDefaults alloc] initWithSuiteName:@"group.net.openid.appauth.Example"];
+  NSData *archivedAuthState = [userDefaults objectForKey:kAppAuthExampleAuthStateKey];
+  OIDAuthState *authState = [NSKeyedUnarchiver unarchiveObjectWithData:archivedAuthState];
+
   UIWindow *window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-  UIViewController *mainViewController =
-      [[AppAuthExampleViewController alloc] initWithNibName:nil bundle:nil];
-  window.rootViewController = mainViewController;
+
+  if (authState.isAuthorized) {
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:NSBundle.mainBundle];
+    UIViewController* tokenViewController = [storyboard instantiateViewControllerWithIdentifier:@"TokenViewController"];
+    window.rootViewController = tokenViewController;
+  } else {
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:NSBundle.mainBundle];
+    UIViewController* loginViewController = [storyboard instantiateViewControllerWithIdentifier:@"AppAuthExampleViewController"];
+    window.rootViewController = loginViewController;
+  }
 
   _window = window;
   [_window makeKeyAndVisible];

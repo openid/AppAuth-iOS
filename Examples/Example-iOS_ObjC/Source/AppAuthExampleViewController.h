@@ -26,14 +26,10 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @interface AppAuthExampleViewController : UIViewController
 
-@property(nullable) IBOutlet UIButton *authAutoButton;
-@property(nullable) IBOutlet UIButton *authManualButton;
-@property(nullable) IBOutlet UIButton *codeExchangeButton;
-@property(nullable) IBOutlet UIButton *userinfoButton;
-@property(nullable) IBOutlet UIButton *clearAuthStateButton;
+@property(nullable) IBOutlet UIButton *authButton;
 @property(nullable) IBOutlet UITextView *logTextView;
-@property(nullable) IBOutlet UIButton *profileButton;
-@property(nullable) IBOutlet UIButton *logoutButton;
+@property(nullable) IBOutlet UISegmentedControl *authTypeSegmentedControl;
+@property(nullable) IBOutlet UIActivityIndicatorView *authActivityIndicator;
 
 /*! @brief The authorization state. This is the AppAuth object that you should keep around and
         serialize to disk.
@@ -43,43 +39,12 @@ NS_ASSUME_NONNULL_BEGIN
 /*! @brief Authorization code flow using @c OIDAuthState automatic code exchanges.
     @param sender IBAction sender.
  */
-- (IBAction)authWithAutoCodeExchange:(nullable id)sender;
-
-/*! @brief Authorization code flow without a the code exchange (need to call @c codeExchange:
-        manually)
-    @param sender IBAction sender.
- */
-- (IBAction)authNoCodeExchange:(nullable id)sender;
-
-/*! @brief Performs the authorization code exchange at the token endpoint.
-    @param sender IBAction sender.
- */
-- (IBAction)codeExchange:(nullable id)sender;
-
-/*! @brief Performs a Userinfo API call using @c OIDAuthState.performActionWithFreshTokens.
-    @param sender IBAction sender.
- */
-- (IBAction)userinfo:(nullable id)sender;
-
-/*! @brief Nils the @c OIDAuthState object.
-    @param sender IBAction sender.
- */
-- (IBAction)clearAuthState:(nullable id)sender;
+- (IBAction)authorizeUser:(nullable id)sender;
 
 /*! @brief Clears the UI log.
     @param sender IBAction sender.
  */
 - (IBAction)clearLog:(nullable id)sender;
-
-/*! @brief Opens the user's profile in the browser object.
- @param sender IBAction sender.
- */
-- (IBAction)openProfile:(nullable id)sender;
-
-/*! @brief Logs the user out of the browser session object.
- @param sender IBAction sender.
- */
-- (IBAction)logout:(nullable id)sender;
 
 @end
 

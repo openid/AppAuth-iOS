@@ -34,10 +34,12 @@
 	<array>
 		<dict>
 			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
+			<array>
+				<string></string>
+			</array>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.example.app</string>
+				<string>net.openid.appauthdemo</string>
 			</array>
 		</dict>
 	</array>

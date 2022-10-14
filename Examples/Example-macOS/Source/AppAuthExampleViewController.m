@@ -25,32 +25,32 @@
 
 /*! @brief The OIDC issuer from which the configuration will be discovered.
  */
-static NSString *const kIssuer = @"https://issuer.example.com";
+static NSString *const kIssuer = @"https://api.multi.dev.or.janrain.com/00000000-0000-0000-0000-000000000000/login";
 
 /*! @brief The OAuth client ID.
     @discussion For client configuration instructions, see the README.
     @see https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-macOS/README.md
  */
-static NSString *const kClientID = @"YOUR_CLIENT_ID";
+static NSString *const kClientID = @"cec9a504-a0ab-4b92-879b-711482a3f69b";
 
 /*! @brief The OAuth client secret.
     @discussion For client configuration instructions, see the README.
     @see https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-macOS/README.md
  */
-static NSString *const kClientSecret = @"YOUR_CLIENT_SECRET";
+static NSString *const kClientSecret = @"";
 
 /*! @brief The OAuth redirect URI for the client @c kClientID.
     @discussion For client configuration instructions, see the README.
     @see https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-macOS/README.md
  */
-static NSString *const kRedirectURI = @"com.example.app:/oauth2redirect/example-provider";
+static NSString *const kRedirectURI = @"net.openid.appauthdemo://oauth2redirect";
 
 /*! @brief Post-authorization redirect URI.
     @discussion This is the URL that users will be redirected to after the OAuth flow is complete.
         Generally you will point them at a nice page on your site that instructs them to return to
         the app. It's best when that page is uncluttered and to the point.
  */
-static NSString *const kSuccessURLString = @"http://openid.github.io/AppAuth-iOS/redirect/";
+static NSString *const kSuccessURLString = @"net.openid.appauthdemo://oauth2redirect";
 
 /*! @var kAppAuthExampleAuthStateKey
     @brief NSCoding key for the authState property.
