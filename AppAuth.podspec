@@ -26,15 +26,14 @@ It follows the OAuth 2.0 for Native Apps best current practice
                      "Julien Bodet" => "julien.bodet92@gmail.com"
                    }
 
-  # Note: While watchOS and tvOS are specified here, only iOS and macOS have
+  # Note: While watchOS is specified here, only iOS and macOS have
   #       UI implementations of the authorization service. You can use the
-  #       classes of AppAuth with tokens on watchOS and tvOS, but currently the
+  #       classes of AppAuth with tokens on watchOS, but currently the
   #       library won't help you obtain authorization grants on those platforms.
 
   s.ios.deployment_target = "7.0"
   s.osx.deployment_target = "10.9"
   s.watchos.deployment_target = "2.0"
-  s.tvos.deployment_target = "9.0"
 
   s.source       = { :git => "https://github.com/openid/AppAuth-iOS.git", :tag => s.version }
   s.requires_arc = true
