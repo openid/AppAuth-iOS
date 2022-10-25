@@ -60,12 +60,6 @@ It follows the OAuth 2.0 for Native Apps best current practice
     externalUserAgent.osx.deployment_target = '10.9'
     externalUserAgent.osx.weak_frameworks   = "AuthenticationServices"
   end
-  
-  # Subspec for the full AppAuth library, including platform-dependant external user agents.
-  s.subspec 'TV' do |tv|
-    tv.source_files = "Source/AppAuthTV.h", "Source/AppAuthTV/*.{h,m}"
-    tv.dependency 'AppAuth/Core'
-  end
 
   s.default_subspecs = 'Core', 'ExternalUserAgent'
 end
