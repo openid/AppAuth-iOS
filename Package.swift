@@ -53,7 +53,7 @@ let package = Package(
                 .headerSearchPath("macOS"),
                 .headerSearchPath("macOS/LoopbackHTTPServer"),
             ]
-        )
+        ),
         .testTarget(
             name: "AppAuthCoreSwiftTests",
             dependencies: ["AppAuthCore"],
