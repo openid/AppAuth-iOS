@@ -35,7 +35,7 @@
 		7FF583C8F7036437BE8875B3 /* Pods-Example-macOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Example-macOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Example-macOS/Pods-Example-macOS.debug.xcconfig"; sourceTree = "<group>"; };
 		F6016E701D2AC11F003497D7 /* Example-macOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Example-macOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6016E8B1D2BD988003497D7 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = Source/AppDelegate.m; sourceTree = "<group>"; };
-		F6016E8D1D2BD988003497D7 /* AppAuthExampleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppAuthExampleViewController.m; path = Source/AppAuthExampleViewController.m; sourceTree = "<group>"; };
+		F6016E8D1D2BD988003497D7 /* AppAuthExampleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; name = AppAuthExampleViewController.m; path = Source/AppAuthExampleViewController.m; sourceTree = "<group>"; tabWidth = 2; };
 		F6016E8E1D2BD988003497D7 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = Source/AppDelegate.h; sourceTree = "<group>"; };
 		F6016E901D2BD988003497D7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Source/Base.lproj/AppAuthExampleViewController.xib; sourceTree = "<group>"; };
 		F6016E921D2BD988003497D7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Source/Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
@@ -190,6 +190,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -445,6 +446,7 @@
 				341AA4C81E7F2E5000FCA5C6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		F6016E6B1D2AC11E003497D7 /* Build configuration list for PBXProject "Example-macOS" */ = {
 			isa = XCConfigurationList;
