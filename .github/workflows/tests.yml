@@ -18,7 +18,7 @@ jobs:
         flags: [
           "-scheme AppAuth-iOS -destination 'platform=iOS Simulator,name=iPhone 11,OS=15.2' -sdk 'iphonesimulator15.2'",
           "-scheme AppAuth-macOS -destination 'platform=macOS,arch=x86_64' -sdk 'macosx12.1'",
-          "-scheme AppAuth_macOS -destination 'platform=macOS,arch=x86_64' -sdk 'macosx12.1'"
+          "-scheme AppAuth_macOS -destination 'platform=macOS,arch=x86_64' -sdk 'macosx12.1'",
         ]
     steps:
     - uses: actions/checkout@v2
