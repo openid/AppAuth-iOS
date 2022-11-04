@@ -71,9 +71,6 @@ specs it implements, is largely extensible and you may be able to achieve what y
 these extension points. For example, simple additional parameters can be passed in the
 “additionalParameters” dictionary, and the TokenRequest can support other grant types. 
 
-By way of example, the tvOS device flow support (which may actually be considered in-scope one day)
-was initially implemented on top of these extension points without needing to change AppAuth.
-
 ### Provider-specific workarounds, hacks or features
 
 AppAuth implements the pure authentication and authorization standards. Where these standards are

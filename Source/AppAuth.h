@@ -43,8 +43,7 @@
 #import "OIDEndSessionRequest.h"
 #import "OIDEndSessionResponse.h"
 
-#if TARGET_OS_TV
-#elif TARGET_OS_WATCH
+#if TARGET_OS_WATCH
 #elif TARGET_OS_IOS || TARGET_OS_MACCATALYST
 #import "OIDAuthState+IOS.h"
 #import "OIDAuthorizationService+IOS.h"
