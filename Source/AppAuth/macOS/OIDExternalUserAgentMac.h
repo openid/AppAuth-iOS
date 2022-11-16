@@ -31,9 +31,19 @@ NS_ASSUME_NONNULL_BEGIN
 @interface OIDExternalUserAgentMac : NSObject <OIDExternalUserAgent>
 
 /*! @brief The designated initializer.
-    @param presentingWindow The window from which to present the ASWebAuthenticationSession.
+    @param presentingWindow The window from which to present the @c ASWebAuthenticationSession on
+        macOS 10.15 and above.  Older macOS versions use the system browser.
  */
 - (instancetype)initWithPresentingWindow:(NSWindow *)presentingWindow NS_DESIGNATED_INITIALIZER;
+
+/*! @brief Create an external user-agent which optionally uses a private authentication session.
+ @param presentingWindow The window from which to present the @c ASWebAuthenticationSession.
+ @param prefersEphemeralSession Whether the caller prefers to use a private authentication
+ session. See @c ASWebAuthenticationSession.prefersEphemeralWebBrowserSession for more.
+ */
+- (nullable instancetype)initWithPresentingWindow:(NSWindow *)presentingWindow
+                          prefersEphemeralSession:(BOOL)prefersEphemeralSession
+    API_AVAILABLE(macos(10.15));
 
 - (instancetype)init __deprecated_msg("Use initWithPresentingWindow for macOS 10.15 and above.");
 

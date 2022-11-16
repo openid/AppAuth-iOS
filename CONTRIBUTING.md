@@ -48,7 +48,7 @@ discussing your proposal, or email the
 ## Coding Standards
 
 The AppAuth library follows the
-[Google Objective-C Style Guide](https://github.com/google/styleguide/blob/gh-pages/objcguide.md). Please review your own code for adherence to the
+[Google Objective-C Style Guide](https://google.github.io/styleguide/objcguide.html). Please review your own code for adherence to the
 standard.
 
 ## Pull Request Reviews

@@ -38,6 +38,7 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation OIDExternalUserAgentMac {
   BOOL _externalUserAgentFlowInProgress;
   __weak id<OIDExternalUserAgentSession> _session;
+  BOOL _prefersEphemeralSession;
 
   NSWindow *_presentingWindow;
 #pragma clang diagnostic push
@@ -50,6 +51,15 @@ NS_ASSUME_NONNULL_BEGIN
   self = [super init];
   if (self) {
     _presentingWindow = presentingWindow;
+  }
+  return self;
+}
+
+- (nullable instancetype)initWithPresentingWindow:(NSWindow *)presentingWindow
+                          prefersEphemeralSession:(BOOL)prefersEphemeralSession {
+  self = [self initWithPresentingWindow:presentingWindow];
+  if (self) {
+    _prefersEphemeralSession = prefersEphemeralSession;
   }
   return self;
 }
@@ -100,6 +110,7 @@ NS_ASSUME_NONNULL_BEGIN
       authenticationSession.presentationContextProvider = self;
 
       _webAuthenticationSession = authenticationSession;
+      _webAuthenticationSession.prefersEphemeralWebBrowserSession = _prefersEphemeralSession;
       return [authenticationSession start];
     }
   }
