@@ -9,7 +9,6 @@
         <customObject id="-2" userLabel="File's Owner" customClass="AppAuthExampleViewController">
             <connections>
                 <outlet property="authAutoButton" destination="Mss-oI-oMy" id="3xw-3K-wRM"/>
-                <outlet property="authAutoHTTPButton" destination="uw4-1m-FoE" id="Jb5-wJ-ZGq"/>
                 <outlet property="authManual" destination="0s2-0W-UXR" id="bu7-op-tbr"/>
                 <outlet property="clearAuthStateButton" destination="wAL-hz-Luv" id="Dcn-9Q-qol"/>
                 <outlet property="codeExchangeButton" destination="4d1-F1-5Lx" id="Hnf-fa-P50"/>
@@ -25,7 +24,7 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Mss-oI-oMy">
-                    <rect key="frame" x="64" y="629" width="294" height="32"/>
+                    <rect key="frame" x="64" y="532" width="310" height="32"/>
                     <buttonCell key="cell" type="push" title="Authorize (Custom Scheme Redirect, auto)" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="z0a-BU-rAC">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="system"/>
@@ -35,7 +34,7 @@
                     </connections>
                 </button>
                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="0s2-0W-UXR">
-                    <rect key="frame" x="64" y="597" width="310" height="32"/>
+                    <rect key="frame" x="64" y="500" width="310" height="32"/>
                     <buttonCell key="cell" type="push" title="Authorize (Custom Scheme Redirect, manual)" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="ASn-KU-cBH">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="system"/>
@@ -45,7 +44,7 @@
                     </connections>
                 </button>
                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="f22-Zx-cOh">
-                    <rect key="frame" x="64" y="497" width="150" height="32"/>
+                    <rect key="frame" x="64" y="455" width="149" height="32"/>
                     <buttonCell key="cell" type="push" title="API Call (User Info)" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="ogN-86-TEl">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="system"/>
@@ -55,7 +54,7 @@
                     </connections>
                 </button>
                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="wAL-hz-Luv">
-                    <rect key="frame" x="64" y="405" width="134" height="32"/>
+                    <rect key="frame" x="64" y="410" width="133" height="32"/>
                     <buttonCell key="cell" type="push" title="Clear Auth State" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="M4e-Oa-Bsh">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="system"/>
@@ -65,7 +64,7 @@
                     </connections>
                 </button>
                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="4d1-F1-5Lx">
-                    <rect key="frame" x="377" y="596" width="128" height="32"/>
+                    <rect key="frame" x="372" y="500" width="170" height="32"/>
                     <buttonCell key="cell" type="push" title="Code exchange" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="g4C-L6-Rfr">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="system"/>
@@ -75,25 +74,25 @@
                     </connections>
                 </button>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="9CP-mT-oaL">
-                    <rect key="frame" x="69" y="361" width="27" height="16"/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Log" id="c59-uF-i0B">
+                    <rect key="frame" x="74" y="371" width="31" height="16"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Log:" id="c59-uF-i0B">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
                 <scrollView horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I8b-cL-GM8">
-                    <rect key="frame" x="75" y="20" width="461" height="310"/>
+                    <rect key="frame" x="75" y="20" width="461" height="342"/>
                     <clipView key="contentView" drawsBackground="NO" id="WlW-fb-gTh">
-                        <rect key="frame" x="1" y="1" width="459" height="308"/>
+                        <rect key="frame" x="1" y="1" width="459" height="340"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textView importsGraphics="NO" verticallyResizable="YES" usesFontPanel="YES" findStyle="panel" continuousSpellChecking="YES" allowsUndo="YES" usesRuler="YES" allowsNonContiguousLayout="YES" quoteSubstitution="YES" dashSubstitution="YES" spellingCorrection="YES" smartInsertDelete="YES" id="9uf-dN-qIX">
-                                <rect key="frame" x="0.0" y="0.0" width="459" height="308"/>
+                                <rect key="frame" x="0.0" y="0.0" width="459" height="340"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                <size key="minSize" width="459" height="308"/>
+                                <size key="minSize" width="459" height="340"/>
                                 <size key="maxSize" width="463" height="10000000"/>
                                 <color key="insertionPointColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                             </textView>
@@ -104,12 +103,12 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
                     <scroller key="verticalScroller" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="D03-0I-zIY">
-                        <rect key="frame" x="444" y="1" width="16" height="308"/>
+                        <rect key="frame" x="444" y="1" width="16" height="340"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
                 </scrollView>
                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Xey-KN-kpQ">
-                    <rect key="frame" x="447" y="348" width="90" height="32"/>
+                    <rect key="frame" x="453" y="367" width="89" height="32"/>
                     <buttonCell key="cell" type="push" title="Clear log" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Bwe-Pg-NVC">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="system"/>
@@ -118,49 +117,47 @@
                         <action selector="clearLog:" target="-2" id="NpO-8Y-WwK"/>
                     </connections>
                 </button>
-                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="uw4-1m-FoE">
-                    <rect key="frame" x="64" y="565" width="228" height="32"/>
-                    <buttonCell key="cell" type="push" title="Authorize (HTTP Redirect, auto)" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="iH6-RU-00n">
-                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" metaFont="system"/>
-                    </buttonCell>
-                    <connections>
-                        <action selector="authWithAutoCodeExchangeHTTP:" target="-2" id="atO-3z-7SP"/>
-                    </connections>
-                </button>
+                <imageView translatesAutoresizingMaskIntoConstraints="NO" id="CDR-Ya-Kvc">
+                    <rect key="frame" x="268" y="596" width="75" height="75"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="75" id="5g5-z2-irJ"/>
+                        <constraint firstAttribute="height" constant="75" id="hMI-XA-AN1"/>
+                    </constraints>
+                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="proportionallyDown" image="AppAuth_logo" id="ta1-Kk-02G"/>
+                </imageView>
             </subviews>
             <constraints>
-                <constraint firstItem="uw4-1m-FoE" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" constant="71" id="0I1-jl-Duy"/>
+                <constraint firstItem="9CP-mT-oaL" firstAttribute="leading" secondItem="9uf-dN-qIX" secondAttribute="leading" id="0Om-R4-twa"/>
                 <constraint firstAttribute="bottom" secondItem="I8b-cL-GM8" secondAttribute="bottom" constant="20" id="28L-v0-sSu"/>
-                <constraint firstItem="wAL-hz-Luv" firstAttribute="top" secondItem="f22-Zx-cOh" secondAttribute="bottom" constant="72" id="6XW-jh-tqH"/>
-                <constraint firstItem="wAL-hz-Luv" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" constant="71" id="7M7-SU-yES"/>
-                <constraint firstItem="4d1-F1-5Lx" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" constant="86" id="LIY-ZL-a6d"/>
-                <constraint firstItem="Xey-KN-kpQ" firstAttribute="top" secondItem="4d1-F1-5Lx" secondAttribute="bottom" constant="228" id="PfO-rf-bBk"/>
-                <constraint firstItem="Xey-KN-kpQ" firstAttribute="leading" secondItem="9CP-mT-oaL" secondAttribute="trailing" constant="360" id="S37-sV-Lva"/>
-                <constraint firstItem="0s2-0W-UXR" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" constant="71" id="TDT-Pg-mg4"/>
-                <constraint firstItem="4d1-F1-5Lx" firstAttribute="leading" secondItem="0s2-0W-UXR" secondAttribute="trailing" constant="17" id="Tuj-e4-iia"/>
-                <constraint firstItem="I8b-cL-GM8" firstAttribute="top" secondItem="Xey-KN-kpQ" secondAttribute="bottom" constant="25" id="WnG-fm-Ika"/>
-                <constraint firstItem="9CP-mT-oaL" firstAttribute="top" secondItem="wAL-hz-Luv" secondAttribute="bottom" constant="35" id="au8-Ni-D9e"/>
-                <constraint firstItem="f22-Zx-cOh" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" constant="71" id="dyv-lc-KGU"/>
-                <constraint firstItem="Mss-oI-oMy" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" constant="71" id="f4v-YZ-GoJ"/>
+                <constraint firstItem="9CP-mT-oaL" firstAttribute="top" secondItem="wAL-hz-Luv" secondAttribute="bottom" constant="30" id="4Rf-CK-yio"/>
+                <constraint firstItem="wAL-hz-Luv" firstAttribute="top" secondItem="f22-Zx-cOh" secondAttribute="bottom" constant="25" id="6XW-jh-tqH"/>
+                <constraint firstItem="9uf-dN-qIX" firstAttribute="top" secondItem="9CP-mT-oaL" secondAttribute="bottom" constant="10" id="6Y5-6a-A6Z"/>
+                <constraint firstItem="wAL-hz-Luv" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="c22-O7-iKe" secondAttribute="leading" constant="20" symbolic="YES" id="7M7-SU-yES"/>
+                <constraint firstItem="Mss-oI-oMy" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" constant="71" id="85d-2q-qA4"/>
+                <constraint firstAttribute="trailing" secondItem="f22-Zx-cOh" secondAttribute="trailing" constant="405" id="9uw-UT-ULg"/>
+                <constraint firstItem="4d1-F1-5Lx" firstAttribute="firstBaseline" secondItem="0s2-0W-UXR" secondAttribute="firstBaseline" id="Cc9-k5-iEp"/>
+                <constraint firstAttribute="trailing" secondItem="wAL-hz-Luv" secondAttribute="trailing" constant="421" id="GyT-h2-Gow"/>
+                <constraint firstItem="Mss-oI-oMy" firstAttribute="top" secondItem="CDR-Ya-Kvc" secondAttribute="bottom" constant="37" id="Lyv-bu-Ugr"/>
+                <constraint firstItem="Xey-KN-kpQ" firstAttribute="trailing" secondItem="9uf-dN-qIX" secondAttribute="trailing" id="Q0X-Fj-THH"/>
+                <constraint firstItem="Xey-KN-kpQ" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="9CP-mT-oaL" secondAttribute="trailing" constant="8" symbolic="YES" id="S37-sV-Lva"/>
+                <constraint firstItem="4d1-F1-5Lx" firstAttribute="leading" secondItem="0s2-0W-UXR" secondAttribute="trailing" constant="12" symbolic="YES" id="Tuj-e4-iia"/>
+                <constraint firstItem="Mss-oI-oMy" firstAttribute="width" secondItem="0s2-0W-UXR" secondAttribute="width" id="VEN-86-gJC"/>
+                <constraint firstItem="f22-Zx-cOh" firstAttribute="top" secondItem="0s2-0W-UXR" secondAttribute="bottom" constant="25" id="axb-je-noE"/>
+                <constraint firstItem="f22-Zx-cOh" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="c22-O7-iKe" secondAttribute="leading" constant="20" symbolic="YES" id="dyv-lc-KGU"/>
+                <constraint firstItem="CDR-Ya-Kvc" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" constant="38" id="g99-lx-nV1"/>
                 <constraint firstAttribute="trailing" secondItem="I8b-cL-GM8" secondAttribute="trailing" constant="75" id="gTh-t8-oaw"/>
-                <constraint firstItem="f22-Zx-cOh" firstAttribute="top" secondItem="uw4-1m-FoE" secondAttribute="bottom" constant="48" id="kdn-QA-BgX"/>
-                <constraint firstItem="Mss-oI-oMy" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" constant="53" id="loQ-8U-FyH"/>
-                <constraint firstItem="uw4-1m-FoE" firstAttribute="top" secondItem="0s2-0W-UXR" secondAttribute="bottom" constant="12" id="mQT-Z1-YCJ"/>
+                <constraint firstItem="4d1-F1-5Lx" firstAttribute="trailing" secondItem="Xey-KN-kpQ" secondAttribute="trailing" id="gW5-e2-b8Z"/>
+                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Mss-oI-oMy" secondAttribute="trailing" constant="20" symbolic="YES" id="kug-Rd-Clc"/>
+                <constraint firstItem="CDR-Ya-Kvc" firstAttribute="centerX" secondItem="c22-O7-iKe" secondAttribute="centerX" id="lTt-Ue-cjk"/>
                 <constraint firstItem="0s2-0W-UXR" firstAttribute="top" secondItem="Mss-oI-oMy" secondAttribute="bottom" constant="12" id="oNP-7c-hl5"/>
+                <constraint firstItem="Xey-KN-kpQ" firstAttribute="bottom" secondItem="9CP-mT-oaL" secondAttribute="firstBaseline" id="oXA-vB-CtI"/>
                 <constraint firstItem="I8b-cL-GM8" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" constant="75" id="tez-VW-e72"/>
-                <constraint firstItem="9CP-mT-oaL" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" constant="71" id="vdy-tP-Bdf"/>
+                <constraint firstItem="0s2-0W-UXR" firstAttribute="leading" secondItem="Mss-oI-oMy" secondAttribute="leading" id="vkU-ZS-ycM"/>
             </constraints>
             <point key="canvasLocation" x="756.5" y="670.5"/>
         </customView>
-        <button verticalHuggingPriority="750" id="GKN-4c-kWN">
-            <rect key="frame" x="0.0" y="0.0" width="82" height="32"/>
-            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-            <buttonCell key="cell" type="push" title="Button" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="gGr-zp-ueX">
-                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                <font key="font" metaFont="system"/>
-            </buttonCell>
-            <point key="canvasLocation" x="140" y="-35"/>
-        </button>
     </objects>
+    <resources>
+        <image name="AppAuth_logo" width="400" height="400"/>
+    </resources>
 </document>

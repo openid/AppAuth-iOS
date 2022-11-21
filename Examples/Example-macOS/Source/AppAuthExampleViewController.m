@@ -123,20 +123,21 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
     @brief Refreshes UI, typically called after the auth state changed.
  */
 - (void)updateUI {
-  _userinfoButton.enabled = [_authState isAuthorized];
-  _clearAuthStateButton.enabled = _authState != nil;
-  _codeExchangeButton.enabled = _authState.lastAuthorizationResponse.authorizationCode
-                                && !_authState.lastTokenResponse;
-  // dynamically changes authorize button text depending on authorized state
-  if (!_authState) {
-    _authAutoButton.title = @"Authorize (Custom URI Scheme Redirect)";
-    _authManual.title = @"Authorize (Custom URI Scheme Redirect, Manual)";
-    _authAutoHTTPButton.title = @"Authorize (HTTP Redirect)";
-  } else {
-    _authAutoButton.title = @"Re-authorize (Custom URI Scheme Redirect)";
-    _authManual.title = @"Re-authorize (Custom URI Scheme, Manual)";
-    _authAutoHTTPButton.title = @"Re-authorize (HTTP Redirect)";
-  }
+
+  dispatch_async(dispatch_get_main_queue(), ^() {
+    self.userinfoButton.enabled = [_authState isAuthorized];
+    self.clearAuthStateButton.enabled = _authState != nil;
+    self.codeExchangeButton.enabled = _authState.lastAuthorizationResponse.authorizationCode
+    && !_authState.lastTokenResponse;
+    // dynamically changes authorize button text depending on authorized state
+    if (!self.authState) {
+      self.authAutoButton.title = @"Authorize (Custom URI Scheme Redirect)";
+      self.authManual.title = @"Authorize (Custom URI Scheme Redirect, Manual)";
+    } else {
+      self.authAutoButton.title = @"Re-authorize (Custom URI Scheme Redirect)";
+      self.authManual.title = @"Re-authorize (Custom URI Scheme, Manual)";
+    }
+  });
 }
 
 - (void)stateChanged {
@@ -225,79 +226,6 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
         [self logMessage:@"Authorization error: %@", [error localizedDescription]];
         [self setAuthState:nil];
       }
-    }];
-  }];
-}
-
-- (IBAction)authWithAutoCodeExchangeHTTP:(nullable id)sender {
-
-#if !defined(NS_BLOCK_ASSERTIONS)
-
-  // The example needs to be configured with your own client details.
-  // See: https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-macOS/README.md
-
-  NSAssert(![kClientSecret isEqualToString:@"YOUR_CLIENT_SECRET"],
-           @"Update kClientSecret with your own client ID secret. "
-            "Instructions: "
-            "https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-macOS/README.md");
-
-#endif // !defined(NS_BLOCK_ASSERTIONS)
-
-  NSURL *issuer = [NSURL URLWithString:kIssuer];
-
-  [self logMessage:@"Starting HTTP loopback listener..."];
-
-  NSURL *successURL = [NSURL URLWithString:kSuccessURLString];
-
-  // Starts a loopback HTTP redirect listener to receive the code.  This needs to be started first,
-  // as the exact redurect URI (including port) must be passed in the authorization request.
-  _redirectHTTPHandler = [[OIDRedirectHTTPHandler alloc] initWithSuccessURL:successURL];
-  NSURL *redirectURI = [_redirectHTTPHandler startHTTPListener:nil];
-
-  [self logMessage:@"Listening on %@", redirectURI];
-
-  [self logMessage:@"Fetching configuration for issuer: %@", issuer];
-
-  // discovers endpoints
-  [OIDAuthorizationService discoverServiceConfigurationForIssuer:issuer
-      completion:^(OIDServiceConfiguration *_Nullable configuration, NSError *_Nullable error) {
-
-    if (!configuration) {
-      [self logMessage:@"Error retrieving discovery document: %@", [error localizedDescription]];
-      [self setAuthState:nil];
-      return;
-    }
-
-    [self logMessage:@"Got configuration: %@", configuration];
-
-    // builds authentication request
-    OIDAuthorizationRequest *request =
-        [[OIDAuthorizationRequest alloc] initWithConfiguration:configuration
-                                                      clientId:kClientID
-                                                  clientSecret:kClientSecret
-                                                        scopes:@[OIDScopeOpenID, OIDScopeProfile]
-                                                   redirectURL:redirectURI
-                                                  responseType:OIDResponseTypeCode
-                                          additionalParameters:nil];
-    // performs authentication request
-    __weak __typeof(self) weakSelf = self;
-    _redirectHTTPHandler.currentAuthorizationFlow =
-        [OIDAuthState authStateByPresentingAuthorizationRequest:request
-                                               presentingWindow:self.view.window
-                                                       callback:^(OIDAuthState *_Nullable authState, NSError *_Nullable error) {
-      // Brings this app to the foreground.
-      [[NSRunningApplication currentApplication]
-          activateWithOptions:(NSApplicationActivateAllWindows |
-                               NSApplicationActivateIgnoringOtherApps)];
-
-      // Processes the authorization response.
-      if (authState) {
-        [weakSelf logMessage:@"Got authorization tokens. Access token: %@",
-                         authState.lastTokenResponse.accessToken];
-      } else {
-        [weakSelf logMessage:@"Authorization error: %@", error.localizedDescription];
-      }
-      [weakSelf setAuthState:authState];
     }];
   }];
 }
@@ -492,6 +420,11 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
   NSAttributedString* logLineAttr = [[NSAttributedString alloc] initWithString:logLine];
   dispatch_async(dispatch_get_main_queue(), ^{
     [[_logTextView textStorage] appendAttributedString:logLineAttr];
+
+  NSRange range = NSMakeRange(_logTextView.textStorage.length - 1, 1);
+
+  // automatically scroll the textview as text is added
+  [_logTextView scrollRangeToVisible:range];
   });
 }
 

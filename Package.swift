@@ -25,7 +25,7 @@ let package = Package(
     platforms: [
         .macOS(.v10_10),
         .iOS(.v9),
-        .watchOS(.v2)
+        .watchOS(.v2),
     ],
     products: [
         .library(
@@ -33,7 +33,7 @@ let package = Package(
             targets: ["AppAuthCore"]),
         .library(
             name: "AppAuth",
-            targets: ["AppAuth"])
+            targets: ["AppAuth"]),
     ],
     dependencies: [],
     targets: [
@@ -53,7 +53,13 @@ let package = Package(
                 .headerSearchPath("macOS"),
                 .headerSearchPath("macOS/LoopbackHTTPServer"),
             ]
-        )
+        ),
+        .testTarget(
+            name: "AppAuthCoreTests",
+            dependencies: ["AppAuthCore"],
+            path: "UnitTests",
+            exclude: ["OIDSwiftTests.swift"]
+        ),
         .testTarget(
             name: "AppAuthCoreSwiftTests",
             dependencies: ["AppAuthCore"],
