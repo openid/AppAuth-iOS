@@ -10,7 +10,7 @@
 		06D4812F2055C3D400D9DC32 /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 06D4812E2055C3D400D9DC32 /* NotificationCenter.framework */; };
 		06D481332055C3D400D9DC32 /* TodayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 06D481322055C3D400D9DC32 /* TodayViewController.m */; };
 		06D481362055C3D400D9DC32 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 06D481342055C3D400D9DC32 /* MainInterface.storyboard */; };
-		06D4813A2055C3D400D9DC32 /* Example-iOS_ObjC_Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 06D4812D2055C3D400D9DC32 /* Example-iOS_ObjC_Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		06D4813A2055C3D400D9DC32 /* Example-iOS_ObjC_Extension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 06D4812D2055C3D400D9DC32 /* Example-iOS_ObjC_Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		341310AA1E6DEF7000D5DEE5 /* AppAuthExampleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 341310A91E6DEF7000D5DEE5 /* AppAuthExampleTests.m */; };
 		346E916E1C29D42800D3620B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 346E916D1C29D42800D3620B /* main.m */; };
 		346E91711C29D42800D3620B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 346E91701C29D42800D3620B /* AppDelegate.m */; };
@@ -20,6 +20,7 @@
 		34CB09BD1C42007600A54261 /* AppAuthExampleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34CB09BB1C42007600A54261 /* AppAuthExampleViewController.m */; };
 		D0B5FA33D74A6F7924A47471 /* libPods-Example-iOS_ObjC_Extension.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 715EDB7EC4271193E47615ED /* libPods-Example-iOS_ObjC_Extension.a */; };
 		E46F8589CE9E5DDFA69D835B /* libPods-Example-iOS_ObjC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B61A918CBE7B8142CD7D8B3 /* libPods-Example-iOS_ObjC.a */; };
+		F813E4E529240805009A0937 /* LogoutOptionsController.m in Sources */ = {isa = PBXBuildFile; fileRef = F813E4E429240805009A0937 /* LogoutOptionsController.m */; };
 		F82883E128EE117700255633 /* TokenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F82883E028EE117700255633 /* TokenViewController.m */; };
 		F82883E728EE160200255633 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F82883E528EE160200255633 /* Main.storyboard */; };
 /* End PBXBuildFile section */
@@ -42,15 +43,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		06D4813E2055C3D400D9DC32 /* Embed App Extensions */ = {
+		06D4813E2055C3D400D9DC32 /* Embed Foundation Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				06D4813A2055C3D400D9DC32 /* Example-iOS_ObjC_Extension.appex in Embed App Extensions */,
+				06D4813A2055C3D400D9DC32 /* Example-iOS_ObjC_Extension.appex in Embed Foundation Extensions */,
 			);
-			name = "Embed App Extensions";
+			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -87,9 +88,12 @@
 		C4C31DB4A4928F246AA03805 /* Pods-Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-Example/Pods-Example.release.xcconfig"; sourceTree = "<group>"; };
 		D9867DC6FA9089CD613D4728 /* Pods-Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Example/Pods-Example.debug.xcconfig"; sourceTree = "<group>"; };
 		ECBCCC4A1A779C83C72044F2 /* Pods-Example-iOS_ObjC.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Example-iOS_ObjC.release.xcconfig"; path = "Pods/Target Support Files/Pods-Example-iOS_ObjC/Pods-Example-iOS_ObjC.release.xcconfig"; sourceTree = "<group>"; };
+		F813E4E329240805009A0937 /* LogoutOptionsController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LogoutOptionsController.h; sourceTree = "<group>"; };
+		F813E4E429240805009A0937 /* LogoutOptionsController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LogoutOptionsController.m; sourceTree = "<group>"; };
 		F82883E028EE117700255633 /* TokenViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TokenViewController.m; sourceTree = "<group>"; };
 		F82883E628EE160200255633 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		F82883E828EE167500255633 /* TokenViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TokenViewController.h; sourceTree = "<group>"; };
+		F8DF76D8291D9C510023496D /* LogoutOption.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LogoutOption.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -165,9 +169,9 @@
 				346E916A1C29D42800D3620B /* Products */,
 				6DB0B0125441549B9E4A3E6C /* Pods */,
 			);
-			indentWidth = 2;
+			indentWidth = 4;
 			sourceTree = "<group>";
-			tabWidth = 2;
+			tabWidth = 4;
 		};
 		346E916A1C29D42800D3620B /* Products */ = {
 			isa = PBXGroup;
@@ -189,6 +193,7 @@
 				34CB09BB1C42007600A54261 /* AppAuthExampleViewController.m */,
 				F82883E828EE167500255633 /* TokenViewController.h */,
 				F82883E028EE117700255633 /* TokenViewController.m */,
+				F8DF76DA291D9C620023496D /* LogoutOptionsController */,
 				346E91781C29D42800D3620B /* Assets.xcassets */,
 				F82883E528EE160200255633 /* Main.storyboard */,
 				346E917A1C29D42800D3620B /* LaunchScreen.storyboard */,
@@ -209,6 +214,16 @@
 				3A18DF082AC2FA0980C9DE57 /* Pods-Example-iOS_ObjC_Extension.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		F8DF76DA291D9C620023496D /* LogoutOptionsController */ = {
+			isa = PBXGroup;
+			children = (
+				F813E4E329240805009A0937 /* LogoutOptionsController.h */,
+				F813E4E429240805009A0937 /* LogoutOptionsController.m */,
+				F8DF76D8291D9C510023496D /* LogoutOption.h */,
+			);
+			path = LogoutOptionsController;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -258,7 +273,7 @@
 				346E91651C29D42800D3620B /* Sources */,
 				346E91661C29D42800D3620B /* Frameworks */,
 				346E91671C29D42800D3620B /* Resources */,
-				06D4813E2055C3D400D9DC32 /* Embed App Extensions */,
+				06D4813E2055C3D400D9DC32 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
@@ -276,7 +291,7 @@
 		346E91611C29D42800D3620B /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0720;
+				LastUpgradeCheck = 1410;
 				ORGANIZATIONNAME = "William Denniss";
 				TargetAttributes = {
 					06D4812C2055C3D400D9DC32 = {
@@ -415,6 +430,7 @@
 				F82883E128EE117700255633 /* TokenViewController.m in Sources */,
 				346E91711C29D42800D3620B /* AppDelegate.m in Sources */,
 				346E916E1C29D42800D3620B /* main.m in Sources */,
+				F813E4E529240805009A0937 /* LogoutOptionsController.m in Sources */,
 				34CB09BD1C42007600A54261 /* AppAuthExampleViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -570,17 +586,29 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -616,17 +644,29 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";

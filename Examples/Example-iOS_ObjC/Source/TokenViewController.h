@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "LogoutOption.h"
 
 @class OIDAuthState;
 @class OIDServiceConfiguration;
@@ -17,17 +18,24 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @interface TokenViewController : UIViewController
 
-@property(nullable) IBOutlet UIButton *userinfoButton;
-@property(nullable) IBOutlet UIButton *codeExchangeButton;
-@property(nullable) IBOutlet UIButton *refreshTokenButton;
-@property(nullable) IBOutlet UIButton *browserButton;
-@property(nullable) IBOutlet UITextView *logTextView;
-@property(nullable) IBOutlet UIButton *profileButton;
-
 /*! @brief The authorization state. This is the AppAuth object that you should keep around and
  serialize to disk.
  */
-@property(nonatomic, readonly, nullable) OIDAuthState *authState;
+@property (nonatomic, readonly, nullable) OIDAuthState* authState;
+
+@property (nullable) IBOutlet UIButton* userinfoButton;
+@property (nullable) IBOutlet UIButton* codeExchangeButton;
+@property (nullable) IBOutlet UIButton* refreshTokenButton;
+@property (nullable) IBOutlet UIButton* browserButton;
+@property (nullable) IBOutlet UITextView* logTextView;
+@property (nullable) IBOutlet UIButton* profileButton;
+@property (nullable) IBOutlet UILabel *accessTokenTitleLabel;
+@property (nullable) IBOutlet UILabel *refreshTokenTitleLabel;
+@property (nullable) IBOutlet UILabel *accessTokenLabel;
+@property (nullable) IBOutlet UILabel *refreshTokenLabel;
+@property (nullable) IBOutlet UIStackView *accessTokenStackView;
+@property (nullable) IBOutlet UIStackView *refreshTokenStackView;
+@property (nullable) IBOutlet UIStackView *tokenStackView;
 
 /*! @brief Authorization code flow using @c OIDAuthState automatic code exchanges.
  @param sender IBAction sender.
