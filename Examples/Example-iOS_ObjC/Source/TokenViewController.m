@@ -208,7 +208,7 @@ static BOOL isBrowserSessionRevoked = FALSE;
     [UIView animateWithDuration:0.3 animations:^{
         if (self.authState.lastTokenResponse.accessToken) {
             [self.accessTokenStackView setHidden:FALSE];
-            [self.accessTokenLabel setText:self.authState.lastTokenResponse.accessToken];
+            [self.accessTokenTextView setText:self.authState.lastTokenResponse.accessToken];
 
             if (isAccessTokenRevoked) {
                 [self.accessTokenTitleLabel setText:@"Access Token Revoked:"];
@@ -221,7 +221,7 @@ static BOOL isBrowserSessionRevoked = FALSE;
 
         if (self.authState.lastTokenResponse.refreshToken) {
             [self.refreshTokenStackView setHidden:FALSE];
-            [self.refreshTokenLabel setText:self.authState.lastTokenResponse.refreshToken];
+            [self.refreshTokenTextView setText:self.authState.lastTokenResponse.refreshToken];
 
             if (isRefreshTokenRevoked) {
                 [self.refreshTokenTitleLabel setText:@"Refresh Token Revoked:"];
@@ -626,6 +626,8 @@ additionalParameters:
                                                NSError *_Nullable error) {
         if (error) {
             [self logMessage:@"Error fetching fresh tokens: %@", [error localizedDescription]];
+            isAccessTokenRevoked = TRUE;
+            isRefreshTokenRevoked = TRUE;
             return;
         }
 
