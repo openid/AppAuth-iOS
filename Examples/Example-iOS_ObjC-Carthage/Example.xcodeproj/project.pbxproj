@@ -21,6 +21,7 @@
 		F8AAA46C28F75837005BB4C1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F8AAA46B28F75837005BB4C1 /* Main.storyboard */; };
 		F8AAA49328F760B8005BB4C1 /* AppAuth.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8AAA49228F760B8005BB4C1 /* AppAuth.xcframework */; };
 		F8AAA49628F760BF005BB4C1 /* AppAuthCore.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8AAA49528F760BF005BB4C1 /* AppAuthCore.xcframework */; };
+		F8B60B01292D229800F0C865 /* LogoutOptionsController.m in Sources */ = {isa = PBXBuildFile; fileRef = F8B60B00292D229800F0C865 /* LogoutOptionsController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,6 +72,9 @@
 		F8AAA46B28F75837005BB4C1 /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		F8AAA49228F760B8005BB4C1 /* AppAuth.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = AppAuth.xcframework; path = Carthage/Build/AppAuth.xcframework; sourceTree = "<group>"; };
 		F8AAA49528F760BF005BB4C1 /* AppAuthCore.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = AppAuthCore.xcframework; path = Carthage/Build/AppAuthCore.xcframework; sourceTree = "<group>"; };
+		F8B60AFE292D229800F0C865 /* LogoutOption.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LogoutOption.h; sourceTree = "<group>"; };
+		F8B60AFF292D229800F0C865 /* LogoutOptionsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LogoutOptionsController.h; sourceTree = "<group>"; };
+		F8B60B00292D229800F0C865 /* LogoutOptionsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LogoutOptionsController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -147,6 +151,7 @@
 				34CB09BB1C42007600A54261 /* AppAuthExampleViewController.m */,
 				F8AAA46828F7567C005BB4C1 /* TokenViewController.h */,
 				F8AAA46928F7567C005BB4C1 /* TokenViewController.m */,
+				F8B60AFD292D227800F0C865 /* LogoutOptionsController */,
 				346E91781C29D42800D3620B /* Assets.xcassets */,
 				F8AAA46B28F75837005BB4C1 /* Main.storyboard */,
 				346E917A1C29D42800D3620B /* LaunchScreen.storyboard */,
@@ -154,6 +159,16 @@
 				06462467205EDB5400072191 /* Example.entitlements */,
 			);
 			path = Source;
+			sourceTree = "<group>";
+		};
+		F8B60AFD292D227800F0C865 /* LogoutOptionsController */ = {
+			isa = PBXGroup;
+			children = (
+				F8B60AFE292D229800F0C865 /* LogoutOption.h */,
+				F8B60AFF292D229800F0C865 /* LogoutOptionsController.h */,
+				F8B60B00292D229800F0C865 /* LogoutOptionsController.m */,
+			);
+			path = LogoutOptionsController;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -278,6 +293,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F8AAA46A28F7567C005BB4C1 /* TokenViewController.m in Sources */,
+				F8B60B01292D229800F0C865 /* LogoutOptionsController.m in Sources */,
 				346E91711C29D42800D3620B /* AppDelegate.m in Sources */,
 				346E916E1C29D42800D3620B /* main.m in Sources */,
 				34CB09BD1C42007600A54261 /* AppAuthExampleViewController.m in Sources */,

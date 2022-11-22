@@ -97,7 +97,7 @@ static NSArray<LogoutOption>* kLogoutOptions;
  */
 static NSString* const kAppAuthExampleAuthStateKey = @"authState";
 
-@interface TokenViewController () <OIDAuthStateChangeDelegate, OIDAuthStateErrorDelegate>
+@interface TokenViewController () <OIDAuthStateChangeDelegate, OIDAuthStateErrorDelegate, UITextViewDelegate>
 @end
 
 @implementation TokenViewController
@@ -109,12 +109,14 @@ static BOOL isBrowserSessionRevoked = FALSE;
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    _logTextView.layer.borderColor =
-    [UIColor colorWithWhite:0.8 alpha:1.0].CGColor;
+    _logTextView.layer.borderColor = [UIColor colorWithWhite:0.8 alpha:1.0].CGColor;
     _logTextView.layer.borderWidth = 1.0f;
     _logTextView.alwaysBounceVertical = TRUE;
     _logTextView.textContainer.lineBreakMode = NSLineBreakByCharWrapping;
     _logTextView.text = @"";
+
+    _accessTokenTextView.delegate = self;
+    _refreshTokenTextView.delegate = self;
 
     // set the array of logout options
     kLogoutOptions = @[
@@ -289,9 +291,9 @@ static BOOL isBrowserSessionRevoked = FALSE;
 }
 
 - (void)checkBrowserSession:(OIDServiceConfiguration*)configuration
-                          clientID:(NSString*)clientID
-                      clientSecret:(NSString*)clientSecret
-              additionalParameters:
+                   clientID:(NSString*)clientID
+               clientSecret:(NSString*)clientSecret
+       additionalParameters:
 (nullable NSDictionary<NSString*, NSString*>*)
 additionalParameters {
     NSURL* redirectURI = [NSURL URLWithString:kRedirectURI];
@@ -488,9 +490,9 @@ additionalParameters:
                                       OIDRegistrationResponse*
                                       registrationResponse) {
                                           [self checkBrowserSession:configuration
-                                                                  clientID:registrationResponse.clientID
-                                                              clientSecret:registrationResponse.clientSecret
-                                                      additionalParameters:kAddParams];
+                                                           clientID:registrationResponse.clientID
+                                                       clientSecret:registrationResponse.clientSecret
+                                               additionalParameters:kAddParams];
                                       }];
                       } else {
                           [self
@@ -523,8 +525,8 @@ additionalParameters:
              tokenResponse.accessToken];
         }
 
-        [[self authState] updateWithTokenResponse:tokenResponse
-                                            error:error];
+        [self.authState updateWithTokenResponse:tokenResponse
+                                          error:error];
     }];
 }
 
@@ -600,13 +602,16 @@ additionalParameters:
             [self logMessage:
              @"Received token response with access token: [%@]",
              tokResp.accessToken];
+            [self logMessage:
+             @"Refresh token response from request: [%@]",
+             tokResp.refreshToken];
         } else {
             [self logMessage:@"Token refresh error: %@",
              [error localizedDescription]];
         }
 
-        [[self authState] updateWithTokenResponse:tokResp
-                                            error:error];
+        [self.authState updateWithTokenResponse:tokResp
+                                          error:error];
     }];
 }
 
@@ -884,6 +889,15 @@ additionalParameters:
         // automatically scroll the textview as text is added
         [[self logTextView] scrollRangeToVisible:range];
     });
+}
+
+- (void)textViewDidChangeSelection:(UITextView *)textView {
+    [textView setSelectedRange:NSMakeRange(0, textView.text.length)];
+}
+
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+    [_accessTokenTextView endEditing:TRUE];
+    [_refreshTokenTextView endEditing:TRUE];
 }
 
 /*! @brief Creates an alert to display the logout options available.
