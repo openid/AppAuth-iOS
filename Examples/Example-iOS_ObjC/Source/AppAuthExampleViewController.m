@@ -192,12 +192,12 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
   if (isLoading) {
     [_authActivityIndicator startAnimating];
     [UIView animateWithDuration:0.25 animations:^{
-      _authButton.alpha = 0.5;
+        [self.authButton setAlpha:0.5];
     }];
   } else {
     [_authActivityIndicator stopAnimating];
     [UIView animateWithDuration:0.25 animations:^{
-      _authButton.alpha = 1.0;
+      [self.authButton setAlpha:1.0];
     }];
   }
 }

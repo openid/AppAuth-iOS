@@ -72,18 +72,4 @@ didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     return NO;
 }
 
-/*! @brief Forwards inbound URLs for iOS 8.x and below to @c application:openURL:options:.
- @discussion When you drop support for versions of iOS earlier than 9.0, you can delete this
- method. NB. this implementation doesn't forward the sourceApplication or annotations. If you
- need these, then you may want @c application:openURL:options to call this method instead.
- */
-- (BOOL)application:(UIApplication *)application
-            openURL:(NSURL *)url
-  sourceApplication:(NSString *)sourceApplication
-         annotation:(id)annotation {
-    return [self application:application
-                     openURL:url
-                     options:@{}];
-}
-
 @end

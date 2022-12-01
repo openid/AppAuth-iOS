@@ -35,15 +35,15 @@ static NSArray<LogoutOption>* kLogoutOptions;
 
     if (self) {
         NSInteger rowHeight = 44.0;
-        CGRect rect = CGRectMake(0, 0, 272, rowHeight * kLogoutOptions.count);
+        CGRect rect = CGRectMake(0, 0, 300.0, rowHeight * kLogoutOptions.count);
         [self setPreferredContentSize:rect.size];
 
-        UITableView *alertTableView  = [[UITableView alloc] initWithFrame:rect];
+        UITableView *alertTableView = [[UITableView alloc] initWithFrame:rect];
         alertTableView.delegate = self;
         alertTableView.dataSource = self;
         alertTableView.estimatedRowHeight = rowHeight;
-        alertTableView.rowHeight = UITableViewAutomaticDimension;
-        alertTableView.tableFooterView = [[UIView alloc]initWithFrame:CGRectZero];
+        alertTableView.tableHeaderView = nil;
+        alertTableView.tableFooterView = nil;
 
         [alertTableView setSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
         [alertTableView setUserInteractionEnabled:YES];

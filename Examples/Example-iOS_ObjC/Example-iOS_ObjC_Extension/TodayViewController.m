@@ -171,7 +171,7 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
                            [OIDErrorUtilities resourceServerAuthorizationErrorWithCode:0
                                                                          errorResponse:jsonDictionaryOrArray
                                                                        underlyingError:error];
-                       [_authState updateWithAuthorizationError:oauthError];
+                       [self.authState updateWithAuthorizationError:oauthError];
                        // log error
                        [self logMessage:@"Authorization Error (%@). Response: %@", oauthError, responseText];
                      } else {

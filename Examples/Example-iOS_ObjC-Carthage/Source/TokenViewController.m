@@ -687,7 +687,7 @@ additionalParameters:
                         [OIDErrorUtilities resourceServerAuthorizationErrorWithCode:0
                                                                       errorResponse:jsonDictionaryOrArray
                                                                     underlyingError:error];
-                        [_authState updateWithAuthorizationError:oauthError];
+                        [self.authState updateWithAuthorizationError:oauthError];
                         // log error
                         [self logMessage:@"Authorization Error (%@). Response: %@", oauthError, responseText];
                     } else {
@@ -781,7 +781,6 @@ additionalParameters:
             NSString* message =
             [[NSString alloc] initWithData:data
                                   encoding:NSUTF8StringEncoding];
-            NSLog(@"%@", message);
             [self logMessage:@"%@", [NSString stringWithFormat:@"%@\n", message]];
 
             completion(TRUE, nil);
@@ -820,7 +819,6 @@ additionalParameters:
             NSString *message =
             [[NSString alloc] initWithData:data
                                   encoding:NSUTF8StringEncoding];
-            NSLog(@"%@", message);
             [self logMessage:@"%@", [NSString stringWithFormat:@"%@\n", message]];
 
             completion(TRUE, nil);
