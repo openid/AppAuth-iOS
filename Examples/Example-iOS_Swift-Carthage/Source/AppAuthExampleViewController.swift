@@ -433,30 +433,31 @@ extension AppAuthExampleViewController: OIDAuthStateChangeDelegate, OIDAuthState
 extension AppAuthExampleViewController {
 
     func saveAppState() {
-
-        var data: Data? = nil
-
         if let authState = self.authState {
-            data = NSKeyedArchiver.archivedData(withRootObject: authState)
-        }
-        
-        if let userDefaults = UserDefaults(suiteName: "group.net.openid.appauth.Example") {
-            userDefaults.set(data, forKey: kAppAuthExampleAuthStateKey)
-            userDefaults.synchronize()
+            do {
+                let data = try NSKeyedArchiver.archivedData(withRootObject: authState, requiringSecureCoding: false)
+                if let userDefaults = UserDefaults(suiteName: "group.net.openid.appauth.Example") {
+                    userDefaults.set(data, forKey: kAppAuthExampleAuthStateKey)
+                    userDefaults.synchronize()
+                }
+            } catch {
+                self.logMessage("Unable to store auth state")
+            }
         }
     }
 
     func loadAppState() {
-
-        if let data = UserDefaults(suiteName: "group.net.openid.appauth.Example")?.object(forKey: kAppAuthExampleAuthStateKey) as? Data,
-           let authState = NSKeyedUnarchiver.unarchiveObject(with: data) as? OIDAuthState {
-
-            setAuthState(authState)
+        if let data = UserDefaults(suiteName: "group.net.openid.appauth.Example")?.object(forKey: kAppAuthExampleAuthStateKey) as? Data {
+            do {
+                let storedAuthState = try NSKeyedUnarchiver.unarchivedObject(ofClass: OIDAuthState.self, from: data)
+                setAuthState(storedAuthState)
+            } catch {
+                self.logMessage("Unable to retrieve stored auth state")
+            }
         }
     }
 
     func setAuthState(_ authState: OIDAuthState?) {
-
         updateUI(isLoading: false)
 
         if (self.authState == authState) {

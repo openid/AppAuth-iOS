@@ -20,6 +20,8 @@
 		F8AAA48828F75F35005BB4C1 /* AppAuthCore.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8AAA48128F75E94005BB4C1 /* AppAuthCore.xcframework */; };
 		F8AAA48B28F75F39005BB4C1 /* AppAuth.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8AAA47D28F75E8C005BB4C1 /* AppAuth.xcframework */; };
 		F8B42DDD28C7E4D600CC93EA /* TokenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8B42DDC28C7E4D600CC93EA /* TokenViewController.swift */; };
+		F8B60B06292D420A00F0C865 /* LogoutOptionsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8B60B03292D420A00F0C865 /* LogoutOptionsController.swift */; };
+		F8B60B08292D551900F0C865 /* LogoutOptionsControllerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8B60B07292D551900F0C865 /* LogoutOptionsControllerCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,6 +67,8 @@
 		F8AAA47D28F75E8C005BB4C1 /* AppAuth.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = AppAuth.xcframework; path = Carthage/Build/AppAuth.xcframework; sourceTree = "<group>"; };
 		F8AAA48128F75E94005BB4C1 /* AppAuthCore.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = AppAuthCore.xcframework; path = Carthage/Build/AppAuthCore.xcframework; sourceTree = "<group>"; };
 		F8B42DDC28C7E4D600CC93EA /* TokenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenViewController.swift; sourceTree = "<group>"; };
+		F8B60B03292D420A00F0C865 /* LogoutOptionsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogoutOptionsController.swift; sourceTree = "<group>"; };
+		F8B60B07292D551900F0C865 /* LogoutOptionsControllerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoutOptionsControllerCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -125,6 +129,7 @@
 				9FD378221FB7C6F800436204 /* AppAuthExampleViewController.swift */,
 				F8B42DDC28C7E4D600CC93EA /* TokenViewController.swift */,
 				F82883DA28ECA8B800255633 /* Extensions.swift */,
+				F8B60B02292D41D800F0C865 /* LogoutOptionsController */,
 				9F265BCB1F9AC69300DC14BF /* LaunchScreen.storyboard */,
 				9F265BCD1F9AC69300DC14BF /* Main.storyboard */,
 				9F265BC91F9AC69300DC14BF /* Assets.xcassets */,
@@ -142,6 +147,15 @@
 				0646249A205F026300072191 /* NotificationCenter.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		F8B60B02292D41D800F0C865 /* LogoutOptionsController */ = {
+			isa = PBXGroup;
+			children = (
+				F8B60B03292D420A00F0C865 /* LogoutOptionsController.swift */,
+				F8B60B07292D551900F0C865 /* LogoutOptionsControllerCell.swift */,
+			);
+			path = LogoutOptionsController;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -205,7 +219,7 @@
 					};
 					9F265B961F9AC5D600DC14BF = {
 						CreatedOnToolsVersion = 9.0.1;
-						LastSwiftMigration = "";
+						LastSwiftMigration = 1410;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
@@ -271,7 +285,9 @@
 				F8B42DDD28C7E4D600CC93EA /* TokenViewController.swift in Sources */,
 				9FD378231FB7C6F800436204 /* AppAuthExampleViewController.swift in Sources */,
 				9F265BD51F9AC69300DC14BF /* AppDelegate.swift in Sources */,
+				F8B60B08292D551900F0C865 /* LogoutOptionsControllerCell.swift in Sources */,
 				F82883DC28ECA8E800255633 /* Extensions.swift in Sources */,
+				F8B60B06292D420A00F0C865 /* LogoutOptionsController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -468,6 +484,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Source/Example.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = "";
@@ -483,6 +500,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = net.openid.appauth.Example;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -493,6 +511,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Source/Example.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = "";

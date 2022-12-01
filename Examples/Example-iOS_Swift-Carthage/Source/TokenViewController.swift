@@ -19,12 +19,20 @@
 import AppAuth
 import UIKit
 
+
+typealias CompletionCallback = (_ completed: Bool, _ error: Error?) -> Void
+
 /**
  The OAuth logout URI for the client @c kClientID.
 
  For client configuration instructions, see the [README](https://github.com/openid/AppAuth-iOS/blob/master/Examples/Example-iOS_Swift-Carthage/README.md).
  */
 let kLogoutURI: String? = "https://api.multi.dev.or.janrain.com/00000000-0000-0000-0000-000000000000/auth-ui/logout"
+
+/**
+ The OAuth revoke token URI for the client @c kClientID.
+ */
+let kRevokeTokenURI: String? = "https://api.multi.dev.or.janrain.com/00000000-0000-0000-0000-000000000000/login/token/revoke"
 
 /**
  The Profile Management URI for the client @c kClientID.
@@ -42,7 +50,18 @@ class TokenViewController: UIViewController {
     @IBOutlet private weak var profileButton: UIButton!
     @IBOutlet private weak var logTextView: UITextView!
 
+    @IBOutlet private weak var accessTokenTitleLabel: UILabel!
+    @IBOutlet private weak var refreshTokenTitleLabel: UILabel!
+    @IBOutlet private weak var accessTokenTextView: UITextView!
+    @IBOutlet private weak var refreshTokenTextView: UITextView!
+    @IBOutlet private weak var accessTokenStackView: UIStackView!
+    @IBOutlet private weak var refreshTokenStackView: UIStackView!
+    @IBOutlet private weak var tokenStackView: UIStackView!
+
     private var authState: OIDAuthState?
+    private var isAccessTokenRevoked = false
+    private var isRefreshTokenRevoked = false
+    private var isBrowserSessionRevoked = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -119,6 +138,9 @@ extension TokenViewController {
         logTextView.alwaysBounceVertical = true
         logTextView.textContainer.lineBreakMode = .byCharWrapping
         logTextView.text = ""
+
+        accessTokenTextView.delegate = self
+        refreshTokenTextView.delegate = self
     }
 }
 
@@ -198,6 +220,9 @@ extension TokenViewController {
 
             if error != nil  {
                 self.logMessage("Error fetching fresh tokens: \(error?.localizedDescription ?? "ERROR")")
+                self.isAccessTokenRevoked = true
+                self.isRefreshTokenRevoked = true
+
                 return
             }
 
@@ -331,13 +356,73 @@ extension TokenViewController {
     }
 
     @IBAction func logout(_ sender: UIButton) {
-        endBrowserSession()
+        displayLogoutAlert()
     }
 
     @IBAction func clearLog(_ sender: UIButton) {
         DispatchQueue.main.async {
             self.logTextView.text = ""
         }
+    }
+
+    func revokeAccessToken(accessToken: String, completion: @escaping CompletionCallback) {
+
+        guard let revokeTokenUriString = kRevokeTokenURI, let revokeTokenUri = URL(string: revokeTokenUriString) else { return }
+        var request = URLRequest(url: revokeTokenUri)
+        request.httpMethod = "POST"
+
+        guard let clientId = kClientID else { return }
+        let bodyString = "token=\(accessToken)&client_id=\(clientId)"
+        let bodyData = bodyString.data(using: .utf8)!
+        let bodyLength = "\(bodyData.count)"
+        request.httpBody = bodyData
+        request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+        request.setValue(bodyLength, forHTTPHeaderField: "Content-Length")
+
+        let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+            if let data = data {
+                let message = String(data: data, encoding: .utf8)!
+                print(message)
+                DispatchQueue.main.async {
+                    self.logMessage(message)
+                }
+                completion(true, nil)
+            } else if let error = error {
+                print("Revoke Token Error: \(error)")
+                completion(true, error)
+            }
+        }
+        task.resume()
+    }
+
+    func revokeRefreshToken(refreshToken: String, completion: @escaping CompletionCallback) {
+
+        guard let revokeTokenUriString = kRevokeTokenURI, let revokeTokenUri = URL(string: revokeTokenUriString) else { return }
+        var request = URLRequest(url: revokeTokenUri)
+        request.httpMethod = "POST"
+
+        guard let clientId = kClientID else { return }
+        let bodyString = "token=\(refreshToken)&client_id=\(clientId)"
+        let bodyData = bodyString.data(using: .utf8)!
+        let bodyLength = "\(bodyData.count)"
+        request.httpBody = bodyData
+        request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+        request.setValue(bodyLength, forHTTPHeaderField: "Content-Length")
+
+        let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+            if let data = data {
+                let message = String(data: data, encoding: .utf8)!
+                print(message)
+                DispatchQueue.main.async {
+                    self.logMessage(message)
+                }
+            } else if let error = error {
+                print("Revoke Token Error: \(error)")
+            }
+
+            completion(true, error)
+        }
+        task.resume()
     }
 }
 
@@ -445,6 +530,9 @@ extension TokenViewController {
         appDelegate.currentAuthorizationFlow = OIDAuthState.authState(byPresenting: request, presenting: self) { authState, error in
 
             if let authState = authState {
+                self.isRefreshTokenRevoked = false
+                self.isAccessTokenRevoked = false
+                self.isBrowserSessionRevoked = false
                 self.setAuthState(authState)
                 self.logMessage("Got authorization tokens. Access token: \(authState.lastTokenResponse?.accessToken ?? "DEFAULT_TOKEN")")
             } else {
@@ -509,64 +597,75 @@ extension TokenViewController {
         }
     }
 
-    func endBrowserSession() {
-
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
-            logMessage("Error accessing AppDelegate")
-            return
-        }
-
-        guard let redirectURI = URL(string: kRedirectURI) else {
-            logMessage("Error creating URL for : \(kRedirectURI)")
-            return
-        }
-
-        guard let logoutUriString = kLogoutURI,
-              !logoutUriString.isEmpty,
-              let logoutUri = URL(string: logoutUriString)
-        else {
-            logMessage("Error accessing kLogoutUri")
-            return
-        }
-
-        discoverConfig() { configuration, clientId, clientSecret in
-
-            guard let configuration = configuration else {
-                self.logMessage("Error retrieving discovery document. Error & Configuration both are NIL!")
+    func endBrowserSession(completion: @escaping CompletionCallback) {
+        DispatchQueue.main.async {
+            guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
+                self.logMessage("Error accessing AppDelegate")
                 return
             }
 
-            let tokenHint = self.authState?.lastTokenResponse?.idToken ?? ""
-
-            // create the config for logout
-            let logoutConfig = OIDServiceConfiguration(
-                authorizationEndpoint: configuration.authorizationEndpoint,
-                tokenEndpoint: configuration.tokenEndpoint,
-                issuer: configuration.issuer,
-                registrationEndpoint: configuration.registrationEndpoint,
-                endSessionEndpoint: logoutUri)
-
-            let logoutAdditionalParams = [
-                "client_id": clientId]
-
-            // builds the end session request
-            let endSessionRequest = OIDEndSessionRequest(configuration: logoutConfig, idTokenHint: tokenHint, postLogoutRedirectURL: redirectURI, additionalParameters: logoutAdditionalParams)
-
-            guard let userAgent = OIDExternalUserAgentIOS(presenting: self) else {
-                self.logMessage("Error retrieving user agent")
+            guard let redirectURI = URL(string: kRedirectURI) else {
+                self.logMessage("Error creating URL for : \(kRedirectURI)")
                 return
             }
 
-            // opens the browser to clear auth sessionendSessionRequest  OIDEndSessionRequest
-            appDelegate.currentAuthorizationFlow = OIDAuthorizationService.present(endSessionRequest, externalUserAgent: userAgent) { (response, error) in
-                if let logoutResponse = response {
-                    self.setAuthState(nil)
-                    self.logMessage("Got logout response: \(logoutResponse)")
-                    UIApplication.setRootView(AppAuthExampleViewController.instantiate(from: .Main), options: UIApplication.logoutAnimation)
-                }  else {
-                    self.logMessage("Logout error: \(error?.localizedDescription ?? "DEFAULT_ERROR")")
+            guard let logoutUriString = kLogoutURI,
+                  !logoutUriString.isEmpty,
+                  let logoutUri = URL(string: logoutUriString)
+            else {
+                self.logMessage("Error accessing kLogoutUri")
+                return
+            }
+
+            self.discoverConfig() { configuration, clientId, clientSecret in
+
+                guard let configuration = configuration else {
+                    self.logMessage("Error retrieving discovery document. Error & Configuration both are NIL!")
+                    return
+                }
+
+                let tokenHint = self.authState?.lastTokenResponse?.idToken ?? ""
+
+                // create the config for logout
+                let logoutConfig = OIDServiceConfiguration(
+                    authorizationEndpoint: configuration.authorizationEndpoint,
+                    tokenEndpoint: configuration.tokenEndpoint,
+                    issuer: configuration.issuer,
+                    registrationEndpoint: configuration.registrationEndpoint,
+                    endSessionEndpoint: logoutUri)
+
+                let logoutAdditionalParams = [
+                    "client_id": clientId]
+
+                // builds the end session request
+                let endSessionRequest = OIDEndSessionRequest(configuration: logoutConfig, idTokenHint: tokenHint, postLogoutRedirectURL: redirectURI, additionalParameters: logoutAdditionalParams)
+
+                guard let userAgent = OIDExternalUserAgentIOS(presenting: self) else {
+                    self.logMessage("Error retrieving user agent")
+                    return
+                }
+
+                // opens the browser to clear auth sessionendSessionRequest  OIDEndSessionRequest
+                appDelegate.currentAuthorizationFlow = OIDAuthorizationService.present(endSessionRequest, externalUserAgent: userAgent) { (response, error) in
+                    if let logoutResponse = response {
+                        self.logMessage("Got logout response: \(logoutResponse)")
+                        completion(true, nil)
+                    }  else {
+                        self.logMessage("Logout error: \(error?.localizedDescription ?? "DEFAULT_ERROR")")
+                        completion(true, error)
+                    }
                 }
             }
+        }
+    }
+
+    func endAppSession() {
+        DispatchQueue.main.async {
+            self.isAccessTokenRevoked = false;
+            self.isRefreshTokenRevoked = false;
+            self.isBrowserSessionRevoked = false;
+            self.setAuthState(nil)
+            UIApplication.setRootView(AppAuthExampleViewController.instantiate(from: .Main), options: UIApplication.logoutAnimation)
         }
     }
 }
@@ -583,27 +682,42 @@ extension TokenViewController: OIDAuthStateChangeDelegate, OIDAuthStateErrorDele
     }
 }
 
+extension TokenViewController: UITextViewDelegate {
+    func textViewDidChangeSelection(_ textView: UITextView) {
+        textView.selectedRange = NSMakeRange(0, textView.text.count)
+    }
+
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        accessTokenTextView.endEditing(true)
+        refreshTokenTextView.endEditing(true)
+    }
+}
+
 //MARK: Helper Methods
 extension TokenViewController {
 
     func saveAppState() {
-
-        var data: Data? = nil
-
         if let authState = self.authState {
-            data = NSKeyedArchiver.archivedData(withRootObject: authState)
-        }
-
-        if let userDefaults = UserDefaults(suiteName: "group.net.openid.appauth.Example") {
-            userDefaults.set(data, forKey: kAppAuthExampleAuthStateKey)
-            userDefaults.synchronize()
+            do {
+                let data = try NSKeyedArchiver.archivedData(withRootObject: authState, requiringSecureCoding: false)
+                if let userDefaults = UserDefaults(suiteName: "group.net.openid.appauth.Example") {
+                    userDefaults.set(data, forKey: kAppAuthExampleAuthStateKey)
+                    userDefaults.synchronize()
+                }
+            } catch {
+                self.logMessage("Unable to store auth state")
+            }
         }
     }
 
     func loadAppState() {
-        if let data = UserDefaults(suiteName: "group.net.openid.appauth.Example")?.object(forKey: kAppAuthExampleAuthStateKey) as? Data,
-           let authState = NSKeyedUnarchiver.unarchiveObject(with: data) as? OIDAuthState {
-            setAuthState(authState)
+        if let data = UserDefaults(suiteName: "group.net.openid.appauth.Example")?.object(forKey: kAppAuthExampleAuthStateKey) as? Data {
+            do {
+                let storedAuthState = try NSKeyedUnarchiver.unarchivedObject(ofClass: OIDAuthState.self, from: data)
+                setAuthState(storedAuthState)
+            } catch {
+                self.logMessage("Unable to retrieve stored auth state")
+            }
         }
     }
 
@@ -618,12 +732,43 @@ extension TokenViewController {
 
     func updateUI() {
 
-        codeExchangeButton.isHidden = authState?.lastTokenResponse != nil
-        refreshTokenButton.isHidden = authState?.lastTokenResponse == nil
+        DispatchQueue.main.async {
+            UIView.animate(withDuration: 0.3) {
 
-        if let authState = self.authState {
-            userinfoButton.isEnabled = authState.isAuthorized
-            profileButton.isEnabled = authState.isAuthorized
+                self.profileButton.isHidden = self.isBrowserSessionRevoked
+
+                guard let authState = self.authState else {
+                    self.tokenStackView.isHidden = true
+                    self.accessTokenStackView.isHidden = true
+                    self.refreshTokenTextView.isHidden = true
+                    return
+                }
+                
+                self.codeExchangeButton.isHidden = authState.lastTokenResponse != nil || self.isRefreshTokenRevoked || self.isAccessTokenRevoked
+                self.refreshTokenButton.isHidden = authState.lastTokenResponse == nil || self.isRefreshTokenRevoked || self.isAccessTokenRevoked
+                self.userinfoButton.isHidden = authState.lastTokenResponse == nil || self.isRefreshTokenRevoked || self.isAccessTokenRevoked
+                
+                if self.isAccessTokenRevoked || self.isRefreshTokenRevoked {
+                    self.accessTokenStackView.isHidden = true
+                    self.refreshTokenStackView.isHidden = true
+                } else {
+                    if let accessToken = authState.lastTokenResponse?.accessToken {
+                        self.accessTokenStackView.isHidden = false
+                        self.accessTokenTextView.text = accessToken
+                        self.accessTokenTitleLabel.text = self.isAccessTokenRevoked ? "Access Token Revoked:" : "Access Token:"
+                    } else {
+                        self.accessTokenStackView.isHidden = true
+                    }
+
+                    if let refreshToken = authState.lastTokenResponse?.refreshToken {
+                        self.refreshTokenStackView.isHidden = false
+                        self.refreshTokenTextView.text = refreshToken
+                        self.refreshTokenTitleLabel.text = self.isRefreshTokenRevoked ? "Refresh Token Revoked:" : "Refresh Token:"
+                    } else {
+                        self.refreshTokenStackView.isHidden = true
+                    }
+                }
+            }
         }
     }
 
@@ -638,17 +783,18 @@ extension TokenViewController {
             return
         }
 
-        // check if log was empty to enable clearing
-        let isLogPreviouslyEmpty = logTextView.text.isEmpty
-
-        print(message)
-
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "hh:mm:ss"
-        let dateString = dateFormatter.string(from: Date())
-
-        // appends to output log
         DispatchQueue.main.async {
+
+            // check if log was empty to enable clearing
+            let isLogPreviouslyEmpty = self.logTextView.text.isEmpty
+
+            print(message)
+
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "hh:mm:ss"
+            let dateString = dateFormatter.string(from: Date())
+
+            // appends to output log
             let logText = "\(self.logTextView.text ?? "")\n\(dateString): \(message)"
             self.logTextView.text = logText
 
@@ -657,6 +803,86 @@ extension TokenViewController {
 
             if isLogPreviouslyEmpty {
                 self.updateUI()
+            }
+        }
+    }
+
+    func displayLogoutAlert() {
+        let logoutViewController = LogoutOptionsController()
+
+        let logoutAlertController = UIAlertController(title: "Sign Out Options", message: nil, preferredStyle: .alert)
+        logoutAlertController.setValue(logoutViewController, forKey: "contentViewController")
+
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        let submitAction = UIAlertAction(title: "Submit", style: .default) { _ in
+            self.handleLogoutSelections(logoutViewController.selectedLogoutOptions)
+        }
+
+        logoutAlertController.addAction(cancelAction)
+        logoutAlertController.addAction(submitAction)
+
+        self.present(logoutAlertController, animated: true, completion: nil)
+    }
+
+    func handleLogoutSelections(_ logoutSelections: Set<LogoutType>) {
+
+        let logoutGroup = DispatchGroup()
+
+        if ((logoutSelections.contains(LogoutType.revokeTokens) || logoutSelections.contains(LogoutType.appSession)) && (!isAccessTokenRevoked || !isRefreshTokenRevoked)) {
+
+            if let authState = authState, let lastTokenResponse = authState.lastTokenResponse, let accessToken = lastTokenResponse.accessToken, let refreshToken = lastTokenResponse.refreshToken {
+
+                logoutGroup.enter()
+
+                DispatchQueue.global().async(group: logoutGroup) {
+                    self.revokeAccessToken(accessToken: accessToken) { complete, err in
+                        if complete {
+                            self.isAccessTokenRevoked = true
+                            logoutGroup.leave()
+                        }
+                    }
+                }
+
+                logoutGroup.enter()
+
+                DispatchQueue.global().async(group: logoutGroup) {
+                    self.revokeRefreshToken(refreshToken: refreshToken) { complete, err in
+                        if complete {
+                            self.isRefreshTokenRevoked = true
+
+                            if !logoutSelections.contains(LogoutType.browserSession) || !logoutSelections.contains(LogoutType.appSession) {
+                                self.updateUI()
+                            }
+
+                            logoutGroup.leave()
+                        }
+                    }
+                }
+            }
+        }
+
+        if (logoutSelections.contains(LogoutType.browserSession)) {
+
+            logoutGroup.enter()
+
+            DispatchQueue.global().async(group: logoutGroup) {
+                self.endBrowserSession { complete, err in
+                    if complete {
+                        self.isBrowserSessionRevoked = true
+
+                        if !logoutSelections.contains(LogoutType.appSession) {
+                            self.updateUI()
+                        }
+
+                        logoutGroup.leave()
+                    }
+                }
+            }
+        }
+
+        if (logoutSelections.contains(LogoutType.appSession)) {
+            logoutGroup.notify(queue: .global()) {
+                self.endAppSession()
             }
         }
     }

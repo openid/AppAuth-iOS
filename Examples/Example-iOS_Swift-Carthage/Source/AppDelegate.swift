@@ -29,18 +29,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         var isAuthorized = false
 
-        if let data = UserDefaults(suiteName: "group.net.openid.appauth.Example")?.object(forKey: kAppAuthExampleAuthStateKey) as? Data,
-           let authstate = NSKeyedUnarchiver.unarchiveObject(with: data) as? OIDAuthState {
-
-            if authstate.isAuthorized {
-                isAuthorized = true
+        if let data = UserDefaults(suiteName: "group.net.openid.appauth.Example")?.object(forKey: kAppAuthExampleAuthStateKey) as? Data {
+            do {
+                let storedAuthState = try NSKeyedUnarchiver.unarchivedObject(ofClass: OIDAuthState.self, from: data)
+                if let authState = storedAuthState {
+                    isAuthorized = authState.isAuthorized
+                }
+            } catch {
+                print("Unable to retrieve stored auth state")
             }
         }
 
-        if !isAuthorized {
-            let loginViewController = UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "AppAuthExampleViewController")
-            self.window?.rootViewController = loginViewController
-        }
+        let initialViewControllerIdentifier = isAuthorized ? "TokenViewController" : "AppAuthExampleViewController"
+
+        let initialViewController = UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: initialViewControllerIdentifier)
+
+        self.window = UIWindow(frame: UIScreen.main.bounds)
+        self.window?.rootViewController = initialViewController
+        self.window?.makeKeyAndVisible()
 
         return true
     }
