@@ -537,6 +537,9 @@ extension TokenViewController {
                 self.logMessage("Got authorization tokens. Access token: \(authState.lastTokenResponse?.accessToken ?? "DEFAULT_TOKEN")")
             } else {
                 self.logMessage("Authorization error: \(error?.localizedDescription ?? "DEFAULT_ERROR")")
+                if self.isBrowserSessionRevoked {
+                    self.endAppSession()
+                }
             }
         }
     }
@@ -594,6 +597,10 @@ extension TokenViewController {
             }  else {
                 self.logMessage("profile management error: \(error?.localizedDescription ?? "DEFAULT_ERROR")")
             }
+            self.accessTokenTitleLabel.text = "No access token returned"
+            self.refreshTokenTitleLabel.text = "No refresh token returned"
+            self.accessTokenTextView.text = ""
+            self.refreshTokenTextView.text = ""
         }
     }
 
@@ -747,26 +754,21 @@ extension TokenViewController {
                 self.codeExchangeButton.isHidden = authState.lastTokenResponse != nil || self.isRefreshTokenRevoked || self.isAccessTokenRevoked
                 self.refreshTokenButton.isHidden = authState.lastTokenResponse == nil || self.isRefreshTokenRevoked || self.isAccessTokenRevoked
                 self.userinfoButton.isHidden = authState.lastTokenResponse == nil || self.isRefreshTokenRevoked || self.isAccessTokenRevoked
-                
-                if self.isAccessTokenRevoked || self.isRefreshTokenRevoked {
-                    self.accessTokenStackView.isHidden = true
-                    self.refreshTokenStackView.isHidden = true
-                } else {
-                    if let accessToken = authState.lastTokenResponse?.accessToken {
-                        self.accessTokenStackView.isHidden = false
-                        self.accessTokenTextView.text = accessToken
-                        self.accessTokenTitleLabel.text = self.isAccessTokenRevoked ? "Access Token Revoked:" : "Access Token:"
-                    } else {
-                        self.accessTokenStackView.isHidden = true
-                    }
 
-                    if let refreshToken = authState.lastTokenResponse?.refreshToken {
-                        self.refreshTokenStackView.isHidden = false
-                        self.refreshTokenTextView.text = refreshToken
-                        self.refreshTokenTitleLabel.text = self.isRefreshTokenRevoked ? "Refresh Token Revoked:" : "Refresh Token:"
-                    } else {
-                        self.refreshTokenStackView.isHidden = true
-                    }
+                if let accessToken = authState.lastTokenResponse?.accessToken {
+                    self.accessTokenStackView.isHidden = false
+                    self.accessTokenTextView.text = accessToken
+                    self.accessTokenTitleLabel.text = self.isAccessTokenRevoked ? "Access Token Revoked:" : "Access Token:"
+                } else {
+                    self.accessTokenStackView.isHidden = true
+                }
+
+                if let refreshToken = authState.lastTokenResponse?.refreshToken {
+                    self.refreshTokenStackView.isHidden = false
+                    self.refreshTokenTextView.text = refreshToken
+                    self.refreshTokenTitleLabel.text = self.isRefreshTokenRevoked ? "Refresh Token Revoked:" : "Refresh Token:"
+                } else {
+                    self.refreshTokenStackView.isHidden = true
                 }
             }
         }
