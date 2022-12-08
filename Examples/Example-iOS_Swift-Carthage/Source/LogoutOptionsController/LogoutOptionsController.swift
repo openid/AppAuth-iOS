@@ -1,11 +1,11 @@
 //
-//  LogoutOptionsController.m
-//  Example-iOS_ObjC
+//  LogoutOptionsController.swift
+//  Example
 //
-//  Created by Michael Moore on 11/15/22.
-//  Copyright © 2022 William Denniss. All rights reserved.
+//  Created by Michael Moore on 11/22/22.
+//  Copyright © 2022 Google Inc. All rights reserved.
 //
-import Foundation
+
 import UIKit
 
 enum LogoutType: String, CaseIterable {
@@ -39,7 +39,7 @@ class LogoutOptionsController: UIViewController {
 
     func createTableView() {
 
-        let rect = CGRectMake(0, 0, 300.0, LogoutOptionsControllerCell.height() * Double(tableViewLogoutOptions.count))
+        let rect = CGRect(0, 0, 300.0, LogoutOptionsControllerCell.height() * Double(tableViewLogoutOptions.count))
         preferredContentSize = rect.size
 
         let tableView = UITableView(frame: CGRect(x: 0, y: 0, width: rect.width, height: rect.height))
