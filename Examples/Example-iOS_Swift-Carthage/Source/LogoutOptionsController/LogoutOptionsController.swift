@@ -39,7 +39,7 @@ class LogoutOptionsController: UIViewController {
 
     func createTableView() {
 
-        let rect = CGRect(0, 0, 300.0, LogoutOptionsControllerCell.height() * Double(tableViewLogoutOptions.count))
+        let rect = CGRect(x: 0, y: 0, width: 300.0, height: LogoutOptionsControllerCell.height() * Double(tableViewLogoutOptions.count))
         preferredContentSize = rect.size
 
         let tableView = UITableView(frame: CGRect(x: 0, y: 0, width: rect.width, height: rect.height))
