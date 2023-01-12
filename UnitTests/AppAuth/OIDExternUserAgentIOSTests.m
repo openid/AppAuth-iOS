@@ -23,6 +23,7 @@
 @import TestHelpers;
 #else
 #import "Source/AppAuth/iOS/OIDExternalUserAgentIOS.h"
+#import "Source/AppAuthCore/OIDError.h"
 #import "UnitTests/TestHelpers/OIDAuthorizationRequest+TestHelper.h"
 #endif
 
