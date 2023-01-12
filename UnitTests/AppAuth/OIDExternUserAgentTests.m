@@ -1,4 +1,4 @@
-/*! @file OIDExternalUserAgentIOSTests.m
+/*! @file OIDExternalUserAgentTests.m
    @brief AppAuth iOS SDK
    @copyright
        Copyright 2023 The AppAuth Authors. All Rights Reserved.
@@ -16,25 +16,35 @@
        limitations under the License.
 */
 
+#import <TargetConditionals.h>
+
 #import <XCTest/XCTest.h>
 
 #if SWIFT_PACKAGE
 @import AppAuth;
 @import TestHelpers;
 #else
+#import "Source/AppAuth/iOS/OIDExternalUserAgentCatalyst.h"
 #import "Source/AppAuth/iOS/OIDExternalUserAgentIOS.h"
 #import "Source/AppAuthCore/OIDError.h"
 #import "UnitTests/TestHelpers/OIDAuthorizationRequest+TestHelper.h"
 #endif
 
-@interface OIDExternalUserAgentIOSTests : XCTestCase
+@interface OIDExternalUserAgentTests : XCTestCase
 
 @end
 
-@implementation OIDExternalUserAgentIOSTests
+@implementation OIDExternalUserAgentTests
 
 - (void)testThatPresentExternalUserAgentRequestReturnsNoWhenMissingPresentingViewController {
-  OIDExternalUserAgentIOS *userAgent = [[OIDExternalUserAgentIOS alloc] init];
+  id<OIDExternalUserAgent> userAgent;
+
+#if TARGET_OS_MACCATALYST
+  userAgent = [[OIDExternalUserAgentCatalyst alloc] init];
+#elif TARGET_OS_IOS
+  userAgent = [[OIDExternalUserAgentIOS alloc] init];
+#endif
+
   OIDAuthorizationRequest *authRequest = [OIDAuthorizationRequest testInstance];
   [OIDAuthorizationService
       presentAuthorizationRequest:authRequest
