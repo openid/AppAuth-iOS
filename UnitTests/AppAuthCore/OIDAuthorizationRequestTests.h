@@ -26,10 +26,6 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @interface OIDAuthorizationRequestTests : XCTestCase
 
-/*! @brief Creates a new @c OIDAuthorizationRequest for testing.
- */
-+ (OIDAuthorizationRequest *)testInstance;
-
 /*! @brief Creates a new @c OIDAuthorizationRequest testing a code flow request.
  */
 + (OIDAuthorizationRequest *)testInstanceCodeFlow;

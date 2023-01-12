@@ -22,10 +22,12 @@
 
 #if SWIFT_PACKAGE
 @import AppAuthCore;
+@import TestHelpers;
 #else
 #import "Source/AppAuthCore/OIDAuthorizationRequest.h"
 #import "Source/AppAuthCore/OIDAuthorizationResponse.h"
 #import "Source/AppAuthCore/OIDGrantTypes.h"
+#import "UnitTests/TestHelpers/OIDAuthorizationRequest+TestHelper.h"
 #endif
 
 // Ignore warnings about "Use of GNU statement expression extension" which is raised by our use of
@@ -40,18 +42,6 @@ static NSString *const kTestAuthorizationCode = @"Code";
 /*! @brief Test value for the @c authorizationCodeVerifier property.
  */
 static NSString *const kTestAuthorizationCodeVerifier = @"Verifier";
-
-/*! @brief Test key for the @c additionalParameters property.
- */
-static NSString *const kTestAdditionalParameterKey = @"A";
-
-/*! @brief Test value for the @c additionalParameters property.
- */
-static NSString *const kTestAdditionalParameterValue = @"1";
-
-/*! @brief Test value for the @c state property.
- */
-static NSString *const kTestState = @"State";
 
 /*! @brief Test value for the @c accessToken property.
  */
@@ -69,14 +59,10 @@ static NSString *const kTestIDToken = @"ID Token";
  */
 static NSString *const kTestTokenType = @"Token Type";
 
-/*! @brief Test value for the @c scopes property.
- */
-static NSString *const kTestScope = @"Scope";
-
 @implementation OIDAuthorizationResponseTests
 
 + (OIDAuthorizationResponse *)testInstance {
-  OIDAuthorizationRequest *request = [OIDAuthorizationRequestTests testInstance];
+  OIDAuthorizationRequest *request = [OIDAuthorizationRequest testInstance];
   OIDAuthorizationResponse *response =
       [[OIDAuthorizationResponse alloc] initWithRequest:request parameters:@{
         @"code" : kTestAuthorizationCode,

@@ -64,15 +64,21 @@ let package = Package(
             path: "Source/AppAuthTV",
             publicHeadersPath: ""
         ),
+        .target(
+            name: "TestHelpers",
+            dependencies: ["AppAuthCore"],
+            path: "UnitTests/Helpers",
+            publicHeadersPath: ""
+        ),
         .testTarget(
             name: "AppAuthCoreTests",
-            dependencies: ["AppAuthCore"],
+            dependencies: ["AppAuthCore", "TestHelpers"],
             path: "UnitTests/AppAuthCore",
-            exclude: ["OIDSwiftTests.swift", "AppAuthTV"]
+            exclude: ["OIDSwiftTests.swift"]
         ),
         .testTarget(
             name: "AppAuthTests",
-            dependencies: ["AppAuth", "AppAuthCore"],
+            dependencies: ["AppAuth", "TestHelpers"],
             path: "UnitTests/AppAuth"
         ),
         .testTarget(
@@ -85,6 +91,6 @@ let package = Package(
             name: "AppAuthTVTests",
             dependencies: ["AppAuthTV"],
             path: "UnitTests/AppAuthTV"
-        ),
+        )
     ]
 )
