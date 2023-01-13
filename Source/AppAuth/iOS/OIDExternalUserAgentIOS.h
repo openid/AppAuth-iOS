@@ -41,7 +41,7 @@ API_UNAVAILABLE(macCatalyst)
         @c SFSafariViewController, and iOS 12+ uses @c ASWebAuthenticationSession (unless Guided
         Access is on).
  */
-- (nullable instancetype)init API_AVAILABLE(ios(11));
+- (nullable instancetype)init;
 
 /*! @brief Create an external user-agent with the presenting view controller.
     @param presentingViewController The view controller from which to present the authentication UI.
