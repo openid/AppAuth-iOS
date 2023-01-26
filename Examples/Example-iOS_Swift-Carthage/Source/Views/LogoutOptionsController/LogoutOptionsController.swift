@@ -2,8 +2,7 @@
 //  LogoutOptionsController.swift
 //  Example
 //
-//  Created by Michael Moore on 11/22/22.
-//  Copyright © 2022 Google Inc. All rights reserved.
+//  Copyright © 2023 Akamai Technologies, Inc. All Rights Reserved.
 //
 
 import UIKit

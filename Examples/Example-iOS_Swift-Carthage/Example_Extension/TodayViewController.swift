@@ -1,29 +1,18 @@
 //
 //  TodayViewController.swift
+//  Example
 //
-//  Copyright (c) 2017 The AppAuth Authors.
-//
-//  Licensed under the Apache License, Version 2.0 (the "License");
-//  you may not use this file except in compliance with the License.
-//  You may obtain a copy of the License at
-//
-//  http://www.apache.org/licenses/LICENSE-2.0
-//
-//  Unless required by applicable law or agreed to in writing, software
-//  distributed under the License is distributed on an "AS IS" BASIS,
-//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//  See the License for the specific language governing permissions and
-//  limitations under the License.
+//  Copyright © 2023 Akamai Technologies, Inc. All Rights Reserved.
 //
 
 import UIKit
 import NotificationCenter
-import AppAuthCore
+import AppAuth
 
 /**
  NSCoding key for the authState property.
  */
-let kAppAuthExampleAuthStateKey: String = "authState";
+let kAppAuthExampleAuthStateKey: String = "authState"
 
 class TodayViewController: UIViewController, NCWidgetProviding {
     
@@ -191,11 +180,11 @@ extension TodayViewController {
     }
     
     func setAuthState(_ authState: OIDAuthState?) {
-        if (self.authState == authState) {
-            return;
+        if self.authState == authState {
+            return
         }
-        self.authState = authState;
-        self.authState?.stateChangeDelegate = self;
+        self.authState = authState
+        self.authState?.stateChangeDelegate = self
         self.stateChanged()
     }
     
@@ -209,10 +198,10 @@ extension TodayViewController {
             return
         }
         
-        print(message);
+        print(message)
         
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "hh:mm:ss";
+        dateFormatter.dateFormat = "hh:mm:ss"
         let dateString = dateFormatter.string(from: Date())
         
         // appends to output log

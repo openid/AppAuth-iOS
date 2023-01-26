@@ -9,16 +9,16 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--App Auth Example View Controller-->
+        <!--Login View Controller-->
         <scene sceneID="iIR-bO-8QY">
             <objects>
-                <viewController storyboardIdentifier="AppAuthExampleViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="EMx-1a-h2U" customClass="AppAuthExampleViewController" customModule="Example" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="LoginViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="EMx-1a-h2U" customClass="LoginViewController" customModule="Example" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="god-ZG-0et">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="MVQ-Pt-k9A">
-                                <rect key="frame" x="18.333333333333343" y="421.33333333333326" width="356.33333333333326" height="381.66666666666674"/>
+                                <rect key="frame" x="18.333333333333343" y="401.33333333333326" width="356.33333333333326" height="401.66666666666674"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <color key="textColor" systemColor="labelColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -55,6 +55,9 @@
                                             <segment title="Auto"/>
                                             <segment title="Manual"/>
                                         </segments>
+                                        <connections>
+                                            <action selector="authTypeSelectionChanged:" destination="EMx-1a-h2U" eventType="valueChanged" id="T9a-yF-nKH"/>
+                                        </connections>
                                     </segmentedControl>
                                 </subviews>
                             </stackView>
@@ -79,13 +82,13 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Log:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZOG-Q0-BF6">
-                                <rect key="frame" x="18.333333333333329" y="391.66666666666669" width="35" height="21.666666666666686"/>
+                                <rect key="frame" x="18.333333333333329" y="371.66666666666669" width="35" height="21.666666666666686"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fWg-Yi-X2v">
-                                <rect key="frame" x="338.66666666666669" y="383.33333333333331" width="36" height="30"/>
+                                <rect key="frame" x="338.66666666666669" y="363.33333333333331" width="36" height="30"/>
                                 <state key="normal" title="Clear">
                                     <color key="titleColor" red="0.26274509800000001" green="0.60784313729999995" blue="0.82352941180000006" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 </state>
@@ -93,28 +96,23 @@
                                     <action selector="clearLog:" destination="EMx-1a-h2U" eventType="touchUpInside" id="OG4-wP-57x"/>
                                 </connections>
                             </button>
-                            <activityIndicatorView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="7cs-4Y-Ijv">
-                                <rect key="frame" x="186.66666666666666" y="376.33333333333331" width="20" height="20"/>
-                            </activityIndicatorView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="lqD-oF-pEI"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="MVQ-Pt-k9A" firstAttribute="centerX" secondItem="lqD-oF-pEI" secondAttribute="centerX" id="EYv-uC-8aQ"/>
                             <constraint firstItem="oWM-qQ-ICD" firstAttribute="centerX" secondItem="lqD-oF-pEI" secondAttribute="centerX" id="FYw-bf-xQn"/>
-                            <constraint firstItem="MVQ-Pt-k9A" firstAttribute="top" secondItem="7cs-4Y-Ijv" secondAttribute="bottom" constant="25" id="HHD-81-hrK"/>
+                            <constraint firstItem="MVQ-Pt-k9A" firstAttribute="top" secondItem="AGN-fL-QcV" secondAttribute="bottom" priority="999" constant="50" id="HHD-81-hrK"/>
                             <constraint firstItem="x0E-q8-mon" firstAttribute="top" secondItem="oWM-qQ-ICD" secondAttribute="bottom" constant="20" id="HNP-O9-H5m"/>
                             <constraint firstItem="oWM-qQ-ICD" firstAttribute="top" secondItem="REo-u4-pl9" secondAttribute="bottom" constant="15" id="Hka-BS-MNQ"/>
                             <constraint firstItem="fWg-Yi-X2v" firstAttribute="trailing" secondItem="MVQ-Pt-k9A" secondAttribute="trailing" id="Hq3-FP-kLd"/>
                             <constraint firstItem="REo-u4-pl9" firstAttribute="top" secondItem="lqD-oF-pEI" secondAttribute="top" constant="16" id="KWC-P0-UQF"/>
-                            <constraint firstItem="7cs-4Y-Ijv" firstAttribute="centerX" secondItem="lqD-oF-pEI" secondAttribute="centerX" id="N6M-u6-x1S"/>
                             <constraint firstItem="fWg-Yi-X2v" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="ZOG-Q0-BF6" secondAttribute="trailing" constant="8" symbolic="YES" id="Qst-dT-jlJ"/>
                             <constraint firstItem="MVQ-Pt-k9A" firstAttribute="top" secondItem="ZOG-Q0-BF6" secondAttribute="bottom" constant="8" id="R6n-dN-CLS"/>
                             <constraint firstItem="REo-u4-pl9" firstAttribute="centerX" secondItem="lqD-oF-pEI" secondAttribute="centerX" id="T1X-k2-JBb"/>
                             <constraint firstItem="lqD-oF-pEI" firstAttribute="bottom" secondItem="MVQ-Pt-k9A" secondAttribute="bottom" constant="15" id="Wm8-VR-4uy"/>
                             <constraint firstItem="MVQ-Pt-k9A" firstAttribute="top" secondItem="fWg-Yi-X2v" secondAttribute="bottom" constant="8" id="ZuA-V0-oct"/>
                             <constraint firstItem="x0E-q8-mon" firstAttribute="centerX" secondItem="lqD-oF-pEI" secondAttribute="centerX" id="adD-ne-gOB"/>
-                            <constraint firstItem="7cs-4Y-Ijv" firstAttribute="top" secondItem="AGN-fL-QcV" secondAttribute="bottom" constant="25" id="eRi-rq-RTO"/>
                             <constraint firstItem="ZOG-Q0-BF6" firstAttribute="leading" secondItem="MVQ-Pt-k9A" secondAttribute="leading" id="ihD-8Y-QYs"/>
                             <constraint firstItem="MVQ-Pt-k9A" firstAttribute="width" secondItem="god-ZG-0et" secondAttribute="width" multiplier="0.90625" id="mzq-Km-mGF"/>
                             <constraint firstItem="AGN-fL-QcV" firstAttribute="top" secondItem="x0E-q8-mon" secondAttribute="bottom" constant="15" id="oZN-l6-LqS"/>
@@ -124,7 +122,6 @@
                     </view>
                     <navigationItem key="navigationItem" id="ZSB-vy-LFE"/>
                     <connections>
-                        <outlet property="authActivityIndicator" destination="7cs-4Y-Ijv" id="CJu-Y7-ijD"/>
                         <outlet property="authButton" destination="x0E-q8-mon" id="LB2-xe-1ZM"/>
                         <outlet property="authTypeSegementedControl" destination="lLs-9E-aHi" id="N5z-a0-bR8"/>
                         <outlet property="logTextView" destination="MVQ-Pt-k9A" id="bZM-DF-UOp"/>
@@ -134,11 +131,11 @@
             </objects>
             <point key="canvasLocation" x="-373" y="-828"/>
         </scene>
-        <!--Token View Controller-->
+        <!--Dashboard View Controller-->
         <scene sceneID="omv-TI-dSt">
             <objects>
-                <viewController storyboardIdentifier="TokenViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="3ZJ-GU-abv" customClass="TokenViewController" customModule="Example" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" restorationIdentifier="TokenViewController" id="Q62-yJ-awK">
+                <viewController storyboardIdentifier="DashboardViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="3ZJ-GU-abv" customClass="DashboardViewController" customModule="Example" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" restorationIdentifier="DashboardViewController" id="Q62-yJ-awK">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -277,7 +274,7 @@
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                                 <connections>
-                                                    <action selector="authWithAutoCodeExchange:" destination="3ZJ-GU-abv" eventType="touchUpInside" id="QMH-zm-SNJ"/>
+                                                    <action selector="checkBrowserSession:" destination="3ZJ-GU-abv" eventType="touchUpInside" id="S22-hw-64x"/>
                                                 </connections>
                                             </button>
                                         </subviews>
@@ -431,6 +428,7 @@
                         <outlet property="refreshTokenStackView" destination="ibC-hh-Wp0" id="Ban-Dd-EeG"/>
                         <outlet property="refreshTokenTextView" destination="J91-8v-89R" id="3jD-Ne-voj"/>
                         <outlet property="refreshTokenTitleLabel" destination="Gca-4c-PJb" id="33s-5u-XGf"/>
+                        <outlet property="tokenDataStackView" destination="KU6-TO-pUk" id="Gvx-bK-Adj"/>
                         <outlet property="tokenStackView" destination="ffX-ew-thg" id="btF-Wu-1Bl"/>
                         <outlet property="userinfoButton" destination="Wbk-fx-AJn" id="GW3-l7-GeE"/>
                     </connections>
