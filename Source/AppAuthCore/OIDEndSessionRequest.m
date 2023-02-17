@@ -64,7 +64,7 @@ static NSString *const OIDMissingEndSessionEndpointMessage =
     )
 
 - (instancetype)initWithConfiguration:(OIDServiceConfiguration *)configuration
-                          idTokenHint:(NSString *)idTokenHint
+                          idTokenHint:(nullable NSString *)idTokenHint
                 postLogoutRedirectURL:(NSURL *)postLogoutRedirectURL
                                 state:(NSString *)state
                  additionalParameters:(NSDictionary<NSString *,NSString *> *)additionalParameters
@@ -82,7 +82,7 @@ static NSString *const OIDMissingEndSessionEndpointMessage =
 }
 
 - (instancetype)initWithConfiguration:(OIDServiceConfiguration *)configuration
-                          idTokenHint:(NSString *)idTokenHint
+                          idTokenHint:(nullable NSString *)idTokenHint
                 postLogoutRedirectURL:(NSURL *)postLogoutRedirectURL
                  additionalParameters:(NSDictionary<NSString *,NSString *> *)additionalParameters
 {

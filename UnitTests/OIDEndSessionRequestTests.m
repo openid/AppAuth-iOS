@@ -58,10 +58,24 @@ static NSString *const kTestIdTokenHint = @"id-token-hint";
     OIDServiceConfiguration *configuration = [[OIDServiceConfiguration alloc] initWithDiscoveryDocument:discoveryDocument];
 
     return [[OIDEndSessionRequest alloc] initWithConfiguration:configuration
-                                               idTokenHint:kTestIdTokenHint
-                                     postLogoutRedirectURL:[NSURL URLWithString:kTestRedirectURL]
-                                                     state:kTestState
-                                      additionalParameters:additionalParameters];
+                                                   idTokenHint:kTestIdTokenHint
+                                         postLogoutRedirectURL:[NSURL URLWithString:kTestRedirectURL]
+                                                         state:kTestState
+                                          additionalParameters:additionalParameters];
+}
+
++ (OIDEndSessionRequest *)testInstance_withNilIdToken {
+    NSDictionary *additionalParameters =
+        @{ kTestAdditionalParameterKey : kTestAdditionalParameterValue };
+
+    OIDServiceDiscovery *discoveryDocument = [[OIDServiceDiscovery alloc] initWithDictionary:[OIDServiceDiscoveryTests completeServiceDiscoveryDictionary] error:nil];
+    OIDServiceConfiguration *configuration = [[OIDServiceConfiguration alloc] initWithDiscoveryDocument:discoveryDocument];
+
+    return [[OIDEndSessionRequest alloc] initWithConfiguration:configuration
+                                                   idTokenHint:nil
+                                         postLogoutRedirectURL:[NSURL URLWithString:kTestRedirectURL]
+                                                         state:kTestState
+                                          additionalParameters:additionalParameters];
 }
 
 /*! @brief Tests the @c NSCopying implementation by round-tripping an instance through the copying
@@ -123,6 +137,68 @@ static NSString *const kTestIdTokenHint = @"id-token-hint";
 
     XCTAssertEqualObjects(query[@"state"], kTestState);
     XCTAssertEqualObjects(query[@"id_token_hint"], kTestIdTokenHint);
+    XCTAssertEqualObjects(query[@"post_logout_redirect_uri"], kTestRedirectURL);
+}
+
+/*! @brief Tests the @c NSCopying implementation by round-tripping an instance with no ID token hint through the copying
+ process and checking to make sure the source and destination instances are equivalent.
+ */
+- (void)testCopying_withNilIdToken {
+    OIDEndSessionRequest *request = [[self class] testInstance_withNilIdToken];
+
+    XCTAssertNil(request.idTokenHint);
+    XCTAssertEqualObjects(request.postLogoutRedirectURL, [NSURL URLWithString:kTestRedirectURL]);
+    XCTAssertEqualObjects(request.state, kTestState);
+    XCTAssertEqualObjects(request.additionalParameters[kTestAdditionalParameterKey],
+                          kTestAdditionalParameterValue);
+
+    OIDEndSessionRequest *requestCopy = [request copy];
+
+    XCTAssertNotNil(requestCopy.configuration);
+    XCTAssertEqualObjects(requestCopy.configuration, request.configuration);
+    XCTAssertEqualObjects(requestCopy.postLogoutRedirectURL, request.postLogoutRedirectURL);
+    XCTAssertEqualObjects(requestCopy.state, request.state);
+    XCTAssertEqualObjects(requestCopy.idTokenHint, request.idTokenHint);
+}
+
+/*! @brief Tests the @c NSSecureCoding by round-tripping an instance with no ID token hint through the coding process and
+ checking to make sure the source and destination instances are equivalent.
+ */
+- (void)testSecureCoding_WithNilIdToken {
+    OIDEndSessionRequest *request = [[self class] testInstance_withNilIdToken];
+
+    XCTAssertNil(request.idTokenHint);
+    XCTAssertEqualObjects(request.postLogoutRedirectURL, [NSURL URLWithString:kTestRedirectURL]);
+    XCTAssertEqualObjects(request.state, kTestState);
+    XCTAssertEqualObjects(request.additionalParameters[kTestAdditionalParameterKey],
+                          kTestAdditionalParameterValue);
+
+    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:request];
+    OIDEndSessionRequest *requestCopy = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+
+    XCTAssertNotNil(requestCopy.configuration);
+    XCTAssertEqualObjects(requestCopy.configuration.authorizationEndpoint,
+                          request.configuration.authorizationEndpoint);
+    XCTAssertEqualObjects(requestCopy.postLogoutRedirectURL, request.postLogoutRedirectURL);
+    XCTAssertEqualObjects(requestCopy.state, request.state);
+    XCTAssertEqualObjects(requestCopy.idTokenHint, request.idTokenHint);
+}
+
+- (void)testLogoutRequestURL_withNilIdToken {
+    OIDEndSessionRequest *request = [[self class] testInstance_withNilIdToken];
+    NSURL *endSessionRequestURL = request.endSessionRequestURL;
+
+    NSURLComponents *components = [NSURLComponents componentsWithString:endSessionRequestURL.absoluteString];
+
+    XCTAssertTrue([endSessionRequestURL.absoluteString hasPrefix:@"https://www.example.com/logout"]);
+
+    NSMutableDictionary<NSString *, NSString*> *query = [[NSMutableDictionary alloc] init];
+    for (NSURLQueryItem *queryItem in components.queryItems) {
+        query[queryItem.name] = queryItem.value;
+    }
+
+    XCTAssertEqualObjects(query[@"state"], kTestState);
+    XCTAssertNil(query[@"id_token_hint"]);
     XCTAssertEqualObjects(query[@"post_logout_redirect_uri"], kTestRedirectURL);
 }
 
