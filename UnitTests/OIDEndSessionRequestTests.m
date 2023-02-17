@@ -64,7 +64,7 @@ static NSString *const kTestIdTokenHint = @"id-token-hint";
                                           additionalParameters:additionalParameters];
 }
 
-+ (OIDEndSessionRequest *)testInstance_withNilIdToken {
++ (OIDEndSessionRequest *)testInstanceWithNilIdToken {
     NSDictionary *additionalParameters =
         @{ kTestAdditionalParameterKey : kTestAdditionalParameterValue };
 
@@ -144,7 +144,7 @@ static NSString *const kTestIdTokenHint = @"id-token-hint";
  process and checking to make sure the source and destination instances are equivalent.
  */
 - (void)testCopying_withNilIdToken {
-    OIDEndSessionRequest *request = [[self class] testInstance_withNilIdToken];
+    OIDEndSessionRequest *request = [[self class] testInstanceWithNilIdToken];
 
     XCTAssertNil(request.idTokenHint);
     XCTAssertEqualObjects(request.postLogoutRedirectURL, [NSURL URLWithString:kTestRedirectURL]);
@@ -165,7 +165,7 @@ static NSString *const kTestIdTokenHint = @"id-token-hint";
  checking to make sure the source and destination instances are equivalent.
  */
 - (void)testSecureCoding_WithNilIdToken {
-    OIDEndSessionRequest *request = [[self class] testInstance_withNilIdToken];
+    OIDEndSessionRequest *request = [[self class] testInstanceWithNilIdToken];
 
     XCTAssertNil(request.idTokenHint);
     XCTAssertEqualObjects(request.postLogoutRedirectURL, [NSURL URLWithString:kTestRedirectURL]);
@@ -185,7 +185,7 @@ static NSString *const kTestIdTokenHint = @"id-token-hint";
 }
 
 - (void)testLogoutRequestURL_withNilIdToken {
-    OIDEndSessionRequest *request = [[self class] testInstance_withNilIdToken];
+    OIDEndSessionRequest *request = [[self class] testInstanceWithNilIdToken];
     NSURL *endSessionRequestURL = request.endSessionRequestURL;
 
     NSURLComponents *components = [NSURLComponents componentsWithString:endSessionRequestURL.absoluteString];
