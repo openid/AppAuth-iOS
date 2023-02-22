@@ -8,27 +8,30 @@
 import Foundation
 import UIKit
 
+@MainActor
 class LoginViewController: UIViewController {
     
     @IBOutlet private weak var authButton: UIButton!
     @IBOutlet weak var authTypeSegementedControl: UISegmentedControl!
     @IBOutlet private weak var logTextView: UITextView!
     
-    var viewModel: LoginViewModel?
+    var viewModel: LoginViewModel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         configureUI()
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
         
-        if let metadata = viewModel?.metadata {
-            printToLogTextView(metadata)
-        } else {
-            viewModel?.discoverConfig()
+        Task {
+            setActivityIndicator(true)
+            
+            do {
+                try await viewModel.discoverConfiguration()
+            } catch let error as AuthError {
+                displayAlert(error: error)
+            } catch {
+                printToLogTextView(error.localizedDescription)
+            }
         }
     }
 }
@@ -38,18 +41,26 @@ extension LoginViewController {
     
     @IBAction func authorizeUser(_ sender: UIButton) {
         
-        viewModel?.onTapLogin()
+        Task {
+            setActivityIndicator(true)
+            
+            do {
+                try await viewModel.beginBrowserAuthentication()
+            } catch let error as AuthError {
+                displayAlert(error: error)
+                printToLogTextView(error.errorUserInfo.debugDescription)
+            } catch {
+                printToLogTextView(error.localizedDescription)
+            }
+        }
     }
     
     @IBAction func authTypeSelectionChanged(_ sender: UISegmentedControl) {
-        
-        viewModel?.isManualCodeExchange = sender.selectedSegmentIndex == 1
+        viewModel.isManualCodeExchange = sender.selectedSegmentIndex == 1
     }
     
     @IBAction func clearLog(_ sender: UIButton) {
-        DispatchQueue.main.async {
-            self.logTextView.text = ""
-        }
+        logTextView.text = ""
     }
 }
 
@@ -62,10 +73,22 @@ extension LoginViewController {
         logTextView.textContainer.lineBreakMode = .byCharWrapping
         logTextView.text = ""
     }
+}
+
+extension LoginViewController: BaseViewControllerDelegate {
     
-    func updateUI() {
-        authButton.isEnabled = !(viewModel?.isLoading ?? false)
-        authTypeSegementedControl.isEnabled = !(viewModel?.isLoading ?? false)
+    func stateChanged(_ isLoading: Bool?) {
+        if let isLoading = isLoading {
+            self.setActivityIndicator(isLoading)
+        }
+    }
+    
+    func displayErrorAlert(_ error: AuthError?) {
+        displayAlert(error: error)
+    }
+    
+    func displayAlertWithAction(_ error: AuthError?, alertAction: AlertAction) {
+        displayAlert(error: error, alertAction: alertAction)
     }
     
     func printToLogTextView(_ data: String) {

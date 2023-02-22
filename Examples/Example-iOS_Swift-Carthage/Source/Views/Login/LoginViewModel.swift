@@ -8,60 +8,71 @@
 import Foundation
 import UIKit
 
-protocol LoginViewModelCoordinatorDelegate: BaseViewModelCoordinatorDelegate {
-    func loginSucceeded(with authenticator: AuthenticationManager)
-    func loginFailed(error: AuthError)
+protocol LoginViewModelCoordinatorDelegate: AnyObject {    
+    func loginSucceeded(with authenticator: Authenticator)
 }
 
 class LoginViewModel: BaseViewModel {
     
     weak var coordinatorDelegate: LoginViewModelCoordinatorDelegate?
+    
     var isManualCodeExchange = false
-    
-    func onTapLogin() -> Void {
-        
-        isLoading = true
-        
-        isManualCodeExchange ? authWithManualCodeExchange() : authWithAutoCodeExchange()
+    var discoveryConfig: String? {
+        return authenticator.discoveryConfig?.description
     }
     
-    func authWithAutoCodeExchange() {
-        // Do the login redirect on the main thread
-        self.authenticator.startBrowserLogin(
-            { session in
-                self.appDelegate.currentAuthorizationFlow = session
-            },
-            { result in
-                self.isLoading = false
-                
-                switch result {
-                case .success:
-                    self.coordinatorDelegate?.loginSucceeded(with: self.authenticator)
-                case .failure(let error):
-                    self.coordinatorDelegate?.loginFailed(error: error)
-                    self.coordinatorDelegate?.logData(error.details)
-                }
+    func discoverConfiguration() async throws {
+        do {
+            try await authenticator.getDiscoveryConfig(AuthConfig.discoveryUrl)
+            if let discoveryConfig = discoveryConfig {
+                viewControllerDelegate?.printToLogTextView(discoveryConfig)
+            } else {
+                throw AuthError.noDiscoveryDoc
             }
-        )
+        } catch let error as AuthError {
+            viewControllerDelegate?.displayAlertWithAction(error, alertAction: {
+                Task {
+                    try await self.discoverConfiguration()
+                }
+            })
+        }
+        
+        viewControllerDelegate?.stateChanged(false)
     }
     
-    func authWithManualCodeExchange() {
+    func beginBrowserAuthentication() async throws {
+        try await isManualCodeExchange ? authWithManualCodeExchange() : authWithAutoCodeExchange()
+        viewControllerDelegate?.stateChanged(false)
+    }
+    
+    func authWithAutoCodeExchange() async throws {
         // Do the login redirect on the main thread
-        self.authenticator.startBrowserLoginWithManualCodeExchange(
-            { session in
-                self.appDelegate.currentAuthorizationFlow = session
-            },
-            { result in
-                self.isLoading = false
-                
-                switch result {
-                case .success:
-                    self.coordinatorDelegate?.loginSucceeded(with: self.authenticator)
-                case .failure(let error):
-                    self.coordinatorDelegate?.loginFailed(error: error)
-                    self.coordinatorDelegate?.logData(error.details)
-                }
-            }
-        )
+        try await MainActor.run {
+            AppDelegate.shared.currentAuthorizationFlow = try authenticator.startBrowserLoginWithAutoCodeExchange()
+        }
+        
+        // Handle the login response on a background thread
+        let authStateResponse = try await authenticator.handleBrowserLoginWithAutoCodeExchangeResponse()
+        
+        try await authenticator.finishLoginWithAuthStateResponse(authStateResponse)
+        
+        await MainActor.run {
+            coordinatorDelegate?.loginSucceeded(with: authenticator)
+        }
+    }
+    
+    func authWithManualCodeExchange() async throws {
+        // Do the login redirect on the main thread
+        try await MainActor.run {
+            AppDelegate.shared.currentAuthorizationFlow = try authenticator.startBrowserLoginWithManualCodeExchange()
+        }
+        
+        let authResponse = try await authenticator.handleBrowserLoginWithManualCodeExchangeResponse()
+        
+        try await authenticator.finishLoginWithAuthResponse(authResponse)
+        
+        await MainActor.run {
+            coordinatorDelegate?.loginSucceeded(with: authenticator)
+        }
     }
 }

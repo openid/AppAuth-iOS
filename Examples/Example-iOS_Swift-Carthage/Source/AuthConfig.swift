@@ -20,7 +20,7 @@ struct AuthConfig {
     private static let baseUrl: String = "https://api.multi.dev.or.janrain.com/00000000-0000-0000-0000-000000000000"
     
     // The OIDC issuer from which the configuration will be discovered
-    private static let discoveryPath: String = "/login/.well-known/openid-configuration"
+    private static let discoveryPath: String = "/login"
     static var discoveryUrl = URL(string: "\(baseUrl)\(discoveryPath)")!
     
     // The redirect URI for the mobile app

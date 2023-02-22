@@ -13,13 +13,37 @@ enum LogoutType: String, CaseIterable {
     case appSession = "App Session"
 }
 
-class LogoutOptionsController: UIViewController {
-    var selectedLogoutOptions: Set<LogoutType> = []
-    var tableViewLogoutOptions = LogoutType.allCases
+protocol LogoutAlertDelegate: AnyObject {
+    func handleLogoutSelections(_ selections: Set<LogoutType>)
+}
 
-    deinit {
-        print("\(type(of: self)) was deallocated")
+class LogoutOptionsAlertController: UIAlertController {
+    
+    weak var delegate: LogoutAlertDelegate?
+    
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+        
+        let logoutViewController = LogoutOptionsViewController()
+        setValue(logoutViewController, forKey: "contentViewController")
+        
+        let cancelAction = UIAlertAction(title: TextConstants.cancel, style: .cancel, handler: nil)
+        let submitAction = UIAlertAction(title: TextConstants.submit, style: .default) { _ in
+            self.delegate?.handleLogoutSelections(logoutViewController.selectedLogoutOptions)
+        }
+        
+        addAction(cancelAction)
+        addAction(submitAction)
     }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+    }
+}
+
+class LogoutOptionsViewController: UIViewController {
+    var selectedLogoutOptions: Set<LogoutType> = []
+    private var tableViewLogoutOptions = LogoutType.allCases
 
     override func viewDidLoad() {
         print("\(type(of: self)) did load")
@@ -28,15 +52,7 @@ class LogoutOptionsController: UIViewController {
         createTableView()
     }
 
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-    }
-
-    public override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-    }
-
-    func createTableView() {
+    private func createTableView() {
 
         let rect = CGRect(x: 0, y: 0, width: 300.0, height: LogoutOptionsControllerCell.height() * Double(tableViewLogoutOptions.count))
         preferredContentSize = rect.size
@@ -59,7 +75,7 @@ class LogoutOptionsController: UIViewController {
 }
 
 //MARK: UITableView Delegates and DataSource
-extension LogoutOptionsController: UITableViewDelegate, UITableViewDataSource {
+extension LogoutOptionsViewController: UITableViewDelegate, UITableViewDataSource {
 
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1

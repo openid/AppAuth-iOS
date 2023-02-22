@@ -1,5 +1,5 @@
 //
-//  AppAuthError.swift
+//  AuthError.swift
 //  Example
 //
 //  Copyright © 2023 Akamai Technologies, Inc. All Rights Reserved.
@@ -12,197 +12,109 @@ import AppAuth
 /*
  * An error entity whose fields are rendered when there is a problem
  */
-enum ErrorType: String, LocalizedError {
+enum AuthError: CustomNSError {
     
-    // A general exception
-    case generalError = "An error occured. Check the log for details"
-    
-    // A general exception in the UI
-    case generalUIError = "The requested interface failed to load"
-    
-    // A problem loading configuration
-    case configurationError = "An error occured within the discovery configuration"
-    
-    // A problem loading configuration
-    case configurationLoadingError = "An error occured loading the discovery configuration"
-    
-    // Used to indicate that the API cannot be called until the user logs in
-    case loginRequired = "A login is required so the API call was aborted"
-    
-    // Used to indicaten that the Safari View Controller was cancelled
-    case redirectCancelled = "The redirect request was cancelled"
-    
-    // A technical error starting a login request, such as contacting the metadata endpoint
-    case loginRequestFailed = "A technical problem occurred during the login request"
-    
-    // A technical error starting a profile management request
-    case profileManagementRequestFailed = "A technical problem occurred loading profile management"
-    
-    // A technical error processing the login response containing the authorization code
-    case loginResponseFailed = "A technical problem occurred process the login response"
-    
-    // A technical error refreshing tokens
-    case refreshTokenGrantFailed = "An error occured refreshing tokens"
-    
-    // A technical error revoking access token
-    case accessTokenRevokeFailed = "An error occured revoking the access token"
-    
-    // A technical error revoking refresh token
-    case refreshTokenRevokeFailed = "An error occured revoking the refresh token"
-    
-    // A technical error exchanging the authorization code
-    case codeExchangeFailed = "A technical problem occurred during the code exchange"
-    
-    // A technical error with the user info response
-    case userInfoResponseFailed = "An error occured processing the user info response"
-    
-    // A technical error with the user info request
-    case userInfoRequestFailed = "An error occured requesting the user info"
-    
-    // A technical error during a logout redirect
-    case logoutRequestFailed = "A technical problem occurred during logout processing"
-    
-    // A technical error occured parsing the response
-    case responseParsingFailed = "An error occured parsing the reponse data"
+    case authorization(error: String, description: String?)
     
     // An error making an API call to get data
-    case apiNetworkError = "A network problem occurred calling the server"
+    case api(message: String, underlyingError: Error?)
     
-    // An error response from the API
-    case apiResponseError = "A technical problem occurred processing the server response"
+    case unexpectedAuthCodeResponse(statusCode: Int)
+    case errorFetchingFreshTokens
+    case redirectServerError(String)
+    case missingConfigurationValues
+    case noBearerToken
+    case noDiscoveryEndpoint
+    case noDiscoveryDoc
+    case notConfigured
+    case noRefreshToken
+    case noRevocationEndpoint
+    case noTokens
+    case noUserInfoEndpoint
+    case parseFailure
+    case missingIdToken
+    case userCancelledAuthorizationFlow
+    case unableToGetAuthCode
+    case noAuthState
     
-    // An error from the api response with an empty body
-    case apiResponseEmptyError = "The an empty response body was returned for the request"
+    static var errorDomain: String = "\(Self.self)"
     
-    // The access token has either expired or isn't stored locally
-    case accessTokenError = "Access token has expired or does not exist. Re-Authentication required."
+    static let generalErrorCode = -1012009
     
-    // The refresh token has either expired or isn't stored locally
-    case refreshTokenError = "Refresh token has expired or does not exist. Re-Authentication required."
-    
-    // Token have either expired or are not stored locally
-    case tokenError = "Tokens have expired or do not exist. Re-Authentication required."
-    
-    // An error occured initializing the authentication manager
-    case authManagerLoadingError = "Error loading the authentication manager"
-    
-    // An authorization error occured within the OIDAuthState
-    case authStateError = "An authorization error occured"
-    
-    var errorDescription: String? {
-        self.rawValue
-    }
-}
-
-struct AuthError: Error {
-    var errorType: ErrorType
-    var error: Error?
-    var userMessage: String?
-    var details: String?
-    var statusCode: Int?
-    var errorCode: Int?
-    var data: Data?
-    var tokenType: TokenType?
-    
-    var response: HTTPURLResponse? {
-        didSet {
-            statusCode = response?.statusCode
-        }
-    }
-    
-    init(_ errorType: ErrorType = .generalError, error: Error? = nil, userMessage: String? = nil, details: String? = nil, statusCode: Int? = nil, data: Data? = nil, response: HTTPURLResponse? = nil, _ tokenType: TokenType? = nil) {
-        self.errorType = errorType
-        self.error = error
-        self.userMessage = userMessage
-        self.details = details
-        self.statusCode = statusCode
-        self.data = data
-        self.response = response
-        self.tokenType = tokenType
-        
-        if self.tokenType != nil {
-            switch self.tokenType {
-            case .accessToken:
-                self.errorType = .accessTokenError
-            case .refreshToken:
-                self.errorType = .refreshTokenError
-            case .none:
-                break
-            }
-        }
-        
-        if let data = self.data {
-            updateFromApiErrorResponse(responseData: data)
-        }
-        
-        if let error = self.error {
-            updateFromException(error: error)
-        }
-        
-        if self.userMessage == nil {
-            self.userMessage = self.errorType.errorDescription
-        }
-    }
-}
-
-extension AuthError {
-    
-    /*
-     * Add iOS details from the exception
-     */
-    private mutating func updateFromException(error: Error) {
-        
-        let nsError = error as NSError
-        var details = error.localizedDescription
-        
-        // Get iOS common details
-        if nsError.domain.count > 0 {
-            details += "\nDomain: \(nsError.domain)"
-        }
-        if nsError.code != 0 {
-            details += "\nCode: \(nsError.code)"
-            self.errorCode = nsError.code
-        }
-        for (name, value) in nsError.userInfo {
-            details += "\n\(name): \(value)"
-        }
-        
-        switch nsError.code {
-        case OIDErrorCode.userCanceledAuthorizationFlow.rawValue:
-            self.errorType = .redirectCancelled
-        default:
-            break
-        }
-        
-        self.details = details
-    }
-    
-    /*
-     * Try to update the default API error with response details
-     */
-    private mutating func updateFromApiErrorResponse(responseData: Data) {
-        
-        var json: [AnyHashable: Any]?
-        
-        if let json = try? JSONSerialization.jsonObject(with: responseData, options: []) {
+    var errorCode: Int {
+        switch self {
+        case let .api(_, underlyingError):
+            return (underlyingError as NSError?)?.code ?? Self.generalErrorCode
             
-            if let fields = json as? [String: Any] {
-                
-                // Read standard fields that the API returns
-                if let errorCode = fields["code"] as? Int {
-                    self.errorCode = errorCode
-                }
-                if let errorMessage = fields["message"] as? String {
-                    self.userMessage = errorMessage
-                }
-            }
+        case let .unexpectedAuthCodeResponse(statusCode):
+            return statusCode
+        default:
+            return Self.generalErrorCode
         }
+    }
+    
+    var errorUserInfo: [String: Any] {
+        var result: [String: Any] = [:]
+        result[NSLocalizedDescriptionKey] = errorDescription
         
-        if self.statusCode == 401 {
-            let currentError = self.error
-            self.error = OIDErrorUtilities.resourceServerAuthorizationError(withCode: 0,
-                                                                            errorResponse: json,
-                                                                            underlyingError: currentError)
+        switch self {
+        case let .api(_, underlyingError):
+            result[NSUnderlyingErrorKey] = underlyingError
+            return result
+        default:
+            return result
+        }
+    }
+}
+
+extension AuthError: Equatable {
+    public static func == (lhs: AuthError, rhs: AuthError) -> Bool {
+        lhs as NSError == rhs as NSError
+    }
+}
+
+extension AuthError: LocalizedError {
+    var errorDescription: String? {
+        switch self {
+        case let .api(message, _):
+            return NSLocalizedString(message, comment: "")
+        case .errorFetchingFreshTokens:
+            return NSLocalizedString("Error fetching fresh tokens. Login requred", comment: "")
+        case .missingConfigurationValues:
+            return NSLocalizedString("Could not parse 'issuer', 'clientId', and/or 'redirectUri' plist values.", comment: "")
+        case .noAuthState:
+            return NSLocalizedString("Missing AuthState. Authentication required.", comment: "")
+        case .noBearerToken:
+            return NSLocalizedString("Missing Bearer token. Authentication required.", comment: "")
+        case .noDiscoveryEndpoint:
+            return NSLocalizedString("Error finding the well-known OpenID Configuration endpoint.", comment: "")
+        case .noDiscoveryDoc:
+            return NSLocalizedString("Error loading the discovery document values.", comment: "")
+        case .notConfigured:
+            return NSLocalizedString("You must first configure the AuthConfig values", comment: "")
+        case .noRefreshToken:
+            return NSLocalizedString("No refresh token stored.", comment: "")
+        case .noRevocationEndpoint:
+            return NSLocalizedString("Error finding the revocation endpoint.", comment: "")
+        case .noTokens:
+            return NSLocalizedString("No tokens stored in the auth state manager.", comment: "")
+        case .noUserInfoEndpoint:
+            return NSLocalizedString("Error finding the user info endpoint.", comment: "")
+        case .parseFailure:
+            return NSLocalizedString("Failed to parse and/or convert object.", comment: "")
+        case .missingIdToken:
+            return NSLocalizedString("ID token needed to fulfill this operation.", comment: "")
+        case .unexpectedAuthCodeResponse(let statusCode):
+            return NSLocalizedString("Unexpected response format while retrieving authorization code. Status code: \(statusCode)", comment: "")
+        case .userCancelledAuthorizationFlow:
+            return NSLocalizedString("The redirect request was cancelled", comment: "")
+        case .unableToGetAuthCode:
+            return NSLocalizedString("Unable to get the authorization code.", comment: "")
+        case .redirectServerError(error: let error):
+            return NSLocalizedString(error, comment: "")
+        case let .authorization(error, description):
+            return NSLocalizedString("The authorization request failed due to \(error): \(description ?? "")", comment: "")
+
         }
     }
 }

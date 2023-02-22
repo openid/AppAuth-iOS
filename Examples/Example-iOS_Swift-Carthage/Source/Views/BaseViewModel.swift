@@ -8,81 +8,21 @@
 import Foundation
 import UIKit
 
-protocol BaseViewModelCoordinatorDelegate: AnyObject {
-    
-    typealias AlertAction = (() -> Void)?
-    
-    func logData(_ data: String?)
-    func displayAlert(_ error: AuthError?)
-    func displayActionAlert(_ error: AuthError?, alertAction: AlertAction)
-    func stateChanged(_ isLoading: Bool)
-}
-
-extension BaseViewModelCoordinatorDelegate {
-    
-    func displayAlert(_ error: AuthError?) {
-        logData(error?.details)
-    }
-    func displayActionAlert(_ error: AuthError?, alertAction: AlertAction) {
-        logData(error?.details)
-    }
-}
-
+@MainActor
 class BaseViewModel: NSObject {
+    weak var viewControllerDelegate: BaseViewControllerDelegate?
+    internal var authenticator: Authenticator
     
-    let appDelegate = UIApplication.shared.delegate as! AppDelegate
-    weak var baseCoordinatorDelegate: BaseViewModelCoordinatorDelegate?
-        
-    let authenticator: AuthenticationManager
-    var metadata: String? = nil
-    
-    let operationQueue = OperationQueue()
-    let dispatchGroup = DispatchGroup()
-    let dispatchQueue = DispatchQueue.main
-    
-    var isLoading = false {
-        didSet {
-            baseCoordinatorDelegate?.stateChanged(isLoading)
-        }
-    }
-    
-    init(authenticator: AuthenticationManager) {
+    init(_ authenticator: Authenticator) {
         self.authenticator = authenticator
-    }
-    
-    func discoverConfig() {
-        isLoading = true
+        super.init()
         
-        authenticator.discoverConfig { result in
-            self.isLoading = false
-            
-            switch result {
-            case .success:
-                if let metadataString = self.authenticator.metadata?.description {
-                    self.baseCoordinatorDelegate?.logData(metadataString)
-                }
-            case .failure(let error):
-                self.baseCoordinatorDelegate?.logData(error.details)
-                self.baseCoordinatorDelegate?.displayActionAlert(
-                    AuthError(.configurationLoadingError),
-                    alertAction: {
-                        self.discoverConfig()
-                })
-            }
-        }
+        authenticator.delegate = self
     }
 }
 
-extension BaseViewModel: AuthStateDelegate {
-    func authStateChanged() {
-        baseCoordinatorDelegate?.stateChanged(isLoading)
-    }
-    
-    func authStateErrorOccured(_ error: AuthError) {
-        baseCoordinatorDelegate?.logData(error.details)
-        
-        if error.errorCode != nil {
-            baseCoordinatorDelegate?.displayAlert(error)
-        }
+extension BaseViewModel: AuthenticatorDelegate {
+    func logMessage(_ message: String) {
+        viewControllerDelegate?.printToLogTextView(message)
     }
 }

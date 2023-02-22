@@ -14,6 +14,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var currentAuthorizationFlow: OIDExternalUserAgentSession?
     
+    static var shared: AppDelegate {
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
+            assertionFailure("Expected \(AppDelegate.self) type.")
+            return AppDelegate()
+        }
+        
+        return appDelegate
+    }
+    
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
         
         if let authorizationFlow = self.currentAuthorizationFlow, authorizationFlow.resumeExternalUserAgentFlow(with: url) {

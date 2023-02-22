@@ -11,5 +11,6 @@ class BaseCoordinator: Coordinator {
     
     var childCoordinators: [Coordinator] = []
     
+    @MainActor
     func start() { }
 }

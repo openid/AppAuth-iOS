@@ -9,16 +9,18 @@ import Foundation
 import UIKit
 
 protocol DashboardCoordinatorDelegate: AnyObject {
-    func didFinishDashboardCordinator(coordinator: Coordinator, with authenticator: AuthenticationManager)
+    func didFinishDashboardCordinator(coordinator: Coordinator, with authenticator: Authenticator)
 }
 
+// DashboardCoordinator handles the responsibility if naviagtion in Dashboard module
+@MainActor
 class DashboardCoordinator: BaseCoordinator {
     
     private let navigationcontroller: UINavigationController
     weak var delegate: DashboardCoordinatorDelegate?
-    private let authenticator: AuthenticationManager
+    private let authenticator: Authenticator
     
-    init(navigationcontroller: UINavigationController, with authenticator: AuthenticationManager) {
+    init(navigationcontroller: UINavigationController, with authenticator: Authenticator) {
         self.navigationcontroller = navigationcontroller
         self.authenticator = authenticator
     }
@@ -33,42 +35,19 @@ class DashboardCoordinator: BaseCoordinator {
     
     // Init DashboardViewController with ViewModel dependency injection
     lazy var dashboardController: DashboardViewController? = {
-        let viewModel = DashboardViewModel(authenticator: authenticator)
+        let viewModel = DashboardViewModel(authenticator)
         viewModel.coordinatorDelegate = self
-        viewModel.baseCoordinatorDelegate = self
         
         let controller = DashboardViewController.instantiate(from: .Main)
         controller.viewModel = viewModel
+        viewModel.viewControllerDelegate = controller
         
         return controller
     }()
 }
 
 extension DashboardCoordinator: DashboardViewModelCoordinatorDelegate {
-    
     func logoutSucceeded() {
         delegate?.didFinishDashboardCordinator(coordinator: self, with: authenticator)
-    }
-    
-    func logoutFailed(error: AuthError) {
-        dashboardController?.displayAlert(error: error)
-    }
-    
-    func stateChanged(_ isLoading: Bool) {
-        dashboardController?.setActivityIndicator(isLoading)
-        dashboardController?.updateUI()
-    }
-    
-    func logData(_ data: String?) {
-        guard let data = data else { return }
-        dashboardController?.printToLogTextView(data)
-    }
-    
-    func displayAlert(_ error: AuthError?) {
-        dashboardController?.displayAlert(error: error)
-    }
-    
-    func displayActionAlert(_ error: AuthError?, alertAction: AlertAction) {
-        dashboardController?.displayAlert(error: error, alertAction: alertAction)
     }
 }

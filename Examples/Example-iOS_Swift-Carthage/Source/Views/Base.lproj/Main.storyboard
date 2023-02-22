@@ -152,8 +152,8 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="ffX-ew-thg">
                                         <rect key="frame" x="0.0" y="0.0" width="343" height="48"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="yRx-dm-AKX">
-                                                <rect key="frame" x="0.0" y="0.0" width="109" height="48"/>
+                                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="yRx-dm-AKX">
+                                                <rect key="frame" x="0.0" y="0.0" width="0.0" height="48"/>
                                                 <color key="backgroundColor" red="0.08235294118" green="0.29411764709999999" blue="0.44705882349999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                 <inset key="contentEdgeInsets" minX="10" minY="15" maxX="10" maxY="15"/>
@@ -177,7 +177,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="Ocx-YW-DTI">
-                                                <rect key="frame" x="117" y="0.0" width="109" height="48"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="167.66666666666666" height="48"/>
                                                 <color key="backgroundColor" red="0.08235294118" green="0.29411764709999999" blue="0.44705882349999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                 <inset key="contentEdgeInsets" minX="10" minY="15" maxX="10" maxY="15"/>
@@ -201,7 +201,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="Wbk-fx-AJn">
-                                                <rect key="frame" x="234" y="0.0" width="109" height="48"/>
+                                                <rect key="frame" x="175.66666666666663" y="0.0" width="167.33333333333337" height="48"/>
                                                 <color key="backgroundColor" red="0.08235294118" green="0.29411764709999999" blue="0.44705882349999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                 <inset key="contentEdgeInsets" minX="10" minY="15" maxX="10" maxY="15"/>
@@ -428,8 +428,8 @@
                         <outlet property="refreshTokenStackView" destination="ibC-hh-Wp0" id="Ban-Dd-EeG"/>
                         <outlet property="refreshTokenTextView" destination="J91-8v-89R" id="3jD-Ne-voj"/>
                         <outlet property="refreshTokenTitleLabel" destination="Gca-4c-PJb" id="33s-5u-XGf"/>
-                        <outlet property="tokenDataStackView" destination="KU6-TO-pUk" id="Gvx-bK-Adj"/>
-                        <outlet property="tokenStackView" destination="ffX-ew-thg" id="btF-Wu-1Bl"/>
+                        <outlet property="tokenDataStackView" destination="KU6-TO-pUk" id="ypy-a3-gKY"/>
+                        <outlet property="tokenRequestStackView" destination="ffX-ew-thg" id="btF-Wu-1Bl"/>
                         <outlet property="userinfoButton" destination="Wbk-fx-AJn" id="GW3-l7-GeE"/>
                     </connections>
                 </viewController>

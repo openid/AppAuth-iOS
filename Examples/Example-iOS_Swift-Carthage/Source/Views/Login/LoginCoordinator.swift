@@ -9,17 +9,18 @@ import Foundation
 import UIKit
 
 protocol LoginCoordinatorDelegate: AnyObject {
-    func didFinishLoginCordinator(coordinator: Coordinator, with authenticator: AuthenticationManager)
+    func didFinishLoginCordinator(coordinator: Coordinator, with authenticator: Authenticator)
 }
 
-/// LoginCoordinator handles the responsibility if naviagtion in login-module
+// LoginCoordinator handles the responsibility if naviagtion in Login module
+@MainActor
 final class LoginCoordinator: BaseCoordinator {
     
     private let navigationcontroller: UINavigationController
     weak var delegate: LoginCoordinatorDelegate?
-    private let authenticator: AuthenticationManager
+    private let authenticator: Authenticator
     
-    init(navigationcontroller: UINavigationController, with authenticator: AuthenticationManager) {
+    init(navigationcontroller: UINavigationController, with authenticator: Authenticator) {
         self.navigationcontroller = navigationcontroller
         self.authenticator = authenticator
     }
@@ -32,44 +33,21 @@ final class LoginCoordinator: BaseCoordinator {
         }
     }
     
-    // init login-controller
+    // init LoginViewController
     lazy var loginController: LoginViewController? = {
-        let viewModel = LoginViewModel(authenticator: authenticator)
+        let viewModel = LoginViewModel(authenticator)
         viewModel.coordinatorDelegate = self
-        viewModel.baseCoordinatorDelegate = self
         
         let controller = LoginViewController.instantiate(from: .Main)
         controller.viewModel = viewModel
+        viewModel.viewControllerDelegate = controller
         
         return controller
     }()
 }
 
 extension LoginCoordinator: LoginViewModelCoordinatorDelegate {
-    
-    func stateChanged(_ isLoading: Bool) {
-        loginController?.setActivityIndicator(isLoading)
-        loginController?.updateUI()
-    }
-
-    func loginFailed(error: AuthError) {
-        loginController?.displayAlert(error: error)
-    }
-    
-    func loginSucceeded(with authenticator: AuthenticationManager) {
+    func loginSucceeded(with authenticator: Authenticator) {
         delegate?.didFinishLoginCordinator(coordinator: self, with: authenticator)
-    }
-    
-    func logData(_ data: String?) {
-        guard let data = data else { return }
-        loginController?.printToLogTextView(data)
-    }
-    
-    func displayAlert(_ error: AuthError?) {
-        loginController?.displayAlert(error: error)
-    }
-    
-    func displayActionAlert(_ error: AuthError?, alertAction: AlertAction) {
-        loginController?.displayAlert(error: error, alertAction: alertAction)
     }
 }

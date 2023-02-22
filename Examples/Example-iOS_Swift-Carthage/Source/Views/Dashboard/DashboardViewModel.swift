@@ -8,8 +8,7 @@
 import Foundation
 import UIKit
 
-protocol DashboardViewModelCoordinatorDelegate: BaseViewModelCoordinatorDelegate {
-    func logoutFailed(error: AuthError)
+protocol DashboardViewModelCoordinatorDelegate: AnyObject {
     func logoutSucceeded()
 }
 
@@ -17,238 +16,164 @@ class DashboardViewModel: BaseViewModel {
     
     weak var coordinatorDelegate: DashboardViewModelCoordinatorDelegate?
     
-    var isTokenStackViewHidden: Bool {
-        return !isCodeExchangeRequired && !isTokenRefreshEnabled
+    var discoveryConfig: String? {
+        return authenticator.discoveryConfig?.description
     }
-    
-    var isTokenDataHidden: Bool {
-        return lastAccessTokenResponse == nil || lastRefreshTokenResponse == nil
+    var isTokenRequestStackViewHidden: Bool {
+        !isCodeExchangeRequired && !isTokenActive
     }
-    
-    var isProfileManagementDisabled: Bool {
-        return !authenticator.authStateManager.isBrowserSessionActive
+    var isTokenDataStackViewHidden: Bool {
+        lastAccessTokenResponse == nil || lastRefreshTokenResponse == nil
     }
-    
     var isCodeExchangeRequired: Bool {
-        return authenticator.authStateManager.isCodeExchangeRequired
+        authenticator.isCodeExchangeRequired
     }
-    
-    var isGetUserInfoEnabled: Bool {
-        return authenticator.authStateManager.isAuthStateActive
+    var isAccessTokenRevoked: Bool {
+        authenticator.isAccessTokenRevoked
     }
-    
-    var isTokenRefreshEnabled: Bool {
-        return authenticator.authStateManager.isRefreshTokenActive
+    var isRefreshTokenRevoked: Bool {
+        authenticator.isRefreshTokenRevoked
     }
-    
     var lastAccessTokenResponse: String? {
-        return authenticator.authStateManager.lastAccessTokenResponse
+        authenticator.lastTokenResponse?.accessToken
     }
-        
     var lastRefreshTokenResponse: String? {
-        return authenticator.authStateManager.lastRefreshTokenResponse
+        authenticator.lastTokenResponse?.refreshToken
     }
-    
     var isTokenActive: Bool {
-        return authenticator.authStateManager.isAccessTokenActive &&
-                authenticator.authStateManager.isRefreshTokenActive
+        !authenticator.isAccessTokenRevoked &&
+        !authenticator.isRefreshTokenRevoked &&
+        lastAccessTokenResponse != nil &&
+        lastRefreshTokenResponse != nil
+    }
+    var isBrowserSessionActive: Bool {
+        authenticator.isBrowserSessionActive
     }
     
-    func checkBrowserSession() -> Void {
-        
-        isLoading = true
-        // Do the login redirect on the main thread
-        authenticator.startBrowserLogin(
-            { session in
-                self.appDelegate.currentAuthorizationFlow = session
-            },
-            { result in
-                self.isLoading = false
-                
-                switch result {
-                case .success:
-                    break
-                case .failure(let error):
-                    self.coordinatorDelegate?.displayAlert(error)
-                    self.coordinatorDelegate?.logData(error.details)
+    func discoverConfiguration() async throws {
+        do {
+            try await authenticator.getDiscoveryConfig(AuthConfig.discoveryUrl)
+            
+            if let discoveryConfig = discoveryConfig {
+                viewControllerDelegate?.printToLogTextView(discoveryConfig)
+            } else {
+                throw AuthError.noDiscoveryDoc
+            }
+        } catch let error as AuthError {
+            viewControllerDelegate?.displayAlertWithAction(error, alertAction: {
+                Task {
+                    try await self.discoverConfiguration()
                 }
-            }
-        )
+            })
+        }
+        viewControllerDelegate?.stateChanged(false)
     }
     
-    func loadProfileManagement() -> Void {
-        isLoading = true
+    func checkBrowserSession() async throws {
         // Do the login redirect on the main thread
-        authenticator.startProfileManagement(
-            { session in
-                self.appDelegate.currentAuthorizationFlow = session
-            },
-            { result in
-                self.isLoading = false
-                
-                switch result {
-                case .success:
-                    break
-                case .failure(let error):
-                    self.coordinatorDelegate?.displayAlert(error)
-                    self.coordinatorDelegate?.logData(error.details)
-                }
-            }
-        )
+        try await MainActor.run {
+            AppDelegate.shared.currentAuthorizationFlow = try authenticator.startBrowserLoginWithAutoCodeExchange()
+        }
+        
+        // Handle the login response on a background thread
+        let authStateResponse = try await authenticator.handleBrowserLoginWithAutoCodeExchangeResponse()
+        
+        try await authenticator.finishLoginWithAuthStateResponse(authStateResponse)
+        
+        viewControllerDelegate?.stateChanged(false)
     }
     
-    func manualCodeExchange() -> Void {
-        isLoading = true
+    func loadProfileManagement() async throws {
+        // Do the login redirect on the main thread
+        try await MainActor.run {
+            AppDelegate.shared.currentAuthorizationFlow = try authenticator.startProfileManagementRedirect()
+        }
         
-        authenticator.performCodeExchange { result in
-            self.isLoading = false
-            
-            switch result {
-            case .success:
-                break
-            case .failure(let error):
-                self.coordinatorDelegate?.displayAlert(error)
-                self.coordinatorDelegate?.logData(error.details)
-            }
+        try await authenticator.handleProfileManagementResponse()
+        viewControllerDelegate?.stateChanged(false)
+    }
+    
+    func refreshTokens() async throws {
+        if !authenticator.isCodeExchangeRequired {
+            try await authenticator.refreshTokens()
+            viewControllerDelegate?.stateChanged(false)
         }
     }
     
-    func refreshTokens() -> Void {
-        isLoading = true
-        
-        authenticator.refreshAccessToken { result in
-            self.isLoading = false
-            
-            switch result {
-            case .success:
-                break
-            case .failure(let error):
-                self.coordinatorDelegate?.displayAlert(error)
-                self.coordinatorDelegate?.logData(error.details)
-            }
+    func getUserInfo() async throws {
+        if let userInfo = try await authenticator.performUserInfoRequest() {
+            viewControllerDelegate?.printToLogTextView(userInfo)
         }
+        viewControllerDelegate?.stateChanged(false)
     }
     
-    func getUserInfo() -> Void {
-        isLoading = true
-        
-        authenticator.getUserInfo { result in
-            self.isLoading = false
-            
-            switch result {
-            case .success(let userInfo):
-                self.coordinatorDelegate?.logData(userInfo)
-            case .failure(let error):
-                self.coordinatorDelegate?.displayAlert(error)
-                self.coordinatorDelegate?.logData(error.details)
-            }
-        }
+    func exchangeAuthorizationCode() async throws {
+        try await authenticator.exchangeAuthorizationCode()
+        viewControllerDelegate?.stateChanged(false)
     }
     
     func getLogoutOptionsAlert() -> UIAlertController {
-        let logoutViewController = LogoutOptionsController()
+        let logoutAlertController = LogoutOptionsAlertController(title: "Sign Out Options", message: nil, preferredStyle: .alert)
+        logoutAlertController.delegate = self
         
-        let logoutAlertController = UIAlertController(title: "Sign Out Options", message: nil, preferredStyle: .alert)
-        logoutAlertController.setValue(logoutViewController, forKey: "contentViewController")
-        
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-        let submitAction = UIAlertAction(title: "Submit", style: .default) { _ in
-            self.handleLogoutSelections(logoutViewController.selectedLogoutOptions)
-        }
-        
-        logoutAlertController.addAction(cancelAction)
-        logoutAlertController.addAction(submitAction)
         return logoutAlertController
     }
     
-    func handleLogoutSelections(_ logoutSelections: Set<LogoutType>) -> Void {
+    func revokeTokens() async throws {
+        try await authenticator.revokeToken(tokenType: .accessToken)
+        try await authenticator.revokeToken(tokenType: .refreshToken)
+    }
+    
+    func browserLogout() async throws {
+        // Do the logout redirect on the main thread
+        try await MainActor.run {
+            AppDelegate.shared.currentAuthorizationFlow = try authenticator.startBrowserLogoutRedirect()
+        }
         
-        isLoading = true
+        // Handle the logout response on a background thread
+        let response = try await authenticator.handleBrowserLogoutResponse()
         
-        if ((logoutSelections.contains(LogoutType.revokeTokens)
-             || logoutSelections.contains(LogoutType.appSession)) &&
-            (authenticator.authStateManager.isAccessTokenActive
-             || authenticator.authStateManager.isRefreshTokenActive)) {
-            
-            dispatchGroup.enter()
-            
-            dispatchQueue.async(group: dispatchGroup) {
-                self.authenticator.expireToken(tokenType: .accessToken) { result in
+        try await authenticator.finishBrowserLogout(response)
+    }
+    
+    func appLogout() async throws {
+        try await authenticator.performAppSessionLogout()
+        
+        if !authenticator.isAuthStateActive {
+            coordinatorDelegate?.logoutSucceeded()
+        }
+    }
+}
 
-                    switch result {
-                    case .success:
-                        break
-                    case .failure(let error):
-                        self.coordinatorDelegate?.displayAlert(error)
-                        self.coordinatorDelegate?.logData(error.details)
-                        self.dispatchGroup.leave()
-                        return
-                    }
+extension DashboardViewModel: LogoutAlertDelegate {
+    
+    func handleLogoutSelections(_ selections: Set<LogoutType>) {
+        Task {
+            viewControllerDelegate?.stateChanged(true)
+            
+            do {
+                if ((selections.contains(LogoutType.revokeTokens) ||
+                     selections.contains(LogoutType.appSession)) &&
+                    (!isAccessTokenRevoked && !isRefreshTokenRevoked) &&
+                    isTokenActive) {
                     
-                    self.dispatchGroup.leave()
+                    try await revokeTokens()
                 }
-            }
-            
-            dispatchGroup.enter()
-            
-            dispatchQueue.async(group: dispatchGroup) {
-                self.authenticator.expireToken(tokenType: .refreshToken) { result in
-                    
-                    switch result {
-                    case .success:
-                        if !logoutSelections.contains(LogoutType.browserSession) || !logoutSelections.contains(LogoutType.appSession) {
-                            self.dispatchGroup.leave()
-                            return
-                        }
-                    case .failure(let error):
-                        self.coordinatorDelegate?.displayAlert(error)
-                        self.coordinatorDelegate?.logData(error.details)
-                        self.dispatchGroup.leave()
-                        return
-                    }
-                    
-                    self.dispatchGroup.leave()
+                
+                if selections.contains(LogoutType.browserSession) &&
+                    authenticator.isBrowserSessionActive {
+                    try await browserLogout()
                 }
+                
+                if selections.contains(LogoutType.appSession) {
+                    try await appLogout()
+                }
+            } catch let error as AuthError {
+                self.viewControllerDelegate?.displayErrorAlert(error)
+                self.viewControllerDelegate?.printToLogTextView(error.errorUserInfo.debugDescription)
             }
-        }
-        
-        if logoutSelections.contains(LogoutType.browserSession) {
             
-            dispatchGroup.enter()
-            
-            dispatchQueue.async(group: dispatchGroup) {
-                // Do the logout redirect on the main thread
-                self.authenticator.startBrowserLogout(
-                    { session in
-                        self.appDelegate.currentAuthorizationFlow = session
-                    },
-                    { result in
-                        
-                        switch result {
-                        case .success:
-                            break
-                        case .failure(let error):
-                            self.coordinatorDelegate?.logoutFailed(error: error)
-                            self.coordinatorDelegate?.logData(error.details)
-                            self.dispatchGroup.leave()
-                            return
-                        }
-                        
-                        self.dispatchGroup.leave()
-                    }
-                )
-            }
-        }
-        
-        if logoutSelections.contains(LogoutType.appSession) {
-            dispatchGroup.notify(queue: dispatchQueue) {
-                self.authenticator.appSessionLogout()
-                self.coordinatorDelegate?.logoutSucceeded()
-            }
-        } else {
-            dispatchGroup.notify(queue: dispatchQueue) {
-                self.isLoading = false
-            }
+            self.viewControllerDelegate?.stateChanged(false)
         }
     }
 }

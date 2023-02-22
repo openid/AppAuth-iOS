@@ -8,9 +8,10 @@
 import Foundation
 import UIKit
 
+@MainActor
 class DashboardViewController: UIViewController {
     
-    @IBOutlet private weak var tokenStackView: UIStackView!
+    @IBOutlet private weak var tokenRequestStackView: UIStackView!
     @IBOutlet private weak var codeExchangeButton: UIButton!
     @IBOutlet private weak var userinfoButton: UIButton!
     @IBOutlet private weak var refreshTokenButton: UIButton!
@@ -25,21 +26,26 @@ class DashboardViewController: UIViewController {
     @IBOutlet private weak var accessTokenStackView: UIStackView!
     @IBOutlet private weak var refreshTokenStackView: UIStackView!
     
-    var viewModel: DashboardViewModel?
+    var viewModel: DashboardViewModel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         configureUI()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
         
-        if let metadata = viewModel?.metadata {
-            printToLogTextView(metadata)
-        } else {
-            viewModel?.discoverConfig()
+        Task {
+            setActivityIndicator(true)
+            
+            do {
+                try await viewModel.discoverConfiguration()
+                try await viewModel.refreshTokens()
+            } catch let error as AuthError {
+                displayAlert(error: error) {
+                    Task {
+                        try await self.viewModel.appLogout()
+                    }
+                }
+            }
         }
     }
 }
@@ -48,34 +54,95 @@ class DashboardViewController: UIViewController {
 extension DashboardViewController {
     
     @IBAction func checkBrowserSession(_ sender: UIButton) {
-        viewModel?.checkBrowserSession()
+        Task {
+            setActivityIndicator(true)
+            
+            do {
+                try await viewModel.checkBrowserSession()
+            } catch let error as AuthError {
+                displayAlert(error: error) {
+                    if error == .userCancelledAuthorizationFlow && !self.viewModel.isBrowserSessionActive {
+                        Task {
+                            try await self.viewModel.appLogout()
+                        }
+                    } else {
+                        self.printToLogTextView(error.errorUserInfo.debugDescription)
+                    }
+                }
+            } catch {
+                printToLogTextView(error.localizedDescription)
+            }
+        }
     }
     
     @IBAction func codeExchange(_ sender: UIButton) {
-        viewModel?.manualCodeExchange()
+        Task {
+            setActivityIndicator(true)
+            
+            do {
+                try await viewModel.exchangeAuthorizationCode()
+            } catch let error as AuthError {
+                displayAlert(error: error)
+                printToLogTextView(error.errorUserInfo.debugDescription)
+            } catch {
+                printToLogTextView(error.localizedDescription)
+            }
+        }
     }
     
     @IBAction func userinfo(_ sender: UIButton) {
-        viewModel?.getUserInfo()
+        Task {
+            setActivityIndicator(true)
+            
+            do {
+                try await viewModel.getUserInfo()
+            } catch let error as AuthError {
+                displayAlert(error: error)
+                printToLogTextView(error.errorUserInfo.debugDescription)
+            } catch {
+                printToLogTextView(error.localizedDescription)
+            }
+        }
     }
     
     @IBAction func refreshToken(_ sender: UIButton) {
-        viewModel?.refreshTokens()
+        Task {
+            setActivityIndicator(true)
+            
+            do {
+                try await viewModel.refreshTokens()
+            } catch let error as AuthError {
+                displayAlert(error: error)
+                printToLogTextView(error.errorUserInfo.debugDescription)
+            } catch {
+                printToLogTextView(error.localizedDescription)
+            }
+        }
     }
     
     @IBAction func profileManagement(_ sender: UIButton) {
-        viewModel?.loadProfileManagement()
+        Task {
+            setActivityIndicator(true)
+            
+            do {
+                try await viewModel.loadProfileManagement()
+            } catch let error as AuthError {
+                displayAlert(error: error)
+                printToLogTextView(error.errorUserInfo.debugDescription)
+            } catch {
+                printToLogTextView(error.localizedDescription)
+            }
+        }
     }
     
     @IBAction func logout(_ sender: UIButton) {
-        //displayLogoutAlert()
-        displayLogoutAlert()
+        Task {
+            await displayLogoutAlert()
+        }
     }
     
     @IBAction func clearLog(_ sender: UIButton) {
-        DispatchQueue.main.async {
-            self.logTextView.text = ""
-        }
+        logTextView.text = ""
     }
 }
 
@@ -92,8 +159,45 @@ extension DashboardViewController {
         refreshTokenTextView.delegate = self
     }
     
-    func updateUI() {
-        authStateChanged()
+    func displayLogoutAlert() async {
+        
+        let logoutAlert = viewModel.getLogoutOptionsAlert()
+        present(logoutAlert, animated: true)
+    }
+}
+
+extension DashboardViewController: BaseViewControllerDelegate {
+    
+    func stateChanged(_ isLoading: Bool?) {
+        
+        if let isLoading = isLoading {
+            self.setActivityIndicator(isLoading)
+        }
+        
+        DispatchQueue.main.async {
+            
+            self.tokenRequestStackView.isHidden = self.viewModel.isTokenRequestStackViewHidden
+            self.codeExchangeButton.isHidden = !self.viewModel.isCodeExchangeRequired
+            self.refreshTokenButton.isHidden = !self.viewModel.isTokenActive
+            self.userinfoButton.isHidden = !self.viewModel.isTokenActive
+            self.profileButton.isHidden = !self.viewModel.isBrowserSessionActive
+            self.tokenDataStackView.isHidden = self.viewModel.isTokenDataStackViewHidden
+            
+            if !self.tokenDataStackView.isHidden {
+                self.accessTokenTextView.text = self.viewModel.lastAccessTokenResponse
+                self.accessTokenTitleLabel.text = self.viewModel.isAccessTokenRevoked ? "Access Token Revoked:" : "Access Token:"
+                self.refreshTokenTextView.text = self.viewModel.lastRefreshTokenResponse
+                self.refreshTokenTitleLabel.text = self.viewModel.isRefreshTokenRevoked ? "Refresh Token Revoked:" : "Refresh Token:"
+            }
+        }
+    }
+    
+    func displayErrorAlert(_ error: AuthError?) {
+        displayAlert(error: error)
+    }
+    
+    func displayAlertWithAction(_ error: AuthError?, alertAction: AlertAction) {
+        displayAlert(error: error, alertAction: alertAction)
     }
     
     func printToLogTextView(_ data: String) {
@@ -110,48 +214,8 @@ extension DashboardViewController {
             self.logTextView.scrollRangeToVisible(range)
         }
     }
-    
-    func authStateChanged() {
-
-        DispatchQueue.main.async {
-            UIView.animate(withDuration: 0.3) {
-                
-                self.tokenStackView.isHidden = self.viewModel?.isTokenDataHidden ?? false
-                
-                self.profileButton.isHidden = self.viewModel?.isProfileManagementDisabled ?? false
-                
-                self.codeExchangeButton.isHidden = !(self.viewModel?.isCodeExchangeRequired ?? false)
-                self.refreshTokenButton.isHidden = !(self.viewModel?.isTokenRefreshEnabled ?? false)
-                self.userinfoButton.isHidden = !(self.viewModel?.isGetUserInfoEnabled ?? false)
-                
-                self.tokenDataStackView.isHidden = self.viewModel?.isTokenDataHidden ?? false
-                if !self.tokenDataStackView.isHidden {
-                    let isTokenActive = self.viewModel?.isTokenActive ?? false
-                    self.accessTokenTextView.text = self.viewModel?.lastAccessTokenResponse
-                    self.accessTokenTitleLabel.text = isTokenActive ? "Access Token:" : "Access Token Revoked:"
-                    self.refreshTokenTextView.text = self.viewModel?.lastRefreshTokenResponse
-                    self.refreshTokenTitleLabel.text = isTokenActive ? "Refresh Token:" : "Refresh Token Revoked:"
-                }
-            }
-        }
-    }
-    
-    func displayLogoutAlert() {
-        
-        guard let logoutAlert = viewModel?.getLogoutOptionsAlert() else {
-            printToLogTextView("Logout options failed to load.")
-            return
-        }
-        
-        DispatchQueue.main.async {
-            self.present(logoutAlert, animated: true, completion: nil)
-        }
-    }
-    
-    func handleLogoutSelections(_ logoutSelections: Set<LogoutType>) {
-        viewModel?.handleLogoutSelections(logoutSelections)
-    }
 }
+
 
 //MARK: TextViewDelegate
 extension DashboardViewController: UITextViewDelegate {
