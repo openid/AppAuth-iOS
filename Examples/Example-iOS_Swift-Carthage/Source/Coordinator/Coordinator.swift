@@ -7,18 +7,18 @@
 
 import Foundation
 
-/**
- Coordinator responsibility is to handle navigation flow: the same way that
- UINavigationController keeps reference of its stack,
- Coordinator do the same with its children.
+/*
+ * Coordinator responsibility is to handle navigation flow: the same way that
+ * UINavigationController keeps reference of its stack,
+ * Coordinator does the same with its children.
  */
 protocol Coordinator : AnyObject {
     var childCoordinators: [Coordinator] { get set }
     func start()
 }
 
-/**
- We can store new coordinators to our stack and remove those one when the flow has been completed
+/*
+ * We can store new coordinators to our stack and remove those one when the flow has been completed
  */
 extension Coordinator {
     

@@ -26,21 +26,6 @@ extension UIViewController {
         }
     }
     
-    /**
-     Provides options for custom print output.
-     */
-    func customPrint(_ items: Any..., separator: String = " ", terminator: String = "\n") {
-        var output = items.map { "\($0)" }.joined(separator: separator)
-        
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        let date = dateFormatter.string(from: Date())
-        
-        output = date + " " + output
-        
-        Swift.print(output)
-    }
-    
     func displayAlert(title: String = TextConstants.errorTitle, error: AuthError? = nil, buttonTitle: String? = nil, alertAction: (() -> Void)? = nil) {
         
         let alertController = UIAlertController(title: title, message: error?.errorDescription, preferredStyle: .alert)

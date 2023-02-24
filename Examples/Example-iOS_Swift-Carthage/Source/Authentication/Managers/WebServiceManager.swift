@@ -10,8 +10,8 @@ import AppAuth
 
 class WebServiceManager {
     
-    /**
-     Sends a predefined URL request and handles common errors.
+    /*
+     * Sends a predefined URL request and handles common errors.
      */
     static func sendUrlRequest(_ request: URLRequest) async throws -> (Data?, String?) {
         

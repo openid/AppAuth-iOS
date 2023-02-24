@@ -28,7 +28,7 @@ struct AuthConfig {
     static let redirectUriHost: String = "oauth2redirect"
     static var redirectUrl = URL(string: redirectUriScheme + "://" + redirectUriHost)!
     
-    // The path for accessing the user profile management
+    // The path for accessing profile management
     private static let profileManagementPath: String = "/auth-ui/profile"
     static var profileManagementUrl = URL(string: "\(baseUrl)\(profileManagementPath)")!
     

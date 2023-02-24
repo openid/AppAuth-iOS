@@ -12,7 +12,7 @@ protocol LoginCoordinatorDelegate: AnyObject {
     func didFinishLoginCordinator(coordinator: Coordinator, with authenticator: Authenticator)
 }
 
-// LoginCoordinator handles the responsibility if naviagtion in Login module
+// LoginCoordinator handles the responsibility if navigation in Login module
 @MainActor
 final class LoginCoordinator: BaseCoordinator {
     

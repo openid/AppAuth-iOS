@@ -1,5 +1,5 @@
 //
-//  LogoutOptionsController.swift
+//  LogoutOptionsViewController.swift
 //  Example
 //
 //  Copyright © 2023 Akamai Technologies, Inc. All Rights Reserved.

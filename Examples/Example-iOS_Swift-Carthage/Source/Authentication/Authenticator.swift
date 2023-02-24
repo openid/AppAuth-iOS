@@ -83,7 +83,7 @@ class Authenticator {
 extension Authenticator {
     
     /*
-     * Download discovery doc metadata and return it to the caller
+     * Download discovery doc metadata
      */
     func getDiscoveryConfig(_ discoveryUrl: URL) async throws {
         

@@ -12,7 +12,7 @@ protocol DashboardCoordinatorDelegate: AnyObject {
     func didFinishDashboardCordinator(coordinator: Coordinator, with authenticator: Authenticator)
 }
 
-// DashboardCoordinator handles the responsibility if naviagtion in Dashboard module
+// DashboardCoordinator handles the responsibility if navigation in Dashboard module
 @MainActor
 class DashboardCoordinator: BaseCoordinator {
     

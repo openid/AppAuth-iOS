@@ -96,7 +96,7 @@ extension LoginViewController: BaseViewControllerDelegate {
         dateFormatter.dateFormat = "hh:mm:ss"
         let dateString = dateFormatter.string(from: Date())
         
-        // appends to output log
+        // Appends to output log
         DispatchQueue.main.async {
             let logText = "\(self.logTextView.text ?? "")\n\(dateString): \(data)"
             self.logTextView.text = logText
