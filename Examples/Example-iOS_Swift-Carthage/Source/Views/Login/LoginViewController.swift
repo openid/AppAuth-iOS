@@ -11,9 +11,9 @@ import UIKit
 @MainActor
 class LoginViewController: UIViewController {
     
-    @IBOutlet private weak var authButton: UIButton!
-    @IBOutlet weak var authTypeSegementedControl: UISegmentedControl!
-    @IBOutlet private weak var logTextView: UITextView!
+    @IBOutlet private(set) weak var authButton: UIButton!
+    @IBOutlet private(set) weak var authTypeSegementedControl: UISegmentedControl!
+    @IBOutlet private(set) weak var logTextView: UITextView!
     
     var viewModel: LoginViewModel!
     
@@ -79,7 +79,7 @@ extension LoginViewController: BaseViewControllerDelegate {
     
     func stateChanged(_ isLoading: Bool?) {
         if let isLoading = isLoading {
-            self.setActivityIndicator(isLoading)
+            setActivityIndicator(isLoading)
         }
     }
     
