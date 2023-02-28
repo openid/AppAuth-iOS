@@ -30,7 +30,7 @@
 		F8301B842983BB1300D0B05A /* LoginViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8301B832983BB1300D0B05A /* LoginViewControllerTests.swift */; };
 		F8301B862983BB2200D0B05A /* DashboardViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8301B852983BB2200D0B05A /* DashboardViewModelTests.swift */; };
 		F8301B882983BB2B00D0B05A /* LoginViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8301B872983BB2B00D0B05A /* LoginViewModelTests.swift */; };
-		F8301B8A2983BB3D00D0B05A /* AuthRequestManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8301B892983BB3D00D0B05A /* AuthRequestManagerTests.swift */; };
+		F8301B8A2983BB3D00D0B05A /* AuthRequestFactoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8301B892983BB3D00D0B05A /* AuthRequestFactoryTests.swift */; };
 		F8301B8C2983BBC800D0B05A /* AuthStateManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8301B8B2983BBC800D0B05A /* AuthStateManagerTests.swift */; };
 		F8301B8E2983BBD200D0B05A /* WebServiceManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8301B8D2983BBD200D0B05A /* WebServiceManagerTests.swift */; };
 		F8301BA6298AEC8900D0B05A /* LoginResponseHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8301BA4298AEC8900D0B05A /* LoginResponseHandler.swift */; };
@@ -124,7 +124,7 @@
 		F8301B832983BB1300D0B05A /* LoginViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewControllerTests.swift; sourceTree = "<group>"; };
 		F8301B852983BB2200D0B05A /* DashboardViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardViewModelTests.swift; sourceTree = "<group>"; };
 		F8301B872983BB2B00D0B05A /* LoginViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModelTests.swift; sourceTree = "<group>"; };
-		F8301B892983BB3D00D0B05A /* AuthRequestManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthRequestManagerTests.swift; sourceTree = "<group>"; };
+		F8301B892983BB3D00D0B05A /* AuthRequestFactoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthRequestFactoryTests.swift; sourceTree = "<group>"; };
 		F8301B8B2983BBC800D0B05A /* AuthStateManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthStateManagerTests.swift; sourceTree = "<group>"; };
 		F8301B8D2983BBD200D0B05A /* WebServiceManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebServiceManagerTests.swift; sourceTree = "<group>"; };
 		F8301BA4298AEC8900D0B05A /* LoginResponseHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginResponseHandler.swift; sourceTree = "<group>"; };
@@ -301,10 +301,10 @@
 		F8301B7A2983BA7900D0B05A /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				F8939AA529428B2F0074C71A /* DashboardVIewControllerTests.swift */,
-				F8301B852983BB2200D0B05A /* DashboardViewModelTests.swift */,
 				F8301B832983BB1300D0B05A /* LoginViewControllerTests.swift */,
 				F8301B872983BB2B00D0B05A /* LoginViewModelTests.swift */,
+				F8939AA529428B2F0074C71A /* DashboardVIewControllerTests.swift */,
+				F8301B852983BB2200D0B05A /* DashboardViewModelTests.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -313,7 +313,7 @@
 			isa = PBXGroup;
 			children = (
 				F8301B732983B8B400D0B05A /* AuthenticatorTests.swift */,
-				F8301B892983BB3D00D0B05A /* AuthRequestManagerTests.swift */,
+				F8301B892983BB3D00D0B05A /* AuthRequestFactoryTests.swift */,
 				F8301B8B2983BBC800D0B05A /* AuthStateManagerTests.swift */,
 				F8301B8D2983BBD200D0B05A /* WebServiceManagerTests.swift */,
 			);
@@ -657,7 +657,7 @@
 				F8301B5D298303B100D0B05A /* SpyNavigationController.swift in Sources */,
 				F8301B802983BAE700D0B05A /* LoginCoordinatorTests.swift in Sources */,
 				F8301B842983BB1300D0B05A /* LoginViewControllerTests.swift in Sources */,
-				F8301B8A2983BB3D00D0B05A /* AuthRequestManagerTests.swift in Sources */,
+				F8301B8A2983BB3D00D0B05A /* AuthRequestFactoryTests.swift in Sources */,
 				F8301B7E2983BADC00D0B05A /* AppCoordinatorTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
