@@ -2,8 +2,7 @@
 //  Fakes.swift
 //  ExampleTests
 //
-//  Created by Michael Moore on 1/26/23.
-//  Copyright © 2023 Google Inc. All rights reserved.
+//  Copyright © 2023 Akamai Technologies, Inc. All Rights Reserved.
 //
 
 import XCTest

@@ -1,6 +1,6 @@
 //
 //  AppAuthMocks.swift
-//  Example
+//  ExampleTests
 //
 //  Copyright © 2023 Akamai Technologies, Inc. All Rights Reserved.
 //

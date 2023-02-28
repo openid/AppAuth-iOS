@@ -1,1 +1,82 @@
-{"issuer":"https://account.bitski.com","authorization_endpoint":"https://account.bitski.com/oauth2/auth","token_endpoint":"https://account.bitski.com/oauth2/token","jwks_uri":"https://account.bitski.com/.well-known/jwks.json","subject_types_supported":["pairwise","public"],"response_types_supported":["code","code id_token","id_token","token id_token","token","token id_token code"],"claims_supported":["sub"],"userinfo_endpoint":"https://account.bitski.com/userinfo","scopes_supported":["offline","openid"],"token_endpoint_auth_methods_supported":["client_secret_post","client_secret_basic"],"id_token_signing_alg_values_supported":["RS256"]}
+
+{
+    "issuer": "https://api.multi.dev.or.janrain.com/00000000-0000-0000-0000-000000000000/login",
+    "authorization_endpoint": "https://api.multi.dev.or.janrain.com/00000000-0000-0000-0000-000000000000/login/authorize",
+    "token_endpoint": "https://api.multi.dev.or.janrain.com/00000000-0000-0000-0000-000000000000/login/token",
+    "introspection_endpoint": "https://api.multi.dev.or.janrain.com/00000000-0000-0000-0000-000000000000/login/token/introspect",
+    "revocation_endpoint": "https://api.multi.dev.or.janrain.com/00000000-0000-0000-0000-000000000000/login/token/revoke",
+    "userinfo_endpoint": "https://api.multi.dev.or.janrain.com/00000000-0000-0000-0000-000000000000/profiles/oidc/userinfo",
+    "jwks_uri": "https://api.multi.dev.or.janrain.com/00000000-0000-0000-0000-000000000000/login/jwk",
+    "request_parameter_supported": false,
+    "request_uri_parameter_supported": false,
+    "response_modes_supported": [
+        "query",
+        "fragment",
+        "form_post"
+    ],
+    "response_types_supported": [
+        "code",
+        "id_token",
+        "token",
+        "none",
+        "code id_token",
+        "code token",
+        "id_token token",
+        "code id_token token"
+    ],
+    "subject_types_supported": [
+        "public"
+    ],
+    "id_token_signing_alg_values_supported": [
+        "RS256"
+    ],
+    "grant_types_supported": [
+        "authorization_code",
+        "client_credentials",
+        "implicit",
+        "password",
+        "refresh_token",
+        "urn:ietf:params:oauth:grant-type:token-exchange"
+    ],
+    "acr_values_supported": [
+        "0",
+        "urn:akamai-ic:nist:800-63-3:aal:1",
+        "urn:akamai-ic:nist:800-63-3:aal:2"
+    ],
+    "token_endpoint_auth_methods_supported": [
+        "client_secret_basic",
+        "client_secret_post"
+    ],
+    "scopes_supported": [
+        "openid",
+        "profile",
+        "email",
+        "address",
+        "phone"
+    ],
+    "claims_parameter_supported": true,
+    "claims_supported": [
+        "sub",
+        "iss",
+        "auth_time",
+        "given_name",
+        "address",
+        "family_name",
+        "middle_name",
+        "preferred_username",
+        "gender",
+        "birthdate",
+        "updated_at",
+        "phone_number",
+        "phone_number_verified",
+        "email",
+        "email_verified"
+    ],
+    "claim_types_supported": [
+        "normal",
+        "aggregated"
+    ],
+    "code_challenge_methods_supported": [
+        "S256"
+    ]
+}
