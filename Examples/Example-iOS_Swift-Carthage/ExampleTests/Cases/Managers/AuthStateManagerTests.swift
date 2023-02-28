@@ -12,25 +12,102 @@ import UIKit
 @testable import Example
 
 class AuthStateManagerTests: XCTestCase {
-
-    var sut: AuthStateManager!
+    
+    // MARK: - Properties
+    
+    var authStateManager: AuthStateManager!
+    var mockAuthState: OIDAuthState!
+    var fakeUserDefaults: FakeUserDefaults!
+    
+    // MARK: - Setup / Teardown
     
     override func setUp() {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-        
         super.setUp()
-        
-        sut = AuthStateManager()
+        authStateManager = AppAuthMocks.setupMockAuthStateManager(issuer: AuthConfig.discoveryUrl, clientId: AuthConfig.clientId)
+        mockAuthState = AppAuthMocks.setupMockAuthState()
+        fakeUserDefaults = FakeUserDefaults()
     }
     
     override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-        sut = nil
-        
+        authStateManager.setAuthState(nil)
+        authStateManager = nil
         super.tearDown()
     }
     
-    func testAuthState() {
+    // MARK: - Tests
+    
+    func testLoadAuthState() {
+        fakeUserDefaults.set(mockAuthState, forKey: AuthConfig.authStateStorageKey)
+        authStateManager.loadAuthState()
         
+        XCTAssertEqual(authStateManager.authState?.isAuthorized, true)
+    }
+    
+    func testSetAuthState() {
+        authStateManager.setAuthState(mockAuthState)
+        
+        XCTAssertEqual(authStateManager.authState?.isAuthorized, mockAuthState.isAuthorized)
+    }
+    
+    func testSetAuthStateWhenSameState() {
+        authStateManager.setAuthState(mockAuthState)
+        let originalAuthState = authStateManager.authState
+        
+        authStateManager.setAuthState(mockAuthState)
+        
+        XCTAssertTrue(authStateManager.authState == originalAuthState)
+    }
+    
+    func testSetAuthStateWhenDifferentState() {
+        
+        authStateManager.setAuthState(mockAuthState)
+        let originalAuthState = authStateManager.authState
+        
+        let nilAuthState: OIDAuthState? = nil
+        authStateManager.setAuthState(nilAuthState)
+        
+        XCTAssertFalse(authStateManager.authState == originalAuthState)
+        XCTAssertEqual(authStateManager.authState, nil)
+    }
+    
+    func testUpdateWithTokenResponse() {
+        authStateManager.setAuthState(mockAuthState)
+        
+        let mockTokenResponse = AppAuthMocks.getTokenResponseMock()
+        authStateManager.updateWithTokenResponse(mockTokenResponse, error: nil)
+        
+        XCTAssertEqual(authStateManager.lastTokenResponse?.accessToken, mockTokenResponse?.accessToken)
+    }
+    
+    func testLoadBrowserState() {
+        fakeUserDefaults.set(true, forKey: AuthConfig.browserStateStorageKey)
+        authStateManager.loadBrowserState()
+        
+        XCTAssertEqual(authStateManager.browserState, .active)
+    }
+    
+    func testSetBrowserState() {
+        authStateManager.setBrowserState(.active)
+        
+        XCTAssertEqual(authStateManager.browserState, .active)
+    }
+    
+    func testSetBrowserStateWhenSameState() {
+        authStateManager.setBrowserState(.inactive)
+        let originalBrowserState = authStateManager.browserState
+        
+        authStateManager.setBrowserState(.inactive)
+        
+        XCTAssertTrue(authStateManager.browserState == originalBrowserState)
+    }
+    
+    func testSetBrowserStateWhenDifferentState() {
+        authStateManager.setBrowserState(.inactive)
+        let originalBrowserState = authStateManager.browserState
+        
+        authStateManager.setBrowserState(.active)
+        
+        XCTAssertFalse(authStateManager.browserState == originalBrowserState)
+        XCTAssertEqual(authStateManager.browserState, .active)
     }
 }
