@@ -40,7 +40,6 @@ class AuthenticatorTests: XCTestCase {
     func testIsDiscoveryConfigLoaded() async throws {
         try await authenticator.getDiscoveryConfig(AuthConfig.discoveryUrl)
         XCTAssertNotNil(authenticator.discoveryConfig)
-        
     }
     
     func testIsAuthStateIsInactive() {

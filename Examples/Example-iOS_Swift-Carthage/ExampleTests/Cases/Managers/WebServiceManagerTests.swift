@@ -13,13 +13,15 @@ import UIKit
 class WebServiceManagerTests: XCTestCase {
         
     var sut: WebServiceManager!
+    var navigationController: UINavigationController!
+    var authenticator: Authenticator!
     
     override func setUp() {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-        
         super.setUp()
         
         sut = WebServiceManager()
+        navigationController = UINavigationController()
+        authenticator = Authenticator(navigationController)
     }
     
     override func tearDown() {
@@ -29,7 +31,37 @@ class WebServiceManagerTests: XCTestCase {
         super.tearDown()
     }
     
-    func testAuthState() {
+    func testUrlRequestResponseDataReceived() async throws {
+        try await authenticator.getDiscoveryConfig(AuthConfig.discoveryUrl)
+        let token = AppAuthMocks.mockAccessToken
+        let request = authenticator.requestFactory.revokeTokenRequest(token)!
         
+        var responseError: Error? = nil
+        var responseData: Data? = nil
+        do {
+            let (data, _) = try await WebServiceManager.sendUrlRequest(request)
+            responseData = data
+        } catch {
+            responseError = error
+        }
+        
+        XCTAssertNotNil(responseData)
+        XCTAssertNil(responseError)
+    }
+    
+    func testUrlRequestErrorThrown() async throws {
+        
+        try await authenticator.getDiscoveryConfig(AuthConfig.discoveryUrl)
+        let request = authenticator.requestFactory.revokeTokenRequest("")!
+        
+        var responseError: Error? = nil
+        
+        do {
+            let (_, _) = try await WebServiceManager.sendUrlRequest(request)
+        } catch {
+            responseError = error
+        }
+        
+        XCTAssertNotNil(responseError)
     }
 }
