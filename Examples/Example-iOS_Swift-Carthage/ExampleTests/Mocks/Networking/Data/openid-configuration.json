@@ -1,12 +1,12 @@
 
 {
-    "issuer": "https://api.multi.dev.or.janrain.com/00000000-0000-0000-0000-000000000000/login",
-    "authorization_endpoint": "https://api.multi.dev.or.janrain.com/00000000-0000-0000-0000-000000000000/login/authorize",
-    "token_endpoint": "https://api.multi.dev.or.janrain.com/00000000-0000-0000-0000-000000000000/login/token",
-    "introspection_endpoint": "https://api.multi.dev.or.janrain.com/00000000-0000-0000-0000-000000000000/login/token/introspect",
-    "revocation_endpoint": "https://api.multi.dev.or.janrain.com/00000000-0000-0000-0000-000000000000/login/token/revoke",
-    "userinfo_endpoint": "https://api.multi.dev.or.janrain.com/00000000-0000-0000-0000-000000000000/profiles/oidc/userinfo",
-    "jwks_uri": "https://api.multi.dev.or.janrain.com/00000000-0000-0000-0000-000000000000/login/jwk",
+    "issuer": "https://example.com/login",
+    "authorization_endpoint": "https://example.com/login/authorize",
+    "token_endpoint": "https://example.com/login/token",
+    "introspection_endpoint": "https://example.com/login/token/introspect",
+    "revocation_endpoint": "https://example.com/login/token/revoke",
+    "userinfo_endpoint": "https://example.com/profiles/oidc/userinfo",
+    "jwks_uri": "https://example.com/login/jwk",
     "request_parameter_supported": false,
     "request_uri_parameter_supported": false,
     "response_modes_supported": [
