@@ -10,11 +10,13 @@ import UIKit
 
 @MainActor
 class BaseViewModel: NSObject {
-    weak var viewControllerDelegate: BaseViewControllerDelegate?
-    internal var authenticator: Authenticator
     
-    init(_ authenticator: Authenticator) {
+    weak var viewControllerDelegate: BaseViewControllerDelegate?
+    private(set) var authenticator: AuthenticatorProtocol
+    
+    init(_ authenticator: AuthenticatorProtocol) {
         self.authenticator = authenticator
+        
         super.init()
         
         authenticator.delegate = self

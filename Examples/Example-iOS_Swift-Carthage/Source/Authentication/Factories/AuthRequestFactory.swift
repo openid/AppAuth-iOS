@@ -14,16 +14,16 @@ import AppAuth
 protocol AuthRequestFactoryProtocol {
     
     // Return the begin browser session request object
-    func browserLoginRequest() -> OIDAuthorizationRequest
+    func browserLoginRequest(_ discoveryConfig: OIDServiceConfiguration) -> OIDAuthorizationRequest
     
     // Return the request to load the profile management page
-    func profileManagementRequest() -> OIDAuthorizationRequest
+    func profileManagementRequest(_ discoveryConfig: OIDServiceConfiguration) -> OIDAuthorizationRequest
     
     // Return the request to make the api call for the user info
-    func userInfoRequest(_ accessToken: String) -> URLRequest?
+    func userInfoRequest(_ discoveryConfig: OIDServiceConfiguration, accessToken: String) -> URLRequest?
     
     // Return the end browser session request object
-    func browserLogoutRequest() -> OIDEndSessionRequest
+    func browserLogoutRequest(_ discoveryConfig: OIDServiceConfiguration) -> OIDEndSessionRequest
     
     // Return the request to revoke a token
     func revokeTokenRequest(_ token: String) -> URLRequest?
@@ -34,95 +34,95 @@ protocol AuthRequestFactoryProtocol {
  */
 class AuthRequestFactory: AuthRequestFactoryProtocol {
     
-    private var discoveryConfig: OIDServiceConfiguration
+    let authConfig: AuthConfigProtocol
     
-    init(_ discoveryConfig: OIDServiceConfiguration) {
-        self.discoveryConfig = discoveryConfig
+    init(_ authConfig: AuthConfigProtocol) {
+        self.authConfig = authConfig
     }
     
     /*
      * Return the begin browser session request object
      */
-    func browserLoginRequest() -> OIDAuthorizationRequest {
+    func browserLoginRequest(_ discoveryConfig: OIDServiceConfiguration) -> OIDAuthorizationRequest {
         
         // Build the login request and include extra vendor specific parameters
         return OIDAuthorizationRequest(
             configuration: discoveryConfig,
-            clientId: AuthConfig.clientId,
+            clientId: authConfig.clientId,
             clientSecret: "",
-            scopes: AuthConfig.scopes,
-            redirectURL: AuthConfig.redirectUrl,
+            scopes: authConfig.scopes,
+            redirectURL: authConfig.redirectUrl,
             responseType: OIDResponseTypeCode,
-            additionalParameters: AuthConfig.additionalParameters)
+            additionalParameters: authConfig.additionalParameters)
     }
     
     /*
      * Return the profile management request object
      */
-    func profileManagementRequest() -> OIDAuthorizationRequest {
+    func profileManagementRequest(_ discoveryConfig: OIDServiceConfiguration) -> OIDAuthorizationRequest {
         
-        let profileMangementMetadata = profileManagementMetadata()
+        let profileManagementMetadata = profileManagementMetadata(discoveryConfig)
         
         // Build the profile management request and include extra vendor specific parameters
         return OIDAuthorizationRequest(
-            configuration: profileMangementMetadata,
-            clientId: AuthConfig.clientId,
+            configuration: profileManagementMetadata,
+            clientId: authConfig.clientId,
             clientSecret: "",
-            scopes: AuthConfig.scopes,
-            redirectURL: AuthConfig.redirectUrl,
+            scopes: authConfig.scopes,
+            redirectURL: authConfig.redirectUrl,
             responseType: OIDResponseTypeCode,
-            additionalParameters: AuthConfig.additionalParameters)
+            additionalParameters: authConfig.additionalParameters)
     }
     
     /*
      * Create updated metadata object with custom profile management URL
      */
-    private func profileManagementMetadata() -> OIDServiceConfiguration {
+    private func profileManagementMetadata(_ discoveryConfig: OIDServiceConfiguration) -> OIDServiceConfiguration {
         return OIDServiceConfiguration(
-            authorizationEndpoint: AuthConfig.profileManagementUrl,
+            authorizationEndpoint: authConfig.profileManagementUrl,
             tokenEndpoint: discoveryConfig.tokenEndpoint,
             issuer: discoveryConfig.issuer,
             registrationEndpoint: discoveryConfig.registrationEndpoint,
             endSessionEndpoint: discoveryConfig.endSessionEndpoint)
     }
-
+    
     /*
      * Return the end browser session request object
      */
-    func browserLogoutRequest() -> OIDEndSessionRequest {
+    func browserLogoutRequest(_ discoveryConfig: OIDServiceConfiguration) -> OIDEndSessionRequest {
         
-        let logoutMetadata = logoutMetadata()
+        let logoutMetadata = logoutMetadata(discoveryConfig)
         
         let logoutAdditionalParams = [
-            "client_id": AuthConfig.clientId
+            "client_id": authConfig.clientId
         ]
-
+        
         // Build the logout request and include extra vendor specific parameters
         return OIDEndSessionRequest(
             configuration: logoutMetadata,
             idTokenHint: "",
-            postLogoutRedirectURL: AuthConfig.redirectUrl,
+            postLogoutRedirectURL: authConfig.redirectUrl,
             additionalParameters: logoutAdditionalParams)
     }
     
     /*
      * Create updated metadata object with custom logout URL to end browser session
      */
-    private func logoutMetadata() -> OIDServiceConfiguration {
+    private func logoutMetadata(_ discoveryConfig: OIDServiceConfiguration) -> OIDServiceConfiguration {
         return OIDServiceConfiguration(
             authorizationEndpoint: discoveryConfig.authorizationEndpoint,
             tokenEndpoint: discoveryConfig.tokenEndpoint,
             issuer: discoveryConfig.issuer,
             registrationEndpoint: discoveryConfig.registrationEndpoint,
-            endSessionEndpoint: AuthConfig.customLogoutUrl)
+            endSessionEndpoint: authConfig.customLogoutUrl)
     }
     
     func revokeTokenRequest(_ token: String) -> URLRequest? {
         
-        var urlRequest = URLRequest(url: AuthConfig.revokeTokenUrl)
+        var urlRequest = URLRequest(url: authConfig.revokeTokenUrl)
         urlRequest.httpMethod = "POST"
         
-        let bodyString = "token=\(token)&client_id=\(AuthConfig.clientId)"
+        let bodyString = "token=\(token)&client_id=\(authConfig.clientId)"
         let bodyData = bodyString.data(using: .utf8)!
         let bodyLength = "\(bodyData.count)"
         urlRequest.httpBody = bodyData
@@ -132,14 +132,14 @@ class AuthRequestFactory: AuthRequestFactoryProtocol {
         return urlRequest
     }
     
-    func userInfoRequest(_ accessToken: String) -> URLRequest? {
+    func userInfoRequest(_ discoveryConfig: OIDServiceConfiguration, accessToken: String) -> URLRequest? {
         
         guard let discoveryDoc = discoveryConfig.discoveryDocument,
               let userInfoUrl = discoveryDoc.userinfoEndpoint
         else {
             return nil
         }
-
+        
         var urlRequest = URLRequest(url: userInfoUrl)
         urlRequest.allHTTPHeaderFields = ["Authorization":"Bearer \(accessToken)"]
         

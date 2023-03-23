@@ -7,70 +7,95 @@
 
 import Foundation
 
-struct AuthConfig {
+// MARK: AuthConfigProtocol
+protocol AuthConfigProtocol {
+    var authStateStorageKey: String { get }
+    var browserStateStorageKey: String { get }
+    var redirectUriScheme: String { get }
+    var redirectUrl: URL! { get }
+    var clientId: String { get }
+    var discoveryUrl: URL! { get }
+    var profileManagementUrl: URL! { get }
+    var customLogoutUrl: URL! { get }
+    var revokeTokenUrl: URL! { get }
+    var prompt: String? { get }
+    var claims: String? { get }
+    var acrValues: String? { get }
+    var scopes: [String]? { get }
+    var additionalParameters: [String:String] { get set }
+}
+
+class AuthConfig: AuthConfigProtocol {
     
     // User defaults storage keys
-    static let authStateStorageKey = "authState"
-    static let browserStateStorageKey = "browserState"
-
+    let authStateStorageKey = "authState"
+    let browserStateStorageKey = "browserState"
+    
+    // The redirect URI for the mobile app.
+    // This needs to match the plist redirect scheme
+    let redirectUriScheme: String = "net.openid.appauthdemo"
+    let redirectUriHost: String = "oauth2redirect"
+    
     // The OAuth client id
-    static let clientId: String = "cec9a504-a0ab-4b92-879b-711482a3f69b"
+    let clientId: String = "cec9a504-a0ab-4b92-879b-711482a3f69b"
     
     // The base url for OAuth services
-    private static let baseUrl: String = "https://api.multi.dev.or.janrain.com/00000000-0000-0000-0000-000000000000"
+    private let baseUrl: String = "https://api.multi.dev.or.janrain.com/00000000-0000-0000-0000-000000000000"
     
     // The OIDC issuer from which the configuration will be discovered
-    private static let discoveryPath: String = "/login"
-    static var discoveryUrl = URL(string: "\(baseUrl)\(discoveryPath)")!
-    
-    // The redirect URI for the mobile app
-    static let redirectUriScheme: String = "net.openid.appauthdemo"
-    static let redirectUriHost: String = "oauth2redirect"
-    static var redirectUrl = URL(string: redirectUriScheme + "://" + redirectUriHost)!
+    private let discoveryPath: String = "/login"
     
     // The path for accessing profile management
-    private static let profileManagementPath: String = "/auth-ui/profile"
-    static var profileManagementUrl = URL(string: "\(baseUrl)\(profileManagementPath)")!
+    private let profileManagementPath: String = "/auth-ui/profile"
     
     // The custom browser session logout path
-    private static let customLogoutPath: String = "/auth-ui/logout"
-    static var customLogoutUrl = URL(string: "\(baseUrl)\(customLogoutPath)")!
+    private let customLogoutPath: String = "/auth-ui/logout"
     
     // The path for revoking user tokens
-    private static let revokeTokenPath: String = "/login/token/revoke"
-    static var revokeTokenUrl = URL(string: "\(baseUrl)\(revokeTokenPath)")!
+    private let revokeTokenPath: String = "/login/token/revoke"
     
     // The OAuth prompt specification
-    private let prompt: String? = nil
+    let prompt: String? = nil
     
     // The OAuth claims specification
-    private let claims: String? = nil
+    let claims: String? = nil
     
     // The OAuth ACR claims specification
-    private let acrValues: String? = nil
+    let acrValues: String? = nil
     
     // OAuth scopes being requested, for use when calling APIs after login
-    static let scopes: [String]? = ["openid", "profile"]
+    let scopes: [String]? = ["openid", "profile"]
     
     // Any additional parameters to be specified in the Authentication request
-    static var additionalParameters: [String:String] = [:]
-    
-    // Configure additional parameters
-    init() {
-        configureAdditionalParameters()
-    }
+    var additionalParameters: [String:String] = [:]
     
     func configureAdditionalParameters() {
         if prompt != nil {
-            AuthConfig.additionalParameters["prompt"] = prompt
+            additionalParameters["prompt"] = prompt
         }
         
         if claims != nil {
-            AuthConfig.additionalParameters["claims"] = claims
+            additionalParameters["claims"] = claims
         }
         
         if acrValues != nil {
-            AuthConfig.additionalParameters["acr_values"] = acrValues
+            additionalParameters["acr_values"] = acrValues
         }
+    }
+    
+    // The URLs are initialized from the paths
+    var discoveryUrl: URL!
+    var redirectUrl: URL!
+    var profileManagementUrl: URL!
+    var customLogoutUrl: URL!
+    var revokeTokenUrl: URL!
+    
+    init() {
+        discoveryUrl = URL(string: "\(baseUrl)\(discoveryPath)")!
+        redirectUrl = URL(string: redirectUriScheme + "://" + redirectUriHost)!
+        profileManagementUrl = URL(string: "\(baseUrl)\(profileManagementPath)")!
+        customLogoutUrl = URL(string: "\(baseUrl)\(customLogoutPath)")!
+        revokeTokenUrl = URL(string: "\(baseUrl)\(revokeTokenPath)")!
+        configureAdditionalParameters()
     }
 }

@@ -8,44 +8,44 @@
 import Foundation
 import UIKit
 
-protocol LoginViewModelCoordinatorDelegate: AnyObject {    
-    func loginSucceeded(with authenticator: Authenticator)
+protocol LoginViewModelCoordinatorDelegate: AnyObject {
+    func loginSucceeded(with authenticator: AuthenticatorProtocol)
 }
 
-class LoginViewModel: BaseViewModel {
+// MARK: LoginViewModelProtocol
+protocol LoginViewModelProtocol: BaseViewModel {
+    var coordinatorDelegate: LoginViewModelCoordinatorDelegate? { get set }
+    var isManualCodeExchange: Bool { get }
+    
+    func setManualCodeExchange(_ isSelected: Bool)
+    func discoverConfiguration() async throws -> String
+    func beginBrowserAuthentication() async throws -> Void
+    func authWithAutoCodeExchange() async throws -> Void
+    func authWithManualCodeExchange() async throws -> Void
+}
+
+class LoginViewModel: BaseViewModel, LoginViewModelProtocol {
     
     weak var coordinatorDelegate: LoginViewModelCoordinatorDelegate?
     
-    var isManualCodeExchange = false
-    var discoveryConfig: String? {
-        return authenticator.discoveryConfig?.description
+    var isManualCodeExchange: Bool {
+        authenticator.isCodeExchangeRequired
     }
     
-    func discoverConfiguration() async throws {
-        do {
-            try await authenticator.getDiscoveryConfig(AuthConfig.discoveryUrl)
-            if let discoveryConfig = discoveryConfig {
-                viewControllerDelegate?.printToLogTextView(discoveryConfig)
-            } else {
-                throw AuthError.noDiscoveryDoc
-            }
-        } catch let error as AuthError {
-            viewControllerDelegate?.displayAlertWithAction(error, alertAction: {
-                Task {
-                    try await self.discoverConfiguration()
-                }
-            })
-        }
-        
-        viewControllerDelegate?.stateChanged(false)
+    func setManualCodeExchange(_ isSelected: Bool) {
+        authenticator.isCodeExchangeRequired = isSelected
+    }
+    
+    func discoverConfiguration() async throws -> String {
+        return try await authenticator.loadDiscoveryConfig()
     }
     
     func beginBrowserAuthentication() async throws {
         try await isManualCodeExchange ? authWithManualCodeExchange() : authWithAutoCodeExchange()
-        viewControllerDelegate?.stateChanged(false)
     }
     
     func authWithAutoCodeExchange() async throws {
+        
         // Do the login redirect on the main thread
         try await MainActor.run {
             AppDelegate.shared.currentAuthorizationFlow = try authenticator.startBrowserLoginWithAutoCodeExchange()
@@ -62,6 +62,7 @@ class LoginViewModel: BaseViewModel {
     }
     
     func authWithManualCodeExchange() async throws {
+        
         // Do the login redirect on the main thread
         try await MainActor.run {
             AppDelegate.shared.currentAuthorizationFlow = try authenticator.startBrowserLoginWithManualCodeExchange()

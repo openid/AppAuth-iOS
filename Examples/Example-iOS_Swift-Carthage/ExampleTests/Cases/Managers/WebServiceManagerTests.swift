@@ -7,61 +7,97 @@
 import XCTest
 import Foundation
 import UIKit
-@testable import AppAuth
+import AppAuth
 @testable import Example
 
 class WebServiceManagerTests: XCTestCase {
-        
+    
     var sut: WebServiceManager!
-    var navigationController: UINavigationController!
-    var authenticator: Authenticator!
+    
+    var authenticatorMock: AuthenticatorMock!
+    var authRequestFactoryMock: AuthRequestFactoryProtocol!
+    var appAuthMocks: AppAuthMocks!
+    var authConfigMock: AuthConfigMock!
+    let testURL = URL(string: "https://example.com")!
     
     override func setUp() {
         super.setUp()
         
-        sut = WebServiceManager()
-        navigationController = UINavigationController()
-        authenticator = Authenticator(navigationController)
+        let configuration = URLSessionConfiguration.default
+        configuration.protocolClasses = [URLProtocolMock.self]
+        let urlSession = URLSession.init(configuration: configuration)
+        
+        sut = WebServiceManager(urlSession)
+        authConfigMock = AuthConfigMock()
+        authenticatorMock = AuthenticatorMock()
+        appAuthMocks = AppAuthMocks()
+        authRequestFactoryMock = AuthRequestFactory(authConfigMock)
     }
     
     override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
         sut = nil
+        authenticatorMock = nil
+        authRequestFactoryMock = nil
+        appAuthMocks = nil
+        authConfigMock = nil
         
         super.tearDown()
     }
     
     func testUrlRequestResponseDataReceived() async throws {
-        try await authenticator.getDiscoveryConfig(AuthConfig.discoveryUrl)
-        let token = AppAuthMocks.mockAccessToken
-        let request = authenticator.requestFactory.revokeTokenRequest(token)!
+        let token = appAuthMocks.mockAccessToken
+        let request = authRequestFactoryMock.revokeTokenRequest(token)
         
-        var responseError: Error? = nil
-        var responseData: Data? = nil
-        do {
-            let (data, _) = try await WebServiceManager.sendUrlRequest(request)
-            responseData = data
-        } catch {
-            responseError = error
+        // Prepare mock response.
+        
+        let responseData = appAuthMocks.getTokenResponseData()
+        
+        URLProtocolMock.requestHandler = { request in
+            guard let url = request.url else {
+                throw AuthError.api(message: "Refresh token request url not found", underlyingError: nil)
+            }
+            
+            let response = HTTPURLResponse(url: url, statusCode: 200, httpVersion: nil, headerFields: nil)!
+            return (response, responseData)
         }
         
-        XCTAssertNotNil(responseData)
-        XCTAssertNil(responseError)
+        do {
+            let response = try await sut.sendUrlRequest(XCTUnwrap(request))
+            XCTAssertNotNil(response)
+        } catch {
+            XCTFail("Expected to succeed while awaiting, but failed.")
+        }
     }
     
     func testUrlRequestErrorThrown() async throws {
-        
-        try await authenticator.getDiscoveryConfig(AuthConfig.discoveryUrl)
-        let request = authenticator.requestFactory.revokeTokenRequest("")!
+        let request = authRequestFactoryMock.revokeTokenRequest("/")
         
         var responseError: Error? = nil
         
         do {
-            let (_, _) = try await WebServiceManager.sendUrlRequest(request)
+            let _ = try await sut.sendUrlRequest(try XCTUnwrap(request))
         } catch {
             responseError = error
+            XCTAssertNotNil(responseError)
+        }
+    }
+    
+    func testResponseServerErrorIsThrown() async throws {
+        
+        let urlRequest = URLRequest(url: testURL)
+        
+        URLProtocolMock.requestHandler = { request in
+            
+            let responseData = Data()
+            let response = HTTPURLResponse(url: urlRequest.url!, statusCode: 400, httpVersion: nil, headerFields: nil)!
+            return (response, responseData)
         }
         
-        XCTAssertNotNil(responseError)
+        do {
+            let _ = try await sut.sendUrlRequest(urlRequest)
+            XCTFail("Expected to fail while awaiting, but succeeded.")
+        } catch let error as AuthError {
+            XCTAssertEqual(error.errorCode, 400)
+        }
     }
 }

@@ -9,10 +9,18 @@ import Foundation
 import UIKit
 
 protocol BaseViewControllerDelegate: AnyObject {
+    func printToLogTextView(_ data: String)
+}
+
+class BaseViewController: UIViewController {
+    
     typealias AlertAction = (() -> Void)?
     
-    func stateChanged(_ isLoading: Bool?)
-    func printToLogTextView(_ data: String)
-    func displayErrorAlert(_ error: AuthError?)
-    func displayAlertWithAction(_ error: AuthError?, alertAction: AlertAction)
+    func displayErrorAlert(_ error: AuthError?) {
+        displayAlert(error: error)
+    }
+    
+    func displayAlertWithAction(_ error: AuthError?, alertAction: (() -> Void)?) {
+        displayAlert(error: error, alertAction: alertAction)
+    }
 }

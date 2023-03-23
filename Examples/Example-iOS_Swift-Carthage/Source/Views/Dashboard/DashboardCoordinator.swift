@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 protocol DashboardCoordinatorDelegate: AnyObject {
-    func didFinishDashboardCordinator(coordinator: Coordinator, with authenticator: Authenticator)
+    func didFinishDashboardCordinator(coordinator: Coordinator, with authenticator: AuthenticatorProtocol)
 }
 
 // DashboardCoordinator handles the responsibility if navigation in Dashboard module
@@ -18,9 +18,9 @@ class DashboardCoordinator: BaseCoordinator {
     
     private let navigationcontroller: UINavigationController
     weak var delegate: DashboardCoordinatorDelegate?
-    private let authenticator: Authenticator
+    private let authenticator: AuthenticatorProtocol
     
-    init(navigationcontroller: UINavigationController, with authenticator: Authenticator) {
+    init(navigationcontroller: UINavigationController, with authenticator: AuthenticatorProtocol) {
         self.navigationcontroller = navigationcontroller
         self.authenticator = authenticator
     }

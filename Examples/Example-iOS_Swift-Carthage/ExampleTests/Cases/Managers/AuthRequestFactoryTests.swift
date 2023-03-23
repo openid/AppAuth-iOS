@@ -8,88 +8,93 @@
 import XCTest
 import Foundation
 import UIKit
-@testable import AppAuth
+import AppAuth
 @testable import Example
 
 class AuthRequestFactoryTests: XCTestCase {
     
     // MARK: - Test Properties
     
-    var discoveryConfig: OIDServiceConfiguration!
-    var factory: AuthRequestFactory!
-    var accessToken: String!
-    var tokenToRevoke: String!
+    var sut: AuthRequestFactory!
+    
+    var authConfigMock: AuthConfigMock!
+    var appAuthMocks: AppAuthMocks!
     
     override func setUp() {
-        discoveryConfig = AppAuthMocks.getConfigurationMock()
-        factory = AuthRequestFactory(discoveryConfig)
-        accessToken = AppAuthMocks.mockAccessToken
-        tokenToRevoke = AppAuthMocks.mockRefreshToken
+        authConfigMock = AuthConfigMock()
+        sut = AuthRequestFactory(authConfigMock)
+        appAuthMocks = AppAuthMocks()
     }
     
     override func tearDown() {
-        discoveryConfig = nil
-        factory = nil
-        accessToken = nil
-        tokenToRevoke = nil
+        sut = nil
+        authConfigMock = nil
+        appAuthMocks = nil
+        
+        super.tearDown()
     }
     
     // MARK: - Test Methods
     
     func testBrowserLoginRequest() {
-        let request = factory.browserLoginRequest()
+        let discoveryConfig = appAuthMocks.loadMockServiceConfig(issuer: authConfigMock.discoveryUrl)
+        let request = sut.browserLoginRequest(discoveryConfig)
         
         XCTAssertEqual(request.configuration, discoveryConfig)
-        XCTAssertEqual(request.clientID, AuthConfig.clientId)
-        XCTAssertEqual(request.redirectURL, AuthConfig.redirectUrl)
+        XCTAssertEqual(request.clientID, authConfigMock.clientId)
+        XCTAssertEqual(request.redirectURL, authConfigMock.redirectUrl)
         XCTAssertEqual(request.responseType, OIDResponseTypeCode)
-        XCTAssertEqual(request.additionalParameters, AuthConfig.additionalParameters)
+        XCTAssertEqual(request.additionalParameters, authConfigMock.additionalParameters)
     }
     
     func testProfileManagementRequest() {
-        let request = factory.profileManagementRequest()
-
-        XCTAssertEqual(request.configuration.authorizationEndpoint, AuthConfig.profileManagementUrl)
-        XCTAssertEqual(request.clientID, AuthConfig.clientId)
-        XCTAssertEqual(request.redirectURL, AuthConfig.redirectUrl)
+        let discoveryConfig = appAuthMocks.loadMockServiceConfig(issuer: authConfigMock.discoveryUrl)
+        let request = sut.profileManagementRequest(discoveryConfig)
+        
+        XCTAssertEqual(request.configuration.authorizationEndpoint, authConfigMock.profileManagementUrl)
+        XCTAssertEqual(request.clientID, authConfigMock.clientId)
+        XCTAssertEqual(request.redirectURL, authConfigMock.redirectUrl)
         XCTAssertEqual(request.responseType, OIDResponseTypeCode)
-        XCTAssertEqual(request.additionalParameters, AuthConfig.additionalParameters)
+        XCTAssertEqual(request.additionalParameters, authConfigMock.additionalParameters)
     }
     
     func testBrowserLogoutRequest() {
-        let request = factory.browserLogoutRequest()
+        let discoveryConfig = appAuthMocks.loadMockServiceConfig(issuer: authConfigMock.discoveryUrl)
+        let request = sut.browserLogoutRequest(discoveryConfig)
         
         let expectedConfig = OIDServiceConfiguration(
             authorizationEndpoint: discoveryConfig.authorizationEndpoint,
             tokenEndpoint: discoveryConfig.tokenEndpoint,
             issuer: discoveryConfig.issuer,
             registrationEndpoint: discoveryConfig.registrationEndpoint,
-            endSessionEndpoint: AuthConfig.customLogoutUrl
+            endSessionEndpoint: authConfigMock.customLogoutUrl
         )
         
         XCTAssertEqual(request.configuration.authorizationEndpoint, expectedConfig.authorizationEndpoint)
-        XCTAssertEqual(request.configuration.endSessionEndpoint, AuthConfig.customLogoutUrl)
+        XCTAssertEqual(request.configuration.endSessionEndpoint, authConfigMock.customLogoutUrl)
         XCTAssertEqual(request.idTokenHint, "")
-        XCTAssertEqual(request.postLogoutRedirectURL, AuthConfig.redirectUrl)
-        XCTAssertEqual(request.additionalParameters?["client_id"] as? String, AuthConfig.clientId)
+        XCTAssertEqual(request.postLogoutRedirectURL, authConfigMock.redirectUrl)
+        XCTAssertEqual(request.additionalParameters?["client_id"] as? String, authConfigMock.clientId)
     }
     
     func testRevokeTokenRequest() {
-        guard let request = factory.revokeTokenRequest(tokenToRevoke) else {
+        let tokenToRevoke = appAuthMocks.mockAccessToken
+        guard let request = sut.revokeTokenRequest(tokenToRevoke) else {
             XCTFail("Failed to create revoke token request.")
             return
         }
         
         XCTAssertEqual(request.httpMethod, "POST")
-        XCTAssertEqual(request.url, AuthConfig.revokeTokenUrl)
+        XCTAssertEqual(request.url, authConfigMock.revokeTokenUrl)
         XCTAssertEqual(request.allHTTPHeaderFields?["Content-Type"], "application/x-www-form-urlencoded")
-        XCTAssertEqual(String(data: request.httpBody!, encoding: .utf8), "token=\(tokenToRevoke!)&client_id=\(AuthConfig.clientId)")
+        XCTAssertEqual(String(data: try XCTUnwrap(request.httpBody), encoding: .utf8), "token=\(tokenToRevoke)&client_id=\(authConfigMock.clientId)")
     }
     
     func testUserInfoRequest() {
-        let request = factory.userInfoRequest(accessToken)
+        let discoveryConfig = appAuthMocks.loadMockServiceConfig(issuer: authConfigMock.discoveryUrl)
+        let request = sut.userInfoRequest(discoveryConfig, accessToken: appAuthMocks.mockAccessToken)
         
         XCTAssertEqual(request?.url, discoveryConfig.discoveryDocument?.userinfoEndpoint)
-        XCTAssertEqual(request?.allHTTPHeaderFields?["Authorization"], "Bearer \(accessToken!)")
+        XCTAssertEqual(request?.allHTTPHeaderFields?["Authorization"], "Bearer \(appAuthMocks.mockAccessToken)")
     }
 }

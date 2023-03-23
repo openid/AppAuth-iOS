@@ -7,13 +7,14 @@
 
 import Foundation
 import UIKit
+import AppAuth
 
 @MainActor
 class AppCoordinator: BaseCoordinator {
     
     // MARK: - Properties
     let window: UIWindow?
-    var authenticator: Authenticator?
+    var authenticator: AuthenticatorProtocol?
     
     lazy var rootViewController: UINavigationController = {
         return UINavigationController()
@@ -29,7 +30,13 @@ class AppCoordinator: BaseCoordinator {
         window.rootViewController = rootViewController
         window.makeKeyAndVisible()
         
-        authenticator = Authenticator(rootViewController)
+        let authConfig = AuthConfig()
+        let authStateManager = AuthStateManager(authConfig)
+        authenticator = Authenticator(authConfig,
+                                      rootViewController: rootViewController,
+                                      authStateManager: authStateManager,
+                                      OIDAuthState: OIDAuthState.self,
+                                      OIDAuthorizationService: OIDAuthorizationService.self)
         
         if let authenticator = self.authenticator {
             if authenticator.isAuthStateActive {
@@ -42,21 +49,21 @@ class AppCoordinator: BaseCoordinator {
         }
     }
     
-    private func loginFlow(with authenticator: Authenticator) {
+    private func loginFlow(with authenticator: AuthenticatorProtocol) {
         let loginCoordinator = LoginCoordinator(navigationcontroller: rootViewController, with: authenticator)
         loginCoordinator.delegate = self
         store(coordinator: loginCoordinator)
         loginCoordinator.start()
     }
     
-    private func dashboardFlow(with authenticator: Authenticator) {
+    private func dashboardFlow(with authenticator: AuthenticatorProtocol) {
         let dashboardCoordinator = DashboardCoordinator(navigationcontroller: rootViewController, with: authenticator)
         dashboardCoordinator.delegate = self
         store(coordinator: dashboardCoordinator)
         dashboardCoordinator.start()
     }
     
-    private func logoutFlow(with authenticator: Authenticator) {
+    private func logoutFlow(with authenticator: AuthenticatorProtocol) {
         let loginCoordinator = LoginCoordinator(navigationcontroller: rootViewController, with: authenticator)
         loginCoordinator.delegate = self
         store(coordinator: loginCoordinator)
@@ -70,14 +77,14 @@ class AppCoordinator: BaseCoordinator {
 }
 
 extension AppCoordinator: LoginCoordinatorDelegate {
-    func didFinishLoginCordinator(coordinator: Coordinator, with authenticator: Authenticator) {
+    func didFinishLoginCordinator(coordinator: Coordinator, with authenticator: AuthenticatorProtocol) {
         free(coordinator: coordinator)
         dashboardFlow(with: authenticator)
     }
 }
 
 extension AppCoordinator: DashboardCoordinatorDelegate {
-    func didFinishDashboardCordinator(coordinator: Coordinator, with authenticator: Authenticator) {
+    func didFinishDashboardCordinator(coordinator: Coordinator, with authenticator: AuthenticatorProtocol) {
         free(coordinator: coordinator)
         logoutFlow(with: authenticator)
     }

@@ -9,9 +9,14 @@ import Foundation
 import UIKit
 import AppAuth
 
-enum BrowserState: String {
+enum State: String {
     case active = "Active"
     case inactive = "Inactive"
+}
+
+enum TokenType: String {
+    case accessToken = "Access Token"
+    case refreshToken = "Refresh Token"
 }
 
 protocol AuthStateManagerDelegate: AnyObject {
@@ -19,66 +24,104 @@ protocol AuthStateManagerDelegate: AnyObject {
     func errorOccured(_ error: AuthError)
 }
 
+// MARK: AuthStateManagerProtocol
 protocol AuthStateManagerProtocol {
     var authState: OIDAuthState? { get }
-    var browserState: BrowserState { get }
-    var isAuthStateAuthorized: Bool { get }
-    var discoveryConfig: OIDServiceConfiguration? { get }
+    var browserState: State { get }
+    var authorizationState: State { get }
     var accessToken: String? { get }
+    var accessTokenState: State { get }
     var refreshToken: String? { get }
+    var refreshTokenState: State { get }
     var lastTokenResponse: OIDTokenResponse? { get }
-    var authorizationCode: String? { get }
-    
-    func loadAuthState()
-    func setAuthState(_ authState: OIDAuthState?)
-    func updateWithTokenResponse(_ response: OIDTokenResponse?, error: Error?)
-    func loadBrowserState()
-    func setBrowserState(_ state: BrowserState)
+    var tokenRefreshRequest: OIDTokenRequest? { get }
+    var lastAuthorizationResponse: OIDAuthorizationResponse? { get }
+    var tokenExchangeRequest: OIDTokenRequest? { get }
+    func setTokenState(_ tokenType: TokenType, state: State) -> Void
+    func loadAuthState() -> Void
+    func setAuthState(_ authState: OIDAuthState?) -> Void
+    func updateWithTokenResponse(_ response: OIDTokenResponse?, error: Error?) -> Void
+    func loadBrowserState() -> Void
+    func setBrowserState(_ state: State) -> Void
     func getStateData() -> String
 }
 
-protocol UserDefaultsProtocol {
-    func data(forKey defaultName: String) -> Data?
-    func bool(forKey defaultName: String) -> Bool
-    func set(_ value: Any?, forKey defaultName: String)
-    func set(_ value: Bool, forKey defaultName: String)
-}
-
-extension UserDefaults: UserDefaultsProtocol { }
-
 class AuthStateManager: NSObject, AuthStateManagerProtocol {
     
-    private var userDefaults: UserDefaultsProtocol = UserDefaults.standard
+    private(set) var userDefaults: UserDefaultsProtocol
+    private(set) var authConfig: AuthConfigProtocol
+    private(set) var authState: OIDAuthState?
+    private(set) var browserState: State = .inactive
     
-    var authState: OIDAuthState?
-    var browserState: BrowserState = .inactive
-    
-    var isAuthStateAuthorized: Bool {
-        return authState?.isAuthorized ?? false
+    required init(_ authConfig: AuthConfigProtocol,
+                  userDefaults: UserDefaultsProtocol = UserDefaults.standard) {
+        
+        self.authConfig = authConfig
+        self.userDefaults = userDefaults
+        
+        super.init()
+        
+        loadStoredState()
     }
     
-    var discoveryConfig: OIDServiceConfiguration? {
-        return authState?.lastAuthorizationResponse.request.configuration
+    var authorizationState: State {
+        switch authState?.isAuthorized ?? false {
+        case true: return .active
+        case false: return .inactive
+        }
     }
     
-    var accessToken: String? {
-        return authState?.lastTokenResponse?.accessToken
+    private(set) var accessTokenState: State = .inactive
+    private(set) var accessToken: String? {
+        get {
+            authState?.lastTokenResponse?.accessToken
+        }
+        set {
+            if let _ = newValue {
+                accessTokenState = .active
+            } else {
+                accessTokenState = .inactive
+            }
+        }
     }
     
-    var refreshToken: String? {
-        return authState?.refreshToken
+    private(set) var refreshTokenState: State = .inactive
+    private(set) var refreshToken: String? {
+        get {
+            authState?.refreshToken
+        }
+        set {
+            if let _ = newValue {
+                refreshTokenState = .active
+            } else {
+                refreshTokenState = .inactive
+            }
+        }
     }
     
     var lastTokenResponse: OIDTokenResponse? {
-        return authState?.lastTokenResponse
-    }
-    
-    var authorizationCode: String? {
-        return authState?.lastAuthorizationResponse.authorizationCode
+        authState?.lastTokenResponse
     }
     
     var tokenRefreshRequest: OIDTokenRequest? {
-        return authState?.tokenRefreshRequest()
+        authState?.tokenRefreshRequest()
+    }
+    
+    var lastAuthorizationResponse: OIDAuthorizationResponse? {
+        authState?.lastAuthorizationResponse
+    }
+    
+    var tokenExchangeRequest: OIDTokenRequest? {
+        lastAuthorizationResponse?.tokenExchangeRequest()
+    }
+    
+    func setTokenState(_ tokenType: TokenType, state: State) {
+        switch tokenType {
+        case .accessToken:
+            accessTokenState = state
+        case .refreshToken:
+            refreshTokenState = state
+        }
     }
 }
 
@@ -88,19 +131,22 @@ class AuthStateManager: NSObject, AuthStateManagerProtocol {
 
 extension AuthStateManager {
     
+    private func loadStoredState() {
+        loadAuthState()
+        loadBrowserState()
+    }
+    
     func loadAuthState() {
         
-        guard let savedAuthStateData = userDefaults.data(forKey: AuthConfig.authStateStorageKey) else {
+        guard let savedAuthStateData = userDefaults.data(forKey: authConfig.authStateStorageKey) else {
             print("Authorization state failed to load.")
             return
         }
         
-        let savedAuthState = try? NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(savedAuthStateData) as? OIDAuthState
-        
-        if let savedAuthState = savedAuthState {
+        if let savedAuthState = try? NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(savedAuthStateData) as? OIDAuthState {
+            
             print("Authorization state has been loaded.")
             
-            savedAuthState.setNeedsTokenRefresh()
             setAuthState(savedAuthState)
         }
     }
@@ -117,31 +163,41 @@ extension AuthStateManager {
     }
     
     private func saveAuthState() {
-        var authStateData: Data? = nil
         
-        if let authState = authState {
-            authStateData = try? NSKeyedArchiver.archivedData(withRootObject: authState, requiringSecureCoding: false)
+        if let authState = authState,
+           let authStateData = try? NSKeyedArchiver.archivedData(withRootObject: authState,
+                                                                 requiringSecureCoding: false)
+        {
+            userDefaults.set(authStateData, forKey: authConfig.authStateStorageKey)
         }
         
-        userDefaults.set(authStateData, forKey: AuthConfig.authStateStorageKey)
+        accessToken = authState?.lastTokenResponse?.accessToken
+        refreshToken = authState?.refreshToken
         
         print(getStateData())
         print("Authorization state has been saved.")
     }
     
-    
     func updateWithTokenResponse(_ response: OIDTokenResponse?, error: Error?) {
         authState?.update(with: response, error: error)
+        
+        if let response = response {
+            setTokenState(.accessToken, state: response.accessToken == nil ? .inactive : .active)
+            setTokenState(.refreshToken, state: response.refreshToken == nil ? .inactive : .active)
+        } else {
+            setTokenState(.accessToken, state: .inactive)
+            setTokenState(.refreshToken, state: .inactive)
+        }
     }
     
     func loadBrowserState() {
-        let savedBrowserStateBool = userDefaults.bool(forKey: AuthConfig.browserStateStorageKey)
-        let savedbrowserState: BrowserState = savedBrowserStateBool ? .active : .inactive
+        let savedBrowserStateBool = userDefaults.bool(forKey: authConfig.browserStateStorageKey)
+        let savedbrowserState: State = savedBrowserStateBool ? .active : .inactive
         setBrowserState(savedbrowserState)
         print("\(browserState.rawValue) browser state has been loaded.")
     }
     
-    func setBrowserState(_ state: BrowserState) {
+    func setBrowserState(_ state: State) {
         if browserState != state {
             browserState = state
             
@@ -151,7 +207,7 @@ extension AuthStateManager {
     
     private func saveBrowserState() {
         let browserStateBool = browserState == .active
-        userDefaults.set(browserStateBool, forKey: AuthConfig.browserStateStorageKey)
+        userDefaults.set(browserStateBool, forKey: authConfig.browserStateStorageKey)
         print("\(browserState.rawValue) browser state has been saved.")
     }
     

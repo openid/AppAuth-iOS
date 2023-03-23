@@ -19,4 +19,9 @@ struct TextConstants {
     static let retry = "Retry"
     static let errorTitle = "Error"
     static let errorMessage = "Something went wrong!"
+    
+    static let accessToken = "Access Token:"
+    static let accessTokenRevoked = "Access Token Revoked:"
+    static let refreshToken = "Refresh Token:"
+    static let refreshTokenRevoked = "Refresh Token Revoked:"
 }

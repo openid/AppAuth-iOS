@@ -8,106 +8,144 @@
 import XCTest
 import Foundation
 import UIKit
-@testable import AppAuth
+import AppAuth
 @testable import Example
 
 class AuthStateManagerTests: XCTestCase {
     
     // MARK: - Properties
     
-    var authStateManager: AuthStateManager!
-    var mockAuthState: OIDAuthState!
-    var fakeUserDefaults: FakeUserDefaults!
+    var sut: AuthStateManager!
+    
+    var authConfigMock: AuthConfigMock!
+    var appAuthMocks: AppAuthMocks!
+    var userDefaults: UserDefaults!
     
     // MARK: - Setup / Teardown
     
     override func setUp() {
         super.setUp()
-        authStateManager = AppAuthMocks.setupMockAuthStateManager(issuer: AuthConfig.discoveryUrl, clientId: AuthConfig.clientId)
-        mockAuthState = AppAuthMocks.setupMockAuthState()
-        fakeUserDefaults = FakeUserDefaults()
+        
+        authConfigMock = AuthConfigMock()
+        appAuthMocks = AppAuthMocks()
+        
+        userDefaults = UserDefaults(suiteName: #file)
+        userDefaults.removePersistentDomain(forName: #file)
+        sut = AuthStateManager(authConfigMock, userDefaults: userDefaults)
     }
     
     override func tearDown() {
-        authStateManager.setAuthState(nil)
-        authStateManager = nil
+        sut = nil
+        authConfigMock = nil
+        appAuthMocks = nil
+        
         super.tearDown()
     }
     
     // MARK: - Tests
     
-    func testLoadAuthState() {
-        fakeUserDefaults.set(mockAuthState, forKey: AuthConfig.authStateStorageKey)
-        authStateManager.loadAuthState()
+    func testLoadAuthExistingState() throws {
         
-        XCTAssertEqual(authStateManager.authState?.isAuthorized, true)
-    }
-    
-    func testSetAuthState() {
-        authStateManager.setAuthState(mockAuthState)
+        // Given: An AuthState does not exist
+        XCTAssertNil(sut.authState)
         
-        XCTAssertEqual(authStateManager.authState?.isAuthorized, mockAuthState.isAuthorized)
+        // When: An authorized AuthState is set and loaded
+        sut = AppAuthMocks().setupMockAuthStateManager(true)
+        sut.loadAuthState()
+        
+        // Then: The current AuthState should exist and be authorized
+        XCTAssertNotNil(sut.authState)
+        XCTAssertTrue(try XCTUnwrap(sut.authState?.isAuthorized))
     }
     
     func testSetAuthStateWhenSameState() {
-        authStateManager.setAuthState(mockAuthState)
-        let originalAuthState = authStateManager.authState
         
-        authStateManager.setAuthState(mockAuthState)
+        // Given: An AuthState is set
+        let authState = appAuthMocks.setupMockAuthState()
+        sut.setAuthState(authState)
         
-        XCTAssertTrue(authStateManager.authState == originalAuthState)
+        let originalAuthState = sut.authState
+        
+        // When: The same AuthState is set
+        sut.setAuthState(authState)
+        
+        // Then: The current AuthState equals the original AuthState
+        XCTAssertTrue(sut.authState == originalAuthState)
     }
     
     func testSetAuthStateWhenDifferentState() {
         
-        authStateManager.setAuthState(mockAuthState)
-        let originalAuthState = authStateManager.authState
+        // Given: An AuthState is set
+        let originalAuthState = appAuthMocks.setupMockAuthState()
+        sut.setAuthState(originalAuthState)
         
-        let nilAuthState: OIDAuthState? = nil
-        authStateManager.setAuthState(nilAuthState)
+        // When: A different AuthState is set
+        let newAuthState = appAuthMocks.setupMockAuthState(issuer: nil, clientId: nil)
+        sut.setAuthState(newAuthState)
         
-        XCTAssertFalse(authStateManager.authState == originalAuthState)
-        XCTAssertEqual(authStateManager.authState, nil)
+        // Then: The current AuthState does not equal the original
+        XCTAssertFalse(originalAuthState == newAuthState)
+        XCTAssertTrue(sut.authState == newAuthState)
     }
     
-    func testUpdateWithTokenResponse() {
-        authStateManager.setAuthState(mockAuthState)
+    func testUpdateWithValidTokenResponse() {
         
-        let mockTokenResponse = AppAuthMocks.getTokenResponseMock()
-        authStateManager.updateWithTokenResponse(mockTokenResponse, error: nil)
+        // Given: Tokens are not set
+        let mockAuthState = AppAuthMocks().setupMockAuthState(skipTokenResponse: true)
+        sut.setAuthState(mockAuthState)
+        XCTAssertNil(sut.accessToken)
+        XCTAssertEqual(sut.accessTokenState, .inactive)
+        XCTAssertNil(sut.refreshToken)
+        XCTAssertEqual(sut.refreshTokenState, .inactive)
         
-        XCTAssertEqual(authStateManager.lastTokenResponse?.accessToken, mockTokenResponse?.accessToken)
+        // When: Token data is updated
+        let tokenResponse = appAuthMocks.getTokenResponse()
+        sut.updateWithTokenResponse(tokenResponse, error: nil)
+        
+        // Then: Token values are updated
+        XCTAssertNotNil(sut.accessToken)
+        XCTAssertEqual(sut.accessTokenState, .active)
+        XCTAssertNotNil(sut.refreshToken)
+        XCTAssertEqual(sut.refreshTokenState, .active)
     }
     
-    func testLoadBrowserState() {
-        fakeUserDefaults.set(true, forKey: AuthConfig.browserStateStorageKey)
-        authStateManager.loadBrowserState()
+    func testSetAndLoadActiveBrowserState() {
         
-        XCTAssertEqual(authStateManager.browserState, .active)
+        // Given: An inactive browser state
+        XCTAssertEqual(sut.browserState, .inactive)
+        
+        // When: The browser state is set to active
+        sut.setBrowserState(.active)
+        
+        // Then: The current browser state should be active
+        XCTAssertEqual(sut.browserState, .active)
     }
     
-    func testSetBrowserState() {
-        authStateManager.setBrowserState(.active)
+    func testSetAndLoadInactiveBrowserState() {
         
-        XCTAssertEqual(authStateManager.browserState, .active)
-    }
-    
-    func testSetBrowserStateWhenSameState() {
-        authStateManager.setBrowserState(.inactive)
-        let originalBrowserState = authStateManager.browserState
+        // Given: An active browser state
+        sut.setBrowserState(.active)
+        XCTAssertEqual(sut.browserState, .active)
         
-        authStateManager.setBrowserState(.inactive)
+        // When: Browser state is set to inactive
+        sut.setBrowserState(.inactive)
         
-        XCTAssertTrue(authStateManager.browserState == originalBrowserState)
+        sut.loadBrowserState()
+        
+        // Then: Inactive browser state is loaded
+        XCTAssertEqual(sut.browserState, .inactive)
     }
     
     func testSetBrowserStateWhenDifferentState() {
-        authStateManager.setBrowserState(.inactive)
-        let originalBrowserState = authStateManager.browserState
         
-        authStateManager.setBrowserState(.active)
+        // Given: An active browser state is set
+        sut.setBrowserState(.active)
+        XCTAssertEqual(sut.browserState, .active)
         
-        XCTAssertFalse(authStateManager.browserState == originalBrowserState)
-        XCTAssertEqual(authStateManager.browserState, .active)
+        // When: The browser state is set to inactive
+        sut.setBrowserState(.inactive)
+        
+        // Then: The current browser state is inactive
+        XCTAssertEqual(sut.browserState, .inactive)
     }
 }

@@ -12,61 +12,98 @@ protocol DashboardViewModelCoordinatorDelegate: AnyObject {
     func logoutSucceeded()
 }
 
-class DashboardViewModel: BaseViewModel {
+// MARK: DashboardViewModelProtocol
+protocol DashboardViewModelProtocol: BaseViewModel {
+    var coordinatorDelegate: DashboardViewModelCoordinatorDelegate? { get set }
+    
+    var isBrowserSessionActive: Bool { get }
+    var isTokenRequestStackViewHidden: Bool { get }
+    var isTokenDataStackViewHidden: Bool { get }
+    var isCodeExchangeButtonHidden: Bool { get }
+    var isRefreshTokenButtonHidden: Bool { get }
+    var isUserinfoButtonHidden: Bool { get }
+    var isProfileButtonHidden: Bool { get }
+    var accessTokenTextViewText: String { get }
+    var accessTokenTitleLabelText: String { get }
+    var refreshTokenTextViewText: String { get }
+    var refreshTokenTitleLabelText: String { get }
+    func discoverConfiguration() async throws -> String
+    func checkBrowserSession() async throws -> Void
+    func loadProfileManagement() async throws -> Void
+    func refreshTokens() async throws -> Void
+    func getUserInfo() async throws -> String
+    func exchangeAuthorizationCode() async throws -> Void
+    func getLogoutOptionsAlert(_ completion: @escaping LogoutAlertCompletionHandler) -> UIAlertController
+    func revokeTokens() async throws -> Void
+    func browserLogout() async throws -> Void
+    func appLogout() async throws -> Void
+    func handleLogoutSelections(_ selections: Set<LogoutType>, completion: LogoutAlertCompletionHandler?) -> Void
+}
+
+class DashboardViewModel: BaseViewModel, DashboardViewModelProtocol {
     
     weak var coordinatorDelegate: DashboardViewModelCoordinatorDelegate?
     
-    var discoveryConfig: String? {
-        return authenticator.discoveryConfig?.description
+    private var isCodeExchangeRequired: Bool {
+        authenticator.isCodeExchangeRequired
     }
+    private var isAccessTokenRevoked: Bool {
+        authenticator.isAccessTokenRevoked
+    }
+    private var isRefreshTokenRevoked: Bool {
+        authenticator.isRefreshTokenRevoked
+    }
+    private var lastAccessTokenResponse: String? {
+        authenticator.lastTokenResponse?.accessToken
+    }
+    private var lastRefreshTokenResponse: String? {
+        authenticator.lastTokenResponse?.refreshToken
+    }
+    private var isTokenActive: Bool {
+        !authenticator.isAccessTokenRevoked &&
+        !authenticator.isRefreshTokenRevoked &&
+        lastAccessTokenResponse != nil &&
+        lastRefreshTokenResponse != nil
+    }
+    
+    var isBrowserSessionActive: Bool {
+        authenticator.isBrowserSessionActive
+    }
+    
+    // MARK: UI State Properties
     var isTokenRequestStackViewHidden: Bool {
         !isCodeExchangeRequired && !isTokenActive
     }
     var isTokenDataStackViewHidden: Bool {
         lastAccessTokenResponse == nil || lastRefreshTokenResponse == nil
     }
-    var isCodeExchangeRequired: Bool {
-        authenticator.isCodeExchangeRequired
+    var isCodeExchangeButtonHidden: Bool {
+        !isCodeExchangeRequired
     }
-    var isAccessTokenRevoked: Bool {
-        authenticator.isAccessTokenRevoked
+    var isRefreshTokenButtonHidden: Bool {
+        !isTokenActive
     }
-    var isRefreshTokenRevoked: Bool {
-        authenticator.isRefreshTokenRevoked
+    var isUserinfoButtonHidden: Bool {
+        !isTokenActive
     }
-    var lastAccessTokenResponse: String? {
-        authenticator.lastTokenResponse?.accessToken
+    var isProfileButtonHidden: Bool {
+        !isBrowserSessionActive
     }
-    var lastRefreshTokenResponse: String? {
-        authenticator.lastTokenResponse?.refreshToken
+    var accessTokenTextViewText: String {
+        lastAccessTokenResponse ?? ""
     }
-    var isTokenActive: Bool {
-        !authenticator.isAccessTokenRevoked &&
-        !authenticator.isRefreshTokenRevoked &&
-        lastAccessTokenResponse != nil &&
-        lastRefreshTokenResponse != nil
+    var accessTokenTitleLabelText: String {
+        isAccessTokenRevoked ? TextConstants.accessTokenRevoked : TextConstants.accessToken
     }
-    var isBrowserSessionActive: Bool {
-        authenticator.isBrowserSessionActive
+    var refreshTokenTextViewText: String {
+        lastRefreshTokenResponse ?? ""
+    }
+    var refreshTokenTitleLabelText: String {
+        isRefreshTokenRevoked ? TextConstants.refreshTokenRevoked : TextConstants.refreshToken
     }
     
-    func discoverConfiguration() async throws {
-        do {
-            try await authenticator.getDiscoveryConfig(AuthConfig.discoveryUrl)
-            
-            if let discoveryConfig = discoveryConfig {
-                viewControllerDelegate?.printToLogTextView(discoveryConfig)
-            } else {
-                throw AuthError.noDiscoveryDoc
-            }
-        } catch let error as AuthError {
-            viewControllerDelegate?.displayAlertWithAction(error, alertAction: {
-                Task {
-                    try await self.discoverConfiguration()
-                }
-            })
-        }
-        viewControllerDelegate?.stateChanged(false)
+    func discoverConfiguration() async throws -> String {
+        return try await authenticator.loadDiscoveryConfig()
     }
     
     func checkBrowserSession() async throws {
@@ -79,8 +116,6 @@ class DashboardViewModel: BaseViewModel {
         let authStateResponse = try await authenticator.handleBrowserLoginWithAutoCodeExchangeResponse()
         
         try await authenticator.finishLoginWithAuthStateResponse(authStateResponse)
-        
-        viewControllerDelegate?.stateChanged(false)
     }
     
     func loadProfileManagement() async throws {
@@ -90,31 +125,26 @@ class DashboardViewModel: BaseViewModel {
         }
         
         try await authenticator.handleProfileManagementResponse()
-        viewControllerDelegate?.stateChanged(false)
     }
     
     func refreshTokens() async throws {
         if !authenticator.isCodeExchangeRequired {
             try await authenticator.refreshTokens()
-            viewControllerDelegate?.stateChanged(false)
         }
     }
     
-    func getUserInfo() async throws {
-        if let userInfo = try await authenticator.performUserInfoRequest() {
-            viewControllerDelegate?.printToLogTextView(userInfo)
-        }
-        viewControllerDelegate?.stateChanged(false)
+    func getUserInfo() async throws -> String {
+        return try await authenticator.performUserInfoRequest()
     }
     
     func exchangeAuthorizationCode() async throws {
         try await authenticator.exchangeAuthorizationCode()
-        viewControllerDelegate?.stateChanged(false)
     }
     
-    func getLogoutOptionsAlert() -> UIAlertController {
+    func getLogoutOptionsAlert(_ completion: @escaping LogoutAlertCompletionHandler) -> UIAlertController {
         let logoutAlertController = LogoutOptionsAlertController(title: "Sign Out Options", message: nil, preferredStyle: .alert)
         logoutAlertController.delegate = self
+        logoutAlertController.completionHandler = completion
         
         return logoutAlertController
     }
@@ -147,33 +177,31 @@ class DashboardViewModel: BaseViewModel {
 
 extension DashboardViewModel: LogoutAlertDelegate {
     
-    func handleLogoutSelections(_ selections: Set<LogoutType>) {
+    func handleLogoutSelections(_ selections: Set<LogoutType>, completion: LogoutAlertCompletionHandler?) {
         Task {
-            viewControllerDelegate?.stateChanged(true)
-            
             do {
-                if ((selections.contains(LogoutType.revokeTokens) ||
-                     selections.contains(LogoutType.appSession)) &&
-                    (!isAccessTokenRevoked && !isRefreshTokenRevoked) &&
-                    isTokenActive) {
-                    
-                    try await revokeTokens()
-                }
-                
                 if selections.contains(LogoutType.browserSession) &&
                     authenticator.isBrowserSessionActive {
                     try await browserLogout()
                 }
                 
+                if (selections.contains(LogoutType.revokeTokens) &&
+                    !selections.contains(LogoutType.appSession) &&
+                    (!isAccessTokenRevoked && !isRefreshTokenRevoked) &&
+                    isTokenActive)
+                {
+                    try await revokeTokens()
+                }
+                
                 if selections.contains(LogoutType.appSession) {
+                    try? await revokeTokens()
                     try await appLogout()
                 }
             } catch let error as AuthError {
-                self.viewControllerDelegate?.displayErrorAlert(error)
-                self.viewControllerDelegate?.printToLogTextView(error.errorUserInfo.debugDescription)
+                completion?(Result.failure(error))
             }
             
-            self.viewControllerDelegate?.stateChanged(false)
+            completion?(Result.success(true))
         }
     }
 }

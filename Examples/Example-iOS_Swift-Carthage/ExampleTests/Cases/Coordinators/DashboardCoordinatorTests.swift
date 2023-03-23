@@ -8,21 +8,21 @@
 import XCTest
 import Foundation
 import UIKit
-@testable import AppAuth
+import AppAuth
 @testable import Example
 
 class DashboardCoordinatorTests: XCTestCase {
-    var navigationController: UINavigationController!
-        
+    
     var sut: DashboardCoordinator!
+    
+    var navigationController: SpyNavigationController!
     
     override func setUp() {
         // Put setup code here. This method is called before the invocation of each test method in the class.
         
         super.setUp()
         
-        navigationController = UINavigationController()
-        //sut = DashboardCoordinator(navigationcontroller: <#UINavigationController#>, with: <#AuthManager#>)
+        navigationController = SpyNavigationController()
     }
     
     override func tearDown() {

@@ -8,76 +8,104 @@
 import Foundation
 import AppAuth
 
-enum TokenType: String {
-    case accessToken = "Access Token"
-    case refreshToken = "Refresh Token"
-}
-
-protocol AuthenticatorDelegate: AnyObject {
-    func logMessage(_ message: String)
-}
-
-protocol AuthenticatorProtocol {
-    var discoveryConfig: OIDServiceConfiguration? { get }
-}
-
 /*
  * The class for handling OAuth operations
  */
-class Authenticator {
-    
-    weak var delegate: AuthenticatorDelegate?
-    
-    var discoveryConfig: OIDServiceConfiguration?
+class Authenticator: AuthenticatorProtocol {
     
     let rootViewController: UIViewController
-    private(set) var authStateManager = AuthStateManager()
+    weak var delegate: AuthenticatorDelegate?
     
-    private(set) lazy var loginResponseHandler = LoginResponseHandler()
-    private(set) lazy var logoutResponseHandler = LogoutResponseHandler()
-    private(set) lazy var authStateResponseHandler = AuthStateResponseHandler()
-    private(set) lazy var concurrencyHandler = ConcurrencyHandler()
-    private(set) lazy var requestFactory = AuthRequestFactory(discoveryConfig!)
+    private(set) var authConfig: AuthConfigProtocol
+    private(set) var OIDAuthState: AuthStateStaticBridge.Type
+    private(set) var OIDAuthorizationService: AuthorizationServiceStaticBridge.Type
     
-    init(_ rootViewController: UIViewController) {
+    private(set) var authStateManager: AuthStateManagerProtocol
+    private(set) var webServiceManager: WebServiceManagerProtocol
+    
+    private(set) var loginResponseHandler: LoginResponseHandlerProtocol
+    private(set) var logoutResponseHandler: LogoutResponseHandlerProtocol
+    private(set) var authStateResponseHandler: AuthStateResponseHandlerProtocol
+    private(set) var authRequestFactory: AuthRequestFactoryProtocol
+    
+    required init(_ authConfig: AuthConfigProtocol,
+                  rootViewController: UIViewController,
+                  authStateManager: AuthStateManagerProtocol,
+                  webServiceManager: WebServiceManagerProtocol = WebServiceManager(),
+                  loginResponseHandler: LoginResponseHandlerProtocol = LoginResponseHandler(),
+                  logoutResponseHandler: LogoutResponseHandlerProtocol = LogoutResponseHandler(),
+                  authStateResponseHandler: AuthStateResponseHandlerProtocol = AuthStateResponseHandler(),
+                  OIDAuthState: AuthStateStaticBridge.Type,
+                  OIDAuthorizationService: AuthorizationServiceStaticBridge.Type) {
+        
+        self.authConfig = authConfig
         self.rootViewController = rootViewController
         
-        authStateManager.loadAuthState()
-        authStateManager.loadBrowserState()
+        self.authStateManager = authStateManager
+        self.webServiceManager = webServiceManager
+        self.loginResponseHandler = loginResponseHandler
+        self.logoutResponseHandler = logoutResponseHandler
+        self.authStateResponseHandler = authStateResponseHandler
+        
+        self.OIDAuthState = OIDAuthState.self
+        self.OIDAuthorizationService = OIDAuthorizationService.self
+        
+        authRequestFactory = AuthRequestFactory(authConfig)
     }
     
     // MARK: Computed Authorization Properties
     
+    var discoveryConfig: OIDServiceConfiguration?
+    
+    // Return the Discovery Config string for logging
+    var discoveryConfigString: String? {
+        discoveryConfig?.description
+    }
+    
+    // True if login was performed with manual code exchange
+    var isCodeExchangeRequired = false
+    
     // Return the authorization state of the stored AuthState
     var isAuthStateActive: Bool {
-        return authStateManager.isAuthStateAuthorized
+        authStateManager.authorizationState == .active
     }
     
     // Return whether or not the user is authenticated in the browser
     var isBrowserSessionActive: Bool {
-        return authStateManager.browserState == .active
+        authStateManager.browserState == .active
     }
     
-    var isAccessTokenRevoked = false
-    var isRefreshTokenRevoked = false
+    var lastAuthResponse: OIDAuthorizationResponse? {
+        authStateManager.lastAuthorizationResponse
+    }
     
-    // Returns the refresh token stored in the AuthState if it exists
-    var refreshToken: String? {
-        return authStateManager.refreshToken
+    var tokenExchangeRequest: OIDTokenRequest? {
+        authStateManager.tokenExchangeRequest
     }
     
     // Returns the token request from the
     // last authorization response if it exists
     var lastTokenResponse: OIDTokenResponse? {
-        return authStateManager.lastTokenResponse
+        authStateManager.lastTokenResponse
     }
     
-    // Returns the stored authorization code if it exists
-    var authorizationCode: String? {
-        return authStateManager.authorizationCode
+    // Refresh the tokens then return an access token if one exists
+    var accessToken: String? {
+        authStateManager.accessToken
     }
     
-    var isCodeExchangeRequired = false
+    // Returns the refresh token stored in the AuthState if it exists
+    var refreshToken: String? {
+        authStateManager.refreshToken
+    }
+    
+    var isAccessTokenRevoked: Bool {
+        authStateManager.accessTokenState == .inactive
+    }
+    
+    var isRefreshTokenRevoked: Bool {
+        authStateManager.refreshTokenState == .inactive
+    }
 }
 
 extension Authenticator {
@@ -85,50 +113,21 @@ extension Authenticator {
     /*
      * Download discovery doc metadata
      */
-    func getDiscoveryConfig(_ discoveryUrl: URL) async throws {
-        
-        if discoveryConfig != nil {
-            return
-        }
-        
-        // Do nothing if already loaded
-        if let config = authStateManager.discoveryConfig {
-            discoveryConfig = config
-        }
+    func loadDiscoveryConfig() async throws -> String {
         
         return try await withCheckedThrowingContinuation { continuation in
             
             // Try to download metadata
-            OIDAuthorizationService.discoverConfiguration(forIssuer: discoveryUrl) { metadata, error in
+            OIDAuthorizationService.discoverConfiguration(forIssuer: authConfig.discoveryUrl) { metadata, error in
                 
-                if let metadata = metadata, error == nil {
-                    self.discoveryConfig = metadata
-                    continuation.resume()
-                    return
-                } else {
-                    let authError = AuthError.api(message: AuthError.noDiscoveryDoc.errorDescription ?? "", underlyingError: error)
-                    
+                guard let metadata = metadata else {
+                    let authError = AuthError.api(message: AuthError.noDiscoveryDoc.localizedDescription, underlyingError: error)
                     continuation.resume(throwing: authError)
                     return
                 }
+                self.discoveryConfig = metadata
+                continuation.resume(returning: metadata.description)
             }
-        }
-    }
-    
-    // Returns the refresh token stored in the AuthState if it exists
-    func getAccessToken() async throws -> String {
-        
-        do {
-            try await concurrencyHandler.execute(action: refreshTokens)
-            
-            if let accessToken = authStateManager.accessToken {
-                return accessToken
-            } else {
-                throw AuthError.noTokens
-            }
-            
-        } catch {
-            throw AuthError.api(message: error.localizedDescription, underlyingError: error)
         }
     }
     
@@ -156,64 +155,62 @@ extension Authenticator {
                     
                     continuation.resume(throwing: AuthError.api(message: error?.localizedDescription ?? "", underlyingError: error))
                     return
+                } else {
+                    
+                    guard let response = response, let _ = response.accessToken else {
+                        continuation.resume(throwing: AuthError.errorFetchingFreshTokens)
+                        return
+                    }
+                    
+                    // Save received tokens and return success
+                    self.delegate?.logMessage("Token response: \(response.debugDescription)")
+                    self.authStateManager.updateWithTokenResponse(response, error: nil)
+                    continuation.resume()
                 }
-                
-                // Make a sanity check to ensure we have tokens
-                if response == nil || response!.accessToken == nil {
-                    continuation.resume(throwing: AuthError.errorFetchingFreshTokens)
-                    return
-                }
-                
-                // Save received tokens and return success
-                self.delegate?.logMessage("Token response: \(response.debugDescription)")
-                self.authStateManager.updateWithTokenResponse(response, error: nil)
-                self.isAccessTokenRevoked = false
-                self.isRefreshTokenRevoked = false
-                continuation.resume()
             }
         }
     }
     
     func revokeToken(tokenType: TokenType) async throws {
-        do {
-            let token = tokenType == .accessToken ? try await getAccessToken() : refreshToken
-
-            print("Revoking \(tokenType.rawValue): \(token.debugDescription)")
+        let token = tokenType == .accessToken ? authStateManager.accessToken : authStateManager.refreshToken
+        
+        guard let token = token,
+              let request = authRequestFactory.revokeTokenRequest(token) else {
             
-            if let token = token,
-                let request = requestFactory.revokeTokenRequest(token) {
-                delegate?.logMessage("Revoke token request: \(request.debugDescription)")
-                
-                let (_, _) = try await WebServiceManager.sendUrlRequest(request)
-                
-                switch tokenType {
-                case .accessToken:
-                    isAccessTokenRevoked = true
-                case .refreshToken:
-                    isRefreshTokenRevoked = true
-                }
-            }
-        } catch {
-            throw AuthError.api(message: error.localizedDescription, underlyingError: error)
+            throw AuthError.noTokens
         }
+        
+        delegate?.logMessage("Revoke token request: \(request.debugDescription)")
+        print("Revoking \(tokenType.rawValue): \(token)")
+        
+        let _ = try await webServiceManager.sendUrlRequest(request)
+        
+        authStateManager.setTokenState(tokenType, state: .inactive)
+        delegate?.logMessage("Successfully revoked \(tokenType.rawValue): \(token)")
     }
     
-    func performUserInfoRequest() async throws -> String? {
-        do {
-            let accessToken = try await getAccessToken()
-            guard let request = requestFactory.userInfoRequest(accessToken) else {
-                throw AuthError.noBearerToken
-            }
-            
-            delegate?.logMessage("Performing the user info request: \(request)")
-            
-            let (_, response) = try await WebServiceManager.sendUrlRequest(request)
-            
-            return response
-            
-        } catch {
-            throw AuthError.api(message: error.localizedDescription, underlyingError: error)
+    func performUserInfoRequest() async throws -> String {
+        
+        guard let discoveryConfig = discoveryConfig else {
+            throw AuthError.noDiscoveryDoc
         }
+        
+        try await refreshTokens()
+        
+        guard let freshAccessToken = authStateManager.accessToken else {
+            throw AuthError.errorFetchingFreshTokens
+        }
+        guard let request = authRequestFactory.userInfoRequest(discoveryConfig, accessToken: freshAccessToken) else {
+            throw AuthError.errorFetchingFreshTokens
+        }
+        
+        delegate?.logMessage("Performing the user info request: \(request)")
+        let data = try await webServiceManager.sendUrlRequest(request)
+        guard let dataString = try webServiceManager.getStringFromResponse(data) else {
+            throw AuthError.parseFailure
+        }
+        
+        return dataString
     }
     
     /*
@@ -228,10 +225,11 @@ extension Authenticator {
      */
     func startBrowserLoginWithAutoCodeExchange() throws -> OIDExternalUserAgentSession {
         
+        guard let discoveryConfig = discoveryConfig else { throw AuthError.noDiscoveryDoc }
+        
         // Making authorization request.
         print("Initiating authorization request with auto code exchange")
-        
-        let request = requestFactory.browserLoginRequest()
+        let request = authRequestFactory.browserLoginRequest(discoveryConfig)
         delegate?.logMessage("Performing the authorization request: \(request.debugDescription)")
         // Do the redirect
         return OIDAuthState.authState(byPresenting: request,
@@ -258,8 +256,6 @@ extension Authenticator {
             
             authStateManager.setAuthState(authState)
             authStateManager.setBrowserState(.active)
-            isAccessTokenRevoked = false
-            isRefreshTokenRevoked = false
             isCodeExchangeRequired = false
         } else {
             authStateManager.setAuthState(nil)
@@ -279,10 +275,12 @@ extension Authenticator {
      */
     func startBrowserLoginWithManualCodeExchange() throws -> OIDExternalUserAgentSession {
         
+        guard let discoveryConfig = discoveryConfig else { throw AuthError.noDiscoveryDoc }
+        
         // Making authorization request.
         print("Initiating authorization request with manual code exchange")
         
-        let request = requestFactory.browserLoginRequest()
+        let request = authRequestFactory.browserLoginRequest(discoveryConfig)
         delegate?.logMessage("Performing the authorization request: \(request.debugDescription)")
         
         // Do the redirect
@@ -296,11 +294,10 @@ extension Authenticator {
      * Complete login processing on a background thread
      */
     func handleBrowserLoginWithManualCodeExchangeResponse() async throws -> OIDAuthorizationResponse {
-        
         do {
             return try await loginResponseHandler.waitForCallback()
-        } catch let error as NSError where error.code == OIDErrorCode.userCanceledAuthorizationFlow.rawValue{
-                throw AuthError.userCancelledAuthorizationFlow
+        } catch let error as NSError where error.code == OIDErrorCode.userCanceledAuthorizationFlow.rawValue {
+            throw AuthError.userCancelledAuthorizationFlow
         } catch {
             throw AuthError.api(message: error.localizedDescription, underlyingError: error)
         }
@@ -308,7 +305,7 @@ extension Authenticator {
     
     func finishLoginWithAuthResponse(_ authResponse: OIDAuthorizationResponse?) async throws {
         if let authResponse = authResponse {
-            let authStateResponse = OIDAuthState(authorizationResponse: authResponse, tokenResponse: nil)
+            let authStateResponse = AppAuth.OIDAuthState(authorizationResponse: authResponse, tokenResponse: nil)
             
             delegate?.logMessage("Authorization response: \(authStateResponse)")
             
@@ -329,31 +326,29 @@ extension Authenticator {
         // Making authorization request.
         print("Initiating code exchange request")
         
-        guard let authResponse = authStateManager.authState?.lastAuthorizationResponse, let tokenExchangeRequest = authResponse.tokenExchangeRequest() else {
+        guard let lastAuthResponse = lastAuthResponse, let tokenExchangeRequest = tokenExchangeRequest else {
             throw AuthError.unableToGetAuthCode
         }
         
         return try await withCheckedThrowingContinuation { continuation in
             OIDAuthorizationService.perform(
-                    tokenExchangeRequest,
-                    originalAuthorizationResponse: authResponse) { response, error in
-                        if error != nil {
-                            // Throw errors
-                            let authError = AuthError.unableToGetAuthCode
-                            continuation.resume(throwing: authError)
-                            return
-                        }
-
-                        self.delegate?.logMessage("Authorization code exchange response: \(response.debugDescription)")
-                        
-                        // Save the tokens to storage
-                        self.authStateManager.updateWithTokenResponse(response, error: nil)
-                        self.isRefreshTokenRevoked = false
-                        self.isAccessTokenRevoked = false
-                        self.isCodeExchangeRequired = false
-                        continuation.resume()
+                tokenExchangeRequest,
+                originalAuthorizationResponse: lastAuthResponse) { response, error in
+                    if error != nil {
+                        // Throw errors
+                        let authError = AuthError.unableToGetAuthCode
+                        continuation.resume(throwing: authError)
+                        return
                     }
-            }
+                    
+                    self.delegate?.logMessage("Authorization code exchange response: \(response.debugDescription)")
+                    
+                    // Save the tokens to storage
+                    self.authStateManager.updateWithTokenResponse(response, error: nil)
+                    self.isCodeExchangeRequired = false
+                    continuation.resume()
+                }
+        }
     }
     
     /*
@@ -364,10 +359,12 @@ extension Authenticator {
      */
     func startProfileManagementRedirect() throws -> OIDExternalUserAgentSession {
         
+        guard let discoveryConfig = discoveryConfig else { throw AuthError.noDiscoveryDoc }
+        
         // Making request to load the profile management page in the browser
         print("Initiating profile management request")
         
-        let request = requestFactory.profileManagementRequest()
+        let request = authRequestFactory.profileManagementRequest(discoveryConfig)
         delegate?.logMessage("Profile management request: \(request)")
         
         // Do the redirect
@@ -397,17 +394,22 @@ extension Authenticator {
      */
     func startBrowserLogoutRedirect() throws -> OIDExternalUserAgentSession {
         
+        guard let discoveryConfig = discoveryConfig else { throw AuthError.noDiscoveryDoc }
+        
         // Making logout request
         print("Initiating logout request")
         
-        let request = requestFactory.browserLogoutRequest()
+        let request = authRequestFactory.browserLogoutRequest(discoveryConfig)
         delegate?.logMessage("Logout request: \(request)")
         
         // Do the logout redirect
-        let agent = OIDExternalUserAgentIOS(presenting: rootViewController)
+        guard let agent = OIDExternalUserAgentIOS(presenting: rootViewController) else {
+            throw AuthError.externalAgentFailed
+        }
+        
         return OIDAuthorizationService.present(
             request,
-            externalUserAgent: agent!,
+            externalUserAgent: agent,
             callback: logoutResponseHandler.callback)
     }
     
@@ -415,8 +417,11 @@ extension Authenticator {
      * Process the logout response and free resources
      */
     func handleBrowserLogoutResponse() async throws -> OIDEndSessionResponse {
+        
         do {
-           return try await self.logoutResponseHandler.waitForCallback()
+            return try await logoutResponseHandler.waitForCallback()
+        } catch let error as NSError where error.code == OIDErrorCode.userCanceledAuthorizationFlow.rawValue {
+            throw AuthError.userCancelledAuthorizationFlow
         } catch {
             throw AuthError.api(message: error.localizedDescription, underlyingError: error)
         }

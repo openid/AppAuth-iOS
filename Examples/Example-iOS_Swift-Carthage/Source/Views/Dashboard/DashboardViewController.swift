@@ -9,44 +9,30 @@ import Foundation
 import UIKit
 
 @MainActor
-class DashboardViewController: UIViewController {
+class DashboardViewController: BaseViewController {
     
-    @IBOutlet private weak var tokenRequestStackView: UIStackView!
-    @IBOutlet private weak var codeExchangeButton: UIButton!
-    @IBOutlet private weak var userinfoButton: UIButton!
-    @IBOutlet private weak var refreshTokenButton: UIButton!
-    @IBOutlet private weak var browserButton: UIButton!
-    @IBOutlet private weak var profileButton: UIButton!
-    @IBOutlet private weak var logTextView: UITextView!
-    @IBOutlet private weak var tokenDataStackView: UIStackView!
-    @IBOutlet private weak var accessTokenTitleLabel: UILabel!
-    @IBOutlet private weak var refreshTokenTitleLabel: UILabel!
-    @IBOutlet private weak var accessTokenTextView: UITextView!
-    @IBOutlet private weak var refreshTokenTextView: UITextView!
-    @IBOutlet private weak var accessTokenStackView: UIStackView!
-    @IBOutlet private weak var refreshTokenStackView: UIStackView!
+    @IBOutlet private(set) weak var tokenRequestStackView: UIStackView!
+    @IBOutlet private(set) weak var codeExchangeButton: UIButton!
+    @IBOutlet private(set) weak var userinfoButton: UIButton!
+    @IBOutlet private(set) weak var refreshTokenButton: UIButton!
+    @IBOutlet private(set) weak var browserButton: UIButton!
+    @IBOutlet private(set) weak var profileButton: UIButton!
+    @IBOutlet private(set) weak var logTextView: UITextView!
+    @IBOutlet private(set) weak var tokenDataStackView: UIStackView!
+    @IBOutlet private(set) weak var accessTokenTitleLabel: UILabel!
+    @IBOutlet private(set) weak var refreshTokenTitleLabel: UILabel!
+    @IBOutlet private(set) weak var accessTokenTextView: UITextView!
+    @IBOutlet private(set) weak var refreshTokenTextView: UITextView!
+    @IBOutlet private(set) weak var accessTokenStackView: UIStackView!
+    @IBOutlet private(set) weak var refreshTokenStackView: UIStackView!
     
-    var viewModel: DashboardViewModel!
+    var viewModel: DashboardViewModelProtocol!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         configureUI()
-        
-        Task {
-            setActivityIndicator(true)
-            
-            do {
-                try await viewModel.discoverConfiguration()
-                try await viewModel.refreshTokens()
-            } catch let error as AuthError {
-                displayAlert(error: error) {
-                    Task {
-                        try await self.viewModel.appLogout()
-                    }
-                }
-            }
-        }
+        discoverConfig()
     }
 }
 
@@ -72,6 +58,9 @@ extension DashboardViewController {
             } catch {
                 printToLogTextView(error.localizedDescription)
             }
+            
+            setActivityIndicator(false)
+            updateUI()
         }
     }
     
@@ -87,6 +76,9 @@ extension DashboardViewController {
             } catch {
                 printToLogTextView(error.localizedDescription)
             }
+            
+            setActivityIndicator(false)
+            updateUI()
         }
     }
     
@@ -95,13 +87,17 @@ extension DashboardViewController {
             setActivityIndicator(true)
             
             do {
-                try await viewModel.getUserInfo()
+                let userInfo = try await viewModel.getUserInfo()
+                printToLogTextView(userInfo)
             } catch let error as AuthError {
                 displayAlert(error: error)
                 printToLogTextView(error.errorUserInfo.debugDescription)
             } catch {
                 printToLogTextView(error.localizedDescription)
             }
+            
+            setActivityIndicator(false)
+            updateUI()
         }
     }
     
@@ -117,6 +113,9 @@ extension DashboardViewController {
             } catch {
                 printToLogTextView(error.localizedDescription)
             }
+            
+            setActivityIndicator(false)
+            updateUI()
         }
     }
     
@@ -132,6 +131,9 @@ extension DashboardViewController {
             } catch {
                 printToLogTextView(error.localizedDescription)
             }
+            
+            setActivityIndicator(false)
+            updateUI()
         }
     }
     
@@ -148,6 +150,26 @@ extension DashboardViewController {
 
 extension DashboardViewController {
     
+    func discoverConfig() {
+        Task {
+            setActivityIndicator(true)
+            
+            do {
+                let discoveryConfig = try await viewModel.discoverConfiguration()
+                printToLogTextView(discoveryConfig)
+            } catch let error as AuthError {
+                displayAlertWithAction(error, alertAction: {
+                    Task {
+                        try await self.viewModel.discoverConfiguration()
+                    }
+                })
+            }
+            
+            setActivityIndicator(false)
+            updateUI()
+        }
+    }
+    
     func configureUI() {
         logTextView.layer.borderColor = UIColor(white: 0.8, alpha: 1.0).cgColor
         logTextView.layer.borderWidth = 1.0
@@ -160,45 +182,45 @@ extension DashboardViewController {
     }
     
     func displayLogoutAlert() async {
+        setActivityIndicator(true)
         
-        let logoutAlert = viewModel.getLogoutOptionsAlert()
+        let logoutAlert = viewModel.getLogoutOptionsAlert() { result in
+            switch result {
+            case .success(let completed):
+                let logoutCompleted = completed ? "Success" : "Failure"
+                print("Logout \(logoutCompleted)")
+            case .failure(let error as AuthError):
+                self.displayErrorAlert(error)
+            case .failure:
+                self.displayErrorAlert(AuthError.logoutFailed)
+            }
+            
+            self.setActivityIndicator(false)
+            self.updateUI()
+        }
         present(logoutAlert, animated: true)
+    }
+    
+    func updateUI() {
+        DispatchQueue.main.async {
+            self.tokenRequestStackView.isHidden = self.viewModel.isTokenRequestStackViewHidden
+            self.codeExchangeButton.isHidden = self.viewModel.isCodeExchangeButtonHidden
+            self.refreshTokenButton.isHidden = self.viewModel.isRefreshTokenButtonHidden
+            self.userinfoButton.isHidden = self.viewModel.isUserinfoButtonHidden
+            self.profileButton.isHidden = self.viewModel.isProfileButtonHidden
+            self.tokenDataStackView.isHidden = self.viewModel.isTokenDataStackViewHidden
+            
+            if !self.tokenDataStackView.isHidden {
+                self.accessTokenTitleLabel.text = self.viewModel.accessTokenTitleLabelText
+                self.accessTokenTextView.text = self.viewModel.accessTokenTextViewText
+                self.refreshTokenTitleLabel.text = self.viewModel.refreshTokenTitleLabelText
+                self.refreshTokenTextView.text = self.viewModel.refreshTokenTextViewText
+            }
+        }
     }
 }
 
 extension DashboardViewController: BaseViewControllerDelegate {
-    
-    func stateChanged(_ isLoading: Bool?) {
-        
-        if let isLoading = isLoading {
-            self.setActivityIndicator(isLoading)
-        }
-        
-        DispatchQueue.main.async {
-            
-            self.tokenRequestStackView.isHidden = self.viewModel.isTokenRequestStackViewHidden
-            self.codeExchangeButton.isHidden = !self.viewModel.isCodeExchangeRequired
-            self.refreshTokenButton.isHidden = !self.viewModel.isTokenActive
-            self.userinfoButton.isHidden = !self.viewModel.isTokenActive
-            self.profileButton.isHidden = !self.viewModel.isBrowserSessionActive
-            self.tokenDataStackView.isHidden = self.viewModel.isTokenDataStackViewHidden
-            
-            if !self.tokenDataStackView.isHidden {
-                self.accessTokenTextView.text = self.viewModel.lastAccessTokenResponse
-                self.accessTokenTitleLabel.text = self.viewModel.isAccessTokenRevoked ? "Access Token Revoked:" : "Access Token:"
-                self.refreshTokenTextView.text = self.viewModel.lastRefreshTokenResponse
-                self.refreshTokenTitleLabel.text = self.viewModel.isRefreshTokenRevoked ? "Refresh Token Revoked:" : "Refresh Token:"
-            }
-        }
-    }
-    
-    func displayErrorAlert(_ error: AuthError?) {
-        displayAlert(error: error)
-    }
-    
-    func displayAlertWithAction(_ error: AuthError?, alertAction: AlertAction) {
-        displayAlert(error: error, alertAction: alertAction)
-    }
     
     func printToLogTextView(_ data: String) {
         let dateFormatter = DateFormatter()
@@ -207,7 +229,7 @@ extension DashboardViewController: BaseViewControllerDelegate {
         
         // Appends to output log
         DispatchQueue.main.async {
-            let logText = "\(self.logTextView.text ?? "")\n\(dateString): \(data)"
+            let logText = "\(self.logTextView.text ?? "")\(dateString): \(data)\n\n"
             self.logTextView.text = logText
             
             let range = NSMakeRange(self.logTextView.text.count - 1, 0)
@@ -215,7 +237,6 @@ extension DashboardViewController: BaseViewControllerDelegate {
         }
     }
 }
-
 
 //MARK: TextViewDelegate
 extension DashboardViewController: UITextViewDelegate {

@@ -12,7 +12,7 @@ import AppAuth
 /*
  * An error entity whose fields are rendered when there is a problem
  */
-enum AuthError: CustomNSError {
+enum AuthError: Error {
     
     case authorization(error: String, description: String?)
     
@@ -23,7 +23,7 @@ enum AuthError: CustomNSError {
     case errorFetchingFreshTokens
     case redirectServerError(String)
     case missingConfigurationValues
-    case noBearerToken
+    case noAccessToken
     case noDiscoveryEndpoint
     case noDiscoveryDoc
     case notConfigured
@@ -32,10 +32,14 @@ enum AuthError: CustomNSError {
     case noTokens
     case noUserInfoEndpoint
     case parseFailure
+    case invalidHttpResponse
     case missingIdToken
     case userCancelledAuthorizationFlow
     case unableToGetAuthCode
     case noAuthState
+    case externalAgentFailed
+    case loginFailed
+    case logoutFailed
     
     static var errorDomain: String = "\(Self.self)"
     
@@ -79,19 +83,19 @@ extension AuthError: LocalizedError {
         case let .api(message, _):
             return NSLocalizedString(message, comment: "")
         case .errorFetchingFreshTokens:
-            return NSLocalizedString("Error fetching fresh tokens. Login requred", comment: "")
+            return NSLocalizedString("Error fetching fresh tokens. Login requred.", comment: "")
         case .missingConfigurationValues:
             return NSLocalizedString("Could not parse 'issuer', 'clientId', and/or 'redirectUri' plist values.", comment: "")
         case .noAuthState:
-            return NSLocalizedString("Missing AuthState. Authentication required.", comment: "")
-        case .noBearerToken:
-            return NSLocalizedString("Missing Bearer token. Authentication required.", comment: "")
+            return NSLocalizedString("Missing AuthState. Login required.", comment: "")
+        case .noAccessToken:
+            return NSLocalizedString("Missing Access token. Login required.", comment: "")
         case .noDiscoveryEndpoint:
             return NSLocalizedString("Error finding the well-known OpenID Configuration endpoint.", comment: "")
         case .noDiscoveryDoc:
             return NSLocalizedString("Error loading the discovery document values.", comment: "")
         case .notConfigured:
-            return NSLocalizedString("You must first configure the AuthConfig values", comment: "")
+            return NSLocalizedString("You must first configure the AuthConfig values.", comment: "")
         case .noRefreshToken:
             return NSLocalizedString("No refresh token stored.", comment: "")
         case .noRevocationEndpoint:
@@ -102,19 +106,26 @@ extension AuthError: LocalizedError {
             return NSLocalizedString("Error finding the user info endpoint.", comment: "")
         case .parseFailure:
             return NSLocalizedString("Failed to parse and/or convert object.", comment: "")
+        case .invalidHttpResponse:
+            return NSLocalizedString("Invalid HTTP response object received after an API call.", comment: "")
         case .missingIdToken:
             return NSLocalizedString("ID token needed to fulfill this operation.", comment: "")
         case .unexpectedAuthCodeResponse(let statusCode):
-            return NSLocalizedString("Unexpected response format while retrieving authorization code. Status code: \(statusCode)", comment: "")
+            return NSLocalizedString("Unexpected response format while retrieving authorization code. Status code: \(statusCode).", comment: "")
         case .userCancelledAuthorizationFlow:
-            return NSLocalizedString("The redirect request was cancelled", comment: "")
+            return NSLocalizedString("The redirect request was cancelled.", comment: "")
         case .unableToGetAuthCode:
             return NSLocalizedString("Unable to get the authorization code.", comment: "")
         case .redirectServerError(error: let error):
             return NSLocalizedString(error, comment: "")
         case let .authorization(error, description):
-            return NSLocalizedString("The authorization request failed due to \(error): \(description ?? "")", comment: "")
-
+            return NSLocalizedString("The authorization request failed due to \(error): \(description ?? "").", comment: "")
+        case .externalAgentFailed:
+            return NSLocalizedString("Failed to create external user agent.", comment: "")
+        case .logoutFailed:
+            return NSLocalizedString("Failed to complete logout.", comment: "")
+        case .loginFailed:
+            return NSLocalizedString("Failed to complete login.", comment: "")
         }
     }
 }

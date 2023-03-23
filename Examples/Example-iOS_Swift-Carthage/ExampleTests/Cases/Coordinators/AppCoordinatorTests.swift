@@ -8,12 +8,13 @@
 import XCTest
 import Foundation
 import UIKit
-@testable import AppAuth
+import AppAuth
 @testable import Example
 
 class AppCoordinatorTests: XCTestCase {
-        
+    
     var sut: AppCoordinator!
+    
     var window: UIWindow!
     
     @MainActor

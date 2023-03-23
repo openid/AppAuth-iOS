@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 protocol LoginCoordinatorDelegate: AnyObject {
-    func didFinishLoginCordinator(coordinator: Coordinator, with authenticator: Authenticator)
+    func didFinishLoginCordinator(coordinator: Coordinator, with authenticator: AuthenticatorProtocol)
 }
 
 // LoginCoordinator handles the responsibility if navigation in Login module
@@ -18,9 +18,9 @@ final class LoginCoordinator: BaseCoordinator {
     
     private let navigationcontroller: UINavigationController
     weak var delegate: LoginCoordinatorDelegate?
-    private let authenticator: Authenticator
+    private let authenticator: AuthenticatorProtocol
     
-    init(navigationcontroller: UINavigationController, with authenticator: Authenticator) {
+    init(navigationcontroller: UINavigationController, with authenticator: AuthenticatorProtocol) {
         self.navigationcontroller = navigationcontroller
         self.authenticator = authenticator
     }
@@ -47,7 +47,7 @@ final class LoginCoordinator: BaseCoordinator {
 }
 
 extension LoginCoordinator: LoginViewModelCoordinatorDelegate {
-    func loginSucceeded(with authenticator: Authenticator) {
+    func loginSucceeded(with authenticator: AuthenticatorProtocol) {
         delegate?.didFinishLoginCordinator(coordinator: self, with: authenticator)
     }
 }
