@@ -65,29 +65,43 @@ class AuthenticatorTests: XCTestCase {
         super.tearDown()
     }
     
-    func testIsDiscoveryConfigLoadFailsWith() async throws {
-        XCTAssertNil(sut.discoveryConfig)
+    func testDiscoveryConfigLoaded() async throws {
+        
+        // Given: A discovery doc is returned
+        let discoveryConfig = appAuthMocks.loadMockServiceConfig(issuer: authConfigMock.discoveryUrl)
+        
+        OIDAuthorizationServiceMock.discoverConfigurationForIssuerCompletionClosure = { request, callback in
+            callback(discoveryConfig, nil)
+        }
         
         do {
-            let config = try await sut.loadDiscoveryConfig()
+            let discoveredConfig = try await sut.loadDiscoveryConfig()
             
+            XCTAssertNotNil(discoveredConfig)
         } catch {
             XCTFail("Expected to succeed while awaiting, but failed.")
         }
     }
     
-    func testDiscoveryConfigLoaded() async throws {
-        // Given: A discovery doc is returned
-        let discoveryConfig = appAuthMocks.loadMockServiceConfig(issuer: authConfigMock.discoveryUrl)
+    func testAuthErrorIsReturnedWhenDisoveryConfigLoadFails() async throws {
         
+        // Given: No discovery config exists
+        XCTAssertNil(sut.discoveryConfig)
+        
+        // When: The discovery doc fails to load
         OIDAuthorizationServiceMock.discoverConfigurationForIssuerCompletionClosure = { request, callback in
-            
-            callback(discoveryConfig, nil)
+            let error = OIDErrorUtilities.error(with: .networkError, underlyingError: nil, description: nil)
+            callback(nil, error)
         }
         
-        let discoveredConfig = try await sut.loadDiscoveryConfig()
-        
-        XCTAssertNotNil(discoveredConfig)
+        // Then: An error is thrown
+        do {
+            let _ = try await sut.loadDiscoveryConfig()
+            XCTFail("Expected to fai while awaiting, but failed.")
+            
+        } catch {
+            XCTAssertNotNil(error)
+        }
     }
     
     func testRefreshTokenRequestSucceeds() async throws {
@@ -114,10 +128,9 @@ class AuthenticatorTests: XCTestCase {
     
     func testLoginWithNilAuthStateResponse() async throws {
         // Given: an inactive browser session resulting from no AuthState response
-        
         try await sut.finishLoginWithAuthStateResponse(nil)
         
-        XCTAssertFalse(self.sut.isBrowserSessionActive)
+        XCTAssertFalse(sut.isBrowserSessionActive)
     }
     
     func testLoginWithAuthResponse() async throws {
@@ -133,7 +146,7 @@ class AuthenticatorTests: XCTestCase {
         // Given: an inactive browser session resulting from no AuthState response
         try await sut.finishLoginWithAuthResponse(nil)
         
-        XCTAssertFalse(self.sut.isBrowserSessionActive)
+        XCTAssertFalse(sut.isBrowserSessionActive)
     }
     
     func testUserInfoRequestFailsWithUnauthorizedAccessToken() async throws {
