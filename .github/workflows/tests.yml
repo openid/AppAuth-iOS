@@ -12,19 +12,19 @@ on:
 jobs:
 
   xcode-project-test:
-    runs-on: macos-11
+    runs-on: macos-12
     strategy:
       matrix:
         flags: [
-          "-scheme AppAuth-iOS -destination 'platform=iOS Simulator,name=iPhone 11,OS=15.2' -sdk 'iphonesimulator15.2'",
-          "-scheme AppAuth-macOS -destination 'platform=macOS,arch=x86_64' -sdk 'macosx12.1'",
-          "-scheme AppAuth_macOS -destination 'platform=macOS,arch=x86_64' -sdk 'macosx12.1'",
-          "-scheme AppAuth-tvOS -destination 'platform=tvOS Simulator,name=Apple TV,OS=15.2' -sdk 'appletvsimulator15.2'",
-          "-scheme AppAuth_tvOS -destination 'platform=tvOS Simulator,name=Apple TV,OS=15.2' -sdk 'appletvsimulator15.2'",
-          "-scheme AppAuthTV -destination 'platform=tvOS Simulator,name=Apple TV,OS=15.2' -sdk 'appletvsimulator15.2'"
+          "-scheme AppAuth-iOS -destination 'platform=iOS Simulator,name=iPhone 11,OS=16.2' -sdk 'iphonesimulator16.2'",
+          "-scheme AppAuth-macOS -destination 'platform=macOS,arch=x86_64' -sdk 'macosx13.1'",
+          "-scheme AppAuth_macOS -destination 'platform=macOS,arch=x86_64' -sdk 'macosx13.1'",
+          "-scheme AppAuth-tvOS -destination 'platform=tvOS Simulator,name=Apple TV,OS=16.1' -sdk 'appletvsimulator16.1'",
+          "-scheme AppAuth_tvOS -destination 'platform=tvOS Simulator,name=Apple TV,OS=16.1' -sdk 'appletvsimulator16.1'",
+          "-scheme AppAuthTV -destination 'platform=tvOS Simulator,name=Apple TV,OS=16.1' -sdk 'appletvsimulator16.1'"
         ]
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Run unit test targets
       run: |
         xcodebuild test \
@@ -32,7 +32,7 @@ jobs:
           ${{ matrix.flags }}
 
   pod-lib-lint:
-    runs-on: macos-11
+    runs-on: macos-12
     strategy:
       matrix:
         flags: [
@@ -41,7 +41,7 @@ jobs:
           '--use-static-frameworks'
         ]
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Update Bundler
       run: bundle update --bundler
     - name: Install Ruby gems with Bundler
