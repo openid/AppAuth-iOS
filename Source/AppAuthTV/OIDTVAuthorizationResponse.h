@@ -85,7 +85,9 @@ NS_ASSUME_NONNULL_BEGIN
     @see https://tools.ietf.org/html/rfc8628#section-3.4
  */
 - (nullable OIDTVTokenRequest *)tokenPollRequestWithAdditionalParameters:
-    (nullable NSDictionary<NSString *, NSString *> *)additionalParameters;
+    (nullable NSDictionary<NSString *, NSString *> *)additionalParameters
+                                                       additionalHeaders:
+    (nullable NSDictionary<NSString *, NSString *> *)additionalHeaders;
 
 @end
 

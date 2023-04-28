@@ -319,7 +319,8 @@ OIDAuthorizationRequest *request =
                                                              OIDScopeProfile]
                                                redirectURL:kRedirectURI
                                               responseType:OIDResponseTypeCode
-                                      additionalParameters:nil];
+                                      additionalParameters:nil
+                                         additionalHeaders:nil];
 
 // performs authentication request
 AppDelegate *appDelegate =
@@ -349,7 +350,8 @@ let request = OIDAuthorizationRequest(configuration: configuration,
                                       scopes: [OIDScopeOpenID, OIDScopeProfile],
                                       redirectURL: redirectURI,
                                       responseType: OIDResponseTypeCode,
-                                      additionalParameters: nil)
+                                      additionalParameters: nil,
+                                      additionalHeaders:nil)
 
 // performs authentication request
 print("Initiating authorization request with scope: \(request.scope ?? "nil")")
@@ -467,7 +469,8 @@ OIDAuthorizationRequest *request =
                                                     scopes:@[ OIDScopeOpenID ]
                                                redirectURL:redirectURI
                                               responseType:OIDResponseTypeCode
-                                      additionalParameters:nil];
+                                      additionalParameters:nil
+                                         additionalHeaders:nil];
 // performs authentication request
 __weak __typeof(self) weakSelf = self;
 _redirectHTTPHandler.currentAuthorizationFlow =
@@ -516,7 +519,8 @@ OIDTVAuthorizationRequest *request =
                                                     clientId:kClientID
                                                 clientSecret:kClientSecret
                                                       scopes:@[ OIDScopeOpenID, OIDScopeProfile ]
-                                        additionalParameters:nil];
+                                        additionalParameters:nil
+                                           additionalHeaders:nil];
 
 // performs authentication request
 OIDTVAuthorizationInitialization initBlock =

@@ -48,6 +48,14 @@ static NSString *const kTestAdditionalParameterKey = @"A";
  */
 static NSString *const kTestAdditionalParameterValue = @"1";
 
+/*! @brief Test key for the @c additionalHeaders property.
+ */
+static NSString *const kTestAdditionalHeaderKey = @"B";
+
+/*! @brief Test value for the @c additionalHeaders property.
+ */
+static NSString *const kTestAdditionalHeaderValue = @"2";
+
 /*! @brief Test key for the @c clientID parameter in the HTTP request.
  */
 static NSString *const kTestClientIDKey = @"client_id";
@@ -123,13 +131,16 @@ static NSString *const kHTTPContentTypeHeaderValue =
   NSString *testScopeString = [OIDScopeUtilities scopesWithArray:testScopes];
   NSDictionary<NSString *, NSString *> *testAdditionalParameters =
       @{kTestAdditionalParameterKey : kTestAdditionalParameterValue};
+  NSDictionary<NSString *, NSString *> *testAdditionalHeaders =
+      @{kTestAdditionalHeaderKey : kTestAdditionalHeaderValue};
 
   OIDTVAuthorizationRequest *authRequest =
       [[OIDTVAuthorizationRequest alloc] initWithConfiguration:serviceConfiguration
                                                       clientId:kTestClientID
                                                   clientSecret:kTestClientSecret
                                                         scopes:testScopes
-                                          additionalParameters:testAdditionalParameters];
+                                          additionalParameters:testAdditionalParameters
+                                             additionalHeaders:testAdditionalHeaders];
 
   NSURL *authRequestDeviceAuthorizationEndpoint =
       ((OIDTVServiceConfiguration *)authRequest.configuration).deviceAuthorizationEndpoint;
@@ -138,6 +149,7 @@ static NSString *const kHTTPContentTypeHeaderValue =
   XCTAssertEqualObjects(authRequest.clientSecret, kTestClientSecret);
   XCTAssertEqualObjects(authRequest.scope, testScopeString);
   XCTAssertEqualObjects(authRequest.additionalParameters, testAdditionalParameters);
+  XCTAssertEqualObjects(authRequest.additionalHeaders, testAdditionalHeaders);
   XCTAssertEqualObjects(authRequest.responseType, OIDResponseTypeCode);
   XCTAssertEqualObjects(authRequest.redirectURL, [[NSURL alloc] initWithString:@""]);
   XCTAssertEqualObjects(authRequestDeviceAuthorizationEndpoint,
@@ -156,7 +168,8 @@ static NSString *const kHTTPContentTypeHeaderValue =
                                                       clientId:kTestClientID
                                                   clientSecret:kTestClientSecret
                                                         scopes:nil
-                                          additionalParameters:nil];
+                                          additionalParameters:nil
+                                             additionalHeaders:nil];
 
   OIDTVAuthorizationRequest *authRequestCopy = [authRequest copy];
   NSURL *authRequestCopyDeviceAuthorizationEndpoint =
@@ -178,7 +191,8 @@ static NSString *const kHTTPContentTypeHeaderValue =
                                                       clientId:kTestClientID
                                                   clientSecret:kTestClientSecret
                                                         scopes:nil
-                                          additionalParameters:nil];
+                                          additionalParameters:nil
+                                             additionalHeaders:nil];
 
   NSData *data = [NSKeyedArchiver archivedDataWithRootObject:authRequest];
   OIDTVAuthorizationRequest *authRequestCopy = [NSKeyedUnarchiver unarchiveObjectWithData:data];
@@ -200,7 +214,8 @@ static NSString *const kHTTPContentTypeHeaderValue =
                                                       clientId:kTestClientID
                                                   clientSecret:kTestClientSecret
                                                         scopes:nil
-                                          additionalParameters:nil];
+                                          additionalParameters:nil
+                                             additionalHeaders:nil];
 
   NSURLRequest *URLRequest = [authRequest URLRequest];
 
@@ -231,7 +246,8 @@ static NSString *const kHTTPContentTypeHeaderValue =
                                                       clientId:kTestClientID
                                                   clientSecret:kTestClientSecret
                                                         scopes:@[ kTestScope, kTestScopeA ]
-                                          additionalParameters:nil];
+                                          additionalParameters:nil
+                                             additionalHeaders:nil];
 
   NSURLRequest *URLRequest = [authRequest URLRequest];
 
@@ -262,7 +278,8 @@ static NSString *const kHTTPContentTypeHeaderValue =
                    clientId:kTestClientID
                clientSecret:kTestClientSecret
                      scopes:@[ kTestScope, kTestScopeA ]
-       additionalParameters:@{kTestAdditionalParameterKey : kTestAdditionalParameterValue}];
+       additionalParameters:@{kTestAdditionalParameterKey : kTestAdditionalParameterValue}
+          additionalHeaders:@{kTestAdditionalHeaderKey : kTestAdditionalHeaderValue}];
 
   NSURLRequest *URLRequest = [authRequest URLRequest];
 

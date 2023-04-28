@@ -121,7 +121,9 @@ NS_ASSUME_NONNULL_BEGIN
     @see https://tools.ietf.org/html/rfc6749#section-4.1.3
  */
 - (nullable OIDTokenRequest *)tokenExchangeRequestWithAdditionalParameters:
-    (nullable NSDictionary<NSString *, NSString *> *)additionalParameters;
+    (nullable NSDictionary<NSString *, NSString *> *)additionalParameters
+                                                         additionalHeaders:
+    (nullable NSDictionary<NSString *, NSString *> *)additionalHeaders;
 
 @end
 

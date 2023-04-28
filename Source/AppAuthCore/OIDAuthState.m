@@ -442,7 +442,8 @@ static const NSUInteger kExpiryTimeTolerance = 60;
                       scope:nil
                refreshToken:_refreshToken
                codeVerifier:nil
-       additionalParameters:additionalParameters];
+       additionalParameters:additionalParameters
+          additionalHeaders:nil];
 }
 
 #pragma mark - Stateful Actions

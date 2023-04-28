@@ -179,7 +179,8 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
                                                    grantTypes:nil
                                                   subjectType:nil
                                       tokenEndpointAuthMethod:@"client_secret_post"
-                                         additionalParameters:nil];
+                                         additionalParameters:nil
+                                            additionalHeaders:nil];
     // performs registration request
     [self logMessage:@"Initiating registration request"];
 
@@ -208,7 +209,8 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
                                                       scopes:@[ OIDScopeOpenID, OIDScopeProfile ]
                                                  redirectURL:redirectURI
                                                 responseType:OIDResponseTypeCode
-                                        additionalParameters:nil];
+                                        additionalParameters:nil
+                                           additionalHeaders:nil];
   // performs authentication request
   AppDelegate *appDelegate = (AppDelegate *) [UIApplication sharedApplication].delegate;
   [self logMessage:@"Initiating authorization request with scope: %@", request.scope];
@@ -241,7 +243,8 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
                                                       scopes:@[ OIDScopeOpenID, OIDScopeProfile ]
                                                  redirectURL:redirectURI
                                                 responseType:OIDResponseTypeCode
-                                        additionalParameters:nil];
+                                        additionalParameters:nil
+                                           additionalHeaders:nil];
   // performs authentication request
   AppDelegate *appDelegate = (AppDelegate *) [UIApplication sharedApplication].delegate;
   [self logMessage:@"Initiating authorization request %@", request];

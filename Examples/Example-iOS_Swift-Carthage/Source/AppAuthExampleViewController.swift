@@ -349,7 +349,8 @@ extension AppAuthExampleViewController {
                                                                      grantTypes: nil,
                                                                      subjectType: nil,
                                                                      tokenEndpointAuthMethod: "client_secret_post",
-                                                                     additionalParameters: nil)
+                                                                     additionalParameters: nil,
+                                                                     additionalHeaders: nil)
 
         // performs registration request
         self.logMessage("Initiating registration request")
@@ -386,7 +387,8 @@ extension AppAuthExampleViewController {
                                               scopes: [OIDScopeOpenID, OIDScopeProfile],
                                               redirectURL: redirectURI,
                                               responseType: OIDResponseTypeCode,
-                                              additionalParameters: nil)
+                                              additionalParameters: nil,
+                                              additionalHeaders: nil)
 
         // performs authentication request
         logMessage("Initiating authorization request with scope: \(request.scope ?? "DEFAULT_SCOPE")")
@@ -422,7 +424,8 @@ extension AppAuthExampleViewController {
                                               scopes: [OIDScopeOpenID, OIDScopeProfile],
                                               redirectURL: redirectURI,
                                               responseType: OIDResponseTypeCode,
-                                              additionalParameters: nil)
+                                              additionalParameters: nil,
+                                              additionalHeaders: nil)
 
         // performs authentication request
         logMessage("Initiating authorization request with scope: \(request.scope ?? "DEFAULT_SCOPE")")

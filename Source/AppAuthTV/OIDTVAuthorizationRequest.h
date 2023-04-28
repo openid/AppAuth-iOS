@@ -35,13 +35,15 @@ NS_ASSUME_NONNULL_BEGIN
     @param clientSecret The client secret.
     @param scopes An array of scopes to combine into a single scope string per the OAuth2 spec.
     @param additionalParameters The client's additional authorization parameters.
+    @param additionalHeaders The client's additional authorization headers.
  */
 - (instancetype)
     initWithConfiguration:(OIDTVServiceConfiguration *)configuration
                  clientId:(NSString *)clientID
              clientSecret:(NSString *)clientSecret
                    scopes:(nullable NSArray<NSString *> *)scopes
-     additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters;
+     additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters
+        additionalHeaders:(nullable NSDictionary<NSString *, NSString *> *)additionalHeaders;
 
 /*! @brief Constructs an @c NSURLRequest representing the TV authorization request.
     @return An @c NSURLRequest representing the TV authorization request.

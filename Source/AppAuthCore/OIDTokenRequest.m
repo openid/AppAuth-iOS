@@ -67,6 +67,11 @@ static NSString *const kCodeVerifierKey = @"code_verifier";
  */
 static NSString *const kAdditionalParametersKey = @"additionalParameters";
 
+/*! @brief Key used to encode the @c additionalHeaders property for
+        @c NSSecureCoding
+ */
+static NSString *const kAdditionalHeadersKey = @"additionalHeaders";
+
 @implementation OIDTokenRequest
 
 - (instancetype)init
@@ -80,7 +85,8 @@ static NSString *const kAdditionalParametersKey = @"additionalParameters";
                                   scope:
                            refreshToken:
                            codeVerifier:
-                   additionalParameters:)
+                   additionalParameters:
+                      additionalHeaders:)
     )
 
 - (instancetype)initWithConfiguration:(OIDServiceConfiguration *)configuration
@@ -92,7 +98,8 @@ static NSString *const kAdditionalParametersKey = @"additionalParameters";
                   scopes:(nullable NSArray<NSString *> *)scopes
             refreshToken:(nullable NSString *)refreshToken
             codeVerifier:(nullable NSString *)codeVerifier
-    additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters {
+    additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters
+       additionalHeaders:(nullable NSDictionary<NSString *, NSString *> *)additionalHeaders {
   return [self initWithConfiguration:configuration
                            grantType:grantType
                    authorizationCode:code
@@ -102,7 +109,8 @@ static NSString *const kAdditionalParametersKey = @"additionalParameters";
                                scope:[OIDScopeUtilities scopesWithArray:scopes]
                         refreshToken:refreshToken
                         codeVerifier:(NSString *)codeVerifier
-                additionalParameters:additionalParameters];
+                additionalParameters:additionalParameters
+                   additionalHeaders:additionalHeaders];
 }
 
 - (instancetype)initWithConfiguration:(OIDServiceConfiguration *)configuration
@@ -114,7 +122,9 @@ static NSString *const kAdditionalParametersKey = @"additionalParameters";
                    scope:(nullable NSString *)scope
             refreshToken:(nullable NSString *)refreshToken
             codeVerifier:(nullable NSString *)codeVerifier
-    additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters {
+    additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters
+       additionalHeaders:(nullable NSDictionary<NSString *, NSString *> *)additionalHeaders {
+{
   self = [super init];
   if (self) {
     _configuration = [configuration copy];
@@ -128,6 +138,8 @@ static NSString *const kAdditionalParametersKey = @"additionalParameters";
     _codeVerifier = [codeVerifier copy];
     _additionalParameters =
         [[NSDictionary alloc] initWithDictionary:additionalParameters copyItems:YES];
+    _additionalHeaders =
+          [[NSDictionary alloc] initWithDictionary:additionalHeaders copyItems:YES];
     
     // Additional validation for the authorization_code grant type
     if ([_grantType isEqual:OIDGrantTypeAuthorizationCode]) {
@@ -174,9 +186,18 @@ static NSString *const kAdditionalParametersKey = @"additionalParameters";
     [NSDictionary class],
     [NSString class]
   ]];
+    
   NSDictionary *additionalParameters =
-      [aDecoder decodeObjectOfClasses:additionalParameterCodingClasses
-                               forKey:kAdditionalParametersKey];
+    [aDecoder decodeObjectOfClasses:additionalParameterCodingClasses forKey:kAdditionalParametersKey];
+    
+    
+  NSSet *additionalHeaderCodingClasses = [NSSet setWithArray:@[
+    [NSDictionary class],
+    [NSString class]
+  ]];
+    
+  NSDictionary *additionalHeaders =
+    [aDecoder decodeObjectOfClasses:additionalHeaderCodingClasses forKey:kAdditionalHeadersKey];
   
   self = [super init];
   if (self) {
@@ -191,6 +212,8 @@ static NSString *const kAdditionalParametersKey = @"additionalParameters";
     _codeVerifier = [codeVerifier copy];
     _additionalParameters =
         [[NSDictionary alloc] initWithDictionary:additionalParameters copyItems:YES];
+    _additionalHeaders =
+        [[NSDictionary alloc] initWithDictionary:additionalHeaders copyItems:YES];
   }
   return self;
 }
@@ -206,6 +229,7 @@ static NSString *const kAdditionalParametersKey = @"additionalParameters";
   [aCoder encodeObject:_refreshToken forKey:kRefreshTokenKey];
   [aCoder encodeObject:_codeVerifier forKey:kCodeVerifierKey];
   [aCoder encodeObject:_additionalParameters forKey:kAdditionalParametersKey];
+  [aCoder encodeObject:_additionalHeaders forKey:kAdditionalHeadersKey];
 }
 
 #pragma mark - NSObject overrides
@@ -303,6 +327,10 @@ static NSString *const kAdditionalParametersKey = @"additionalParameters";
   URLRequest.HTTPBody = body;
 
   for (id header in httpHeaders) {
+    [URLRequest setValue:httpHeaders[header] forHTTPHeaderField:header];
+  }
+  
+  for (id header in _additionalHeaders) {
     [URLRequest setValue:httpHeaders[header] forHTTPHeaderField:header];
   }
 

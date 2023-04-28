@@ -33,7 +33,8 @@
              codeVerifier:(nullable NSString *)codeVerifier
             codeChallenge:(nullable NSString *)codeChallenge
       codeChallengeMethod:(nullable NSString *)codeChallengeMethod
-     additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters {
+     additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters
+        additionalHeaders:(nullable NSDictionary<NSString *, NSString *> *)additionalHeaders {
 
   if (![configuration isKindOfClass:[OIDTVServiceConfiguration class]]) {
     NSAssert([configuration isKindOfClass:[OIDTVServiceConfiguration class]],
@@ -53,7 +54,8 @@
                          codeVerifier:codeVerifier
                         codeChallenge:codeChallenge
                   codeChallengeMethod:codeChallengeMethod
-                 additionalParameters:additionalParameters];
+                 additionalParameters:additionalParameters
+                    additionalHeaders:additionalHeaders];
 }
 
 - (instancetype)
@@ -61,14 +63,16 @@
                  clientId:(NSString *)clientID
              clientSecret:(NSString *)clientSecret
                    scopes:(nullable NSArray<NSString *> *)scopes
-     additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters {
+     additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters
+        additionalHeaders:(nullable NSDictionary<NSString *, NSString *> *)additionalHeaders {
   return [self initWithConfiguration:configuration
                             clientId:clientID
                         clientSecret:clientSecret
                               scopes:scopes
                          redirectURL:[[NSURL alloc] initWithString:@""]
                         responseType:OIDResponseTypeCode
-                additionalParameters:additionalParameters];
+                additionalParameters:additionalParameters
+                   additionalHeaders:additionalHeaders];
 }
 
 #pragma mark - NSObject overrides

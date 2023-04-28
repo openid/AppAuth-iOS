@@ -48,6 +48,14 @@ static NSString *const kTestAdditionalParameterKey = @"A";
  */
 static NSString *const kTestAdditionalParameterValue = @"1";
 
+/*! @brief Test key for the @c additionalHeaders property.
+ */
+static NSString *const kTestAdditionalHeaderKey = @"B";
+
+/*! @brief Test value for the @c additionalHeaders property.
+ */
+static NSString *const kTestAdditionalHeaderValue = @"2";
+
 @implementation OIDTokenRequestTests
 
 + (OIDTokenRequest *)testInstance {
@@ -56,6 +64,9 @@ static NSString *const kTestAdditionalParameterValue = @"1";
       [OIDScopeUtilities scopesArrayWithString:authResponse.request.scope];
   NSDictionary *additionalParameters =
       @{ kTestAdditionalParameterKey : kTestAdditionalParameterValue };
+  NSDictionary *additionalHeaders =
+      @{ kTestAdditionalHeaderKey : kTestAdditionalHeaderValue };
+  
   OIDTokenRequest *request =
       [[OIDTokenRequest alloc] initWithConfiguration:authResponse.request.configuration
                                            grantType:OIDGrantTypeAuthorizationCode
@@ -66,7 +77,8 @@ static NSString *const kTestAdditionalParameterValue = @"1";
                                               scopes:scopesArray
                                         refreshToken:kRefreshTokenTestValue
                                         codeVerifier:authResponse.request.codeVerifier
-                                additionalParameters:additionalParameters];
+                                additionalParameters:additionalParameters
+                                   additionalHeaders:additionalHeaders];
   return request;
 }
 
@@ -76,6 +88,9 @@ static NSString *const kTestAdditionalParameterValue = @"1";
       [OIDScopeUtilities scopesArrayWithString:authResponse.request.scope];
   NSDictionary *additionalParameters =
       @{ kTestAdditionalParameterKey : kTestAdditionalParameterValue };
+  NSDictionary *additionalHeaders =
+      @{ kTestAdditionalHeaderKey : kTestAdditionalHeaderValue };
+  
   OIDTokenRequest *request =
       [[OIDTokenRequest alloc] initWithConfiguration:authResponse.request.configuration
                                            grantType:OIDGrantTypeAuthorizationCode
@@ -86,7 +101,8 @@ static NSString *const kTestAdditionalParameterValue = @"1";
                                               scopes:scopesArray
                                         refreshToken:kRefreshTokenTestValue
                                         codeVerifier:authResponse.request.codeVerifier
-                                additionalParameters:additionalParameters];
+                                additionalParameters:additionalParameters
+                                   additionalHeaders:additionalHeaders];
   return request;
 }
 
@@ -96,6 +112,9 @@ static NSString *const kTestAdditionalParameterValue = @"1";
       [OIDScopeUtilities scopesArrayWithString:authResponse.request.scope];
   NSDictionary *additionalParameters =
       @{ kTestAdditionalParameterKey : kTestAdditionalParameterValue };
+  NSDictionary *additionalHeaders =
+        @{ kTestAdditionalHeaderKey : kTestAdditionalHeaderValue };
+  
   OIDTokenRequest *request =
       [[OIDTokenRequest alloc] initWithConfiguration:authResponse.request.configuration
                                            grantType:OIDGrantTypeAuthorizationCode
@@ -106,7 +125,8 @@ static NSString *const kTestAdditionalParameterValue = @"1";
                                               scopes:scopesArray
                                         refreshToken:kRefreshTokenTestValue
                                         codeVerifier:authResponse.request.codeVerifier
-                                additionalParameters:additionalParameters];
+                                additionalParameters:additionalParameters
+                                   additionalHeaders:additionalHeaders];
   return request;
 }
 
@@ -116,6 +136,9 @@ static NSString *const kTestAdditionalParameterValue = @"1";
       [OIDScopeUtilities scopesArrayWithString:authResponse.request.scope];
   NSDictionary *additionalParameters =
       @{ kTestAdditionalParameterKey : kTestAdditionalParameterValue };
+  NSDictionary *additionalHeaders =
+        @{ kTestAdditionalHeaderKey : kTestAdditionalHeaderValue };
+  
   OIDTokenRequest *request =
       [[OIDTokenRequest alloc] initWithConfiguration:authResponse.request.configuration
                                            grantType:OIDGrantTypeAuthorizationCode
@@ -126,7 +149,8 @@ static NSString *const kTestAdditionalParameterValue = @"1";
                                               scopes:scopesArray
                                         refreshToken:kRefreshTokenTestValue
                                         codeVerifier:authResponse.request.codeVerifier
-                                additionalParameters:additionalParameters];
+                                additionalParameters:additionalParameters
+                                   additionalHeaders:additionalHeaders];
   return request;
 }
 
@@ -248,6 +272,8 @@ static NSString *const kTestAdditionalParameterValue = @"1";
       [OIDScopeUtilities scopesArrayWithString:authResponse.request.scope];
   NSDictionary *additionalParameters =
       @{ kTestAdditionalParameterKey : kTestAdditionalParameterValue };
+  NSDictionary *additionalHeaders =
+      @{ kTestAdditionalHeaderKey : kTestAdditionalHeaderValue };
   XCTAssertThrows([[OIDTokenRequest alloc] initWithConfiguration:authResponse.request.configuration
                                                        grantType:OIDGrantTypeAuthorizationCode
                                                authorizationCode:authResponse.authorizationCode
@@ -257,7 +283,8 @@ static NSString *const kTestAdditionalParameterValue = @"1";
                                                           scopes:scopesArray
                                                     refreshToken:kRefreshTokenTestValue
                                                     codeVerifier:authResponse.request.codeVerifier
-                                            additionalParameters:additionalParameters], @"");
+                                            additionalParameters:additionalParameters
+                                               additionalHeaders:additionalHeaders], @"");
 }
 
 @end

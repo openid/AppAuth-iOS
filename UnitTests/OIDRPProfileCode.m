@@ -220,7 +220,8 @@ typedef void (^UserInfoCompletion)(OIDAuthState *_Nullable authState,
                                                     scopes:scope
                                                redirectURL:redirectURI
                                               responseType:OIDResponseTypeCode
-                                      additionalParameters:nil];
+                                      additionalParameters:nil
+                                         additionalHeaders:nil];
 
     self->_coordinator = [[OIDAuthorizationUICoordinatorNonInteractive alloc] init];
 
