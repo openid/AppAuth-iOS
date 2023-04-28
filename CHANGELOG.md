@@ -1,3 +1,6 @@
+# 1.6.2
+- Increased minimum iOS and macOS versions to 9.0 and 10.12 respectively to fix [framework build issue](https://github.com/openid/AppAuth-iOS/issues/765)
+
 # 1.6.1
 - Increased minimum iOS and macOS versions to fix [build issue](https://github.com/openid/AppAuth-iOS/pull/761)
 
