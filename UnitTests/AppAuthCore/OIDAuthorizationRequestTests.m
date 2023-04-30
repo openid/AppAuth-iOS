@@ -18,14 +18,14 @@
 
 #import "OIDAuthorizationRequestTests.h"
 
-#import "OIDServiceConfigurationTests.h"
-
 #if SWIFT_PACKAGE
 @import AppAuthCore;
+@import TestHelpers;
 #else
 #import "Source/AppAuthCore/OIDAuthorizationRequest.h"
 #import "Source/AppAuthCore/OIDScopeUtilities.h"
-#import "Source/AppAuthCore/OIDServiceConfiguration.h"
+#import "UnitTests/TestHelpers/OIDServiceConfiguration+TestHelper.h"
+#import "UnitTests/TestHelpers/OIDAuthorizationRequest+TestHelper.h"
 #endif
 
 // Ignore warnings about "Use of GNU statement expression extension" which is raised by our use of
@@ -33,53 +33,9 @@
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wgnu"
 
-/*! @brief Test value for the @c responseType property.
- */
-static NSString *const kTestResponseType = @"code";
-
-/*! @brief Test value for the @c clientID property.
- */
-static NSString *const kTestClientID = @"ClientID";
-
-/*! @brief Test value for the @c clientID property.
- */
-static NSString *const kTestClientSecret = @"ClientSecret";
-
-/*! @brief Test value for the @c scope property.
- */
-static NSString *const kTestScope = @"Scope";
-
-/*! @brief Test value for the @c scope property.
- */
-static NSString *const kTestScopeA = @"ScopeA";
-
 /*! @brief Test value for the @c scope property.
  */
 static NSString *const kTestScopesMerged = @"Scope ScopeA";
-
-/*! @brief Test value for the @c redirectURL property.
- */
-static NSString *const kTestRedirectURL = @"http://www.google.com/";
-
-/*! @brief Test key for the @c additionalParameters property.
- */
-static NSString *const kTestAdditionalParameterKey = @"A";
-
-/*! @brief Test value for the @c additionalParameters property.
- */
-static NSString *const kTestAdditionalParameterValue = @"1";
-
-/*! @brief Test value for the @c state property.
- */
-static NSString *const kTestState = @"State";
-
-/*! @brief Test value for the @c nonce property.
- */
-static NSString *const kTestNonce = @"Nonce";
-
-/*! @brief Test value for the @c codeVerifier property.
- */
-static NSString *const kTestCodeVerifier = @"code verifier";
 
 /*! @brief This test scope contains a character which is one character below the allowed character
         range.
@@ -144,28 +100,8 @@ static int const kCodeVerifierRecommendedLength = 43;
   return OIDOAuthorizationRequestCodeChallengeMethodS256;
 }
 
-+ (OIDAuthorizationRequest *)testInstance {
-  NSDictionary *additionalParameters =
-      @{ kTestAdditionalParameterKey : kTestAdditionalParameterValue };
-  OIDServiceConfiguration *configuration = [OIDServiceConfigurationTests testInstance];
-  OIDAuthorizationRequest *request =
-      [[OIDAuthorizationRequest alloc] initWithConfiguration:configuration
-                      clientId:kTestClientID
-                  clientSecret:kTestClientSecret
-                         scope:[OIDScopeUtilities scopesWithArray:@[ kTestScope, kTestScopeA ]]
-                   redirectURL:[NSURL URLWithString:kTestRedirectURL]
-                  responseType:kTestResponseType
-                         state:kTestState
-                         nonce:kTestNonce
-                  codeVerifier:kTestCodeVerifier
-                 codeChallenge:[[self class] codeChallenge]
-           codeChallengeMethod:[[self class] codeChallengeMethod]
-          additionalParameters:additionalParameters];
-  return request;
-}
-
 + (OIDAuthorizationRequest *)testInstanceCodeFlow {
-  OIDServiceConfiguration *configuration = [OIDServiceConfigurationTests testInstance];
+  OIDServiceConfiguration *configuration = [OIDServiceConfiguration testInstance];
   OIDAuthorizationRequest *request =
       [[OIDAuthorizationRequest alloc] initWithConfiguration:configuration
                       clientId:kTestClientID
@@ -183,7 +119,7 @@ static int const kCodeVerifierRecommendedLength = 43;
 }
 
 + (OIDAuthorizationRequest *)testInstanceCodeFlowClientAuth {
-  OIDServiceConfiguration *configuration = [OIDServiceConfigurationTests testInstance];
+  OIDServiceConfiguration *configuration = [OIDServiceConfiguration testInstance];
   OIDAuthorizationRequest *request =
       [[OIDAuthorizationRequest alloc] initWithConfiguration:configuration
                       clientId:kTestClientID
@@ -205,7 +141,7 @@ static int const kCodeVerifierRecommendedLength = 43;
 - (void)testScopeInitializerWithManyScopesAndNoClientSecret {
   NSDictionary *additionalParameters =
       @{ kTestAdditionalParameterKey : kTestAdditionalParameterValue };
-  OIDServiceConfiguration *configuration = [OIDServiceConfigurationTests testInstance];
+  OIDServiceConfiguration *configuration = [OIDServiceConfiguration testInstance];
   OIDAuthorizationRequest *request =
       [[OIDAuthorizationRequest alloc] initWithConfiguration:configuration
                       clientId:kTestClientID
@@ -226,7 +162,7 @@ static int const kCodeVerifierRecommendedLength = 43;
 - (void)testScopeInitializerWithManyScopesAndClientSecret {
   NSDictionary *additionalParameters =
       @{ kTestAdditionalParameterKey : kTestAdditionalParameterValue };
-  OIDServiceConfiguration *configuration = [OIDServiceConfigurationTests testInstance];
+  OIDServiceConfiguration *configuration = [OIDServiceConfiguration testInstance];
   OIDAuthorizationRequest *request =
       [[OIDAuthorizationRequest alloc] initWithConfiguration:configuration
                       clientId:kTestClientID
@@ -249,7 +185,7 @@ static int const kCodeVerifierRecommendedLength = 43;
         process and checking to make sure the source and destination instances are equivalent.
  */
 - (void)testCopying {
-  OIDAuthorizationRequest *request = [[self class] testInstance];
+  OIDAuthorizationRequest *request = [OIDAuthorizationRequest testInstance];
 
   XCTAssertEqualObjects(request.responseType, kTestResponseType, @"");
   XCTAssertEqualObjects(request.scope, kTestScopesMerged, @"");
@@ -285,7 +221,7 @@ static int const kCodeVerifierRecommendedLength = 43;
         checking to make sure the source and destination instances are equivalent.
  */
 - (void)testSecureCoding {
-  OIDAuthorizationRequest *request = [[self class] testInstance];
+  OIDAuthorizationRequest *request = [OIDAuthorizationRequest testInstance];
 
   XCTAssertEqualObjects(request.responseType, kTestResponseType, @"");
   XCTAssertEqualObjects(request.scope, kTestScopesMerged, @"");
@@ -327,7 +263,7 @@ static int const kCodeVerifierRecommendedLength = 43;
  */
 - (void)testDisallowedCharactersInScopes {
   NSURL *redirectURL = [NSURL URLWithString:kTestRedirectURL];
-  OIDServiceConfiguration *configuration = [OIDServiceConfigurationTests testInstance];
+  OIDServiceConfiguration *configuration = [OIDServiceConfiguration testInstance];
   XCTAssertThrows(
       [[OIDAuthorizationRequest alloc] initWithConfiguration:configuration
                                                     clientId:kTestClientID
@@ -441,7 +377,7 @@ static int const kCodeVerifierRecommendedLength = 43;
 - (void)testSupportedResponseTypes {
   NSDictionary *additionalParameters =
       @{ kTestAdditionalParameterKey : kTestAdditionalParameterValue };
-  OIDServiceConfiguration *configuration = [OIDServiceConfigurationTests testInstance];
+  OIDServiceConfiguration *configuration = [OIDServiceConfiguration testInstance];
 
   NSString *scope = [OIDScopeUtilities scopesWithArray:@[ kTestScope, kTestScopeA ]];
 
@@ -524,7 +460,7 @@ static int const kCodeVerifierRecommendedLength = 43;
 }
 
 - (void)testExternalUserAgentMethods {
-  OIDAuthorizationRequest *request = [[self class] testInstance];
+  OIDAuthorizationRequest *request = [OIDAuthorizationRequest testInstance];
   XCTAssertEqualObjects([request externalUserAgentRequestURL], [request authorizationRequestURL]);
   XCTAssert([[request redirectScheme] isEqualToString:request.redirectURL.scheme]);
 }

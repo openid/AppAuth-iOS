@@ -56,21 +56,22 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (nullable instancetype)init {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wnonnull"
-  return [self initWithPresentingViewController:nil];
-#pragma clang diagnostic pop
+  self = [super init];
+  return self;
+}
+
+- (nullable instancetype)initWithPrefersEphemeralSession:(BOOL)prefersEphemeralSession {
+  self = [self init];
+  if (self) {
+    _prefersEphemeralSession = prefersEphemeralSession;
+  }
+  return self;
 }
 
 - (nullable instancetype)initWithPresentingViewController:
     (UIViewController *)presentingViewController {
-  self = [super init];
+  self = [self init];
   if (self) {
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 130000
-    NSAssert(presentingViewController != nil,
-             @"presentingViewController cannot be nil on iOS 13");
-#endif // __IPHONE_OS_VERSION_MAX_ALLOWED >= 130000
-    
     _presentingViewController = presentingViewController;
   }
   return self;
@@ -91,6 +92,38 @@ NS_ASSUME_NONNULL_BEGIN
   if (_externalUserAgentFlowInProgress) {
     // TODO: Handle errors as authorization is already in progress.
     return NO;
+  }
+
+  if (!_presentingViewController) {
+    // Find presentingViewController
+    if (@available(iOS 13.0, *)) {
+      NSSet<UIWindowScene *> *scenes =
+          (NSSet<UIWindowScene *> *)[UIApplication sharedApplication].connectedScenes;
+
+      NSMutableArray<UIWindow *> *windows = [NSMutableArray array];
+
+      for (UIWindowScene *scene in scenes) {
+        [windows addObjectsFromArray:scene.windows];
+      }
+
+      for (UIWindow *window in windows) {
+        if (window.isKeyWindow) { // False if calling before window appears
+          UIWindow *keyWindow = window;
+          _presentingViewController = keyWindow.rootViewController;
+          break;
+        }
+      }
+    } else {
+      // ≤ iOS 12.X
+      NSArray<UIWindow *> *windows = UIApplication.sharedApplication.windows;
+      NSPredicate *keyWindowPredicate = [NSPredicate predicateWithFormat:@"keyWindow == YES"];
+      UIWindow *keyWindow = [windows filteredArrayUsingPredicate:keyWindowPredicate].firstObject;
+      _presentingViewController = keyWindow.rootViewController;
+    }
+    if (!_presentingViewController) {
+      // Unable to find a presentingViewController; perhaps because no window is key and visible
+      return NO;
+    }
   }
 
   _externalUserAgentFlowInProgress = YES;

@@ -16,19 +16,18 @@
         limitations under the License.
  */
 
-#import "OIDServiceConfigurationTests.h"
-
 #import <objc/runtime.h>
 
 #import "OIDServiceDiscoveryTests.h"
 
 #if SWIFT_PACKAGE
 @import AppAuthCore;
+@import TestHelpers;
 #else
 #import "Source/AppAuthCore/OIDAuthorizationService.h"
 #import "Source/AppAuthCore/OIDError.h"
-#import "Source/AppAuthCore/OIDServiceConfiguration.h"
 #import "Source/AppAuthCore/OIDServiceDiscovery.h"
+#import "UnitTests/Helpers/OIDServiceConfiguration+TestHelper.h"
 #endif
 
 // Ignore warnings about "Use of GNU statement expression extension" which is raised by our use of
@@ -85,22 +84,13 @@ static NSString *const kIssuerTestIssuer2 = @"https://accounts.google.com";
 static NSString *const kIssuerTestExpectedFullDiscoveryURL =
     @"https://accounts.google.com/.well-known/openid-configuration";
 
+@interface OIDServiceConfigurationTests : XCTestCase
+@end
 
 @implementation OIDServiceConfigurationTests {
   /*! @brief A list of tasks to perform during tearDown.
    */
   NSMutableArray<TeardownTask> *_teardownTasks;
-}
-
-+ (OIDServiceConfiguration *)testInstance {
-  NSURL *authEndpoint = [NSURL URLWithString:kInitializerTestAuthEndpoint];
-  NSURL *tokenEndpoint = [NSURL URLWithString:kInitializerTestTokenEndpoint];
-  NSURL *registrationEndpoint = [NSURL URLWithString:kInitializerTestRegistrationEndpoint];
-  OIDServiceConfiguration *configuration =
-      [[OIDServiceConfiguration alloc] initWithAuthorizationEndpoint:authEndpoint
-                                                       tokenEndpoint:tokenEndpoint
-                                                registrationEndpoint:registrationEndpoint];
-  return configuration;
 }
 
 - (void)setUp {
@@ -155,7 +145,7 @@ static NSString *const kIssuerTestExpectedFullDiscoveryURL =
 /*! @brief Tests the designated initializer.
  */
 - (void)testInitializer {
-  OIDServiceConfiguration *configuration = [[self class] testInstance];
+  OIDServiceConfiguration *configuration = [OIDServiceConfiguration testInstance];
   XCTAssertEqualObjects(configuration.authorizationEndpoint.absoluteString,
                         kInitializerTestAuthEndpoint, @"");
   XCTAssertEqualObjects(configuration.tokenEndpoint.absoluteString,
@@ -362,7 +352,7 @@ static NSString *const kIssuerTestExpectedFullDiscoveryURL =
         checking to make sure the source and destination instances have equivalent dictionaries.
  */
 - (void)testSecureCoding {
-  OIDServiceConfiguration *configuration = [[self class] testInstance];
+  OIDServiceConfiguration *configuration = [OIDServiceConfiguration testInstance];
   NSData *data = [NSKeyedArchiver archivedDataWithRootObject:configuration];
   OIDServiceConfiguration *unarchived = [NSKeyedUnarchiver unarchiveObjectWithData:data];
 
@@ -376,7 +366,7 @@ static NSString *const kIssuerTestExpectedFullDiscoveryURL =
         dictionaries.
  */
 - (void)testCopying {
-  OIDServiceConfiguration *configuration = [[self class] testInstance];
+  OIDServiceConfiguration *configuration = [OIDServiceConfiguration testInstance];
   OIDServiceConfiguration *unarchived = [configuration copy];
 
   XCTAssertEqualObjects(configuration.authorizationEndpoint, unarchived.authorizationEndpoint, @"");

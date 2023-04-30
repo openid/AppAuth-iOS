@@ -19,7 +19,6 @@
 #import "OIDTokenRequestTests.h"
 
 #import "OIDAuthorizationResponseTests.h"
-#import "OIDServiceConfigurationTests.h"
 
 #if SWIFT_PACKAGE
 @import AppAuthCore;
@@ -27,7 +26,6 @@
 #import "Source/AppAuthCore/OIDAuthorizationRequest.h"
 #import "Source/AppAuthCore/OIDAuthorizationResponse.h"
 #import "Source/AppAuthCore/OIDScopeUtilities.h"
-#import "Source/AppAuthCore/OIDServiceConfiguration.h"
 #import "Source/AppAuthCore/OIDTokenRequest.h"
 #endif
 

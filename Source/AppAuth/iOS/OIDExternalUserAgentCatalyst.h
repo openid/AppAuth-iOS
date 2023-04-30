@@ -32,18 +32,27 @@ NS_ASSUME_NONNULL_BEGIN
 API_AVAILABLE(macCatalyst(13)) API_UNAVAILABLE(ios)
 @interface OIDExternalUserAgentCatalyst : NSObject<OIDExternalUserAgent>
 
-/*! @internal
-    @brief Unavailable. Please use @c initWithPresentingViewController:
+/*! @brief Create an external user-agent.
+    @discussion The specific authentication UI used depends on the iOS version and accessibility
+        options. iOS 8 uses the system browser, iOS 9-10 use @c SFSafariViewController, iOS 11 uses
+        @c SFAuthenticationSession (unless Guided Access is on which does not work) or uses
+        @c SFSafariViewController, and iOS 12+ uses @c ASWebAuthenticationSession (unless Guided
+        Access is on).
  */
-- (nonnull instancetype)init NS_UNAVAILABLE;
+- (nonnull instancetype)init;
 
-/*! @brief The designated initializer.
+/*! @brief Create an external user-agent which optionally uses a private authentication session.
+    @param prefersEphemeralSession Whether the caller prefers to use a private authentication
+        session. See @c ASWebAuthenticationSession.prefersEphemeralWebBrowserSession for more.
+ */
+- (nullable instancetype)initWithPrefersEphemeralSession:(BOOL)prefersEphemeralSession;
+
+/*! @brief Create an external user-agent with a presenting view controller.
     @param presentingViewController The view controller from which to present the
         \SFSafariViewController.
  */
 - (nullable instancetype)initWithPresentingViewController:
-    (UIViewController *)presentingViewController
-    NS_DESIGNATED_INITIALIZER;
+    (UIViewController *)presentingViewController;
 
 /*! @brief Create an external user-agent which optionally uses a private authentication session.
     @param presentingViewController The view controller from which to present the browser.

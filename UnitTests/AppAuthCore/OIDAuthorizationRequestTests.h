@@ -1,4 +1,4 @@
-/*! @file OIDServiceConfigurationTests.h
+/*! @file OIDAuthorizationRequestTests.h
     @brief AppAuth iOS SDK
     @copyright
         Copyright 2015 Google Inc. All Rights Reserved.
@@ -18,17 +18,22 @@
 
 #import <XCTest/XCTest.h>
 
-@class OIDServiceConfiguration;
+@class OIDAuthorizationRequest;
 
 NS_ASSUME_NONNULL_BEGIN
 
-/*! @brief Unit tests for @c OIDServiceConfiguration.
+/*! @brief Unit tests for @c OIDAuthorizationRequest.
  */
-@interface OIDServiceConfigurationTests : XCTestCase
+@interface OIDAuthorizationRequestTests : XCTestCase
 
-/*! @brief Creates a new @c OIDServiceConfiguration for testing.
+/*! @brief Creates a new @c OIDAuthorizationRequest testing a code flow request.
  */
-+ (OIDServiceConfiguration *)testInstance;
++ (OIDAuthorizationRequest *)testInstanceCodeFlow;
+
+/*! @brief Creates a new @c OIDAuthorizationRequest testing a code flow request
+        with client authentication.
+ */
++ (OIDAuthorizationRequest *)testInstanceCodeFlowClientAuth;
 
 @end
 

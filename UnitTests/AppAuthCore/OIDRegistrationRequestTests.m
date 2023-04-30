@@ -18,23 +18,15 @@
 
 #import "OIDRegistrationRequestTests.h"
 
-#import "OIDServiceConfigurationTests.h"
-
 #if SWIFT_PACKAGE
 @import AppAuthCore;
+@import TestHelpers;
 #else
 #import "Source/AppAuthCore/OIDClientMetadataParameters.h"
 #import "Source/AppAuthCore/OIDRegistrationRequest.h"
-#import "Source/AppAuthCore/OIDServiceConfiguration.h"
+#import "UnitTests/Helpers/OIDAuthorizationRequest+TestHelper.h"
+#import "UnitTests/Helpers/OIDServiceConfiguration+TestHelper.h"
 #endif
-
-/*! @brief Test key for the @c additionalParameters property.
- */
-static NSString *const kTestAdditionalParameterKey = @"A";
-
-/*! @brief Test value for the @c additionalParameters property.
- */
-static NSString *const kTestAdditionalParameterValue = @"1";
 
 /*! @brief Test value for the @c initialAccessToken property.
  */
@@ -67,7 +59,7 @@ static NSString *kTokenEndpointAuthMethodTestValue = @"client_secret_basic";
                                          kTestAdditionalParameterKey : kTestAdditionalParameterValue
                                          };
 
-  OIDServiceConfiguration *config = [OIDServiceConfigurationTests testInstance];
+  OIDServiceConfiguration *config = [OIDServiceConfiguration testInstance];
   OIDRegistrationRequest *request =
       [[OIDRegistrationRequest alloc] initWithConfiguration:config
                                redirectURIs:@[ [NSURL URLWithString:kRedirectURLTestValue] ]
