@@ -113,7 +113,7 @@ static NSString *const kTestAdditionalHeaderValue = @"2";
   NSDictionary *additionalParameters =
       @{ kTestAdditionalParameterKey : kTestAdditionalParameterValue };
   NSDictionary *additionalHeaders =
-        @{ kTestAdditionalHeaderKey : kTestAdditionalHeaderValue };
+      @{ kTestAdditionalHeaderKey : kTestAdditionalHeaderValue };
   
   OIDTokenRequest *request =
       [[OIDTokenRequest alloc] initWithConfiguration:authResponse.request.configuration
@@ -137,7 +137,7 @@ static NSString *const kTestAdditionalHeaderValue = @"2";
   NSDictionary *additionalParameters =
       @{ kTestAdditionalParameterKey : kTestAdditionalParameterValue };
   NSDictionary *additionalHeaders =
-        @{ kTestAdditionalHeaderKey : kTestAdditionalHeaderValue };
+      @{ kTestAdditionalHeaderKey : kTestAdditionalHeaderValue };
   
   OIDTokenRequest *request =
       [[OIDTokenRequest alloc] initWithConfiguration:authResponse.request.configuration

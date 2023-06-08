@@ -124,7 +124,6 @@ static NSString *const kAdditionalHeadersKey = @"additionalHeaders";
             codeVerifier:(nullable NSString *)codeVerifier
     additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters
        additionalHeaders:(nullable NSDictionary<NSString *, NSString *> *)additionalHeaders {
-{
   self = [super init];
   if (self) {
     _configuration = [configuration copy];
@@ -139,7 +138,7 @@ static NSString *const kAdditionalHeadersKey = @"additionalHeaders";
     _additionalParameters =
         [[NSDictionary alloc] initWithDictionary:additionalParameters copyItems:YES];
     _additionalHeaders =
-          [[NSDictionary alloc] initWithDictionary:additionalHeaders copyItems:YES];
+        [[NSDictionary alloc] initWithDictionary:additionalHeaders copyItems:YES];
     
     // Additional validation for the authorization_code grant type
     if ([_grantType isEqual:OIDGrantTypeAuthorizationCode]) {
@@ -188,7 +187,7 @@ static NSString *const kAdditionalHeadersKey = @"additionalHeaders";
   ]];
     
   NSDictionary *additionalParameters =
-    [aDecoder decodeObjectOfClasses:additionalParameterCodingClasses forKey:kAdditionalParametersKey];
+      [aDecoder decodeObjectOfClasses:additionalParameterCodingClasses forKey:kAdditionalParametersKey];
     
     
   NSSet *additionalHeaderCodingClasses = [NSSet setWithArray:@[
@@ -197,7 +196,7 @@ static NSString *const kAdditionalHeadersKey = @"additionalHeaders";
   ]];
     
   NSDictionary *additionalHeaders =
-    [aDecoder decodeObjectOfClasses:additionalHeaderCodingClasses forKey:kAdditionalHeadersKey];
+      [aDecoder decodeObjectOfClasses:additionalHeaderCodingClasses forKey:kAdditionalHeadersKey];
   
   self = [super init];
   if (self) {

@@ -284,7 +284,7 @@ static int const kTestInterval = 5;
       @{kTestAdditionalHeaderKey : kTestAdditionalHeaderValue};
 
   OIDTVTokenRequest *pollRequest =
-    [testResponse tokenPollRequestWithAdditionalParameters:testAdditionalParameters additionalHeaders:testAdditionalHeaders];
+      [testResponse tokenPollRequestWithAdditionalParameters:testAdditionalParameters additionalHeaders:testAdditionalHeaders];
 
   XCTAssertEqualObjects(pollRequest.deviceCode, kTestDeviceCode);
   XCTAssertEqualObjects(pollRequest.clientID, kTestClientID);
