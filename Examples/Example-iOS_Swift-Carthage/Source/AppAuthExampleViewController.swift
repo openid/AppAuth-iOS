@@ -387,8 +387,7 @@ extension AppAuthExampleViewController {
                                               scopes: [OIDScopeOpenID, OIDScopeProfile],
                                               redirectURL: redirectURI,
                                               responseType: OIDResponseTypeCode,
-                                              additionalParameters: nil,
-                                              additionalHeaders: nil)
+                                              additionalParameters: nil)
 
         // performs authentication request
         logMessage("Initiating authorization request with scope: \(request.scope ?? "DEFAULT_SCOPE")")
@@ -424,8 +423,7 @@ extension AppAuthExampleViewController {
                                               scopes: [OIDScopeOpenID, OIDScopeProfile],
                                               redirectURL: redirectURI,
                                               responseType: OIDResponseTypeCode,
-                                              additionalParameters: nil,
-                                              additionalHeaders: nil)
+                                              additionalParameters: nil)
 
         // performs authentication request
         logMessage("Initiating authorization request with scope: \(request.scope ?? "DEFAULT_SCOPE")")

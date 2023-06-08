@@ -209,8 +209,7 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
                                                       scopes:@[ OIDScopeOpenID, OIDScopeProfile ]
                                                  redirectURL:redirectURI
                                                 responseType:OIDResponseTypeCode
-                                        additionalParameters:nil
-                                           additionalHeaders:nil];
+                                        additionalParameters:nil];
   // performs authentication request
   AppDelegate *appDelegate = (AppDelegate *) [UIApplication sharedApplication].delegate;
   [self logMessage:@"Initiating authorization request with scope: %@", request.scope];
@@ -243,8 +242,7 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
                                                       scopes:@[ OIDScopeOpenID, OIDScopeProfile ]
                                                  redirectURL:redirectURI
                                                 responseType:OIDResponseTypeCode
-                                        additionalParameters:nil
-                                           additionalHeaders:nil];
+                                        additionalParameters:nil];
   // performs authentication request
   AppDelegate *appDelegate = (AppDelegate *) [UIApplication sharedApplication].delegate;
   [self logMessage:@"Initiating authorization request %@", request];

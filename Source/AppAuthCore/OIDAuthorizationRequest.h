@@ -134,14 +134,9 @@ extern NSString *const OIDOAuthorizationRequestCodeChallengeMethodS256;
  */
 @property(nonatomic, readonly, nullable) NSDictionary<NSString *, NSString *> *additionalParameters;
 
-/*! @brief The client's additional authorization header.
-    @see https://tools.ietf.org/html/rfc6749#section-3.2
- */
-@property(nonatomic, readonly, nullable) NSDictionary<NSString *, NSString *> *additionalHeaders;
-
 /*! @internal
     @brief Unavailable. Please use
-        @c initWithConfiguration:clientId:scopes:redirectURL:responseType:additionalParameters:additionalHeaders:.
+        @c initWithConfiguration:clientId:scopes:redirectURL:responseType:additionalParameters:.
  */
 - (instancetype)init NS_UNAVAILABLE;
 
@@ -153,7 +148,6 @@ extern NSString *const OIDOAuthorizationRequestCodeChallengeMethodS256;
     @param redirectURL The client's redirect URI.
     @param responseType The expected response type.
     @param additionalParameters The client's additional authorization parameters.
-    @param additionalHeaders The client's additional authorization headers.
     @remarks This convenience initializer generates a state parameter and PKCE challenges
         automatically.
  */
@@ -163,8 +157,7 @@ extern NSString *const OIDOAuthorizationRequestCodeChallengeMethodS256;
                    scopes:(nullable NSArray<NSString *> *)scopes
               redirectURL:(NSURL *)redirectURL
              responseType:(NSString *)responseType
-     additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters
-        additionalHeaders:(nullable NSDictionary<NSString *, NSString *> *)additionalHeaders;
+     additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters;
 
 /*! @brief Creates an authorization request with opinionated defaults (a secure @c state, @c nonce,
         and PKCE with S256 as the @c code_challenge_method).
@@ -175,7 +168,6 @@ extern NSString *const OIDOAuthorizationRequestCodeChallengeMethodS256;
     @param redirectURL The client's redirect URI.
     @param responseType The expected response type.
     @param additionalParameters The client's additional authorization parameters.
-    @param additionalHeaders The client's additional authorization headers.
     @remarks This convenience initializer generates a state parameter and PKCE challenges
         automatically.
  */
@@ -186,8 +178,7 @@ extern NSString *const OIDOAuthorizationRequestCodeChallengeMethodS256;
                    scopes:(nullable NSArray<NSString *> *)scopes
               redirectURL:(NSURL *)redirectURL
              responseType:(NSString *)responseType
-     additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters
-        additionalHeaders:(nullable NSDictionary<NSString *, NSString *> *)additionalHeaders;
+     additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters;
 
 /*! @brief Designated initializer.
     @param configuration The service's configuration.
@@ -208,7 +199,6 @@ extern NSString *const OIDOAuthorizationRequestCodeChallengeMethodS256;
         @c OIDAuthorizationRequest.codeChallengeS256ForVerifier: is used to create the code
         challenge.
     @param additionalParameters The client's additional authorization parameters.
-    @param additionalHeaders The client's additional authorization headers.
  */
 - (instancetype)
     initWithConfiguration:(OIDServiceConfiguration *)configuration
@@ -223,7 +213,6 @@ extern NSString *const OIDOAuthorizationRequestCodeChallengeMethodS256;
             codeChallenge:(nullable NSString *)codeChallenge
       codeChallengeMethod:(nullable NSString *)codeChallengeMethod
      additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters
-        additionalHeaders:(nullable NSDictionary<NSString *, NSString *> *)additionalHeaders
     NS_DESIGNATED_INITIALIZER;
 
 /*! @brief Constructs the request URI by adding the request parameters to the query component of the

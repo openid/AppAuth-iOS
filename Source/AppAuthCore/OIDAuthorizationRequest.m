@@ -76,11 +76,6 @@ static NSString *const kCodeChallengeMethodKey = @"code_challenge_method";
  */
 static NSString *const kAdditionalParametersKey = @"additionalParameters";
 
-/*! @brief Key used to encode the @c additionalHeaders property for
-        @c NSSecureCoding
- */
-static NSString *const kAdditionalHeadersKey = @"additionalHeaders";
-
 /*! @brief Number of random bytes generated for the @ state.
  */
 static NSUInteger const kStateSizeBytes = 32;
@@ -107,8 +102,7 @@ NSString *const OIDOAuthorizationRequestCodeChallengeMethodS256 = @"S256";
                                  scopes:
                             redirectURL:
                            responseType:
-                   additionalParameters:
-                      additionalHeaders:)
+                   additionalParameters:)
     )
 
 /*! @brief Check if the response type is one AppAuth supports
@@ -140,7 +134,6 @@ NSString *const OIDOAuthorizationRequestCodeChallengeMethodS256 = @"S256";
            codeChallenge:(nullable NSString *)codeChallenge
      codeChallengeMethod:(nullable NSString *)codeChallengeMethod
     additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters
-       additionalHeaders:(nullable NSDictionary<NSString *, NSString *> *)additionalHeaders
 {
   self = [super init];
   if (self) {
@@ -162,9 +155,6 @@ NSString *const OIDOAuthorizationRequestCodeChallengeMethodS256 = @"S256";
 
     _additionalParameters =
         [[NSDictionary alloc] initWithDictionary:additionalParameters copyItems:YES];
-      
-    _additionalHeaders =
-          [[NSDictionary alloc] initWithDictionary:additionalHeaders copyItems:YES];
   }
   return self;
 }
@@ -176,8 +166,7 @@ NSString *const OIDOAuthorizationRequestCodeChallengeMethodS256 = @"S256";
                   scopes:(nullable NSArray<NSString *> *)scopes
              redirectURL:(NSURL *)redirectURL
             responseType:(NSString *)responseType
-    additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters
-       additionalHeaders:(nullable NSDictionary<NSString *, NSString *> *)additionalHeaders {
+    additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters {
 
   // generates PKCE code verifier and challenge
   NSString *codeVerifier = [[self class] generateCodeVerifier];
@@ -194,8 +183,7 @@ NSString *const OIDOAuthorizationRequestCodeChallengeMethodS256 = @"S256";
                         codeVerifier:codeVerifier
                        codeChallenge:codeChallenge
                  codeChallengeMethod:OIDOAuthorizationRequestCodeChallengeMethodS256
-                additionalParameters:additionalParameters
-                   additionalHeaders:additionalHeaders];
+                additionalParameters:additionalParameters];
 }
 
 - (instancetype)
@@ -204,16 +192,14 @@ NSString *const OIDOAuthorizationRequestCodeChallengeMethodS256 = @"S256";
                    scopes:(nullable NSArray<NSString *> *)scopes
               redirectURL:(NSURL *)redirectURL
              responseType:(NSString *)responseType
-     additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters
-        additionalHeaders:(nullable NSDictionary<NSString *, NSString *> *)additionalHeaders {
+    additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters {
   return [self initWithConfiguration:configuration
                             clientId:clientID
                         clientSecret:nil
                               scopes:scopes
                          redirectURL:redirectURL
                         responseType:responseType
-                additionalParameters:additionalParameters
-                   additionalHeaders:additionalHeaders];
+                additionalParameters:additionalParameters];
 }
 
 #pragma mark - NSCopying
@@ -255,9 +241,6 @@ NSString *const OIDOAuthorizationRequestCodeChallengeMethodS256 = @"S256";
   NSDictionary *additionalParameters =
       [aDecoder decodeObjectOfClasses:additionalParameterCodingClasses
                                forKey:kAdditionalParametersKey];
-  NSDictionary *additionalHeaders =
-        [aDecoder decodeObjectOfClasses:additionalParameterCodingClasses
-                                 forKey:kAdditionalHeadersKey];
 
   self = [self initWithConfiguration:configuration
                             clientId:clientID
@@ -270,8 +253,7 @@ NSString *const OIDOAuthorizationRequestCodeChallengeMethodS256 = @"S256";
                         codeVerifier:codeVerifier
                        codeChallenge:codeChallenge
                  codeChallengeMethod:codeChallengeMethod
-                additionalParameters:additionalParameters
-                   additionalHeaders:additionalHeaders];
+                additionalParameters:additionalParameters];
   return self;
 }
 
@@ -288,7 +270,6 @@ NSString *const OIDOAuthorizationRequestCodeChallengeMethodS256 = @"S256";
   [aCoder encodeObject:_codeChallenge forKey:kCodeChallengeKey];
   [aCoder encodeObject:_codeChallengeMethod forKey:kCodeChallengeMethodKey];
   [aCoder encodeObject:_additionalParameters forKey:kAdditionalParametersKey];
-  [aCoder encodeObject:_additionalHeaders forKey:kAdditionalHeadersKey];
 }
 
 #pragma mark - NSObject overrides
