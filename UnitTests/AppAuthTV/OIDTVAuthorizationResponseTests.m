@@ -132,8 +132,7 @@ static int const kTestInterval = 5;
                                                       clientId:kTestClientID
                                                   clientSecret:kTestClientSecret
                                                         scopes:nil
-                                          additionalParameters:nil
-                                             additionalHeaders:nil];
+                                          additionalParameters:nil];
   return request;
 }
 

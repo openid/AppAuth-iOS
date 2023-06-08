@@ -69,14 +69,6 @@ static NSString *const kTestAdditionalParameterKey = @"A";
  */
 static NSString *const kTestAdditionalParameterValue = @"1";
 
-/*! @brief Test key for the @c additionalHeaders property.
- */
-static NSString *const kTestAdditionalHeaderKey = @"B";
-
-/*! @brief Test value for the @c additionalHeaders property.
- */
-static NSString *const kTestAdditionalHeaderValue = @"2";
-
 /*! @brief Test value for the @c state property.
  */
 static NSString *const kTestState = @"State";
@@ -155,8 +147,6 @@ static int const kCodeVerifierRecommendedLength = 43;
 + (OIDAuthorizationRequest *)testInstance {
   NSDictionary *additionalParameters =
       @{ kTestAdditionalParameterKey : kTestAdditionalParameterValue };
-  NSDictionary *additionalHeaders =
-      @{ kTestAdditionalHeaderKey : kTestAdditionalHeaderValue };
   OIDServiceConfiguration *configuration = [OIDServiceConfigurationTests testInstance];
   OIDAuthorizationRequest *request =
       [[OIDAuthorizationRequest alloc] initWithConfiguration:configuration
@@ -170,8 +160,7 @@ static int const kCodeVerifierRecommendedLength = 43;
                   codeVerifier:kTestCodeVerifier
                  codeChallenge:[[self class] codeChallenge]
            codeChallengeMethod:[[self class] codeChallengeMethod]
-          additionalParameters:additionalParameters
-             additionalHeaders:additionalHeaders];
+          additionalParameters:additionalParameters];
   return request;
 }
 
@@ -189,8 +178,7 @@ static int const kCodeVerifierRecommendedLength = 43;
                   codeVerifier:kTestCodeVerifier
                  codeChallenge:[[self class] codeChallenge]
            codeChallengeMethod:[[self class] codeChallengeMethod]
-          additionalParameters:nil
-             additionalHeaders:nil];
+          additionalParameters:nil];
   return request;
 }
 
@@ -208,8 +196,7 @@ static int const kCodeVerifierRecommendedLength = 43;
                   codeVerifier:kTestCodeVerifier
                  codeChallenge:[[self class] codeChallenge]
            codeChallengeMethod:[[self class] codeChallengeMethod]
-          additionalParameters:nil
-             additionalHeaders:nil];
+          additionalParameters:nil];
   return request;
 }
 
@@ -218,8 +205,6 @@ static int const kCodeVerifierRecommendedLength = 43;
 - (void)testScopeInitializerWithManyScopesAndNoClientSecret {
   NSDictionary *additionalParameters =
       @{ kTestAdditionalParameterKey : kTestAdditionalParameterValue };
-  NSDictionary *additionalHeaders =
-      @{ kTestAdditionalHeaderKey : kTestAdditionalHeaderValue };
   OIDServiceConfiguration *configuration = [OIDServiceConfigurationTests testInstance];
   OIDAuthorizationRequest *request =
       [[OIDAuthorizationRequest alloc] initWithConfiguration:configuration
@@ -227,8 +212,7 @@ static int const kCodeVerifierRecommendedLength = 43;
                         scopes:@[ kTestScope, kTestScopeA ]
                    redirectURL:[NSURL URLWithString:kTestRedirectURL]
                   responseType:OIDResponseTypeCode
-          additionalParameters:additionalParameters
-             additionalHeaders:additionalHeaders];
+          additionalParameters:additionalParameters];
 
   XCTAssertEqualObjects(request.responseType, @"code", @"");
   XCTAssertEqualObjects(request.scope, kTestScopesMerged, @"");
@@ -237,15 +221,11 @@ static int const kCodeVerifierRecommendedLength = 43;
   XCTAssertEqualObjects(request.redirectURL, [NSURL URLWithString:kTestRedirectURL], @"");
   XCTAssertEqualObjects(request.additionalParameters[kTestAdditionalParameterKey],
                         kTestAdditionalParameterValue, @"");
-  XCTAssertEqualObjects(request.additionalHeaders[kTestAdditionalHeaderKey],
-                        kTestAdditionalHeaderValue, @"");
 }
 
 - (void)testScopeInitializerWithManyScopesAndClientSecret {
   NSDictionary *additionalParameters =
       @{ kTestAdditionalParameterKey : kTestAdditionalParameterValue };
-  NSDictionary *additionalHeaders =
-      @{ kTestAdditionalHeaderKey : kTestAdditionalHeaderValue };
   OIDServiceConfiguration *configuration = [OIDServiceConfigurationTests testInstance];
   OIDAuthorizationRequest *request =
       [[OIDAuthorizationRequest alloc] initWithConfiguration:configuration
@@ -254,8 +234,7 @@ static int const kCodeVerifierRecommendedLength = 43;
                         scopes:@[ kTestScope, kTestScopeA ]
                    redirectURL:[NSURL URLWithString:kTestRedirectURL]
                   responseType:OIDResponseTypeCode
-          additionalParameters:additionalParameters
-             additionalHeaders:additionalHeaders];
+          additionalParameters:additionalParameters];
 
   XCTAssertEqualObjects(request.responseType, @"code", @"");
   XCTAssertEqualObjects(request.scope, kTestScopesMerged, @"");
@@ -264,8 +243,6 @@ static int const kCodeVerifierRecommendedLength = 43;
   XCTAssertEqualObjects(request.redirectURL, [NSURL URLWithString:kTestRedirectURL], @"");
   XCTAssertEqualObjects(request.additionalParameters[kTestAdditionalParameterKey],
                         kTestAdditionalParameterValue, @"");
-  XCTAssertEqualObjects(request.additionalHeaders[kTestAdditionalHeaderKey],
-                        kTestAdditionalHeaderValue, @"");
 }
 
 /*! @brief Tests the @c NSCopying implementation by round-tripping an instance through the copying
@@ -286,8 +263,6 @@ static int const kCodeVerifierRecommendedLength = 43;
   XCTAssertEqualObjects(request.codeChallengeMethod, [[self class] codeChallengeMethod], @"");
   XCTAssertEqualObjects(request.additionalParameters[kTestAdditionalParameterKey],
                         kTestAdditionalParameterValue, @"");
-  XCTAssertEqualObjects(request.additionalHeaders[kTestAdditionalHeaderKey],
-                        kTestAdditionalHeaderValue, @"");
 
   OIDAuthorizationRequest *requestCopy = [request copy];
 
@@ -304,8 +279,6 @@ static int const kCodeVerifierRecommendedLength = 43;
   XCTAssertEqualObjects(requestCopy.codeChallengeMethod, request.codeChallengeMethod, @"");
   XCTAssertEqualObjects(requestCopy.additionalParameters,
                         request.additionalParameters, @"");
-  XCTAssertEqualObjects(requestCopy.additionalHeaders,
-                        request.additionalHeaders, @"");
 }
 
 /*! @brief Tests the @c NSSecureCoding by round-tripping an instance through the coding process and
@@ -325,8 +298,6 @@ static int const kCodeVerifierRecommendedLength = 43;
   XCTAssertEqualObjects(request.codeChallengeMethod, [[self class] codeChallengeMethod], @"");
   XCTAssertEqualObjects(request.additionalParameters[kTestAdditionalParameterKey],
                         kTestAdditionalParameterValue, @"");
-  XCTAssertEqualObjects(request.additionalHeaders[kTestAdditionalHeaderKey],
-                        kTestAdditionalHeaderValue, @"");
 
   NSData *data = [NSKeyedArchiver archivedDataWithRootObject:request];
   OIDAuthorizationRequest *requestCopy = [NSKeyedUnarchiver unarchiveObjectWithData:data];
@@ -349,8 +320,6 @@ static int const kCodeVerifierRecommendedLength = 43;
   XCTAssertEqualObjects(requestCopy.codeChallengeMethod, [[self class] codeChallengeMethod], @"");
   XCTAssertEqualObjects(requestCopy.additionalParameters[kTestAdditionalParameterKey],
                         kTestAdditionalParameterValue, @"");
-  XCTAssertEqualObjects(requestCopy.additionalHeaders[kTestAdditionalHeaderKey],
-                        kTestAdditionalHeaderValue, @"");
 }
 
 /*! @brief Tests the scope string logic to make sure the disallowed characters are properly
@@ -365,72 +334,63 @@ static int const kCodeVerifierRecommendedLength = 43;
                                                       scopes:@[ kTestInvalidScope1 ]
                                                  redirectURL:redirectURL
                                                 responseType:OIDResponseTypeCode
-                                        additionalParameters:nil
-                                           additionalHeaders:nil], @"");
+                                        additionalParameters:nil], @"");
   XCTAssertThrows(
       [[OIDAuthorizationRequest alloc] initWithConfiguration:configuration
                                                     clientId:kTestClientID
                                                       scopes:@[ kTestInvalidScope2 ]
                                                  redirectURL:redirectURL
                                                 responseType:OIDResponseTypeCode
-                                        additionalParameters:nil
-                                           additionalHeaders:nil], @"");
+                                        additionalParameters:nil], @"");
   XCTAssertThrows(
       [[OIDAuthorizationRequest alloc] initWithConfiguration:configuration
                                                     clientId:kTestClientID
                                                       scopes:@[ kTestInvalidScope3 ]
                                                  redirectURL:redirectURL
                                                 responseType:OIDResponseTypeCode
-                                        additionalParameters:nil
-                                           additionalHeaders:nil], @"");
+                                        additionalParameters:nil], @"");
   XCTAssertThrows(
       [[OIDAuthorizationRequest alloc] initWithConfiguration:configuration
                                                     clientId:kTestClientID
                                                       scopes:@[ kTestInvalidScope4 ]
                                                  redirectURL:redirectURL
                                                 responseType:OIDResponseTypeCode
-                                        additionalParameters:nil
-                                           additionalHeaders:nil], @"");
+                                        additionalParameters:nil], @"");
   XCTAssertNoThrow(
       [[OIDAuthorizationRequest alloc] initWithConfiguration:configuration
                                                     clientId:kTestClientID
                                                       scopes:@[ kTestValidScope1 ]
                                                  redirectURL:redirectURL
                                                 responseType:OIDResponseTypeCode
-                                        additionalParameters:nil
-                                           additionalHeaders:nil], @"");
+                                        additionalParameters:nil], @"");
   XCTAssertNoThrow(
       [[OIDAuthorizationRequest alloc] initWithConfiguration:configuration
                                                     clientId:kTestClientID
                                                       scopes:@[ kTestValidScope2 ]
                                                  redirectURL:redirectURL
                                                 responseType:OIDResponseTypeCode
-                                        additionalParameters:nil
-                                           additionalHeaders:nil], @"");
+                                        additionalParameters:nil], @"");
   XCTAssertNoThrow(
       [[OIDAuthorizationRequest alloc] initWithConfiguration:configuration
                                                     clientId:kTestClientID
                                                       scopes:@[ kTestValidScope3 ]
                                                  redirectURL:redirectURL
                                                 responseType:OIDResponseTypeCode
-                                        additionalParameters:nil
-                                           additionalHeaders:nil], @"");
+                                        additionalParameters:nil], @"");
   XCTAssertNoThrow(
       [[OIDAuthorizationRequest alloc] initWithConfiguration:configuration
                                                     clientId:kTestClientID
                                                       scopes:@[ kTestValidScope4 ]
                                                  redirectURL:redirectURL
                                                 responseType:OIDResponseTypeCode
-                                        additionalParameters:nil
-                                           additionalHeaders:nil], @"");
+                                        additionalParameters:nil], @"");
   XCTAssertNoThrow(
       [[OIDAuthorizationRequest alloc] initWithConfiguration:configuration
                                                     clientId:kTestClientID
                                                       scopes:@[ kTestValidScope5 ]
                                                  redirectURL:redirectURL
                                                 responseType:OIDResponseTypeCode
-                                        additionalParameters:nil
-                                           additionalHeaders:nil], @"");
+                                        additionalParameters:nil], @"");
 }
 /*! @brief Returns a character set with all legal PKCE characters for the codeVerifier.
     @return Character set representing all legal codeVerifier characters.
@@ -481,8 +441,6 @@ static int const kCodeVerifierRecommendedLength = 43;
 - (void)testSupportedResponseTypes {
   NSDictionary *additionalParameters =
       @{ kTestAdditionalParameterKey : kTestAdditionalParameterValue };
-  NSDictionary *additionalHeaders =
-      @{ kTestAdditionalHeaderKey : kTestAdditionalHeaderValue };
   OIDServiceConfiguration *configuration = [OIDServiceConfigurationTests testInstance];
 
   NSString *scope = [OIDScopeUtilities scopesWithArray:@[ kTestScope, kTestScopeA ]];
@@ -499,8 +457,7 @@ static int const kCodeVerifierRecommendedLength = 43;
                   codeVerifier:kTestCodeVerifier
                  codeChallenge:[[self class] codeChallenge]
            codeChallengeMethod:[[self class] codeChallengeMethod]
-          additionalParameters:additionalParameters
-             additionalHeaders:additionalHeaders]
+          additionalParameters:additionalParameters]
   );
 
   // https://tools.ietf.org/html/rfc6749#section-3.1.1 says the order of values does not matter
@@ -516,8 +473,7 @@ static int const kCodeVerifierRecommendedLength = 43;
                   codeVerifier:kTestCodeVerifier
                  codeChallenge:[[self class] codeChallenge]
            codeChallengeMethod:[[self class] codeChallengeMethod]
-          additionalParameters:additionalParameters
-             additionalHeaders:additionalHeaders]
+          additionalParameters:additionalParameters]
   );
 
   XCTAssertThrows(
@@ -532,8 +488,7 @@ static int const kCodeVerifierRecommendedLength = 43;
                   codeVerifier:kTestCodeVerifier
                  codeChallenge:[[self class] codeChallenge]
            codeChallengeMethod:[[self class] codeChallengeMethod]
-          additionalParameters:additionalParameters
-             additionalHeaders:additionalHeaders]
+          additionalParameters:additionalParameters]
   );
 
   XCTAssertThrows(
@@ -548,8 +503,7 @@ static int const kCodeVerifierRecommendedLength = 43;
                   codeVerifier:kTestCodeVerifier
                  codeChallenge:[[self class] codeChallenge]
            codeChallengeMethod:[[self class] codeChallengeMethod]
-          additionalParameters:additionalParameters
-             additionalHeaders:additionalHeaders]
+          additionalParameters:additionalParameters]
   );
 
  XCTAssertNoThrow(
@@ -564,8 +518,7 @@ static int const kCodeVerifierRecommendedLength = 43;
                   codeVerifier:kTestCodeVerifier
                  codeChallenge:[[self class] codeChallenge]
            codeChallengeMethod:[[self class] codeChallengeMethod]
-          additionalParameters:additionalParameters
-             additionalHeaders:additionalHeaders]
+          additionalParameters:additionalParameters]
   );
 
 }
