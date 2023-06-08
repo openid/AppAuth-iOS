@@ -446,6 +446,52 @@ static const NSUInteger kExpiryTimeTolerance = 60;
           additionalHeaders:nil];
 }
 
+- (OIDTokenRequest *)tokenRefreshRequestWithAdditionalParameters:
+    (NSDictionary<NSString *, NSString *> *)additionalParameters
+                                               additionalHeaders:
+    (NSDictionary<NSString *,NSString *> *)additionalHeaders {
+
+  // TODO: Add unit test to confirm exception is thrown when expected
+
+  if (!_refreshToken) {
+    [OIDErrorUtilities raiseException:kRefreshTokenRequestException];
+  }
+  return [[OIDTokenRequest alloc]
+      initWithConfiguration:_lastAuthorizationResponse.request.configuration
+                  grantType:OIDGrantTypeRefreshToken
+          authorizationCode:nil
+                redirectURL:nil
+                   clientID:_lastAuthorizationResponse.request.clientID
+               clientSecret:_lastAuthorizationResponse.request.clientSecret
+                      scope:nil
+               refreshToken:_refreshToken
+               codeVerifier:nil
+       additionalParameters:additionalParameters
+          additionalHeaders:additionalHeaders];
+}
+
+- (OIDTokenRequest *)tokenRefreshRequestWithAdditionalHeaders:
+    (NSDictionary<NSString *, NSString *> *)additionalHeaders {
+
+  // TODO: Add unit test to confirm exception is thrown when expected
+
+  if (!_refreshToken) {
+    [OIDErrorUtilities raiseException:kRefreshTokenRequestException];
+  }
+  return [[OIDTokenRequest alloc]
+      initWithConfiguration:_lastAuthorizationResponse.request.configuration
+                  grantType:OIDGrantTypeRefreshToken
+          authorizationCode:nil
+                redirectURL:nil
+                   clientID:_lastAuthorizationResponse.request.clientID
+               clientSecret:_lastAuthorizationResponse.request.clientSecret
+                      scope:nil
+               refreshToken:_refreshToken
+               codeVerifier:nil
+       additionalParameters:nil
+          additionalHeaders:additionalHeaders];
+}
+
 #pragma mark - Stateful Actions
 
 - (void)didChangeState {
