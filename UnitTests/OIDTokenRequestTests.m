@@ -186,6 +186,12 @@ static NSString *const kTestAdditionalHeaderValue = @"2";
                         kTestAdditionalParameterValue,
                         @"The request's kTestAdditionalParameterKey additional parameter should "
                         "be equal to kTestAdditionalParameterValue.");
+  XCTAssertNotNil(request.additionalHeaders,
+                        @"Request's additionalHeaders field should not be nil.");
+  XCTAssertEqualObjects(request.additionalHeaders[kTestAdditionalHeaderKey],
+                        kTestAdditionalHeaderValue,
+                        @"The request's kTestAdditionalHeaderKey additional parameter should "
+                        "be equal to kTestAdditionalHeaderValue.");
 
   OIDTokenRequest *requestCopy = [request copy];
 
@@ -205,6 +211,9 @@ static NSString *const kTestAdditionalHeaderValue = @"2";
   XCTAssertNotNil(requestCopy.additionalParameters, @"");
   XCTAssertEqualObjects(requestCopy.additionalParameters[kTestAdditionalParameterKey],
                         kTestAdditionalParameterValue, @"");
+  XCTAssertNotNil(requestCopy.additionalHeaders, @"");
+  XCTAssertEqualObjects(requestCopy.additionalHeaders[kTestAdditionalHeaderKey],
+                        kTestAdditionalHeaderValue, @"");
 }
 
 /*! @brief Tests the @c NSSecureCoding by round-tripping an instance through the coding process and
@@ -227,6 +236,9 @@ static NSString *const kTestAdditionalHeaderValue = @"2";
   XCTAssertNotNil(request.additionalParameters, @"");
   XCTAssertEqualObjects(request.additionalParameters[kTestAdditionalParameterKey],
                         kTestAdditionalParameterValue, @"");
+  XCTAssertNotNil(request.additionalHeaders, @"");
+  XCTAssertEqualObjects(request.additionalHeaders[kTestAdditionalHeaderKey],
+                        kTestAdditionalHeaderValue, @"");
 
   NSData *data = [NSKeyedArchiver archivedDataWithRootObject:request];
   OIDTokenRequest *requestCopy = [NSKeyedUnarchiver unarchiveObjectWithData:data];
@@ -248,6 +260,9 @@ static NSString *const kTestAdditionalHeaderValue = @"2";
   XCTAssertNotNil(requestCopy.additionalParameters, @"");
   XCTAssertEqualObjects(requestCopy.additionalParameters[kTestAdditionalParameterKey],
                         kTestAdditionalParameterValue, @"");
+  XCTAssertNotNil(requestCopy.additionalHeaders, @"");
+  XCTAssertEqualObjects(requestCopy.additionalHeaders[kTestAdditionalHeaderKey],
+                        kTestAdditionalHeaderValue, @"");
 }
 
 - (void)testURLRequestNoClientAuth {
