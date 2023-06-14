@@ -427,8 +427,6 @@ static const NSUInteger kExpiryTimeTolerance = 60;
 - (OIDTokenRequest *)tokenRefreshRequestWithAdditionalParameters:
     (NSDictionary<NSString *, NSString *> *)additionalParameters {
 
-  // TODO: Add unit test to confirm exception is thrown when expected
-
   if (!_refreshToken) {
     [OIDErrorUtilities raiseException:kRefreshTokenRequestException];
   }
@@ -451,8 +449,6 @@ static const NSUInteger kExpiryTimeTolerance = 60;
                                                additionalHeaders:
     (NSDictionary<NSString *,NSString *> *)additionalHeaders {
 
-  // TODO: Add unit test to confirm exception is thrown when expected
-
   if (!_refreshToken) {
     [OIDErrorUtilities raiseException:kRefreshTokenRequestException];
   }
@@ -472,8 +468,6 @@ static const NSUInteger kExpiryTimeTolerance = 60;
 
 - (OIDTokenRequest *)tokenRefreshRequestWithAdditionalHeaders:
     (NSDictionary<NSString *, NSString *> *)additionalHeaders {
-
-  // TODO: Add unit test to confirm exception is thrown when expected
 
   if (!_refreshToken) {
     [OIDErrorUtilities raiseException:kRefreshTokenRequestException];
