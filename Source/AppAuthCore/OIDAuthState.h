@@ -48,6 +48,12 @@ typedef void (^OIDAuthStateAction)(NSString *_Nullable accessToken,
 typedef void (^OIDAuthStateAuthorizationCallback)(OIDAuthState *_Nullable authState,
                                                   NSError *_Nullable error);
 
+/*! @brief The exception thrown when a developer tries to create a refresh request from an
+        authorization request with no authorization code.
+ */
+static NSString *const kRefreshTokenRequestException =
+    @"Attempted to create a token refresh request from a token response with no refresh token.";
+
 /*! @brief A convenience class that retains the auth state between @c OIDAuthorizationResponse%s
         and @c OIDTokenResponse%s.
  */

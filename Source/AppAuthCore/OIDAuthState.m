@@ -55,12 +55,6 @@ static NSString *const kLastTokenResponseKey = @"lastTokenResponse";
  */
 static NSString *const kAuthorizationErrorKey = @"authorizationError";
 
-/*! @brief The exception thrown when a developer tries to create a refresh request from an
-        authorization request with no authorization code.
- */
-static NSString *const kRefreshTokenRequestException =
-    @"Attempted to create a token refresh request from a token response with no refresh token.";
-
 /*! @brief Number of seconds the access token is refreshed before it actually expires.
  */
 static const NSUInteger kExpiryTimeTolerance = 60;
