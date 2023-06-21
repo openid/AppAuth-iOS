@@ -181,13 +181,13 @@ static NSString *const kTestAdditionalHeaderValue = @"2";
   XCTAssertEqualObjects(request.codeVerifier, authResponse.request.codeVerifier,
                         @"Request and response codeVerifiers should be equal.");
   XCTAssertNotNil(request.additionalParameters,
-                        @"Request's additionalParameters field should not be nil.");
+                  @"Request's additionalParameters field should not be nil.");
   XCTAssertEqualObjects(request.additionalParameters[kTestAdditionalParameterKey],
                         kTestAdditionalParameterValue,
                         @"The request's kTestAdditionalParameterKey additional parameter should "
                         "be equal to kTestAdditionalParameterValue.");
   XCTAssertNotNil(request.additionalHeaders,
-                        @"Request's additionalHeaders field should not be nil.");
+                  @"Request's additionalHeaders field should not be nil.");
   XCTAssertEqualObjects(request.additionalHeaders[kTestAdditionalHeaderKey],
                         kTestAdditionalHeaderValue,
                         @"The request's kTestAdditionalHeaderKey additional parameter should "
