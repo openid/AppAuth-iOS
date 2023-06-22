@@ -129,7 +129,7 @@ NS_ASSUME_NONNULL_BEGIN
             refreshToken:(nullable NSString *)refreshToken
             codeVerifier:(nullable NSString *)codeVerifier
     additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters
-       additionalHeaders:(nullable NSDictionary<NSString *, NSString *> *)additionalHeader;
+       additionalHeaders:(nullable NSDictionary<NSString *, NSString *> *)additionalHeaders;
 
 /*! @brief Designated initializer.
     @param configuration The service's configuration.
@@ -157,7 +157,7 @@ NS_ASSUME_NONNULL_BEGIN
             refreshToken:(nullable NSString *)refreshToken
             codeVerifier:(nullable NSString *)codeVerifier
     additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters
-       additionalHeaders:(nullable NSDictionary<NSString *, NSString *> *)additionalHeader;
+       additionalHeaders:(nullable NSDictionary<NSString *, NSString *> *)additionalHeaders
     NS_DESIGNATED_INITIALIZER;
 
 /*! @brief Designated initializer for NSSecureCoding.
