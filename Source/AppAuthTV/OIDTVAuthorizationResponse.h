@@ -87,6 +87,25 @@ NS_ASSUME_NONNULL_BEGIN
 - (nullable OIDTVTokenRequest *)tokenPollRequestWithAdditionalParameters:
     (nullable NSDictionary<NSString *, NSString *> *)additionalParameters;
 
+/*! @brief Creates a token request suitable for polling the token endpoint with the @c deviceCode.
+    @param additionalHeaders Additional headers for the token request.
+    @return A @c OIDTVTokenRequest suitable for polling the token endpoint.
+    @see https://tools.ietf.org/html/rfc8628#section-3.4
+ */
+- (nullable OIDTVTokenRequest *)tokenPollRequestWithAdditionalHeaders:
+    (nullable NSDictionary<NSString *, NSString *> *)additionalHeaders;
+
+/*! @brief Creates a token request suitable for polling the token endpoint with the @c deviceCode.
+    @param additionalParameters Additional parameters for the token request.
+    @param additionalHeaders Additional headers for the token request.
+    @return A @c OIDTVTokenRequest suitable for polling the token endpoint.
+    @see https://tools.ietf.org/html/rfc8628#section-3.4
+ */
+- (nullable OIDTVTokenRequest *)tokenPollRequestWithAdditionalParameters:
+    (nullable NSDictionary<NSString *, NSString *> *)additionalParameters
+                                                       additionalHeaders:
+    (nullable NSDictionary<NSString *, NSString *> *)additionalHeaders;
+
 @end
 
 NS_ASSUME_NONNULL_END

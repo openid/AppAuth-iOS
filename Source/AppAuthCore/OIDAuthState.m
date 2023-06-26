@@ -55,12 +55,6 @@ static NSString *const kLastTokenResponseKey = @"lastTokenResponse";
  */
 static NSString *const kAuthorizationErrorKey = @"authorizationError";
 
-/*! @brief The exception thrown when a developer tries to create a refresh request from an
-        authorization request with no authorization code.
- */
-static NSString *const kRefreshTokenRequestException =
-    @"Attempted to create a token refresh request from a token response with no refresh token.";
-
 /*! @brief Number of seconds the access token is refreshed before it actually expires.
  */
 static const NSUInteger kExpiryTimeTolerance = 60;
@@ -427,7 +421,27 @@ static const NSUInteger kExpiryTimeTolerance = 60;
 - (OIDTokenRequest *)tokenRefreshRequestWithAdditionalParameters:
     (NSDictionary<NSString *, NSString *> *)additionalParameters {
 
-  // TODO: Add unit test to confirm exception is thrown when expected
+  if (!_refreshToken) {
+    [OIDErrorUtilities raiseException:kRefreshTokenRequestException];
+  }
+  return [[OIDTokenRequest alloc]
+      initWithConfiguration:_lastAuthorizationResponse.request.configuration
+                  grantType:OIDGrantTypeRefreshToken
+          authorizationCode:nil
+                redirectURL:nil
+                   clientID:_lastAuthorizationResponse.request.clientID
+               clientSecret:_lastAuthorizationResponse.request.clientSecret
+                      scope:nil
+               refreshToken:_refreshToken
+               codeVerifier:nil
+       additionalParameters:additionalParameters
+          additionalHeaders:nil];
+}
+
+- (OIDTokenRequest *)tokenRefreshRequestWithAdditionalParameters:
+    (NSDictionary<NSString *, NSString *> *)additionalParameters
+                                               additionalHeaders:
+    (NSDictionary<NSString *,NSString *> *)additionalHeaders {
 
   if (!_refreshToken) {
     [OIDErrorUtilities raiseException:kRefreshTokenRequestException];
@@ -442,7 +456,28 @@ static const NSUInteger kExpiryTimeTolerance = 60;
                       scope:nil
                refreshToken:_refreshToken
                codeVerifier:nil
-       additionalParameters:additionalParameters];
+       additionalParameters:additionalParameters
+          additionalHeaders:additionalHeaders];
+}
+
+- (OIDTokenRequest *)tokenRefreshRequestWithAdditionalHeaders:
+    (NSDictionary<NSString *, NSString *> *)additionalHeaders {
+
+  if (!_refreshToken) {
+    [OIDErrorUtilities raiseException:kRefreshTokenRequestException];
+  }
+  return [[OIDTokenRequest alloc]
+      initWithConfiguration:_lastAuthorizationResponse.request.configuration
+                  grantType:OIDGrantTypeRefreshToken
+          authorizationCode:nil
+                redirectURL:nil
+                   clientID:_lastAuthorizationResponse.request.clientID
+               clientSecret:_lastAuthorizationResponse.request.clientSecret
+                      scope:nil
+               refreshToken:_refreshToken
+               codeVerifier:nil
+       additionalParameters:nil
+          additionalHeaders:additionalHeaders];
 }
 
 #pragma mark - Stateful Actions

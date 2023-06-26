@@ -48,6 +48,12 @@ typedef void (^OIDAuthStateAction)(NSString *_Nullable accessToken,
 typedef void (^OIDAuthStateAuthorizationCallback)(OIDAuthState *_Nullable authState,
                                                   NSError *_Nullable error);
 
+/*! @brief The exception thrown when a developer tries to create a refresh request from an
+        authorization request with no authorization code.
+ */
+static NSString *const kRefreshTokenRequestException =
+    @"Attempted to create a token refresh request from a token response with no refresh token.";
+
 /*! @brief A convenience class that retains the auth state between @c OIDAuthorizationResponse%s
         and @c OIDTokenResponse%s.
  */
@@ -266,6 +272,31 @@ typedef void (^OIDAuthStateAuthorizationCallback)(OIDAuthState *_Nullable authSt
  */
 - (nullable OIDTokenRequest *)tokenRefreshRequestWithAdditionalParameters:
     (nullable NSDictionary<NSString *, NSString *> *)additionalParameters;
+
+/*! @brief Creates a token request suitable for refreshing an access token.
+    @param additionalParameters Additional parameters for the token request.
+    @param additionalHeaders Additional headers for the token request.
+    @return A @c OIDTokenRequest suitable for using a refresh token to obtain a new access token.
+    @discussion After performing the refresh, call @c OIDAuthState.updateWithTokenResponse:error:
+        to update the authorization state based on the response. Rather than doing the token refresh
+        yourself, you should use @c OIDAuthState.performActionWithFreshTokens:.
+    @see https://tools.ietf.org/html/rfc6749#section-1.5
+ */
+- (nullable OIDTokenRequest *)tokenRefreshRequestWithAdditionalParameters:
+    (nullable NSDictionary<NSString *, NSString *> *)additionalParameters
+                                                        additionalHeaders:
+    (nullable NSDictionary<NSString *, NSString *> *)additionalHeaders;
+
+/*! @brief Creates a token request suitable for refreshing an access token.
+    @param additionalHeaders Additional parameters for the token request.
+    @return A @c OIDTokenRequest suitable for using a refresh token to obtain a new access token.
+    @discussion After performing the refresh, call @c OIDAuthState.updateWithTokenResponse:error:
+        to update the authorization state based on the response. Rather than doing the token refresh
+        yourself, you should use @c OIDAuthState.performActionWithFreshTokens:.
+    @see https://tools.ietf.org/html/rfc6749#section-1.5
+ */
+- (nullable OIDTokenRequest *)tokenRefreshRequestWithAdditionalHeaders:
+    (nullable NSDictionary<NSString *, NSString *> *)additionalHeaders;
 
 @end
 

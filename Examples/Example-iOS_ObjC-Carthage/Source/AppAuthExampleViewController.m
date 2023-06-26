@@ -177,7 +177,8 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
                                                    grantTypes:nil
                                                   subjectType:nil
                                       tokenEndpointAuthMethod:@"client_secret_post"
-                                         additionalParameters:nil];
+                                         additionalParameters:nil
+                                            additionalHeaders:nil];
     // performs registration request
     [self logMessage:@"Initiating registration request"];
 

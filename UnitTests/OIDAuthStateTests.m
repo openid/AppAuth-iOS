@@ -435,6 +435,27 @@
   XCTAssertEqual([authState isTokenFresh], YES, @"");
 }
 
+- (void)testThatRefreshTokenExceptionWillBeRaisedForTokenRequestWithAdditionalParameters {
+  OIDAuthState *authState = [[OIDAuthState alloc] initWithAuthorizationResponse:nil tokenResponse:nil registrationResponse:nil];
+  XCTAssertThrowsSpecificNamed([authState tokenRefreshRequestWithAdditionalParameters:nil],
+                               NSException,
+                               kRefreshTokenRequestException);
+}
+
+- (void)testThatRefreshTokenExceptionWillBeRaisedForTokenRequestWithAdditionalHeaders {
+  OIDAuthState *authState = [[OIDAuthState alloc] initWithAuthorizationResponse:nil tokenResponse:nil registrationResponse:nil];
+  XCTAssertThrowsSpecificNamed([authState tokenRefreshRequestWithAdditionalHeaders:nil],
+                               NSException,
+                               kRefreshTokenRequestException);
+}
+
+- (void)testThatRefreshTokenExceptionWillBeRaisedForTokenRequestWithAdditionalParametersAndHeaders {
+  OIDAuthState *authState = [[OIDAuthState alloc] initWithAuthorizationResponse:nil tokenResponse:nil registrationResponse:nil];
+  XCTAssertThrowsSpecificNamed([authState tokenRefreshRequestWithAdditionalHeaders:nil],
+                               NSException,
+                               kRefreshTokenRequestException);
+}
+
 @end
 
 #pragma GCC diagnostic pop
