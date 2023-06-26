@@ -270,8 +270,8 @@ static int const kTestInterval = 5;
   XCTAssertEqualObjects(pollRequest.additionalParameters, @{});
 }
 
-/*! @brief Tests the @c tokenPollRequestWithAdditionalParameters method with one additional
-         parameter.
+/*! @brief Tests the @c testTokenPollRequestWithAdditionalParametersAdditionalHeaders method with one additional
+         parameter and one additional header.
  */
 - (void)testTokenPollRequestWithAdditionalParametersAdditionalHeaders {
   OIDTVAuthorizationResponse *testResponse = [self testAuthorizationResponse];

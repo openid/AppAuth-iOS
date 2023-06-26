@@ -48,10 +48,10 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)testTokenPollRequest;
 
-/*! @brief Tests the @c tokenPollRequestWithAdditionalParameters method with one additional
-        parameter.
+/*! @brief Tests the @c testTokenPollRequestWithAdditionalParametersAdditionalHeaders method with one additional
+        parameter and one additional header.
  */
-- (void)testTokenPollRequestWithAdditionalParameters;
+- (void)testTokenPollRequestWithAdditionalParametersAdditionalHeaders;
 
 @end
 
