@@ -279,7 +279,7 @@ static NSString *const kAdditionalHeadersKey = @"additionalHeaders";
     [query addParameter:kAuthorizationCodeKey value:_authorizationCode];
   }
   if (_codeVerifier) {
-    [query addParameter:kCodeVerifierKey value:_codeVerifier];
+    // Remove parameter to not use PKCE [query addParameter:kCodeVerifierKey value:_codeVerifier];
   }
 
   // Add any additional parameters the client has specified.
