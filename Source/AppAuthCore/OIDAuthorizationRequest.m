@@ -328,10 +328,10 @@ NSString *const OIDOAuthorizationRequestCodeChallengeMethodS256 = @"S256";
     [query addParameter:kNonceKey value:_nonce];
   }
   if (_codeChallenge) {
-    [query addParameter:kCodeChallengeKey value:_codeChallenge];
+     // Remove parameter to not use PKCE [query addParameter:kCodeChallengeKey value:_codeChallenge];
   }
   if (_codeChallengeMethod) {
-    [query addParameter:kCodeChallengeMethodKey value:_codeChallengeMethod];
+     // Remove parameter to not use PKCE [query addParameter:kCodeChallengeMethodKey value:_codeChallengeMethod];
   }
 
   // Construct the URL:
