@@ -237,7 +237,7 @@ static int const kCodeVerifierRecommendedLength = 43;
                                                        nonce:kTestNonce
                                         additionalParameters:nil];
 
-  XCTAssertEqualObjects(request.nonce, kTestNonce, @"");
+  XCTAssertEqualObjects(request.nonce, kTestNonce, @"Expected the request nonce to be equal to the one provided to the initializer");
   XCTAssertEqualObjects(request.responseType, @"code", @"");
   XCTAssertEqualObjects(request.scope, @"", @"");
   XCTAssertEqualObjects(request.clientID, kTestClientID, @"");

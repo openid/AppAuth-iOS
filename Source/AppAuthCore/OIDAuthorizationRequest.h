@@ -179,7 +179,7 @@ extern NSString *const OIDOAuthorizationRequestCodeChallengeMethodS256;
                    scopes:(nullable NSArray<NSString *> *)scopes
               redirectURL:(NSURL *)redirectURL
              responseType:(NSString *)responseType
-                    nonce:(NSString *)nonce
+                    nonce:(nullable NSString *)nonce
      additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters;
 
 /*! @brief Creates an authorization request with opinionated defaults (a secure @c state, @c nonce,

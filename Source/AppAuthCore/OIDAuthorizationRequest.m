@@ -208,7 +208,7 @@ NSString *const OIDOAuthorizationRequestCodeChallengeMethodS256 = @"S256";
                    scopes:(nullable NSArray<NSString *> *)scopes
               redirectURL:(NSURL *)redirectURL
              responseType:(NSString *)responseType
-                    nonce:(NSString *)nonce
+                    nonce:(nullable NSString *)nonce
     additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters {
   // generates PKCE code verifier and challenge
   NSString *codeVerifier = [[self class] generateCodeVerifier];
