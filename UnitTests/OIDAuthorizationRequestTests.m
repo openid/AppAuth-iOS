@@ -238,11 +238,11 @@ static int const kCodeVerifierRecommendedLength = 43;
                                         additionalParameters:nil];
 
   XCTAssertEqualObjects(request.nonce, kTestNonce, @"Expected the request nonce to be equal to the one provided to the initializer");
-  XCTAssertEqualObjects(request.responseType, @"code", @"");
-  XCTAssertEqualObjects(request.scope, @"", @"");
-  XCTAssertEqualObjects(request.clientID, kTestClientID, @"");
-  XCTAssertEqualObjects(request.clientSecret, nil, @"");
-  XCTAssertEqualObjects(request.redirectURL, [NSURL URLWithString:kTestRedirectURL], @"");
+  XCTAssertEqualObjects(request.responseType, @"code");
+  XCTAssertEqualObjects(request.scope, @"");
+  XCTAssertEqualObjects(request.clientID, kTestClientID);
+  XCTAssertEqualObjects(request.clientSecret, nil);
+  XCTAssertEqualObjects(request.redirectURL, [NSURL URLWithString:kTestRedirectURL]);
   XCTAssertEqualObjects(@(request.additionalParameters.count), @0);
 }
 
