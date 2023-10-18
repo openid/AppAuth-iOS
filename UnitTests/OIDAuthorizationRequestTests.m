@@ -241,7 +241,7 @@ static int const kCodeVerifierRecommendedLength = 43;
   XCTAssertEqualObjects(request.responseType, @"code");
   XCTAssertEqualObjects(request.scope, @"");
   XCTAssertEqualObjects(request.clientID, kTestClientID);
-  XCTAssertEqualObjects(request.clientSecret, nil);
+  XCTAssertNil(request.clientSecret);
   XCTAssertEqualObjects(request.redirectURL, [NSURL URLWithString:kTestRedirectURL]);
   XCTAssertEqualObjects(@(request.additionalParameters.count), @0);
 }
