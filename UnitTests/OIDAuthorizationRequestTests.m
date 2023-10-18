@@ -223,6 +223,29 @@ static int const kCodeVerifierRecommendedLength = 43;
                         kTestAdditionalParameterValue, @"");
 }
 
+
+/*! @brief Tests the initializer which takes a nonce
+ */
+- (void)testNonceInitializer {
+  OIDServiceConfiguration *configuration = [OIDServiceConfigurationTests testInstance];
+  OIDAuthorizationRequest *request =
+      [[OIDAuthorizationRequest alloc] initWithConfiguration:configuration
+                                                    clientId:kTestClientID
+                                                      scopes:@[]
+                                                 redirectURL:[NSURL URLWithString:kTestRedirectURL]
+                                                responseType:OIDResponseTypeCode
+                                                       nonce:kTestNonce
+                                        additionalParameters:nil];
+
+  XCTAssertEqualObjects(request.nonce, kTestNonce);
+  XCTAssertEqualObjects(request.responseType, @"code");
+  XCTAssertEqualObjects(request.scope, @"");
+  XCTAssertEqualObjects(request.clientID, kTestClientID);
+  XCTAssertNil(request.clientSecret);
+  XCTAssertEqualObjects(request.redirectURL, [NSURL URLWithString:kTestRedirectURL]);
+  XCTAssertEqualObjects(@(request.additionalParameters.count), @0);
+}
+
 - (void)testScopeInitializerWithManyScopesAndClientSecret {
   NSDictionary *additionalParameters =
       @{ kTestAdditionalParameterKey : kTestAdditionalParameterValue };
