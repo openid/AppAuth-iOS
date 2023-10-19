@@ -159,6 +159,29 @@ extern NSString *const OIDOAuthorizationRequestCodeChallengeMethodS256;
              responseType:(NSString *)responseType
      additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters;
 
+/*! @brief Creates an authorization request with custom nonce, a secure @c state,
+        and PKCE with S256 as the @c code_challenge_method.
+    @param configuration The service's configuration.
+    @param clientID The client identifier.
+    @param scopes An array of scopes to combine into a single scope string per the OAuth2 spec.
+    @param redirectURL The client's redirect URI.
+    @param responseType The expected response type.
+    @param nonce String value used to associate a Client session with an ID Token. Can be set to nil
+        if not using OpenID Connect, although pure OAuth servers should ignore params they don't
+        understand anyway.
+    @param additionalParameters The client's additional authorization parameters.
+    @remarks This convenience initializer generates a state parameter and PKCE challenges
+        automatically.
+ */
+- (instancetype)
+    initWithConfiguration:(OIDServiceConfiguration *)configuration
+                 clientId:(NSString *)clientID
+                   scopes:(nullable NSArray<NSString *> *)scopes
+              redirectURL:(NSURL *)redirectURL
+             responseType:(NSString *)responseType
+                    nonce:(nullable NSString *)nonce
+     additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters;
+
 /*! @brief Creates an authorization request with opinionated defaults (a secure @c state, @c nonce,
         and PKCE with S256 as the @c code_challenge_method).
     @param configuration The service's configuration.
