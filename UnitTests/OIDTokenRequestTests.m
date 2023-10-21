@@ -239,6 +239,10 @@ static NSString *const kTestAdditionalHeaderValue = @"2";
   XCTAssertNotNil(request.additionalHeaders, @"");
   XCTAssertEqualObjects(request.additionalHeaders[kTestAdditionalHeaderKey],
                         kTestAdditionalHeaderValue, @"");
+  
+  NSURLRequest *urlRequest = [request URLRequest];
+  XCTAssertEqualObjects([urlRequest.allHTTPHeaderFields objectForKey:kTestAdditionalHeaderKey],
+                        kTestAdditionalHeaderValue, @"");
 
   NSData *data = [NSKeyedArchiver archivedDataWithRootObject:request];
   OIDTokenRequest *requestCopy = [NSKeyedUnarchiver unarchiveObjectWithData:data];
@@ -262,6 +266,10 @@ static NSString *const kTestAdditionalHeaderValue = @"2";
                         kTestAdditionalParameterValue, @"");
   XCTAssertNotNil(requestCopy.additionalHeaders, @"");
   XCTAssertEqualObjects(requestCopy.additionalHeaders[kTestAdditionalHeaderKey],
+                        kTestAdditionalHeaderValue, @"");
+  
+  NSURLRequest *urlrequestCopy = [requestCopy URLRequest];
+  XCTAssertEqualObjects([urlrequestCopy.allHTTPHeaderFields objectForKey:kTestAdditionalHeaderKey],
                         kTestAdditionalHeaderValue, @"");
 }
 
