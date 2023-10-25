@@ -330,7 +330,7 @@ static NSString *const kAdditionalHeadersKey = @"additionalHeaders";
   }
   
   for (id header in _additionalHeaders) {
-    [URLRequest setValue:httpHeaders[header] forHTTPHeaderField:header];
+    [URLRequest setValue:_additionalHeaders[header] forHTTPHeaderField:header];
   }
 
   return URLRequest;
