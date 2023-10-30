@@ -95,6 +95,26 @@ NS_ASSUME_NONNULL_BEGIN
 
   _externalUserAgentFlowInProgress = YES;
   _session = session;
+  NSURL *requestURL = [request externalUserAgentRequestURL];
+
+  if (@available(iOS 10.0, *)) {
+    // first try universal link, the authorization server may have an app which is present and
+    // supports app2app
+    [UIApplication.sharedApplication openURL:requestURL
+                                     options:@{UIApplicationOpenURLOptionUniversalLinksOnly: @YES}
+                           completionHandler:^(BOOL success) {
+      if (!success) {
+        [self continuePresentExternalUserAgentRequest:request session:session];
+      }
+    }];
+    return YES;
+  } else {
+    return [self continuePresentExternalUserAgentRequest:request session:session];
+  }
+}
+
+- (BOOL)continuePresentExternalUserAgentRequest:(id<OIDExternalUserAgentRequest>)request
+                                        session:(id<OIDExternalUserAgentSession>)session {
   BOOL openedUserAgent = NO;
   NSURL *requestURL = [request externalUserAgentRequestURL];
 
