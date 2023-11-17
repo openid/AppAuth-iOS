@@ -115,7 +115,11 @@ NS_ASSUME_NONNULL_BEGIN
         }
         strongSelf->_webAuthenticationVC = nil;
         if (callbackURL) {
-          [strongSelf->_session resumeExternalUserAgentFlowWithURL:callbackURL];
+          if(![self checkIfSchemeExists:callbackURL.absoluteString]) {
+            [strongSelf->_session resumeExternalUserAgentFlowWithURL:callbackURL];
+          } else {
+            [self openScheme:callbackURL];
+          }
         } else {
           NSError *safariError =
               [OIDErrorUtilities errorWithCode:OIDErrorCodeUserCanceledAuthorizationFlow
@@ -151,6 +155,11 @@ NS_ASSUME_NONNULL_BEGIN
         }
         strongSelf->_authenticationVC = nil;
         if (callbackURL) {
+          if (![self checkIfSchemeExists:callbackURL.absoluteString]) {
+            [strongSelf->_session resumeExternalUserAgentFlowWithURL:callbackURL];
+          }else{
+            [self openScheme:callbackURL];
+          }
           [strongSelf->_session resumeExternalUserAgentFlowWithURL:callbackURL];
         } else {
           NSError *safariError =
@@ -188,6 +197,39 @@ NS_ASSUME_NONNULL_BEGIN
     [session failExternalUserAgentFlowWithError:safariError];
   }
   return openedUserAgent;
+}
+
+- (void)openScheme:(NSURL *)URL {
+  UIApplication *application = [UIApplication sharedApplication];
+  if ([application respondsToSelector:@selector(openURL:options:completionHandler:)]) {
+    if (@available(iOS 10.0, *)) {
+      [application openURL:URL options:@{}
+         completionHandler:^(BOOL success) {
+      }];
+    } else {
+      [application openURL:URL];
+    }
+  } else {
+    [application openURL:URL];
+  }
+}
+
+-(BOOL)checkIfSchemeExists:(NSString *)URLString {
+  // Check if CFBundleURLSchemes contains the custom scheme first
+  NSArray *URLTypes = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleURLTypes"];
+  if (URLTypes != nil) {
+    for (NSInteger i = 0; i < [URLTypes count]; ++i) {
+      NSDictionary *schemesDict = [URLTypes objectAtIndex:i];
+      NSArray *schemes = [schemesDict objectForKey:@"CFBundleURLSchemes"];
+      for (NSInteger j = 0; j < [schemes count]; ++j) {
+        NSString *scheme = [schemes objectAtIndex:j];
+        if ([URLString hasPrefix:scheme]){
+          return true;
+        }
+      }
+    }
+  }
+  return false;
 }
 
 - (void)dismissExternalUserAgentAnimated:(BOOL)animated completion:(void (^)(void))completion {
