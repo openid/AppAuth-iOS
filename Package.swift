@@ -44,7 +44,13 @@ let package = Package(
         .target(
             name: "AppAuthCore",
             path: "Source/AppAuthCore",
-            publicHeadersPath: ""
+            publicHeadersPath: "",
+            cSettings: [
+               .unsafeFlags(["-w"])
+            ],
+            swiftSettings: [
+                .unsafeFlags(["-suppress-warnings"]),
+            ]
         ),
         .target(
             name: "AppAuth",
@@ -56,6 +62,10 @@ let package = Package(
                 .headerSearchPath("iOS"),
                 .headerSearchPath("macOS"),
                 .headerSearchPath("macOS/LoopbackHTTPServer"),
+                .unsafeFlags(["-w"]),
+            ],
+            swiftSettings: [
+                .unsafeFlags(["-suppress-warnings"]),
             ]
         ),
         .target(
