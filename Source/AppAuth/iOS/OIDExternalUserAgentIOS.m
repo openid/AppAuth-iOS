@@ -127,7 +127,7 @@ NS_ASSUME_NONNULL_BEGIN
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 130000
       if (@available(iOS 13.0, *)) {
         authenticationVC.presentationContextProvider = self;
-        authenticationVC.prefersEphemeralWebBrowserSession = _prefersEphemeralSession;
+        authenticationVC.prefersEphemeralWebBrowserSession = true;
       }
 #endif
       _webAuthenticationVC = authenticationVC;
