@@ -93,11 +93,11 @@ NS_ASSUME_NONNULL_BEGIN
   }
 
   if (!openedUserAgent) {
-    [self cleanUp];
-    NSError *safariError = [OIDErrorUtilities errorWithCode:OIDErrorCodeSafariOpenError
-                                            underlyingError:nil
-                                                description:@"Unable to open Safari."];
-    [session failExternalUserAgentFlowWithError:safariError];
+    // [self cleanUp];
+    // NSError *safariError = [OIDErrorUtilities errorWithCode:OIDErrorCodeSafariOpenError
+    //                                         underlyingError:nil
+    //                                             description:@"Unable to open Safari."];
+    // [session failExternalUserAgentFlowWithError:safariError];
   }
   return openedUserAgent;
 }
