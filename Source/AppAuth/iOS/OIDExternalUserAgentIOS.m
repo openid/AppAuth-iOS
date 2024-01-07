@@ -122,11 +122,13 @@ NS_ASSUME_NONNULL_BEGIN
     // dismiss the ASWebAuthenticationSession
     [webAuthenticationVC cancel];
     if (completion) completion();
-  } else if (authenticationVC) {
-    // dismiss the SFAuthenticationSession
-    [authenticationVC cancel];
-    if (completion) completion();
-  } else if (safariVC) {
+  } 
+  // else if (authenticationVC) {
+  //   // dismiss the SFAuthenticationSession
+  //   [authenticationVC cancel];
+  //   if (completion) completion();
+  // } 
+  else if (safariVC) {
     // dismiss the SFSafariViewController
     [safariVC dismissViewControllerAnimated:YES completion:completion];
   } else {
