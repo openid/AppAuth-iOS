@@ -18,7 +18,7 @@
 
 #import <TargetConditionals.h>
 
-#if TARGET_OS_IOS || TARGET_OS_MACCATALYST
+#if TARGET_OS_VISION || TARGET_OS_MACCATALYST
 
 #import "OIDExternalUserAgentIOSCustomBrowser.h"
 
@@ -145,7 +145,7 @@ NS_ASSUME_NONNULL_BEGIN
     NSString *testURLString = [NSString stringWithFormat:@"%@://example.com", _canOpenURLScheme];
     NSURL *testURL = [NSURL URLWithString:testURLString];
     if (![[UIApplication sharedApplication] canOpenURL:testURL]) {
-      [[UIApplication sharedApplication] openURL:_appStoreURL];
+//      [[UIApplication sharedApplication] openURL:_appStoreURL];
       return NO;
     }
   }
@@ -153,8 +153,9 @@ NS_ASSUME_NONNULL_BEGIN
   // Transforms the request URL and opens it.
   NSURL *requestURL = [request externalUserAgentRequestURL];
   requestURL = _URLTransformation(requestURL);
-  BOOL openedInBrowser = [[UIApplication sharedApplication] openURL:requestURL];
-  return openedInBrowser;
+//  BOOL openedInBrowser = [[UIApplication sharedApplication] openURL:requestURL];
+//  return openedInBrowser;
+    return false;
 }
 
 - (void)dismissExternalUserAgentAnimated:(BOOL)animated
@@ -168,4 +169,4 @@ NS_ASSUME_NONNULL_END
 
 #endif // !TARGET_OS_MACCATALYST
 
-#endif // TARGET_OS_IOS || TARGET_OS_MACCATALYST
+#endif // TARGET_OS_VISION || TARGET_OS_MACCATALYST
