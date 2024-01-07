@@ -78,10 +78,10 @@ NS_ASSUME_NONNULL_BEGIN
   BOOL authorizationFlowStarted =
       [_externalUserAgent presentExternalUserAgentRequest:_request session:self];
   if (!authorizationFlowStarted) {
-    NSError *safariError = [OIDErrorUtilities errorWithCode:OIDErrorCodeSafariOpenError
-                                            underlyingError:nil
-                                                description:@"Unable to open Safari."];
-    [self didFinishWithResponse:nil error:safariError];
+    // NSError *safariError = [OIDErrorUtilities errorWithCode:OIDErrorCodeSafariOpenError
+    //                                         underlyingError:nil
+    //                                             description:@"Unable to open Safari."];
+    // [self didFinishWithResponse:nil error:safariError];
   }
 }
 
@@ -224,10 +224,10 @@ NS_ASSUME_NONNULL_BEGIN
   BOOL authorizationFlowStarted =
       [_externalUserAgent presentExternalUserAgentRequest:_request session:self];
   if (!authorizationFlowStarted) {
-    NSError *safariError = [OIDErrorUtilities errorWithCode:OIDErrorCodeSafariOpenError
-                                            underlyingError:nil
-                                                description:@"Unable to open Safari."];
-    [self didFinishWithResponse:nil error:safariError];
+    // NSError *safariError = [OIDErrorUtilities errorWithCode:OIDErrorCodeSafariOpenError
+    //                                         underlyingError:nil
+    //                                             description:@"Unable to open Safari."];
+    // [self didFinishWithResponse:nil error:safariError];
   }
 }
 
