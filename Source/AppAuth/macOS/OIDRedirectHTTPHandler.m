@@ -68,7 +68,7 @@ static NSString *const kHTMLErrorRedirectNotValid =
   return self;
 }
 
-- (NSURL *)startHTTPListener:(NSError **)returnError withPort:(uint16_t)port {
+- (NSURL *)startHTTPListenerWithPort:(uint16_t)port error:(NSError **)returnError  {
   // Cancels any pending requests.
   [self cancelHTTPListener];
 
@@ -98,7 +98,7 @@ static NSString *const kHTMLErrorRedirectNotValid =
 
 - (NSURL *)startHTTPListener:(NSError **)returnError {
   // A port of 0 requests a random available port
-  return [self startHTTPListener:returnError withPort:0];
+  return [self startHTTPListenerWithPort:0 error:returnError];
 }
 
 - (void)cancelHTTPListener {
