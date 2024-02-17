@@ -60,7 +60,7 @@ NS_ASSUME_NONNULL_BEGIN
         Calling this more than once will result in the previous listener being cancelled (equivalent
         of @c cancelHTTPListener being called).
  */
-- (nullable NSURL *)startHTTPListenerPort:(uint16_t)port error:(NSError **)returnError NS_SWIFT_NAME(startHTTPListener(port:));
+- (nullable NSURL *)startHTTPListenerWithPort:(uint16_t)port error:(NSError **)returnError NS_SWIFT_NAME(startHTTPListener(port:));
 
 /*! @brief Starts listening on the loopback interface on a random available port, and returns a URL
         with the base address. Use the returned redirect URI to build a @c OIDExternalUserAgentRequest,
