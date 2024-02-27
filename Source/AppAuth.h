@@ -56,6 +56,11 @@
 #import "OIDAuthorizationService+Mac.h"
 #import "OIDExternalUserAgentMac.h"
 #import "OIDRedirectHTTPHandler.h"
+#elif TARGET_OS_VISION
+#import "OIDAuthState+Vision.h"
+#import "OIDAuthorizationService+Vision.h"
+#import "OIDExternalUserAgentVision.h"
+#import "OIDExternalUserAgentVisionCustomBrowser.h"
 #else
 #error "Platform Undefined"
 #endif
