@@ -50,11 +50,12 @@ let package = Package(
             name: "AppAuth",
             dependencies: ["AppAuthCore"],
             path: "Source/AppAuth",
-            sources: ["iOS", "macOS"],
+            sources: ["iOS", "macOS", "visionOS"],
             publicHeadersPath: "",
             cSettings: [
                 .headerSearchPath("iOS"),
                 .headerSearchPath("macOS"),
+                .headerSearchPath("visionOS"),
                 .headerSearchPath("macOS/LoopbackHTTPServer"),
             ]
         ),

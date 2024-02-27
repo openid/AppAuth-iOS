@@ -64,6 +64,11 @@ FOUNDATION_EXPORT const unsigned char AppAuthVersionString[];
 #import <AppAuth/OIDAuthorizationService+Mac.h>
 #import <AppAuth/OIDExternalUserAgentMac.h>
 #import <AppAuth/OIDRedirectHTTPHandler.h>
+#elif TARGET_OS_VISION
+#import <AppAuth/OIDAuthState+Vision.h>
+#import <AppAuth/OIDAuthorizationService+Vision.h>
+#import <AppAuth/OIDExternalUserAgentVision.h>
+#import <AppAuth/OIDExternalUserAgentVisionCustomBrowser.h>
 #else
 #error "Platform Undefined"
 #endif
