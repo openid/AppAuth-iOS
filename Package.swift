@@ -44,7 +44,8 @@ let package = Package(
         .target(
             name: "AppAuthCore",
             path: "Source/AppAuthCore",
-            publicHeadersPath: ""
+            publicHeadersPath: "",
+            resources: [.copy("PrivacyInfo.xcprivacy")]
         ),
         .target(
             name: "AppAuth",
@@ -56,13 +57,15 @@ let package = Package(
                 .headerSearchPath("iOS"),
                 .headerSearchPath("macOS"),
                 .headerSearchPath("macOS/LoopbackHTTPServer"),
-            ]
+            ],
+            resources: [.copy("PrivacyInfo.xcprivacy")]
         ),
         .target(
             name: "AppAuthTV",
             dependencies: ["AppAuthCore"],
             path: "Source/AppAuthTV",
-            publicHeadersPath: ""
+            publicHeadersPath: "",
+            resources: [.copy("PrivacyInfo.xcprivacy")]
         ),
         .testTarget(
             name: "AppAuthCoreTests",
