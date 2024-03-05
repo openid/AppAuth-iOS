@@ -19,8 +19,8 @@
 		346E91991C2A245000D3620B /* SafariServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 346E91981C2A245000D3620B /* SafariServices.framework */; };
 		34CB09BD1C42007600A54261 /* AppAuthExampleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34CB09BB1C42007600A54261 /* AppAuthExampleViewController.m */; };
 		34CB09BE1C42007600A54261 /* AppAuthExampleViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 34CB09BC1C42007600A54261 /* AppAuthExampleViewController.xib */; };
-		D0B5FA33D74A6F7924A47471 /* libPods-Example-iOS_ObjC_Extension.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 715EDB7EC4271193E47615ED /* libPods-Example-iOS_ObjC_Extension.a */; };
-		E46F8589CE9E5DDFA69D835B /* libPods-Example-iOS_ObjC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B61A918CBE7B8142CD7D8B3 /* libPods-Example-iOS_ObjC.a */; };
+		BE28448F8FD76A9C12A30150 /* Pods_Example_iOS_ObjC_Extension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CC004951DF03519C52500EC /* Pods_Example_iOS_ObjC_Extension.framework */; };
+		C46B36D00F282572B5747D71 /* Pods_Example_iOS_ObjC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43D84745AE558B974A2E64F7 /* Pods_Example_iOS_ObjC.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -81,9 +81,9 @@
 		34CB09BB1C42007600A54261 /* AppAuthExampleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppAuthExampleViewController.m; sourceTree = "<group>"; };
 		34CB09BC1C42007600A54261 /* AppAuthExampleViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AppAuthExampleViewController.xib; sourceTree = "<group>"; };
 		3A18DF082AC2FA0980C9DE57 /* Pods-Example-iOS_ObjC_Extension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Example-iOS_ObjC_Extension.release.xcconfig"; path = "Pods/Target Support Files/Pods-Example-iOS_ObjC_Extension/Pods-Example-iOS_ObjC_Extension.release.xcconfig"; sourceTree = "<group>"; };
-		715EDB7EC4271193E47615ED /* libPods-Example-iOS_ObjC_Extension.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Example-iOS_ObjC_Extension.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		3CC004951DF03519C52500EC /* Pods_Example_iOS_ObjC_Extension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Example_iOS_ObjC_Extension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D84745AE558B974A2E64F7 /* Pods_Example_iOS_ObjC.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Example_iOS_ObjC.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		86C7660572AE6FF7A4D1592A /* Pods-Example-iOS_ObjC_Extension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Example-iOS_ObjC_Extension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Example-iOS_ObjC_Extension/Pods-Example-iOS_ObjC_Extension.debug.xcconfig"; sourceTree = "<group>"; };
-		8B61A918CBE7B8142CD7D8B3 /* libPods-Example-iOS_ObjC.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Example-iOS_ObjC.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C4C31DB4A4928F246AA03805 /* Pods-Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-Example/Pods-Example.release.xcconfig"; sourceTree = "<group>"; };
 		D9867DC6FA9089CD613D4728 /* Pods-Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Example/Pods-Example.debug.xcconfig"; sourceTree = "<group>"; };
 		ECBCCC4A1A779C83C72044F2 /* Pods-Example-iOS_ObjC.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Example-iOS_ObjC.release.xcconfig"; path = "Pods/Target Support Files/Pods-Example-iOS_ObjC/Pods-Example-iOS_ObjC.release.xcconfig"; sourceTree = "<group>"; };
@@ -95,7 +95,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				06D4812F2055C3D400D9DC32 /* NotificationCenter.framework in Frameworks */,
-				D0B5FA33D74A6F7924A47471 /* libPods-Example-iOS_ObjC_Extension.a in Frameworks */,
+				BE28448F8FD76A9C12A30150 /* Pods_Example_iOS_ObjC_Extension.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -111,7 +111,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				346E91991C2A245000D3620B /* SafariServices.framework in Frameworks */,
-				E46F8589CE9E5DDFA69D835B /* libPods-Example-iOS_ObjC.a in Frameworks */,
+				C46B36D00F282572B5747D71 /* Pods_Example_iOS_ObjC.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -145,9 +145,9 @@
 				3474C8DD1DFCB08E00F22B34 /* libAppAuth-iOS.a */,
 				346E91981C2A245000D3620B /* SafariServices.framework */,
 				09795EAF079B07A1781675D9 /* libPods-Example.a */,
-				8B61A918CBE7B8142CD7D8B3 /* libPods-Example-iOS_ObjC.a */,
 				06D4812E2055C3D400D9DC32 /* NotificationCenter.framework */,
-				715EDB7EC4271193E47615ED /* libPods-Example-iOS_ObjC_Extension.a */,
+				43D84745AE558B974A2E64F7 /* Pods_Example_iOS_ObjC.framework */,
+				3CC004951DF03519C52500EC /* Pods_Example_iOS_ObjC_Extension.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -252,6 +252,7 @@
 				346E91661C29D42800D3620B /* Frameworks */,
 				346E91671C29D42800D3620B /* Resources */,
 				06D4813E2055C3D400D9DC32 /* Embed App Extensions */,
+				0B7CB92A32140E833CA8FF89 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -301,6 +302,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -345,6 +347,24 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		0B7CB92A32140E833CA8FF89 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Example-iOS_ObjC/Pods-Example-iOS_ObjC-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/AppAuth/AppAuth.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AppAuth.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Example-iOS_ObjC/Pods-Example-iOS_ObjC-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		836219F293F319703A16E68D /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -468,7 +488,7 @@
 				DEVELOPMENT_TEAM = "";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = "Example-iOS_ObjC_Extension/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "net.openid.appauth.Example.Example-iOS-ObjC-Extension";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -500,7 +520,7 @@
 				DEVELOPMENT_TEAM = "";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = "Example-iOS_ObjC_Extension/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "net.openid.appauth.Example.Example-iOS-ObjC-Extension";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -520,7 +540,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = Tests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = net.openid.AppAuthExampleTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -539,7 +559,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = Tests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = net.openid.AppAuthExampleTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -642,7 +662,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = Source/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = net.openid.appauth.Example;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -658,7 +678,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = Source/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = net.openid.appauth.Example;
 				PRODUCT_NAME = "$(TARGET_NAME)";

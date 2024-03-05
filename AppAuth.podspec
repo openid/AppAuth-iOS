@@ -44,7 +44,9 @@ It follows the OAuth 2.0 for Native Apps best current practice
   # Subspec for the core AppAuth library classes only, suitable for extensions.
   s.subspec 'Core' do |core|
      core.source_files = "Source/AppAuthCore.h", "Source/AppAuthCore/*.{h,m}"
-     core.resource_bundles = {"AppAuth" => ["PrivacyInfo.xcprivacy"]}
+     core.resource_bundles = {
+       "AppAuthCore_Privacy" => ["PrivacyInfo.xcprivacy"]
+     }
   end
 
   # Subspec for the full AppAuth library, including platform-dependent external user agents.
@@ -52,7 +54,9 @@ It follows the OAuth 2.0 for Native Apps best current practice
     externalUserAgent.dependency 'AppAuth/Core'
     
     externalUserAgent.source_files = "Source/AppAuth.h", "Source/AppAuth/*.{h,m}"
-    externalUserAgent.resource_bundles = {"AppAuth" => ["PrivacyInfo.xcprivacy"]}
+    externalUserAgent.resource_bundles = {
+      "AppAuthExternalUserAgent_Privacy" => ["PrivacyInfo.xcprivacy"]
+    }
     
     # iOS
     externalUserAgent.ios.source_files      = "Source/AppAuth/iOS/**/*.{h,m}"
@@ -70,7 +74,9 @@ It follows the OAuth 2.0 for Native Apps best current practice
   s.subspec 'TV' do |tv|
     tv.source_files = "Source/AppAuthTV.h", "Source/AppAuthTV/*.{h,m}"
     tv.dependency 'AppAuth/Core'
-    tv.resource_bundles = {"AppAuth" => ["PrivacyInfo.xcprivacy"]}
+    tv.resource_bundles = {
+      "AppAuthTV" => ["PrivacyInfo.xcprivacy"]
+    }
   end
 
   s.default_subspecs = 'Core', 'ExternalUserAgent'

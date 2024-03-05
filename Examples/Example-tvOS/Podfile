@@ -1,5 +1,7 @@
 platform :tvos, '9.0'
 
+use_frameworks!
+
 target 'Example-tvOS' do
   # AppAuth Pod, TV subspec
   # In production, just use `pod 'AppAuth/TV'` without the path reference.
