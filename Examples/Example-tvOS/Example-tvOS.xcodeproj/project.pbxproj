@@ -13,7 +13,7 @@
 		2D91B7B0248EA17D0005B197 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2D91B7AF248EA17D0005B197 /* Assets.xcassets */; };
 		2D91B7B3248EA17D0005B197 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2D91B7B1248EA17D0005B197 /* LaunchScreen.storyboard */; };
 		2D91B7B6248EA17E0005B197 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D91B7B5248EA17E0005B197 /* main.m */; };
-		424A8D8BA4EB0A6C9FF4326A /* libPods-Example-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EEBF9489D390F9D0913AE178 /* libPods-Example-tvOS.a */; };
+		FEFBCAF105C70E934E5A4975 /* Pods_Example_tvOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F58A1FCA981D60A0EA8A3E5A /* Pods_Example_tvOS.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,7 +29,7 @@
 		2D91B7B4248EA17D0005B197 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2D91B7B5248EA17E0005B197 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		D33A601E3AA7C8647C857C08 /* Pods-Example-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Example-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-Example-tvOS/Pods-Example-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
-		EEBF9489D390F9D0913AE178 /* libPods-Example-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Example-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F58A1FCA981D60A0EA8A3E5A /* Pods_Example_tvOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Example_tvOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -37,7 +37,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				424A8D8BA4EB0A6C9FF4326A /* libPods-Example-tvOS.a in Frameworks */,
+				FEFBCAF105C70E934E5A4975 /* Pods_Example_tvOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -81,7 +81,7 @@
 		9CCA3BB0D6EA112455518E2C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				EEBF9489D390F9D0913AE178 /* libPods-Example-tvOS.a */,
+				F58A1FCA981D60A0EA8A3E5A /* Pods_Example_tvOS.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -106,6 +106,7 @@
 				2D91B79F248EA17C0005B197 /* Sources */,
 				2D91B7A0248EA17C0005B197 /* Frameworks */,
 				2D91B7A1248EA17C0005B197 /* Resources */,
+				C86108A8D245915451E09E53 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -182,6 +183,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C86108A8D245915451E09E53 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Example-tvOS/Pods-Example-tvOS-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Example-tvOS/Pods-Example-tvOS-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Example-tvOS/Pods-Example-tvOS-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */

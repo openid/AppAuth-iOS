@@ -1,5 +1,5 @@
 target 'Example-macOS' do
-  platform :osx, '10.10'
+  platform :osx, '10.12'
 
   # AppAuth Pod
   # In production, just use `pod 'AppAuth'` without the path reference.

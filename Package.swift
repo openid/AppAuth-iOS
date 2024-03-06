@@ -1,4 +1,4 @@
-// swift-tools-version:5.1
+// swift-tools-version:5.3
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 import PackageDescription
 
@@ -44,6 +44,7 @@ let package = Package(
         .target(
             name: "AppAuthCore",
             path: "Source/AppAuthCore",
+            resources: [.copy("../../PrivacyInfo.xcprivacy")],
             publicHeadersPath: ""
         ),
         .target(
@@ -51,6 +52,7 @@ let package = Package(
             dependencies: ["AppAuthCore"],
             path: "Source/AppAuth",
             sources: ["iOS", "macOS"],
+            resources: [.copy("../../PrivacyInfo.xcprivacy")],
             publicHeadersPath: "",
             cSettings: [
                 .headerSearchPath("iOS"),
@@ -62,6 +64,7 @@ let package = Package(
             name: "AppAuthTV",
             dependencies: ["AppAuthCore"],
             path: "Source/AppAuthTV",
+            resources: [.copy("../../PrivacyInfo.xcprivacy")],
             publicHeadersPath: ""
         ),
         .testTarget(
