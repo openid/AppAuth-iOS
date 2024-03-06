@@ -173,7 +173,7 @@ static NSString *const kExampleAuthStateKey = @"authState";
 
   OIDTVAuthorizationRequest *request =
       [[OIDTVAuthorizationRequest alloc] initWithConfiguration:configuration
-                                                      clientId:kClientID 
+                                                      clientId:kClientID
                                                   clientSecret:kClientSecret
                                                         scopes:@[ OIDScopeOpenID, OIDScopeProfile ] 
                                           additionalParameters:nil];
