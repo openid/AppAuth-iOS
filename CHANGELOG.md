@@ -1,3 +1,10 @@
+# 1.7.0
+- Introduce addtional http headers to OIDTokenRequest ([#770](https://github.com/openid/AppAuth-iOS/pull/770))
+- Fix nullability annotation for -[OIDExternalUserAgentIOS init] ([#727](https://github.com/openid/AppAuth-iOS/pull/727))
+- Feat: allow custom nonce in OIDAuthorizationRequest ([#788](https://github.com/openid/AppAuth-iOS/pull/788))
+- Introduce addtional http headers to OIDTokenRequest ([#770](https://github.com/openid/AppAuth-iOS/pull/770))
+- Add privacy manifest ([#822](https://github.com/openid/AppAuth-iOS/pull/822))
+
 # 1.6.2
 - Increased minimum iOS and macOS versions to 9.0 and 10.12 respectively to fix [framework build issue](https://github.com/openid/AppAuth-iOS/issues/765)
 
