@@ -6,7 +6,6 @@
 - Introduce addtional http headers to OIDTokenRequest ([#770](https://github.com/openid/AppAuth-iOS/pull/770))
 - Fix nullability annotation for -[OIDExternalUserAgentIOS init] ([#727](https://github.com/openid/AppAuth-iOS/pull/727))
 - Feat: allow custom nonce in OIDAuthorizationRequest ([#788](https://github.com/openid/AppAuth-iOS/pull/788))
-- Introduce addtional http headers to OIDTokenRequest ([#770](https://github.com/openid/AppAuth-iOS/pull/770))
 - Add privacy manifest ([#822](https://github.com/openid/AppAuth-iOS/pull/822))
 
 # 1.6.2
