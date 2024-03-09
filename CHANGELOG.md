@@ -1,8 +1,11 @@
+# 1.7.1
+- Add back missing method to OIDAuthorizationResponse ([#825](https://github.com/openid/AppAuth-iOS/pull/825))
+- Fix OIDTokenRequest for AppAuthCore and AppAuthTV ([#826](https://github.com/openid/AppAuth-iOS/pull/826))
+
 # 1.7.0
 - Introduce addtional http headers to OIDTokenRequest ([#770](https://github.com/openid/AppAuth-iOS/pull/770))
 - Fix nullability annotation for -[OIDExternalUserAgentIOS init] ([#727](https://github.com/openid/AppAuth-iOS/pull/727))
 - Feat: allow custom nonce in OIDAuthorizationRequest ([#788](https://github.com/openid/AppAuth-iOS/pull/788))
-- Introduce addtional http headers to OIDTokenRequest ([#770](https://github.com/openid/AppAuth-iOS/pull/770))
 - Add privacy manifest ([#822](https://github.com/openid/AppAuth-iOS/pull/822))
 
 # 1.6.2
