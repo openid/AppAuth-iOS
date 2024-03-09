@@ -188,6 +188,12 @@ static NSString *const kTokenExchangeRequestException =
 }
 
 - (OIDTokenRequest *)tokenExchangeRequestWithAdditionalParameters:
+    (NSDictionary<NSString *, NSString *> *)additionalParameters {
+  return [self tokenExchangeRequestWithAdditionalParameters:additionalParameters
+                                          additionalHeaders:nil];
+}
+
+- (OIDTokenRequest *)tokenExchangeRequestWithAdditionalParameters:
     (NSDictionary<NSString *, NSString *> *)additionalParameters
                                                 additionalHeaders:
     (NSDictionary<NSString *, NSString *> *)additionalHeaders {
