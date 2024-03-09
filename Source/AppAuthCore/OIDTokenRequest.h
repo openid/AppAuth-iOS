@@ -117,6 +117,55 @@ NS_ASSUME_NONNULL_BEGIN
     @param refreshToken The refresh token.
     @param codeVerifier The PKCE code verifier.
     @param additionalParameters The client's additional token request parameters.
+ */
+- (instancetype)initWithConfiguration:(OIDServiceConfiguration *)configuration
+               grantType:(NSString *)grantType
+       authorizationCode:(nullable NSString *)code
+             redirectURL:(nullable NSURL *)redirectURL
+                clientID:(NSString *)clientID
+            clientSecret:(nullable NSString *)clientSecret
+                  scopes:(nullable NSArray<NSString *> *)scopes
+            refreshToken:(nullable NSString *)refreshToken
+            codeVerifier:(nullable NSString *)codeVerifier
+    additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters;
+
+/*! @param configuration The service's configuration.
+    @param grantType the type of token being sent to the token endpoint, i.e. "authorization_code"
+        for the authorization code exchange, or "refresh_token" for an access token refresh request.
+        @see OIDGrantTypes.h
+    @param code The authorization code received from the authorization server.
+    @param redirectURL The client's redirect URI.
+    @param clientID The client identifier.
+    @param clientSecret The client secret.
+    @param scope The value of the scope parameter is expressed as a list of space-delimited,
+        case-sensitive strings.
+    @param refreshToken The refresh token.
+    @param codeVerifier The PKCE code verifier.
+    @param additionalParameters The client's additional token request parameters.
+ */
+- (instancetype)initWithConfiguration:(OIDServiceConfiguration *)configuration
+               grantType:(NSString *)grantType
+       authorizationCode:(nullable NSString *)code
+             redirectURL:(nullable NSURL *)redirectURL
+                clientID:(NSString *)clientID
+            clientSecret:(nullable NSString *)clientSecret
+                   scope:(nullable NSString *)scope
+            refreshToken:(nullable NSString *)refreshToken
+            codeVerifier:(nullable NSString *)codeVerifier
+    additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters;
+
+/*! @param configuration The service's configuration.
+    @param grantType the type of token being sent to the token endpoint, i.e. "authorization_code"
+        for the authorization code exchange, or "refresh_token" for an access token refresh request.
+        @see OIDGrantTypes.h
+    @param code The authorization code received from the authorization server.
+    @param redirectURL The client's redirect URI.
+    @param clientID The client identifier.
+    @param clientSecret The client secret.
+    @param scopes An array of scopes to combine into a single scope string per the OAuth2 spec.
+    @param refreshToken The refresh token.
+    @param codeVerifier The PKCE code verifier.
+    @param additionalParameters The client's additional token request parameters.
     @param additionalHeaders The client's additional token request headers.
  */
 - (instancetype)initWithConfiguration:(OIDServiceConfiguration *)configuration
