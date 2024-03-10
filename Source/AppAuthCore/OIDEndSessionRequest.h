@@ -75,7 +75,7 @@ NS_ASSUME_NONNULL_BEGIN
 */
 - (instancetype)
     initWithConfiguration:(OIDServiceConfiguration *)configuration
-              idTokenHint:(NSString *)idTokenHint
+              idTokenHint:(nullable NSString *)idTokenHint
     postLogoutRedirectURL:(NSURL *)postLogoutRedirectURL
      additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters;
 
@@ -89,7 +89,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (instancetype)
     initWithConfiguration:(OIDServiceConfiguration *)configuration
-              idTokenHint:(NSString *)idTokenHint
+              idTokenHint:(nullable NSString *)idTokenHint
     postLogoutRedirectURL:(NSURL *)postLogoutRedirectURL
                     state:(NSString *)state
      additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters
