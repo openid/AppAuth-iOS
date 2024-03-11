@@ -107,13 +107,20 @@ NS_ASSUME_NONNULL_BEGIN
 + (BOOL)URL:(NSURL *)URL matchesRedirectionURL:(NSURL *)redirectionURL {
   NSURL *standardizedURL = [URL standardizedURL];
   NSURL *standardizedRedirectURL = [redirectionURL standardizedURL];
+  // An empty path may be represented as '' or '/'.  In order to treat these two cases as equivalent,
+  // we normalize a path of '/' to ''.
+  // For context: https://github.com/openid/AppAuth-iOS/issues/446
+  NSString *normalizedPath = [standardizedURL.path isEqualToString:@"/"] ? @""
+      : standardizedURL.path;
+  NSString *normalizedRedirectPath = [standardizedRedirectURL.path isEqualToString:@"/"] ? @""
+      : standardizedRedirectURL.path;
 
   return [standardizedURL.scheme caseInsensitiveCompare:standardizedRedirectURL.scheme] == NSOrderedSame
       && OIDIsEqualIncludingNil(standardizedURL.user, standardizedRedirectURL.user)
       && OIDIsEqualIncludingNil(standardizedURL.password, standardizedRedirectURL.password)
       && OIDIsEqualIncludingNil(standardizedURL.host, standardizedRedirectURL.host)
       && OIDIsEqualIncludingNil(standardizedURL.port, standardizedRedirectURL.port)
-      && OIDIsEqualIncludingNil(standardizedURL.path, standardizedRedirectURL.path);
+      && OIDIsEqualIncludingNil(normalizedPath, normalizedRedirectPath);
 }
 
 - (BOOL)shouldHandleURL:(NSURL *)URL {
