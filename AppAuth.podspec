@@ -54,9 +54,6 @@ It follows the OAuth 2.0 for Native Apps best current practice
     externalUserAgent.dependency 'AppAuth/Core'
     
     externalUserAgent.source_files = "Source/AppAuth.h", "Source/AppAuth/*.{h,m}"
-    externalUserAgent.resource_bundles = {
-      "AppAuthExternalUserAgent_Privacy" => ["PrivacyInfo.xcprivacy"]
-    }
     
     # iOS
     externalUserAgent.ios.source_files      = "Source/AppAuth/iOS/**/*.{h,m}"
@@ -74,9 +71,6 @@ It follows the OAuth 2.0 for Native Apps best current practice
   s.subspec 'TV' do |tv|
     tv.source_files = "Source/AppAuthTV.h", "Source/AppAuthTV/*.{h,m}"
     tv.dependency 'AppAuth/Core'
-    tv.resource_bundles = {
-      "AppAuthTV" => ["PrivacyInfo.xcprivacy"]
-    }
   end
 
   s.default_subspecs = 'Core', 'ExternalUserAgent'
