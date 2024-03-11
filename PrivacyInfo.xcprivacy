@@ -4,11 +4,9 @@
 <dict>
 	<key>NSPrivacyAccessedAPITypes</key>
 	<array>
-		<dict/>
 	</array>
 	<key>NSPrivacyCollectedDataTypes</key>
 	<array>
-		<dict/>
 	</array>
 	<key>NSPrivacyTrackingDomains</key>
 	<array/>
