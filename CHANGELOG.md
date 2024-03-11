@@ -1,3 +1,6 @@
+# 1.7.2
+ - Streamline copying of privacy manifest ([#830](https://github.com/openid/AppAuth-iOS/pull/830))
+
 # 1.7.1
 - Add back missing method to OIDAuthorizationResponse ([#825](https://github.com/openid/AppAuth-iOS/pull/825))
 - Fix OIDTokenRequest for AppAuthCore and AppAuthTV ([#826](https://github.com/openid/AppAuth-iOS/pull/826))
