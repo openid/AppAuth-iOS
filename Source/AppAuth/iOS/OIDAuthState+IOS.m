@@ -39,7 +39,7 @@
 #endif // TARGET_OS_MACCATALYST
   return [self authStateByPresentingAuthorizationRequest:authorizationRequest
                                        externalUserAgent:externalUserAgent
-                                                callback:callback];
+                                              completion:callback];
 }
 
 + (id<OIDExternalUserAgentSession>)
@@ -59,7 +59,7 @@
 #endif // TARGET_OS_MACCATALYST
   return [self authStateByPresentingAuthorizationRequest:authorizationRequest
                                        externalUserAgent:externalUserAgent
-                                                callback:callback];
+                                              completion:callback];
 }
 
 #if !TARGET_OS_MACCATALYST
@@ -69,7 +69,7 @@
   OIDExternalUserAgentIOS *externalUserAgent = [[OIDExternalUserAgentIOS alloc] init];
   return [self authStateByPresentingAuthorizationRequest:authorizationRequest
                                        externalUserAgent:externalUserAgent
-                                                callback:callback];
+                                              completion:callback];
 }
 #endif // !TARGET_OS_MACCATALYST
 
