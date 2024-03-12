@@ -84,26 +84,49 @@ NS_ASSUME_NONNULL_BEGIN
     if (_presentingWindow) {
         __weak OIDExternalUserAgentVision *weakSelf = self;
         NSString *redirectScheme = request.redirectScheme;
-        ASWebAuthenticationSession *authenticationSession =
-        [[ASWebAuthenticationSession alloc] initWithURL:requestURL
-                                      callbackURLScheme:redirectScheme
-                                      completionHandler:^(NSURL * _Nullable callbackURL,
-                                                          NSError * _Nullable error) {
-        __strong OIDExternalUserAgentVision *strongSelf = weakSelf;
-        if (!strongSelf) {
-            return;
-        }
-        strongSelf->_webAuthenticationSession = nil;
-        if (callbackURL) {
-          [strongSelf->_session resumeExternalUserAgentFlowWithURL:callbackURL];
-        } else {
-          NSError *safariError =
+        ASWebAuthenticationSession *authenticationSession;
+        if (@available(visionOS 1.1, *)) {
+            authenticationSession = [[ASWebAuthenticationSession alloc] initWithURL:requestURL
+                                                 callback: [ASWebAuthenticationSessionCallback callbackWithCustomScheme: redirectScheme]
+                                        completionHandler:^(NSURL * _Nullable callbackURL,
+                                                            NSError * _Nullable error) {
+            __strong OIDExternalUserAgentVision *strongSelf = weakSelf;
+            if (!strongSelf) {
+              return;
+            }
+            strongSelf->_webAuthenticationSession = nil;
+            if (callbackURL) {
+              [strongSelf->_session resumeExternalUserAgentFlowWithURL:callbackURL];
+            } else {
+              NSError *safariError =
               [OIDErrorUtilities errorWithCode:OIDErrorCodeUserCanceledAuthorizationFlow
                                underlyingError:error
                                    description:nil];
-          [strongSelf->_session failExternalUserAgentFlowWithError:safariError];
+              [strongSelf->_session failExternalUserAgentFlowWithError:safariError];
+            }
+          }];
+          
+        } else {
+            authenticationSession = [[ASWebAuthenticationSession alloc] initWithURL:requestURL
+                                          callbackURLScheme:redirectScheme
+                                          completionHandler:^(NSURL * _Nullable callbackURL,
+                                                              NSError * _Nullable error) {
+            __strong OIDExternalUserAgentVision *strongSelf = weakSelf;
+            if (!strongSelf) {
+                return;
+            }
+            strongSelf->_webAuthenticationSession = nil;
+            if (callbackURL) {
+              [strongSelf->_session resumeExternalUserAgentFlowWithURL:callbackURL];
+            } else {
+              NSError *safariError =
+                  [OIDErrorUtilities errorWithCode:OIDErrorCodeUserCanceledAuthorizationFlow
+                                   underlyingError:error
+                                       description:nil];
+              [strongSelf->_session failExternalUserAgentFlowWithError:safariError];
+            }
+            }];
         }
-        }];
 
         authenticationSession.presentationContextProvider = self;
 
@@ -113,7 +136,7 @@ NS_ASSUME_NONNULL_BEGIN
     }
   
 
-    [[UIApplication sharedApplication] openURL:requestURL options:nil completionHandler:nil];
+    [[UIApplication sharedApplication] openURL:requestURL options: [NSDictionary<UIApplicationOpenExternalURLOptionsKey, id> new] completionHandler:nil];
   /*if (!openedBrowser) {
     [self cleanUp];
     NSError *safariError = [OIDErrorUtilities errorWithCode:OIDErrorCodeBrowserOpenError
