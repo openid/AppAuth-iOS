@@ -47,7 +47,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (id<OIDExternalUserAgentSession>)
     authStateByPresentingAuthorizationRequest:(OIDAuthorizationRequest *)authorizationRequest
                              presentingWindow:(NSWindow *)presentingWindow
-                                     callback:(OIDAuthStateAuthorizationCallback)callback;
+                                     completion:(OIDAuthStateAuthorizationCallback)callback;
 
 /*! @brief Convenience method to create a @c OIDAuthState by presenting an authorization request
         (optionally using an emphemeral browser session that shares no cookies or data with the
@@ -69,7 +69,7 @@ NS_ASSUME_NONNULL_BEGIN
     authStateByPresentingAuthorizationRequest:(OIDAuthorizationRequest *)authorizationRequest
                              presentingWindow:(NSWindow *)presentingWindow
                       prefersEphemeralSession:(BOOL)prefersEphemeralSession
-                                     callback:(OIDAuthStateAuthorizationCallback)callback
+                                     completion:(OIDAuthStateAuthorizationCallback)callback
     API_AVAILABLE(macos(10.15));
 
 /*! @param authorizationRequest The authorization request to present.
@@ -81,7 +81,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 + (id<OIDExternalUserAgentSession>)
     authStateByPresentingAuthorizationRequest:(OIDAuthorizationRequest *)authorizationRequest
-                                     callback:(OIDAuthStateAuthorizationCallback)callback
+                                     completion:(OIDAuthStateAuthorizationCallback)callback
     __deprecated_msg("For macOS 10.15 and above please use "
         "authStateByPresentingAuthorizationRequest:presentingWindow:callback:");
 

@@ -46,7 +46,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (id<OIDExternalUserAgentSession>)
     authStateByPresentingAuthorizationRequest:(OIDAuthorizationRequest *)authorizationRequest
                      presentingViewController:(UIViewController *)presentingViewController
-                                     callback:(OIDAuthStateAuthorizationCallback)callback;
+                                     completion:(OIDAuthStateAuthorizationCallback)callback;
 
 /*! @brief Convenience method to create a @c OIDAuthState by presenting an authorization request
         (optionally using an emphemeral browser session that shares no cookies or data with the
@@ -68,12 +68,12 @@ NS_ASSUME_NONNULL_BEGIN
     authStateByPresentingAuthorizationRequest:(OIDAuthorizationRequest *)authorizationRequest
                      presentingViewController:(UIViewController *)presentingViewController
                       prefersEphemeralSession:(BOOL)prefersEphemeralSession
-                                     callback:(OIDAuthStateAuthorizationCallback)callback
+                                     completion:(OIDAuthStateAuthorizationCallback)callback
     API_AVAILABLE(ios(13));
 
 + (id<OIDExternalUserAgentSession>)
     authStateByPresentingAuthorizationRequest:(OIDAuthorizationRequest *)authorizationRequest
-                     callback:(OIDAuthStateAuthorizationCallback)callback API_AVAILABLE(ios(11)) API_UNAVAILABLE(macCatalyst)
+                     completion:(OIDAuthStateAuthorizationCallback)callback API_AVAILABLE(ios(11)) API_UNAVAILABLE(macCatalyst)
     __deprecated_msg("This method will not work on iOS 13. Use "
         "authStateByPresentingAuthorizationRequest:presentingViewController:callback:");
 

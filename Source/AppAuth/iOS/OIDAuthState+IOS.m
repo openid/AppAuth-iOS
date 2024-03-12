@@ -29,7 +29,7 @@
 + (id<OIDExternalUserAgentSession>)
     authStateByPresentingAuthorizationRequest:(OIDAuthorizationRequest *)authorizationRequest
                      presentingViewController:(UIViewController *)presentingViewController
-                                     callback:(OIDAuthStateAuthorizationCallback)callback {
+                                     completion:(OIDAuthStateAuthorizationCallback)callback {
   id<OIDExternalUserAgent> externalUserAgent;
 #if TARGET_OS_MACCATALYST
   externalUserAgent = [[OIDExternalUserAgentCatalyst alloc]
@@ -46,7 +46,7 @@
     authStateByPresentingAuthorizationRequest:(OIDAuthorizationRequest *)authorizationRequest
                      presentingViewController:(UIViewController *)presentingViewController
                       prefersEphemeralSession:(BOOL)prefersEphemeralSession
-                                     callback:(OIDAuthStateAuthorizationCallback)callback {
+                                     completion:(OIDAuthStateAuthorizationCallback)callback {
   id<OIDExternalUserAgent> externalUserAgent;
 #if TARGET_OS_MACCATALYST
   externalUserAgent = [[OIDExternalUserAgentCatalyst alloc]
@@ -65,7 +65,7 @@
 #if !TARGET_OS_MACCATALYST
 + (id<OIDExternalUserAgentSession>)
     authStateByPresentingAuthorizationRequest:(OIDAuthorizationRequest *)authorizationRequest
-                                  callback:(OIDAuthStateAuthorizationCallback)callback {
+                                  completion:(OIDAuthStateAuthorizationCallback)callback {
   OIDExternalUserAgentIOS *externalUserAgent = [[OIDExternalUserAgentIOS alloc] init];
   return [self authStateByPresentingAuthorizationRequest:authorizationRequest
                                        externalUserAgent:externalUserAgent

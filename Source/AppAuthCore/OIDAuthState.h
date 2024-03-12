@@ -138,7 +138,7 @@ static NSString *const kRefreshTokenRequestException =
 + (id<OIDExternalUserAgentSession>)
     authStateByPresentingAuthorizationRequest:(OIDAuthorizationRequest *)authorizationRequest
                             externalUserAgent:(id<OIDExternalUserAgent>)externalUserAgent
-                                     callback:(OIDAuthStateAuthorizationCallback)callback;
+                                   completion:(OIDAuthStateAuthorizationCallback)callback;
 
 /*! @internal
     @brief Unavailable. Please use @c initWithAuthorizationResponse:.
