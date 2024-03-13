@@ -132,7 +132,11 @@ NS_ASSUME_NONNULL_BEGIN
 
         _webAuthenticationSession = authenticationSession;
         _webAuthenticationSession.prefersEphemeralWebBrowserSession = _prefersEphemeralSession;
-        return [authenticationSession start];
+        if (authenticationSession.canStart) {
+            return [authenticationSession start];
+        } else {
+            return NO;
+        }
     }
   
 
