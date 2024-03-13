@@ -1000,6 +1000,7 @@
 		2D47AAD7249A86E30059B5A4 /* AppAuthTV */ = {
 			isa = PBXGroup;
 			children = (
+				7322C49B2BA20BFA00DF9B2F /* Resources */,
 				2D47AAD9249A87010059B5A4 /* OIDTVAuthorizationRequest.h */,
 				2D47AADD249A87010059B5A4 /* OIDTVAuthorizationRequest.m */,
 				2D47AADC249A87010059B5A4 /* OIDTVAuthorizationResponse.h */,
@@ -1055,10 +1056,9 @@
 		340E73731C5D819B0076B1F6 = {
 			isa = PBXGroup;
 			children = (
-				73F574332B7C42690023FFF0 /* PrivacyInfo.xcprivacy */,
 				341742291C5D84D0000EF209 /* Frameworks */,
 				341741FB1C5D82D3000EF209 /* UnitTests */,
-				341741AE1C5D8243000EF209 /* Source */,
+				341741AE1C5D8243000EF209 /* Sources */,
 				340E737D1C5D819B0076B1F6 /* Products */,
 			);
 			indentWidth = 2;
@@ -1090,7 +1090,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		341741AE1C5D8243000EF209 /* Source */ = {
+		341741AE1C5D8243000EF209 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
 				348970992178F40600ABEED4 /* CoreFramework */,
@@ -1103,7 +1103,7 @@
 				3489709E21791B0C00ABEED4 /* AppAuthCore.h */,
 				2D47AADB249A87010059B5A4 /* AppAuthTV.h */,
 			);
-			path = Source;
+			path = Sources;
 			sourceTree = "<group>";
 		};
 		341741FB1C5D82D3000EF209 /* UnitTests */ = {
@@ -1184,9 +1184,32 @@
 			path = LoopbackHTTPServer;
 			sourceTree = "<group>";
 		};
+		7322C4992BA2095100DF9B2F /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				73F574332B7C42690023FFF0 /* PrivacyInfo.xcprivacy */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		7322C49A2BA20BEF00DF9B2F /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		7322C49B2BA20BFA00DF9B2F /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		8A9B9D5E24561EC40055353E /* AppAuthCore */ = {
 			isa = PBXGroup;
 			children = (
+				7322C4992BA2095100DF9B2F /* Resources */,
 				341741B41C5D8243000EF209 /* OIDAuthorizationRequest.h */,
 				341741B51C5D8243000EF209 /* OIDAuthorizationRequest.m */,
 				341741B61C5D8243000EF209 /* OIDAuthorizationResponse.h */,
@@ -1248,6 +1271,7 @@
 		8A9B9D632456227D0055353E /* AppAuth */ = {
 			isa = PBXGroup;
 			children = (
+				7322C49A2BA20BEF00DF9B2F /* Resources */,
 				340DAE241D581FE700EC285B /* macOS */,
 				F6F60FAF1D2BFEF000325CB3 /* iOS */,
 			);
@@ -2668,7 +2692,7 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = "$(SRCROOT)/Source/TVFramework/Info.plist";
+				INFOPLIST_FILE = Sources/TVFramework/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
@@ -2700,7 +2724,7 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
-				INFOPLIST_FILE = "$(SRCROOT)/Source/TVFramework/Info.plist";
+				INFOPLIST_FILE = Sources/TVFramework/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_FAST_MATH = YES;
@@ -3012,7 +3036,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = Source/CoreFramework/Info.plist;
+				INFOPLIST_FILE = Sources/CoreFramework/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -3038,7 +3062,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = Source/CoreFramework/Info.plist;
+				INFOPLIST_FILE = Sources/CoreFramework/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -3063,7 +3087,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = Source/Framework/Info.plist;
+				INFOPLIST_FILE = Sources/Framework/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -3088,7 +3112,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = Source/Framework/Info.plist;
+				INFOPLIST_FILE = Sources/Framework/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -3142,7 +3166,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = Source/Framework/Info.plist;
+				INFOPLIST_FILE = Sources/Framework/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "net.openid.AppAuth-watchOS";
@@ -3168,7 +3192,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = Source/Framework/Info.plist;
+				INFOPLIST_FILE = Sources/Framework/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "net.openid.AppAuth-watchOS";
@@ -3193,7 +3217,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = Source/Framework/Info.plist;
+				INFOPLIST_FILE = Sources/Framework/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "net.openid.AppAuth-tvOS";
@@ -3218,7 +3242,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = Source/Framework/Info.plist;
+				INFOPLIST_FILE = Sources/Framework/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "net.openid.AppAuth-tvOS";
@@ -3275,7 +3299,7 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_VERSION = A;
-				INFOPLIST_FILE = Source/Framework/Info.plist;
+				INFOPLIST_FILE = Sources/Framework/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "net.openid.AppAuth-macOS";
@@ -3300,7 +3324,7 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_VERSION = A;
-				INFOPLIST_FILE = Source/Framework/Info.plist;
+				INFOPLIST_FILE = Sources/Framework/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "net.openid.AppAuth-macOS";

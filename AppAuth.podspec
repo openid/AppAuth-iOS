@@ -43,9 +43,9 @@ It follows the OAuth 2.0 for Native Apps best current practice
 
   # Subspec for the core AppAuth library classes only, suitable for extensions.
   s.subspec 'Core' do |core|
-     core.source_files = "Source/AppAuthCore.h", "Source/AppAuthCore/*.{h,m}"
+     core.source_files = "Sources/AppAuthCore.h", "Sources/AppAuthCore/*.{h,m}"
      core.resource_bundles = {
-       "AppAuthCore_Privacy" => ["PrivacyInfo.xcprivacy"]
+       "AppAuthCore_Privacy" => ["Sources/AppAuthCore/Resources/PrivacyInfo.xcprivacy"]
      }
   end
 
@@ -53,23 +53,23 @@ It follows the OAuth 2.0 for Native Apps best current practice
   s.subspec 'ExternalUserAgent' do |externalUserAgent|
     externalUserAgent.dependency 'AppAuth/Core'
     
-    externalUserAgent.source_files = "Source/AppAuth.h", "Source/AppAuth/*.{h,m}"
+    externalUserAgent.source_files = "Sources/AppAuth.h", "Sources/AppAuth/*.{h,m}"
     
     # iOS
-    externalUserAgent.ios.source_files      = "Source/AppAuth/iOS/**/*.{h,m}"
+    externalUserAgent.ios.source_files      = "Sources/AppAuth/iOS/**/*.{h,m}"
     externalUserAgent.ios.deployment_target = ios_deployment_target
     externalUserAgent.ios.frameworks        = "SafariServices"
     externalUserAgent.ios.weak_frameworks   = "AuthenticationServices"
 
     # macOS
-    externalUserAgent.osx.source_files      = "Source/AppAuth/macOS/**/*.{h,m}"
+    externalUserAgent.osx.source_files      = "Sources/AppAuth/macOS/**/*.{h,m}"
     externalUserAgent.osx.deployment_target = osx_deployment_target
     externalUserAgent.osx.weak_frameworks   = "AuthenticationServices"
   end
   
   # Subspec for the full AppAuth library, including platform-dependent external user agents.
   s.subspec 'TV' do |tv|
-    tv.source_files = "Source/AppAuthTV.h", "Source/AppAuthTV/*.{h,m}"
+    tv.source_files = "Sources/AppAuthTV.h", "Sources/AppAuthTV/*.{h,m}"
     tv.dependency 'AppAuth/Core'
   end
 

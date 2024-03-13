@@ -21,12 +21,12 @@
 #if SWIFT_PACKAGE
 @import AppAuthTV;
 #else
-#import "Source/AppAuthCore/OIDScopeUtilities.h"
-#import "Source/AppAuthCore/OIDURLQueryComponent.h"
-#import "Source/AppAuthTV/OIDTVAuthorizationRequest.h"
-#import "Source/AppAuthTV/OIDTVAuthorizationResponse.h"
-#import "Source/AppAuthTV/OIDTVServiceConfiguration.h"
-#import "Source/AppAuthTV/OIDTVTokenRequest.h"
+#import "Sources/AppAuthCore/OIDScopeUtilities.h"
+#import "Sources/AppAuthCore/OIDURLQueryComponent.h"
+#import "Sources/AppAuthTV/OIDTVAuthorizationRequest.h"
+#import "Sources/AppAuthTV/OIDTVAuthorizationResponse.h"
+#import "Sources/AppAuthTV/OIDTVServiceConfiguration.h"
+#import "Sources/AppAuthTV/OIDTVTokenRequest.h"
 #endif
 
 /*! @brief Test value for the @c deviceAuthorizationEndpoint property.

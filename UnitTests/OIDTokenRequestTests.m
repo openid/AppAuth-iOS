@@ -24,11 +24,11 @@
 #if SWIFT_PACKAGE
 @import AppAuthCore;
 #else
-#import "Source/AppAuthCore/OIDAuthorizationRequest.h"
-#import "Source/AppAuthCore/OIDAuthorizationResponse.h"
-#import "Source/AppAuthCore/OIDScopeUtilities.h"
-#import "Source/AppAuthCore/OIDServiceConfiguration.h"
-#import "Source/AppAuthCore/OIDTokenRequest.h"
+#import "Sources/AppAuthCore/OIDAuthorizationRequest.h"
+#import "Sources/AppAuthCore/OIDAuthorizationResponse.h"
+#import "Sources/AppAuthCore/OIDScopeUtilities.h"
+#import "Sources/AppAuthCore/OIDServiceConfiguration.h"
+#import "Sources/AppAuthCore/OIDTokenRequest.h"
 #endif
 
 // Ignore warnings about "Use of GNU statement expression extension" which is raised by our use of

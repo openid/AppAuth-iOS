@@ -43,16 +43,16 @@ let package = Package(
     targets: [
         .target(
             name: "AppAuthCore",
-            path: "Source/AppAuthCore",
-            resources: [.copy("../../PrivacyInfo.xcprivacy")],
+            path: "Sources/AppAuthCore",
+            resources: [.copy("Resources/PrivacyInfo.xcprivacy")],
             publicHeadersPath: ""
         ),
         .target(
             name: "AppAuth",
             dependencies: ["AppAuthCore"],
-            path: "Source/AppAuth",
+            path: "Sources/AppAuth",
             sources: ["iOS", "macOS"],
-            resources: [.copy("../../PrivacyInfo.xcprivacy")],
+            resources: [.copy("Resources/PrivacyInfo.xcprivacy")],
             publicHeadersPath: "",
             cSettings: [
                 .headerSearchPath("iOS"),
@@ -63,8 +63,8 @@ let package = Package(
         .target(
             name: "AppAuthTV",
             dependencies: ["AppAuthCore"],
-            path: "Source/AppAuthTV",
-            resources: [.copy("../../PrivacyInfo.xcprivacy")],
+            path: "Sources/AppAuthTV",
+            resources: [.copy("Resources/PrivacyInfo.xcprivacy")],
             publicHeadersPath: ""
         ),
         .testTarget(
