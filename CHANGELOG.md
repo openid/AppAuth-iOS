@@ -1,3 +1,6 @@
+# 1.7.3
+- Fix missing manifest in bundle using SPM ([#833](https://github.com/openid/AppAuth-iOS/pull/833))
+
 # 1.7.2
  - Streamline copying of privacy manifest ([#830](https://github.com/openid/AppAuth-iOS/pull/830))
 
