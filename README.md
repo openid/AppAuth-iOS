@@ -97,6 +97,19 @@ client info to try the demo).
 
 AppAuth supports four options for dependency management.
 
+### Swift Package Manager
+
+With [Swift Package Manager](https://swift.org/package-manager), 
+add the following `dependency` to your `Package.swift`:
+
+```swift
+dependencies: [
+    .package(url: "https://github.com/openid/AppAuth-iOS.git", .upToNextMajor(from: "1.4.0"))
+]
+```
+
+**tvOS:** Use the `AppAuthTV` target.
+
 ### CocoaPods
 
 With [CocoaPods](https://guides.cocoapods.org/using/getting-started.html),
@@ -109,20 +122,6 @@ Then, run `pod install`.
 **tvOS:** Use the `TV` subspec:
 
     pod 'AppAuth/TV'
-
-
-### Swift Package Manager
-
-With [Swift Package Manager](https://swift.org/package-manager), 
-add the following `dependency` to your `Package.swift`:
-
-```swift
-dependencies: [
-    .package(url: "https://github.com/openid/AppAuth-iOS.git", .upToNextMajor(from: "1.3.0"))
-]
-```
-
-**tvOS:** Use the `AppAuthTV` target.
 
 ### Carthage
 
