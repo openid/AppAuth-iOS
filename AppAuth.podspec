@@ -41,6 +41,10 @@ It follows the OAuth 2.0 for Native Apps best current practice
   s.source       = { :git => "https://github.com/openid/AppAuth-iOS.git", :tag => s.version }
   s.requires_arc = true
 
+  s.xcconfig = {
+    'DEFINES_MODULE' => 'YES',
+  }
+
   # Subspec for the core AppAuth library classes only, suitable for extensions.
   s.subspec 'Core' do |core|
      core.source_files = "Sources/AppAuthCore.h", "Sources/AppAuthCore/*.{h,m}"
