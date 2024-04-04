@@ -42,7 +42,7 @@ NS_ASSUME_NONNULL_BEGIN
 #endif
 
 @implementation OIDExternalUserAgentIOS {
-  __weak UIViewController *_presentingViewController;
+//  UIViewController *_presentingViewController;
   BOOL _prefersEphemeralSession;
 
   BOOL _externalUserAgentFlowInProgress;
@@ -55,7 +55,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma clang diagnostic pop
 }
 
-- (null_unspecified instancetype)init {
+- (nullable instancetype)init {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wnonnull"
   return [self initWithPresentingViewController:nil];
@@ -71,7 +71,7 @@ NS_ASSUME_NONNULL_BEGIN
              @"presentingViewController cannot be nil on iOS 13");
 #endif // __IPHONE_OS_VERSION_MAX_ALLOWED >= 130000
     
-    _presentingViewController = presentingViewController;
+    self._presentingViewController = presentingViewController;
   }
   return self;
 }
@@ -166,12 +166,12 @@ NS_ASSUME_NONNULL_BEGIN
   }
   // iOS 9 and 10, use SFSafariViewController
   if (@available(iOS 9.0, *)) {
-    if (!openedUserAgent && _presentingViewController) {
+    if (!openedUserAgent && self._presentingViewController) {
       SFSafariViewController *safariVC =
           [[SFSafariViewController alloc] initWithURL:requestURL];
       safariVC.delegate = self;
       _safariVC = safariVC;
-      [_presentingViewController presentViewController:safariVC animated:YES completion:nil];
+      [self._presentingViewController presentViewController:safariVC animated:YES completion:nil];
       openedUserAgent = YES;
     }
   }
@@ -255,7 +255,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark - ASWebAuthenticationPresentationContextProviding
 
 - (ASPresentationAnchor)presentationAnchorForWebAuthenticationSession:(ASWebAuthenticationSession *)session API_AVAILABLE(ios(13.0)){
-  return _presentingViewController.view.window;
+  return self._presentingViewController.view.window;
 }
 #endif // __IPHONE_OS_VERSION_MAX_ALLOWED >= 130000
 
