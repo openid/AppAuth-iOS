@@ -1,3 +1,6 @@
+# 1.7.4
+- Adds defines module to AppAuth.podspec ([#845](https://github.com/openid/AppAuth-iOS/pull/845))
+
 # 1.7.3
 - Fix missing manifest in bundle using SPM ([#833](https://github.com/openid/AppAuth-iOS/pull/833))
 
