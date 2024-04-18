@@ -41,7 +41,7 @@ It follows the OAuth 2.0 for Native Apps best current practice
   s.source       = { :git => "https://github.com/openid/AppAuth-iOS.git", :tag => s.version }
   s.requires_arc = true
 
-  s.xcconfig = {
+  s.pod_target_xcconfig = {
     'DEFINES_MODULE' => 'YES',
   }
 
