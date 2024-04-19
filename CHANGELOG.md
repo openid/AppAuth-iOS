@@ -1,3 +1,6 @@
+# 1.7.5
+- Use correct xcconfig syntax for podspec ([#851](https://github.com/openid/AppAuth-iOS/pull/851))
+
 # 1.7.4
 - Adds defines module to AppAuth.podspec ([#845](https://github.com/openid/AppAuth-iOS/pull/845))
 
