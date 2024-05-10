@@ -46,7 +46,7 @@ NS_ASSUME_NONNULL_BEGIN
      prefersEphemeralSession:(BOOL)prefersEphemeralSession
                     callback:(OIDAuthorizationCallback)callback {
   id<OIDExternalUserAgent> externalUserAgent;
-#if TARGET_OS_MACCATALYST
+#if TARGET_OS_MACCATALYST || TARGET_OS_VISION
   externalUserAgent = [[OIDExternalUserAgentCatalyst alloc]
       initWithPresentingViewController:presentingViewController
                        prefersEphemeralSession:prefersEphemeralSession];

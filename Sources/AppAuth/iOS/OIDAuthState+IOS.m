@@ -48,7 +48,7 @@
                       prefersEphemeralSession:(BOOL)prefersEphemeralSession
                                      callback:(OIDAuthStateAuthorizationCallback)callback {
   id<OIDExternalUserAgent> externalUserAgent;
-#if TARGET_OS_MACCATALYST
+#if TARGET_OS_MACCATALYST || TARGET_OS_VISION
   externalUserAgent = [[OIDExternalUserAgentCatalyst alloc]
           initWithPresentingViewController:presentingViewController
                    prefersEphemeralSession:prefersEphemeralSession];
@@ -62,7 +62,7 @@
                                                 callback:callback];
 }
 
-#if !TARGET_OS_MACCATALYST
+#if !TARGET_OS_MACCATALYST && !TARGET_OS_VISION
 + (id<OIDExternalUserAgentSession>)
     authStateByPresentingAuthorizationRequest:(OIDAuthorizationRequest *)authorizationRequest
                                   callback:(OIDAuthStateAuthorizationCallback)callback {
