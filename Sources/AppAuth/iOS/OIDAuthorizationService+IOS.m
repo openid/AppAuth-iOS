@@ -32,7 +32,7 @@ NS_ASSUME_NONNULL_BEGIN
     presentingViewController:(UIViewController *)presentingViewController
                     callback:(OIDAuthorizationCallback)callback {
   id<OIDExternalUserAgent> externalUserAgent;
-#if TARGET_OS_MACCATALYST
+#if TARGET_OS_MACCATALYST || TARGET_OS_VISION
   externalUserAgent = [[OIDExternalUserAgentCatalyst alloc]
       initWithPresentingViewController:presentingViewController];
 #else // TARGET_OS_MACCATALYST
