@@ -45,7 +45,7 @@
 
 #if TARGET_OS_TV
 #elif TARGET_OS_WATCH
-#elif TARGET_OS_IOS || TARGET_OS_MACCATALYST
+#elif TARGET_OS_IOS || TARGET_OS_MACCATALYST || TARGET_OS_VISION
 #import "OIDAuthState+IOS.h"
 #import "OIDAuthorizationService+IOS.h"
 #import "OIDExternalUserAgentIOS.h"
