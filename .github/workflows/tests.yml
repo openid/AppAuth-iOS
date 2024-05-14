@@ -24,7 +24,7 @@ jobs:
           "-scheme AppAuthTV -destination 'platform=tvOS Simulator,name=Apple TV,OS=16.1' -sdk 'appletvsimulator16.1'"
         ]
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Run unit test targets
       run: |
         xcodebuild test \
@@ -41,7 +41,7 @@ jobs:
           '--use-static-frameworks'
         ]
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Update Bundler
       run: bundle update --bundler
     - name: Install Ruby gems with Bundler
@@ -52,10 +52,26 @@ jobs:
   spm-build-test:
     runs-on: macos-11
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
     - name: Build unit test target
       run: swift build
     - name: Run unit test target
       run: swift test --enable-code-coverage
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v2
+
+  spm-test:
+    runs-on: macos-14
+    strategy:
+      matrix:
+        flags: [
+          "-destination 'platform=iOS Simulator,name=iPhone 11,OS=16.2' -sdk 'iphonesimulator16.2'",
+          "-destination 'platform=visionOS simulator,name=Any visionOS Simulator Device' -sdk xrsimulator",
+          "-sdk macos",
+        ]
+    steps:
+    - uses: actions/checkout@v4
+    - name: Remove xcodeproj to test Package.swift
+      run: rm -rf AppAuth.xcodeproj
+    - name: Run unit test targets
+      run: xcodebuild -scheme AppAuth-Package test ${{ matrix.flags }}

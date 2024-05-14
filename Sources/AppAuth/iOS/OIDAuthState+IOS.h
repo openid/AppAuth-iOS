@@ -18,7 +18,7 @@
 
 #import <TargetConditionals.h>
 
-#if TARGET_OS_IOS || TARGET_OS_MACCATALYST
+#if TARGET_OS_IOS || TARGET_OS_MACCATALYST || TARGET_OS_VISION
 
 #import <UIKit/UIKit.h>
 
@@ -73,7 +73,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (id<OIDExternalUserAgentSession>)
     authStateByPresentingAuthorizationRequest:(OIDAuthorizationRequest *)authorizationRequest
-                     callback:(OIDAuthStateAuthorizationCallback)callback API_AVAILABLE(ios(11)) API_UNAVAILABLE(macCatalyst)
+                     callback:(OIDAuthStateAuthorizationCallback)callback API_AVAILABLE(ios(11)) API_UNAVAILABLE(macCatalyst) API_UNAVAILABLE(visionos)
     __deprecated_msg("This method will not work on iOS 13. Use "
         "authStateByPresentingAuthorizationRequest:presentingViewController:callback:");
 
@@ -81,4 +81,4 @@ NS_ASSUME_NONNULL_BEGIN
 
 NS_ASSUME_NONNULL_END
 
-#endif // TARGET_OS_IOS || TARGET_OS_MACCATALYST
+#endif // TARGET_OS_IOS || TARGET_OS_MACCATALYST || TARGET_OS_VISION
