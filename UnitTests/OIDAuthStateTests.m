@@ -25,11 +25,11 @@
 #if SWIFT_PACKAGE
 @import AppAuthCore;
 #else
-#import "Source/AppAuthCore/OIDAuthState.h"
-#import "Source/AppAuthCore/OIDAuthorizationResponse.h"
-#import "Source/AppAuthCore/OIDErrorUtilities.h"
-#import "Source/AppAuthCore/OIDRegistrationResponse.h"
-#import "Source/AppAuthCore/OIDTokenResponse.h"
+#import "Sources/AppAuthCore/OIDAuthState.h"
+#import "Sources/AppAuthCore/OIDAuthorizationResponse.h"
+#import "Sources/AppAuthCore/OIDErrorUtilities.h"
+#import "Sources/AppAuthCore/OIDRegistrationResponse.h"
+#import "Sources/AppAuthCore/OIDTokenResponse.h"
 #endif
 
 #import "OIDTokenRequestTests.h"

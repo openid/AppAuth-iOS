@@ -89,6 +89,52 @@ static NSString *const kAdditionalHeadersKey = @"additionalHeaders";
                       additionalHeaders:)
     )
 
+- (instancetype)initWithConfiguration:(nonnull OIDServiceConfiguration *)configuration
+               grantType:(nonnull NSString *)grantType
+       authorizationCode:(nullable NSString *)code
+             redirectURL:(nullable NSURL *)redirectURL
+                clientID:(nonnull NSString *)clientID
+            clientSecret:(nullable NSString *)clientSecret
+                  scopes:(nullable NSArray<NSString *> *)scopes
+            refreshToken:(nullable NSString *)refreshToken
+            codeVerifier:(nullable NSString *)codeVerifier
+    additionalParameters:(nullable NSDictionary<NSString *,NSString *> *)additionalParameters {
+  return [self initWithConfiguration:configuration
+                           grantType:grantType
+                   authorizationCode:code
+                         redirectURL:redirectURL
+                            clientID:clientID
+                        clientSecret:clientSecret
+                              scopes:scopes
+                        refreshToken:refreshToken
+                        codeVerifier:codeVerifier
+                additionalParameters:additionalParameters
+                   additionalHeaders:_additionalHeaders];
+}
+
+- (instancetype)initWithConfiguration:(nonnull OIDServiceConfiguration *)configuration
+               grantType:(nonnull NSString *)grantType
+       authorizationCode:(nullable NSString *)code
+             redirectURL:(nullable NSURL *)redirectURL
+                clientID:(nonnull NSString *)clientID
+            clientSecret:(nullable NSString *)clientSecret
+                   scope:(nullable NSString *)scope
+            refreshToken:(nullable NSString *)refreshToken
+            codeVerifier:(nullable NSString *)codeVerifier
+    additionalParameters:(nullable NSDictionary<NSString *,NSString *> *)additionalParameters {
+  return [self initWithConfiguration:configuration
+                           grantType:grantType
+                   authorizationCode:code
+                         redirectURL:redirectURL
+                            clientID:clientID
+                        clientSecret:clientSecret
+                               scope:scope
+                        refreshToken:refreshToken
+                        codeVerifier:codeVerifier
+                additionalParameters:additionalParameters
+                   additionalHeaders:_additionalHeaders];
+}
+
 - (instancetype)initWithConfiguration:(OIDServiceConfiguration *)configuration
                grantType:(NSString *)grantType
        authorizationCode:(nullable NSString *)code
@@ -330,7 +376,7 @@ static NSString *const kAdditionalHeadersKey = @"additionalHeaders";
   }
   
   for (id header in _additionalHeaders) {
-    [URLRequest setValue:httpHeaders[header] forHTTPHeaderField:header];
+    [URLRequest setValue:_additionalHeaders[header] forHTTPHeaderField:header];
   }
 
   return URLRequest;

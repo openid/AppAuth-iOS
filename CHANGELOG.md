@@ -1,3 +1,22 @@
+# 1.7.4
+- Adds defines module to AppAuth.podspec ([#845](https://github.com/openid/AppAuth-iOS/pull/845))
+
+# 1.7.3
+- Fix missing manifest in bundle using SPM ([#833](https://github.com/openid/AppAuth-iOS/pull/833))
+
+# 1.7.2
+ - Streamline copying of privacy manifest ([#830](https://github.com/openid/AppAuth-iOS/pull/830))
+
+# 1.7.1
+- Add back missing method to OIDAuthorizationResponse ([#825](https://github.com/openid/AppAuth-iOS/pull/825))
+- Fix OIDTokenRequest for AppAuthCore and AppAuthTV ([#826](https://github.com/openid/AppAuth-iOS/pull/826))
+
+# 1.7.0
+- Introduce addtional http headers to OIDTokenRequest ([#770](https://github.com/openid/AppAuth-iOS/pull/770))
+- Fix nullability annotation for -[OIDExternalUserAgentIOS init] ([#727](https://github.com/openid/AppAuth-iOS/pull/727))
+- Feat: allow custom nonce in OIDAuthorizationRequest ([#788](https://github.com/openid/AppAuth-iOS/pull/788))
+- Add privacy manifest ([#822](https://github.com/openid/AppAuth-iOS/pull/822))
+
 # 1.6.2
 - Increased minimum iOS and macOS versions to 9.0 and 10.12 respectively to fix [framework build issue](https://github.com/openid/AppAuth-iOS/issues/765)
 
