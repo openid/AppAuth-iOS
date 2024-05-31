@@ -21,14 +21,50 @@
 #if SWIFT_PACKAGE
 @import AppAuthCore;
 #else
-#import "Source/AppAuthCore/OIDError.h"
-#import "Source/AppAuthCore/OIDServiceDiscovery.h"
+#import "Sources/AppAuthCore/OIDError.h"
+#import "Sources/AppAuthCore/OIDServiceDiscovery.h"
 #endif
 
 // Ignore warnings about "Use of GNU statement expression extension" which is raised by our use of
 // the XCTAssert___ macros.
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wgnu"
+
+// Define a subclass of @c OIDServiceDiscovery that provides the old NSCoding decoding
+// implementation.
+@interface OIDServiceDiscoveryOldDecoding : OIDServiceDiscovery
+@end
+
+@implementation OIDServiceDiscoveryOldDecoding
+
++ (BOOL)supportsSecureCoding {
+  return YES;
+}
+
+- (nullable instancetype)initWithCoder:(NSCoder *)aDecoder {
+  NSError *error;
+  NSDictionary *dictionary = [[NSDictionary alloc] initWithCoder:aDecoder];
+  self = [self initWithDictionary:dictionary error:&error];
+  if (error) {
+    return nil;
+  }
+  return self;
+}
+
+@end
+
+// Define a subclass of @c OIDServiceDiscovery that provides the old NSCoding encoding
+// implementation.
+@interface OIDServiceDiscoveryOldEncoding : OIDServiceDiscovery
+@end
+
+@implementation OIDServiceDiscoveryOldEncoding
+
+- (void)encodeWithCoder:(NSCoder *)coder {
+  [self.discoveryDictionary encodeWithCoder:coder];
+}
+
+@end
 
 /*! Testing URL used when testing URL conversions. */
 static NSString *const kTestURL = @"http://www.google.com/";
@@ -39,6 +75,7 @@ static NSString *const kTestURLInvalid = @"abc";
 /*! Field keys associated with an OpenID Connect Discovery Document. */
 static NSString *const kIssuerKey = @"issuer";
 static NSString *const kAuthorizationEndpointKey = @"authorization_endpoint";
+static NSString *const kDeviceAuthorizationEndpointKey = @"device_authorization_endpoint";
 static NSString *const kTokenEndpointKey = @"token_endpoint";
 static NSString *const kUserinfoEndpointKey = @"userinfo_endpoint";
 static NSString *const kJWKSURLKey = @"jwks_uri";
@@ -103,12 +140,13 @@ static NSString *const kOPTosURIKey = @"op_tos_uri";
   return @{
     kIssuerKey : @"http://www.example.com/issuer",
     kAuthorizationEndpointKey : @"http://www.example.com/authorization",
+    kDeviceAuthorizationEndpointKey : @"http://www.example.com/device",
     kTokenEndpointKey : @"http://www.example.com/token",
     kUserinfoEndpointKey : @"User Info Endpoint",
     kJWKSURLKey : @"http://www.example.com/jwks",
     kRegistrationEndpointKey : @"Registration Endpoint",
     kEndSessionEndpointKey : @"https://www.example.com/logout",
-    kScopesSupportedKey : @"Scopes Supported",
+    kScopesSupportedKey : @[ @"scope1", @"scope2" ],
     kResponseTypesSupportedKey : @"Response Types Supported",
     kResponseModesSupportedKey : @"Response Modes Supported",
     kGrantTypesSupportedKey : @"Grant Types Supported",
@@ -152,47 +190,58 @@ static NSString *const kOPTosURIKey = @"op_tos_uri";
 
 // from https://accounts.google.com/.well-known/openid-configuration
 static NSString *const kDiscoveryDocument =
-    @"{\"issuer\":\"https://accounts.google.com\",\"authorization_endpoint\":\"https://account"
-      "s.google.com/o/oauth2/v2/auth\",\"token_endpoint\":\"https://www.googleapis.com/oauth2/v4/to"
-      "ken\",\"userinfo_endpoint\":\"https://www.googleapis.com/oauth2/v3/userinfo\",\"revocation_e"
-      "ndpoint\":\"https://accounts.google.com/o/oauth2/revoke\",\"jwks_uri\":\"https://www.googlea"
-      "pis.com/oauth2/v3/certs\",\"response_types_supported\":[\"code\",\"token\",\"id_token\",\"co"
-      "de token\",\"code id_token\",\"token id_token\",\"code token id_token\",\"none\"],\"subject_"
-      "types_supported\":[\"public\"],\"id_token_signing_alg_values_supported\":[\"RS256\"],\"scope"
-      "s_supported\":[\"openid\",\"email\",\"profile\"],\"token_endpoint_auth_methods_supported\":["
-      "\"client_secret_post\",\"client_secret_basic\"],\"claims_supported\":[\"aud\",\"email\",\"em"
-      "ail_verified\",\"exp\",\"family_name\",\"given_name\",\"iat\",\"iss\",\"locale\",\"name\",\""
-      "picture\",\"sub\"]}";
+    @"{\"issuer\":\"https://accounts.google.com\",\"authorization_endpoint\":\"https://"
+    @"accounts.google.com/o/oauth2/v2/auth\",\"device_authorization_endpoint\":\"https://"
+    @"oauth2.googleapis.com/device/code\",\"token_endpoint\":\"https://oauth2.googleapis.com/"
+    @"token\",\"userinfo_endpoint\":\"https://openidconnect.googleapis.com/v1/"
+    @"userinfo\",\"revocation_endpoint\":\"https://oauth2.googleapis.com/"
+    @"revoke\",\"jwks_uri\":\"https://www.googleapis.com/oauth2/v3/"
+    @"certs\",\"response_types_supported\":[\"code\",\"token\",\"id_token\",\"codetoken\",\"codeid_"
+    @"token\",\"tokenid_token\",\"codetokenid_token\",\"none\"],\"subject_types_supported\":["
+    @"\"public\"],\"id_token_signing_alg_values_supported\":[\"RS256\"],\"scopes_supported\":["
+    @"\"openid\",\"email\",\"profile\"],\"token_endpoint_auth_methods_supported\":[\"client_secret_"
+    @"post\",\"client_secret_basic\"],\"claims_supported\":[\"aud\",\"email\",\"email_verified\","
+    @"\"exp\",\"family_name\",\"given_name\",\"iat\",\"iss\",\"locale\",\"name\",\"picture\","
+    @"\"sub\"],\"code_challenge_methods_supported\":[\"plain\",\"S256\"],\"grant_types_supported\":"
+    @"[\"authorization_code\",\"refresh_token\",\"urn:ietf:params:oauth:grant-type:device_code\","
+    @"\"urn:ietf:params:oauth:grant-type:jwt-bearer\"]}";
 
 // from https://accounts.google.com/.well-known/openid-configuration with authorization_endpoint
 // removed
 static NSString *const kDiscoveryDocumentMissingField =
-    @"{\"issuer\":\"https://accounts.google.com\",\"token_endpoint\":\"https://www.googleapis."
-      "com/oauth2/v4/to"
-      "ken\",\"userinfo_endpoint\":\"https://www.googleapis.com/oauth2/v3/userinfo\",\"revocation_e"
-      "ndpoint\":\"https://accounts.google.com/o/oauth2/revoke\",\"jwks_uri\":\"https://www.googlea"
-      "pis.com/oauth2/v3/certs\",\"response_types_supported\":[\"code\",\"token\",\"id_token\",\"co"
-      "de token\",\"code id_token\",\"token id_token\",\"code token id_token\",\"none\"],\"subject_"
-      "types_supported\":[\"public\"],\"id_token_signing_alg_values_supported\":[\"RS256\"],\"scope"
-      "s_supported\":[\"openid\",\"email\",\"profile\"],\"token_endpoint_auth_methods_supported\":["
-      "\"client_secret_post\",\"client_secret_basic\"],\"claims_supported\":[\"aud\",\"email\",\"em"
-      "ail_verified\",\"exp\",\"family_name\",\"given_name\",\"iat\",\"iss\",\"locale\",\"name\",\""
-      "picture\",\"sub\"]}";
+    @"{\"issuer\":\"https://accounts.google.com\",\"device_authorization_endpoint\":\"https://"
+    @"oauth2.googleapis.com/device/code\",\"token_endpoint\":\"https://oauth2.googleapis.com/"
+    @"token\",\"userinfo_endpoint\":\"https://openidconnect.googleapis.com/v1/"
+    @"userinfo\",\"revocation_endpoint\":\"https://oauth2.googleapis.com/"
+    @"revoke\",\"jwks_uri\":\"https://www.googleapis.com/oauth2/v3/"
+    @"certs\",\"response_types_supported\":[\"code\",\"token\",\"id_token\",\"codetoken\",\"codeid_"
+    @"token\",\"tokenid_token\",\"codetokenid_token\",\"none\"],\"subject_types_supported\":["
+    @"\"public\"],\"id_token_signing_alg_values_supported\":[\"RS256\"],\"scopes_supported\":["
+    @"\"openid\",\"email\",\"profile\"],\"token_endpoint_auth_methods_supported\":[\"client_secret_"
+    @"post\",\"client_secret_basic\"],\"claims_supported\":[\"aud\",\"email\",\"email_verified\","
+    @"\"exp\",\"family_name\",\"given_name\",\"iat\",\"iss\",\"locale\",\"name\",\"picture\","
+    @"\"sub\"],\"code_challenge_methods_supported\":[\"plain\",\"S256\"],\"grant_types_supported\":"
+    @"[\"authorization_code\",\"refresh_token\",\"urn:ietf:params:oauth:grant-type:device_code\","
+    @"\"urn:ietf:params:oauth:grant-type:jwt-bearer\"]}";
 
-  // from https://accounts.google.com/.well-known/openid-configuration with authorization_endpoint
-  // and token_endpoint set to JSON 'null'
+// from https://accounts.google.com/.well-known/openid-configuration with authorization_endpoint
+// and token_endpoint set to JSON 'null'
 static NSString *const kDiscoveryDocumentNullField =
-    @"{\"issuer\":\"https://accounts.google.com\",\"authorization_endpoint\":null,"
-      "\"token_endpoint\":null"
-      ",\"userinfo_endpoint\":\"https://www.googleapis.com/oauth2/v3/userinfo\",\"revocation_e"
-      "ndpoint\":\"https://accounts.google.com/o/oauth2/revoke\",\"jwks_uri\":\"https://www.googlea"
-      "pis.com/oauth2/v3/certs\",\"response_types_supported\":[\"code\",\"token\",\"id_token\",\"co"
-      "de token\",\"code id_token\",\"token id_token\",\"code token id_token\",\"none\"],\"subject_"
-      "types_supported\":[\"public\"],\"id_token_signing_alg_values_supported\":[\"RS256\"],\"scope"
-      "s_supported\":[\"openid\",\"email\",\"profile\"],\"token_endpoint_auth_methods_supported\":["
-      "\"client_secret_post\",\"client_secret_basic\"],\"claims_supported\":[\"aud\",\"email\",\"em"
-      "ail_verified\",\"exp\",\"family_name\",\"given_name\",\"iat\",\"iss\",\"locale\",\"name\",\""
-      "picture\",\"sub\"]}";
+    @"{\"issuer\":\"https://"
+    @"accounts.google.com\",\"authorization_endpoint\":null,\"device_authorization_endpoint\":"
+    @"\"https://oauth2.googleapis.com/device/"
+    @"code\",\"token_endpoint\":null,\"userinfo_endpoint\":\"https://openidconnect.googleapis.com/"
+    @"v1/userinfo\",\"revocation_endpoint\":\"https://oauth2.googleapis.com/"
+    @"revoke\",\"jwks_uri\":\"https://www.googleapis.com/oauth2/v3/"
+    @"certs\",\"response_types_supported\":[\"code\",\"token\",\"id_token\",\"codetoken\",\"codeid_"
+    @"token\",\"tokenid_token\",\"codetokenid_token\",\"none\"],\"subject_types_supported\":["
+    @"\"public\"],\"id_token_signing_alg_values_supported\":[\"RS256\"],\"scopes_supported\":["
+    @"\"openid\",\"email\",\"profile\"],\"token_endpoint_auth_methods_supported\":[\"client_secret_"
+    @"post\",\"client_secret_basic\"],\"claims_supported\":[\"aud\",\"email\",\"email_verified\","
+    @"\"exp\",\"family_name\",\"given_name\",\"iat\",\"iss\",\"locale\",\"name\",\"picture\","
+    @"\"sub\"],\"code_challenge_methods_supported\":[\"plain\",\"S256\"],\"grant_types_supported\":"
+    @"[\"authorization_code\",\"refresh_token\",\"urn:ietf:params:oauth:grant-type:device_code\","
+    @"\"urn:ietf:params:oauth:grant-type:jwt-bearer\"]}";
 
 static NSString *const kDiscoveryDocumentNotDictionary =
     @"[\"code\",\"token\",\"id_token\",\"code token\",\"code id_token\",\"token id_token\",\"code to"
@@ -398,10 +447,97 @@ static NSString *const kDiscoveryDocumentNotDictionary =
   OIDServiceDiscovery *discovery =
       [[OIDServiceDiscovery alloc] initWithDictionary:serviceDiscoveryDictionary
                                                              error:&error];
-  NSData *data = [NSKeyedArchiver archivedDataWithRootObject:discovery];
-  OIDServiceDiscovery *unarchived = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+  NSData *data;
+  if (@available(iOS 11.0, macOS 10.13, tvOS 11.0, watchOS 4.0, *)) {
+    data = [NSKeyedArchiver archivedDataWithRootObject:discovery
+                                 requiringSecureCoding:YES
+                                                 error:&error];
+  } else {
+    data = [NSKeyedArchiver archivedDataWithRootObject:discovery];
+  }
+  
+  OIDServiceDiscovery *unarchived;
+  if (@available(iOS 11.0, macOS 10.13, tvOS 11.0, watchOS 4.0, *)) {
+    unarchived = [NSKeyedUnarchiver unarchivedObjectOfClass:[OIDServiceDiscovery class]
+                                                   fromData:data
+                                                      error:&error];
+  } else {
+    unarchived = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+  }
 
-  XCTAssertEqualObjects(discovery.discoveryDictionary, unarchived.discoveryDictionary, @"");
+  XCTAssertEqualObjects(discovery.discoveryDictionary, unarchived.discoveryDictionary);
+}
+
+/*! @brief To ensure backward compatibility, test our ability to decode the old encoding of
+        @c OIDServiceDiscovery.
+ */
+- (void)testSecureCodingDecodeOld {
+  NSError *error;
+  NSDictionary *serviceDiscoveryDictionary = [[self class] completeServiceDiscoveryDictionary];
+  OIDServiceDiscoveryOldEncoding *discovery =
+      [[OIDServiceDiscoveryOldEncoding alloc] initWithDictionary:serviceDiscoveryDictionary
+                                                           error:&error];
+  NSData *data;
+  if (@available(iOS 11.0, macOS 10.13, tvOS 11.0, watchOS 4.0, *)) {
+    data = [NSKeyedArchiver archivedDataWithRootObject:discovery
+                                 requiringSecureCoding:YES
+                                                 error:&error];
+  } else {
+    data = [NSKeyedArchiver archivedDataWithRootObject:discovery];
+  }
+  
+  OIDServiceDiscovery *unarchived;
+  if (@available(iOS 11.0, macOS 10.13, tvOS 11.0, watchOS 4.0, *)) {
+    NSSet<Class> *allowedClasses = [NSSet setWithArray:@[[OIDServiceDiscovery class],
+                                                         [NSDictionary class],
+                                                         [NSArray class],
+                                                         [NSString class],
+                                                         [NSNumber class],
+                                                         [NSNull class]]];
+    unarchived = [NSKeyedUnarchiver unarchivedObjectOfClasses:allowedClasses
+                                                     fromData:data
+                                                        error:&error];
+  } else {
+    unarchived = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+  }
+
+  XCTAssertEqualObjects(discovery.discoveryDictionary, unarchived.discoveryDictionary);
+}
+
+/*! @brief To ensure forward compatibility, test the ability of the old implementation to decode
+        the new encoding of @c OIDServiceDiscovery.
+ */
+- (void)testSecureCodingOldDecodeNew {
+  NSError *error;
+  NSDictionary *serviceDiscoveryDictionary = [[self class] completeServiceDiscoveryDictionary];
+  OIDServiceDiscoveryOldDecoding *discovery =
+      [[OIDServiceDiscoveryOldDecoding alloc] initWithDictionary:serviceDiscoveryDictionary
+                                                           error:&error];
+  NSData *data;
+  if (@available(iOS 11.0, macOS 10.13, tvOS 11.0, watchOS 4.0, *)) {
+    data = [NSKeyedArchiver archivedDataWithRootObject:discovery
+                                 requiringSecureCoding:YES
+                                                 error:&error];
+  } else {
+    data = [NSKeyedArchiver archivedDataWithRootObject:discovery];
+  }
+  
+  OIDServiceDiscovery *unarchived;
+  if (@available(iOS 11.0, macOS 10.13, tvOS 11.0, watchOS 4.0, *)) {
+    NSSet<Class> *allowedClasses = [NSSet setWithArray:@[[OIDServiceDiscoveryOldDecoding class],
+                                                         [NSDictionary class],
+                                                         [NSArray class],
+                                                         [NSString class],
+                                                         [NSNumber class],
+                                                         [NSNull class]]];
+    unarchived = [NSKeyedUnarchiver unarchivedObjectOfClasses:allowedClasses
+                                                     fromData:data
+                                                        error:&error];
+  } else {
+    unarchived = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+  }
+  XCTAssertNil(error);
+  XCTAssertEqualObjects(discovery.discoveryDictionary, unarchived.discoveryDictionary);
 }
 
 /*! @brief Tests the NSCopying implementation by round-tripping an instance through the copying
@@ -489,6 +625,7 @@ static NSString *const kDiscoveryDocumentNotDictionary =
 
 TestURLFieldBackedBy(issuer, kIssuerKey, kTestURL)
 TestURLFieldBackedBy(authorizationEndpoint, kAuthorizationEndpointKey, kTestURL)
+TestURLFieldBackedBy(deviceAuthorizationEndpoint, kDeviceAuthorizationEndpointKey, kTestURL)
 TestURLFieldBackedBy(tokenEndpoint, kTokenEndpointKey, kTestURL)
 TestURLFieldBackedBy(userinfoEndpoint, kUserinfoEndpointKey, kTestURL)
 TestURLFieldBackedBy(jwksURL, kJWKSURLKey, kTestURL)

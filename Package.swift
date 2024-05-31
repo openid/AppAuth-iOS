@@ -1,4 +1,4 @@
-// swift-tools-version:5.1
+// swift-tools-version:5.3
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 import PackageDescription
 
@@ -23,8 +23,8 @@ import PackageDescription
 let package = Package(
     name: "AppAuth",
     platforms: [
-        .macOS(.v10_10),
-        .iOS(.v8),
+        .macOS(.v10_12),
+        .iOS(.v9),
         .tvOS(.v9),
         .watchOS(.v2)
     ],
@@ -34,20 +34,25 @@ let package = Package(
             targets: ["AppAuthCore"]),
         .library(
             name: "AppAuth",
-            targets: ["AppAuth"])
+            targets: ["AppAuth"]),
+        .library(
+            name: "AppAuthTV",
+            targets: ["AppAuthTV"])
     ],
     dependencies: [],
     targets: [
         .target(
             name: "AppAuthCore",
-            path: "Source/AppAuthCore",
+            path: "Sources/AppAuthCore",
+            resources: [.copy("Resources/PrivacyInfo.xcprivacy")],
             publicHeadersPath: ""
         ),
         .target(
             name: "AppAuth",
             dependencies: ["AppAuthCore"],
-            path: "Source/AppAuth",
+            path: "Sources/AppAuth",
             sources: ["iOS", "macOS"],
+            resources: [.copy("Resources/PrivacyInfo.xcprivacy")],
             publicHeadersPath: "",
             cSettings: [
                 .headerSearchPath("iOS"),
@@ -55,17 +60,29 @@ let package = Package(
                 .headerSearchPath("macOS/LoopbackHTTPServer"),
             ]
         ),
+        .target(
+            name: "AppAuthTV",
+            dependencies: ["AppAuthCore"],
+            path: "Sources/AppAuthTV",
+            resources: [.copy("Resources/PrivacyInfo.xcprivacy")],
+            publicHeadersPath: ""
+        ),
         .testTarget(
             name: "AppAuthCoreTests",
             dependencies: ["AppAuthCore"],
             path: "UnitTests",
-            exclude: ["OIDSwiftTests.swift"]
+            exclude: ["OIDSwiftTests.swift", "AppAuthTV"]
         ),
         .testTarget(
             name: "AppAuthCoreSwiftTests",
             dependencies: ["AppAuthCore"],
             path: "UnitTests",
             sources: ["OIDSwiftTests.swift"]
-        )
+        ),
+        .testTarget(
+            name: "AppAuthTVTests",
+            dependencies: ["AppAuthTV"],
+            path: "UnitTests/AppAuthTV"
+        ),
     ]
 )

@@ -21,8 +21,8 @@
 #if SWIFT_PACKAGE
 @import AppAuthCore;
 #else
-#import "Source/AppAuthCore/OIDAuthStateChangeDelegate.h"
-#import "Source/AppAuthCore/OIDAuthStateErrorDelegate.h"
+#import "Sources/AppAuthCore/OIDAuthStateChangeDelegate.h"
+#import "Sources/AppAuthCore/OIDAuthStateErrorDelegate.h"
 #endif
 
 @class OIDAuthState;

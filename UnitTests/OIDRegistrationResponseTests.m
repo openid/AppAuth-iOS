@@ -24,8 +24,8 @@
 #if SWIFT_PACKAGE
 @import AppAuthCore;
 #else
-#import "Source/AppAuthCore/OIDRegistrationRequest.h"
-#import "Source/AppAuthCore/OIDRegistrationResponse.h"
+#import "Sources/AppAuthCore/OIDRegistrationRequest.h"
+#import "Sources/AppAuthCore/OIDRegistrationResponse.h"
 #endif
 
 /*! @brief The test value for the @c clientID property.

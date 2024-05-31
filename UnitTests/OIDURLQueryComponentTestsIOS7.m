@@ -21,7 +21,7 @@
 #if SWIFT_PACKAGE
 @import AppAuthCore;
 #else
-#import "Source/AppAuthCore/OIDURLQueryComponent.h"
+#import "Sources/AppAuthCore/OIDURLQueryComponent.h"
 #endif
 
 // Ignore warnings about "Use of GNU statement expression extension" which is raised by our use of
