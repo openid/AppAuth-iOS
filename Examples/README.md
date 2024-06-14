@@ -24,6 +24,7 @@ are welcome to submit a README with IdP information.
 
 Those with instructions on file:
 
+* [ForgeRock](README-ForgeRock.md)
 * [Google](README-Google.md)
 * [IdentityServer](README-IdentityServer.md)
 * [Okta](README-Okta.md)
