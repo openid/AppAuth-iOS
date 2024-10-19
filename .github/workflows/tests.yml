@@ -50,7 +50,7 @@ jobs:
       run: pod lib lint --verbose ${{ matrix.flags }}
 
   spm-build-test:
-    runs-on: macos-11
+    runs-on: macos-12
     steps:
     - uses: actions/checkout@v2
     - name: Build unit test target
