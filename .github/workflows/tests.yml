@@ -50,12 +50,14 @@ jobs:
       run: pod lib lint --verbose ${{ matrix.flags }}
 
   spm-build-test:
-    runs-on: macos-11
+    runs-on: macos-12
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Build unit test target
       run: swift build
     - name: Run unit test target
       run: swift test --enable-code-coverage
     - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v2
+      uses: codecov/codecov-action@v3
+      with: 
+        version: v0.7.3
