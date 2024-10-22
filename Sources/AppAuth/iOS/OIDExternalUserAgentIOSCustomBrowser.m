@@ -75,6 +75,16 @@ NS_ASSUME_NONNULL_BEGIN
   return transform;
 }
 
++ (instancetype)CustomBrowserEdge {
+  OIDCustomBrowserURLTransformation transform =
+      [[self class] URLTransformationSchemeSubstitutionHTTPS:@"edge-https" HTTP:@"edge-http"];
+  NSURL *appStoreURL =
+  [NSURL URLWithString:@"https://apps.apple.com/us/app/microsoft-edge-web-browser/id1288723196"];
+  return [[[self class] alloc] initWithURLTransformation:transform
+                                        canOpenURLScheme:@"edge-https"
+                                             appStoreURL:appStoreURL];
+}
+
 + (OIDCustomBrowserURLTransformation)
     URLTransformationSchemeSubstitutionHTTPS:(NSString *)browserSchemeHTTPS
                                         HTTP:(nullable NSString *)browserSchemeHTTP {
