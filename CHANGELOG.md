@@ -1,3 +1,7 @@
+# 1.7.6
+- Fix OIDExternalUserAgentIOSCustomBrowser on versions iOS 10+ ([#871](https://github.com/openid/AppAuth-iOS/pull/871))
+- Update runners in tests.yml to macos-13. ([#886](https://github.com/openid/AppAuth-iOS/pull/886))
+
 # 1.7.5
 - Use correct xcconfig syntax for podspec ([#851](https://github.com/openid/AppAuth-iOS/pull/851))
 
