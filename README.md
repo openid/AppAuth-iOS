@@ -19,10 +19,11 @@ tasks like performing an action with fresh tokens.
 
 It follows the best practices set out in 
 [RFC 8252 - OAuth 2.0 for Native Apps](https://tools.ietf.org/html/rfc8252)
-including using `SFAuthenticationSession` and `SFSafariViewController` on iOS
-for the auth request. `UIWebView` and `WKWebView` are explicitly *not*
-supported due to the security and usability reasons explained in
-[Section 8.12 of RFC 8252](https://tools.ietf.org/html/rfc8252#section-8.12).
+including using `ASWebAuthenticationSession`, `SFAuthenticationSession` and
+
+`SFSafariViewController` on iOS for the auth request. `UIWebView` and `WKWebView`
+are explicitly *not* supported due to the security and usability reasons explained
+in [Section 8.12 of RFC 8252](https://tools.ietf.org/html/rfc8252#section-8.12).
 
 It also supports the [PKCE](https://tools.ietf.org/html/rfc7636) extension to
 OAuth, which was created to secure authorization codes in public clients when
@@ -41,9 +42,13 @@ For tvOS, AppAuth implements [OAuth 2.0 Device Authorization Grant
 
 AppAuth supports iOS 7 and above.
 
-iOS 9+ uses the in-app browser tab pattern
-(via `SFSafariViewController`), and falls back to the system browser (mobile
-Safari) on earlier versions.
+iOS 12 and 13 uses `ASWebAuthenticationSession`
+
+iOS 11 uses `SFAuthenticationSession`
+
+iOS 9 and 10 uses the in-app browser tab pattern (via `SFSafariViewController`)
+
+iOS 7 and 8 use the system browser (mobile Safari)
 
 #### Authorization Server Requirements
 
