@@ -371,6 +371,9 @@ appDelegate.currentAuthorizationFlow =
 
 *Handling the Redirect*
 
+Please note that you can skip this subsection if you use the `authStateByPresentingAuthorizationRequest`
+convenience method from before. 
+
 The authorization response URL is returned to the app via the iOS openURL
 app delegate method, so you need to pipe this through to the current
 authorization session (created in the previous session):
