@@ -42,7 +42,7 @@ NS_ASSUME_NONNULL_BEGIN
     @see Section 3 of OpenID Connect Dynamic Client Registration 1.0
         https://openid.net/specs/openid-connect-registration-1_0.html#ClientRegistration
  */
-@property(nonatomic, readonly) NSString *initialAccessToken;
+@property(nonatomic, readonly, nullable) NSString *initialAccessToken;
 
 /*! @brief The application type to register, will always be 'native'.
     @remarks application_type
@@ -134,7 +134,7 @@ NS_ASSUME_NONNULL_BEGIN
 /*! @brief Constructs an @c NSURLRequest representing the registration request.
     @return An @c NSURLRequest representing the registration request.
  */
-- (NSURLRequest *)URLRequest;
+- (nullable NSURLRequest *)URLRequest;
 
 @end
 

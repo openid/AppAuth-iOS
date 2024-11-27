@@ -148,7 +148,10 @@ NS_ASSUME_NONNULL_BEGIN
       if (@available(iOS 10.0, *)) {
         [[UIApplication sharedApplication] openURL:_appStoreURL options:@{} completionHandler:nil];
       } else {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
         [[UIApplication sharedApplication] openURL:_appStoreURL];
+#pragma clang diagnostic pop
       }
       return NO;
     }
@@ -162,8 +165,11 @@ NS_ASSUME_NONNULL_BEGIN
     [[UIApplication sharedApplication] openURL:requestURL options:@{} completionHandler:nil];
     return willOpen;
   } else {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     BOOL openedInBrowser = [[UIApplication sharedApplication] openURL:requestURL];
     return openedInBrowser;
+#pragma clang diagnostic pop
   }
 }
 
