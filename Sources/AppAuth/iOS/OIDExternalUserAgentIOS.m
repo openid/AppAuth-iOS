@@ -49,6 +49,7 @@ NS_ASSUME_NONNULL_BEGIN
   __weak id<OIDExternalUserAgentSession> _session;
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wpartial-availability"
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
   __weak SFSafariViewController *_safariVC;
   SFAuthenticationSession *_authenticationVC;
   ASWebAuthenticationSession *_webAuthenticationVC;
@@ -140,26 +141,31 @@ NS_ASSUME_NONNULL_BEGIN
     if (!openedUserAgent && !UIAccessibilityIsGuidedAccessEnabled()) {
       __weak OIDExternalUserAgentIOS *weakSelf = self;
       NSString *redirectScheme = request.redirectScheme;
-      SFAuthenticationSession *authenticationVC =
-          [[SFAuthenticationSession alloc] initWithURL:requestURL
-                                     callbackURLScheme:redirectScheme
-                                     completionHandler:^(NSURL * _Nullable callbackURL,
-                                                         NSError * _Nullable error) {
+      SFAuthenticationCompletionHandler completionHandler = ^(NSURL * _Nullable callbackURL,
+                                                              NSError * _Nullable error) {
         __strong OIDExternalUserAgentIOS *strongSelf = weakSelf;
         if (!strongSelf) {
-            return;
+          return;
         }
         strongSelf->_authenticationVC = nil;
         if (callbackURL) {
           [strongSelf->_session resumeExternalUserAgentFlowWithURL:callbackURL];
         } else {
           NSError *safariError =
-              [OIDErrorUtilities errorWithCode:OIDErrorCodeUserCanceledAuthorizationFlow
-                               underlyingError:error
-                                   description:@"User cancelled."];
-          [strongSelf->_session failExternalUserAgentFlowWithError:safariError];
+            [OIDErrorUtilities errorWithCode:OIDErrorCodeUserCanceledAuthorizationFlow
+                             underlyingError:error
+                                 description:@"User cancelled."];
+            [strongSelf->_session failExternalUserAgentFlowWithError:safariError];
         }
-      }];
+      };
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+      SFAuthenticationSession *authenticationVC =
+          [[SFAuthenticationSession alloc] initWithURL:requestURL
+                                     callbackURLScheme:redirectScheme
+                                     completionHandler:completionHandler];
+#pragma clang diagnostic pop
       _authenticationVC = authenticationVC;
       openedUserAgent = [authenticationVC start];
     }
@@ -176,8 +182,11 @@ NS_ASSUME_NONNULL_BEGIN
     }
   }
   // iOS 8 and earlier, use mobile Safari
-  if (!openedUserAgent){
+  if (!openedUserAgent) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     openedUserAgent = [[UIApplication sharedApplication] openURL:requestURL];
+#pragma clang diagnostic pop
   }
 
   if (!openedUserAgent) {
@@ -199,6 +208,7 @@ NS_ASSUME_NONNULL_BEGIN
   
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wpartial-availability"
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
   SFSafariViewController *safariVC = _safariVC;
   SFAuthenticationSession *authenticationVC = _authenticationVC;
   ASWebAuthenticationSession *webAuthenticationVC = _webAuthenticationVC;

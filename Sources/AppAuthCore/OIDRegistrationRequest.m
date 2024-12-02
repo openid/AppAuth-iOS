@@ -182,7 +182,7 @@ static NSString *const kAdditionalParametersKey = @"additionalParameters";
                                     requestBody];
 }
 
-- (NSURLRequest *)URLRequest {
+- (nullable NSURLRequest *)URLRequest {
   static NSString *const kHTTPPost = @"POST";
   static NSString *const kBearer = @"Bearer";
   static NSString *const kHTTPContentTypeHeaderKey = @"Content-Type";

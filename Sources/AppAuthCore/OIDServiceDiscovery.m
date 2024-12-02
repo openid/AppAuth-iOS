@@ -94,15 +94,19 @@ static NSString *const kOPTosURIKey = @"op_tos_uri";
   NSDictionary *json =
       [NSJSONSerialization JSONObjectWithData:serviceDiscoveryJSONData options:0 error:&jsonError];
   if (!json || jsonError) {
-    *error = [OIDErrorUtilities errorWithCode:OIDErrorCodeJSONDeserializationError
-                              underlyingError:jsonError
-                                  description:jsonError.localizedDescription];
+    if (error) {
+      *error = [OIDErrorUtilities errorWithCode:OIDErrorCodeJSONDeserializationError
+                                underlyingError:jsonError
+                                    description:jsonError.localizedDescription];
+    }
     return nil;
   }
   if (![json isKindOfClass:[NSDictionary class]]) {
-    *error = [OIDErrorUtilities errorWithCode:OIDErrorCodeInvalidDiscoveryDocument
-                              underlyingError:nil
-                                  description:@"Discovery document isn't a dictionary"];
+    if (error) {
+      *error = [OIDErrorUtilities errorWithCode:OIDErrorCodeInvalidDiscoveryDocument
+                                underlyingError:nil
+                                    description:@"Discovery document isn't a dictionary"];
+    }
     return nil;
   }
 

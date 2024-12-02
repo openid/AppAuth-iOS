@@ -77,7 +77,7 @@ static NSString *const kRefreshTokenRequestException =
 /*! @brief The most recent authorization response used to update the authorization state. For the
         implicit flow, this will contain the latest access token.
  */
-@property(nonatomic, readonly) OIDAuthorizationResponse *lastAuthorizationResponse;
+@property(nonatomic, readonly, nullable) OIDAuthorizationResponse *lastAuthorizationResponse;
 
 /*! @brief The most recent token response used to update this authorization state. This will
         contain the latest access token.
