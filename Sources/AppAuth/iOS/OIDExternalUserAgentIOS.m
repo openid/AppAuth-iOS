@@ -141,29 +141,31 @@ NS_ASSUME_NONNULL_BEGIN
     if (!openedUserAgent && !UIAccessibilityIsGuidedAccessEnabled()) {
       __weak OIDExternalUserAgentIOS *weakSelf = self;
       NSString *redirectScheme = request.redirectScheme;
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-      SFAuthenticationSession *authenticationVC =
-          [[SFAuthenticationSession alloc] initWithURL:requestURL
-                                     callbackURLScheme:redirectScheme
-                                     completionHandler:^(NSURL * _Nullable callbackURL,
-                                                         NSError * _Nullable error) {
-#pragma clang diagnostic pop
+      SFAuthenticationCompletionHandler completionHandler = ^(NSURL * _Nullable callbackURL,
+                                                              NSError * _Nullable error) {
         __strong OIDExternalUserAgentIOS *strongSelf = weakSelf;
         if (!strongSelf) {
-            return;
+          return;
         }
         strongSelf->_authenticationVC = nil;
         if (callbackURL) {
           [strongSelf->_session resumeExternalUserAgentFlowWithURL:callbackURL];
         } else {
           NSError *safariError =
-              [OIDErrorUtilities errorWithCode:OIDErrorCodeUserCanceledAuthorizationFlow
-                               underlyingError:error
-                                   description:@"User cancelled."];
-          [strongSelf->_session failExternalUserAgentFlowWithError:safariError];
+            [OIDErrorUtilities errorWithCode:OIDErrorCodeUserCanceledAuthorizationFlow
+                             underlyingError:error
+                                 description:@"User cancelled."];
+            [strongSelf->_session failExternalUserAgentFlowWithError:safariError];
         }
-      }];
+      };
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+      SFAuthenticationSession *authenticationVC =
+          [[SFAuthenticationSession alloc] initWithURL:requestURL
+                                     callbackURLScheme:redirectScheme
+                                     completionHandler:completionHandler];
+#pragma clang diagnostic pop
       _authenticationVC = authenticationVC;
       openedUserAgent = [authenticationVC start];
     }
