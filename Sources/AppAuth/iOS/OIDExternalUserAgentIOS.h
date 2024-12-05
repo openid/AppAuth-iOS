@@ -43,8 +43,8 @@ API_UNAVAILABLE(macCatalyst)
     @discussion The specific authentication UI used depends on the iOS version and accessibility
         options. iOS 8 uses the system browser, iOS 9-10 use @c SFSafariViewController, iOS 11 uses
         @c SFAuthenticationSession
-        (unless Guided Access is on which does not work) or uses @c SFSafariViewController, and iOS
-        12+ uses @c ASWebAuthenticationSession (unless Guided Access is on).
+        (unless Guided Access or Assistive Access is on which does not work) or uses @c SFSafariViewController, and iOS
+        12+ uses @c ASWebAuthenticationSession (unless Guided Access or Assistive Access is on).
  */
 - (nullable instancetype)initWithPresentingViewController:
     (UIViewController *)presentingViewController
@@ -54,7 +54,7 @@ API_UNAVAILABLE(macCatalyst)
     @param presentingViewController The view controller from which to present the browser.
     @param prefersEphemeralSession Whether the caller prefers to use a private authentication
         session. See @c ASWebAuthenticationSession.prefersEphemeralWebBrowserSession for more.
-    @discussion Authentication is performed with @c ASWebAuthenticationSession (unless Guided Access
+    @discussion Authentication is performed with @c ASWebAuthenticationSession (unless Guided Access or Assistive Access
         is on), setting the ephemerality based on the argument.
  */
 - (nullable instancetype)initWithPresentingViewController:
