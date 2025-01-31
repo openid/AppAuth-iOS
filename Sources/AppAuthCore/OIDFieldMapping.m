@@ -96,7 +96,8 @@
     [NSDictionary class],
     [NSArray class],
     [NSString class],
-    [NSNumber class]
+    [NSNumber class],
+    [NSNull class],
   ]];
 }
 
