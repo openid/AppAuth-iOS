@@ -175,18 +175,14 @@ NS_ASSUME_NONNULL_BEGIN
       openedUserAgent = YES;
     }
   }
-  // iOS 8 and earlier, use mobile Safari
+  // If all else failed use the local browser.
   if (!openedUserAgent){
-    openedUserAgent = [[UIApplication sharedApplication] openURL:requestURL];
+    [[UIApplication sharedApplication] openURL:requestURL
+                                       options:@{}
+                             completionHandler:nil];
+    openedUserAgent = YES;
   }
 
-  if (!openedUserAgent) {
-    [self cleanUp];
-    NSError *safariError = [OIDErrorUtilities errorWithCode:OIDErrorCodeSafariOpenError
-                                            underlyingError:nil
-                                                description:@"Unable to open Safari."];
-    [session failExternalUserAgentFlowWithError:safariError];
-  }
   return openedUserAgent;
 }
 
