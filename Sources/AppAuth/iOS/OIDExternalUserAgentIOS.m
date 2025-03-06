@@ -98,86 +98,80 @@ NS_ASSUME_NONNULL_BEGIN
   BOOL openedUserAgent = NO;
   NSURL *requestURL = [request externalUserAgentRequestURL];
 
-  // iOS 12 and later, use ASWebAuthenticationSession
-  if (@available(iOS 12.0, *)) {
-    // ASWebAuthenticationSession doesn't work with guided access (rdar://40809553)
-    if (!UIAccessibilityIsGuidedAccessEnabled()) {
-      __weak OIDExternalUserAgentIOS *weakSelf = self;
-      NSString *redirectScheme = request.redirectScheme;
-      ASWebAuthenticationSession *authenticationVC =
-          [[ASWebAuthenticationSession alloc] initWithURL:requestURL
-                                        callbackURLScheme:redirectScheme
-                                        completionHandler:^(NSURL * _Nullable callbackURL,
-                                                            NSError * _Nullable error) {
-        __strong OIDExternalUserAgentIOS *strongSelf = weakSelf;
-        if (!strongSelf) {
-            return;
-        }
-        strongSelf->_webAuthenticationVC = nil;
-        if (callbackURL) {
-          [strongSelf->_session resumeExternalUserAgentFlowWithURL:callbackURL];
-        } else {
-          NSError *safariError =
-              [OIDErrorUtilities errorWithCode:OIDErrorCodeUserCanceledAuthorizationFlow
-                               underlyingError:error
-                                   description:nil];
-          [strongSelf->_session failExternalUserAgentFlowWithError:safariError];
-        }
-      }];
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 130000
-      if (@available(iOS 13.0, *)) {
-        authenticationVC.presentationContextProvider = self;
-        authenticationVC.prefersEphemeralWebBrowserSession = _prefersEphemeralSession;
+  // ASWebAuthenticationSession doesn't work with guided access (rdar://40809553)
+  if (!UIAccessibilityIsGuidedAccessEnabled()) {
+    __weak OIDExternalUserAgentIOS *weakSelf = self;
+    NSString *redirectScheme = request.redirectScheme;
+    ASWebAuthenticationSession *authenticationVC =
+        [[ASWebAuthenticationSession alloc] initWithURL:requestURL
+                                      callbackURLScheme:redirectScheme
+                                      completionHandler:^(NSURL * _Nullable callbackURL,
+                                                          NSError * _Nullable error) {
+      __strong OIDExternalUserAgentIOS *strongSelf = weakSelf;
+      if (!strongSelf) {
+          return;
       }
+      strongSelf->_webAuthenticationVC = nil;
+      if (callbackURL) {
+        [strongSelf->_session resumeExternalUserAgentFlowWithURL:callbackURL];
+      } else {
+        NSError *safariError =
+            [OIDErrorUtilities errorWithCode:OIDErrorCodeUserCanceledAuthorizationFlow
+                              underlyingError:error
+                                  description:nil];
+        [strongSelf->_session failExternalUserAgentFlowWithError:safariError];
+      }
+    }];
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 130000
+    if (@available(iOS 13.0, *)) {
+      authenticationVC.presentationContextProvider = self;
+      authenticationVC.prefersEphemeralWebBrowserSession = _prefersEphemeralSession;
+    }
 #endif
-      _webAuthenticationVC = authenticationVC;
-      openedUserAgent = [authenticationVC start];
-    }
+    _webAuthenticationVC = authenticationVC;
+    openedUserAgent = [authenticationVC start];
   }
-  // iOS 11, use SFAuthenticationSession
-  if (@available(iOS 11.0, *)) {
-    // SFAuthenticationSession doesn't work with guided access (rdar://40809553)
-    if (!openedUserAgent && !UIAccessibilityIsGuidedAccessEnabled()) {
-      __weak OIDExternalUserAgentIOS *weakSelf = self;
-      NSString *redirectScheme = request.redirectScheme;
-      SFAuthenticationSession *authenticationVC =
-          [[SFAuthenticationSession alloc] initWithURL:requestURL
-                                     callbackURLScheme:redirectScheme
-                                     completionHandler:^(NSURL * _Nullable callbackURL,
-                                                         NSError * _Nullable error) {
-        __strong OIDExternalUserAgentIOS *strongSelf = weakSelf;
-        if (!strongSelf) {
-            return;
-        }
-        strongSelf->_authenticationVC = nil;
-        if (callbackURL) {
-          [strongSelf->_session resumeExternalUserAgentFlowWithURL:callbackURL];
-        } else {
-          NSError *safariError =
-              [OIDErrorUtilities errorWithCode:OIDErrorCodeUserCanceledAuthorizationFlow
-                               underlyingError:error
-                                   description:@"User cancelled."];
-          [strongSelf->_session failExternalUserAgentFlowWithError:safariError];
-        }
-      }];
-      _authenticationVC = authenticationVC;
-      openedUserAgent = [authenticationVC start];
-    }
+
+  // SFAuthenticationSession doesn't work with guided access (rdar://40809553)
+  if (!openedUserAgent && !UIAccessibilityIsGuidedAccessEnabled()) {
+    __weak OIDExternalUserAgentIOS *weakSelf = self;
+    NSString *redirectScheme = request.redirectScheme;
+    SFAuthenticationSession *authenticationVC =
+        [[SFAuthenticationSession alloc] initWithURL:requestURL
+                                    callbackURLScheme:redirectScheme
+                                    completionHandler:^(NSURL * _Nullable callbackURL,
+                                                        NSError * _Nullable error) {
+      __strong OIDExternalUserAgentIOS *strongSelf = weakSelf;
+      if (!strongSelf) {
+          return;
+      }
+      strongSelf->_authenticationVC = nil;
+      if (callbackURL) {
+        [strongSelf->_session resumeExternalUserAgentFlowWithURL:callbackURL];
+      } else {
+        NSError *safariError =
+            [OIDErrorUtilities errorWithCode:OIDErrorCodeUserCanceledAuthorizationFlow
+                              underlyingError:error
+                                  description:@"User cancelled."];
+        [strongSelf->_session failExternalUserAgentFlowWithError:safariError];
+      }
+    }];
+    _authenticationVC = authenticationVC;
+    openedUserAgent = [authenticationVC start];
   }
-  // iOS 9 and 10, use SFSafariViewController
-  if (@available(iOS 9.0, *)) {
-    if (!openedUserAgent && _presentingViewController) {
-      SFSafariViewController *safariVC =
-          [[SFSafariViewController alloc] initWithURL:requestURL];
-      safariVC.delegate = self;
-      _safariVC = safariVC;
-      [_presentingViewController presentViewController:safariVC animated:YES completion:nil];
-      openedUserAgent = YES;
-    }
+
+  if (!openedUserAgent && _presentingViewController) {
+    SFSafariViewController *safariVC =
+        [[SFSafariViewController alloc] initWithURL:requestURL];
+    safariVC.delegate = self;
+    _safariVC = safariVC;
+    [_presentingViewController presentViewController:safariVC animated:YES completion:nil];
+    openedUserAgent = YES;
   }
-  // iOS 8 and earlier, use mobile Safari
+
+  // if none of the above worked, try to open the URL in Safari
   if (!openedUserAgent){
-    openedUserAgent = [[UIApplication sharedApplication] openURL:requestURL];
+    openedUserAgent = [[UIApplication sharedApplication] openURL:requestURL options:{} completionHandler:nil];
   }
 
   if (!openedUserAgent) {
