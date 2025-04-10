@@ -50,7 +50,6 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wpartial-availability"
   __weak SFSafariViewController *_safariVC;
-  SFAuthenticationSession *_authenticationVC;
   ASWebAuthenticationSession *_webAuthenticationVC;
 #pragma clang diagnostic pop
 }
@@ -154,7 +153,6 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wpartial-availability"
   SFSafariViewController *safariVC = _safariVC;
-  SFAuthenticationSession *authenticationVC = _authenticationVC;
   ASWebAuthenticationSession *webAuthenticationVC = _webAuthenticationVC;
 #pragma clang diagnostic pop
   
@@ -163,10 +161,6 @@ NS_ASSUME_NONNULL_BEGIN
   if (webAuthenticationVC) {
     // dismiss the ASWebAuthenticationSession
     [webAuthenticationVC cancel];
-    if (completion) completion();
-  } else if (authenticationVC) {
-    // dismiss the SFAuthenticationSession
-    [authenticationVC cancel];
     if (completion) completion();
   } else if (safariVC) {
     // dismiss the SFSafariViewController
@@ -180,7 +174,6 @@ NS_ASSUME_NONNULL_BEGIN
   // The weak references to |_safariVC| and |_session| are set to nil to avoid accidentally using
   // them while not in an authorization flow.
   _safariVC = nil;
-  _authenticationVC = nil;
   _webAuthenticationVC = nil;
   _session = nil;
   _externalUserAgentFlowInProgress = NO;
