@@ -322,8 +322,22 @@ static int const kCodeVerifierRecommendedLength = 43;
   XCTAssertEqualObjects(request.additionalParameters[kTestAdditionalParameterKey],
                         kTestAdditionalParameterValue, @"");
 
-  NSData *data = [NSKeyedArchiver archivedDataWithRootObject:request];
-  OIDAuthorizationRequest *requestCopy = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+  OIDAuthorizationRequest *requestCopy;
+  NSError *error;
+  NSData *data;
+  if (@available(iOS 12.0, macOS 10.13, tvOS 11.0, watchOS 4.0, *)) {
+    data = [NSKeyedArchiver archivedDataWithRootObject:request
+                                 requiringSecureCoding:YES
+                                                 error:&error];
+    requestCopy = [NSKeyedUnarchiver unarchivedObjectOfClass:[OIDAuthorizationRequest class]
+                                                     fromData:data
+                                                        error:&error];
+  } else {
+#if !TARGET_OS_IOS
+    data = [NSKeyedArchiver archivedDataWithRootObject:request];
+    requestCopy = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+#endif
+  }
 
   // Not a full test of the configuration deserialization, but should be sufficient as a smoke test
   // to make sure the configuration IS actually getting serialized and deserialized in the
