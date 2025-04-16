@@ -140,6 +140,7 @@ NS_ASSUME_NONNULL_BEGIN
                              completionHandler:nil];
     openedUserAgent = YES;
   }
+
   return openedUserAgent;
 }
 

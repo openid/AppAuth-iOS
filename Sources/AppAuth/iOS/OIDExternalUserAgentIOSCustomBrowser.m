@@ -154,8 +154,8 @@ NS_ASSUME_NONNULL_BEGIN
   NSURL *requestURL = [request externalUserAgentRequestURL];
   requestURL = _URLTransformation(requestURL);
   BOOL willOpen = [[UIApplication sharedApplication] canOpenURL:requestURL];
-    [[UIApplication sharedApplication] openURL:requestURL options:@{} completionHandler:nil];
-    return willOpen;
+  [[UIApplication sharedApplication] openURL:requestURL options:@{} completionHandler:nil];
+  return willOpen;
 }
 
 - (void)dismissExternalUserAgentAnimated:(BOOL)animated
