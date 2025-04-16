@@ -145,11 +145,7 @@ NS_ASSUME_NONNULL_BEGIN
     NSString *testURLString = [NSString stringWithFormat:@"%@://example.com", _canOpenURLScheme];
     NSURL *testURL = [NSURL URLWithString:testURLString];
     if (![[UIApplication sharedApplication] canOpenURL:testURL]) {
-      if (@available(iOS 10.0, *)) {
-        [[UIApplication sharedApplication] openURL:_appStoreURL options:@{} completionHandler:nil];
-      } else {
-        [[UIApplication sharedApplication] openURL:_appStoreURL];
-      }
+      [[UIApplication sharedApplication] openURL:_appStoreURL options:@{} completionHandler:nil];
       return NO;
     }
   }
@@ -157,14 +153,9 @@ NS_ASSUME_NONNULL_BEGIN
   // Transforms the request URL and opens it.
   NSURL *requestURL = [request externalUserAgentRequestURL];
   requestURL = _URLTransformation(requestURL);
-  if (@available(iOS 10.0, *)) {
-    BOOL willOpen = [[UIApplication sharedApplication] canOpenURL:requestURL];
-    [[UIApplication sharedApplication] openURL:requestURL options:@{} completionHandler:nil];
-    return willOpen;
-  } else {
-    BOOL openedInBrowser = [[UIApplication sharedApplication] openURL:requestURL];
-    return openedInBrowser;
-  }
+  BOOL willOpen = [[UIApplication sharedApplication] canOpenURL:requestURL];
+  [[UIApplication sharedApplication] openURL:requestURL options:@{} completionHandler:nil];
+  return willOpen;
 }
 
 - (void)dismissExternalUserAgentAnimated:(BOOL)animated
