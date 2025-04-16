@@ -41,6 +41,9 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 #endif
 
+API_AVAILABLE(ios(12.0))
+static ASWebAuthenticationSession *_webAuthenticationVC;
+
 @implementation OIDExternalUserAgentIOS {
   UIViewController *_presentingViewController;
   BOOL _prefersEphemeralSession;
@@ -51,7 +54,6 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma clang diagnostic ignored "-Wpartial-availability"
   __weak SFSafariViewController *_safariVC;
   SFAuthenticationSession *_authenticationVC;
-  ASWebAuthenticationSession *_webAuthenticationVC;
 #pragma clang diagnostic pop
 }
 
@@ -104,7 +106,7 @@ NS_ASSUME_NONNULL_BEGIN
     if (!UIAccessibilityIsGuidedAccessEnabled()) {
       __weak OIDExternalUserAgentIOS *weakSelf = self;
       NSString *redirectScheme = request.redirectScheme;
-      ASWebAuthenticationSession *authenticationVC =
+      _webAuthenticationVC =
           [[ASWebAuthenticationSession alloc] initWithURL:requestURL
                                         callbackURLScheme:redirectScheme
                                         completionHandler:^(NSURL * _Nullable callbackURL,
@@ -113,7 +115,6 @@ NS_ASSUME_NONNULL_BEGIN
         if (!strongSelf) {
             return;
         }
-        strongSelf->_webAuthenticationVC = nil;
         if (callbackURL) {
           [strongSelf->_session resumeExternalUserAgentFlowWithURL:callbackURL];
         } else {
@@ -126,12 +127,11 @@ NS_ASSUME_NONNULL_BEGIN
       }];
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 130000
       if (@available(iOS 13.0, *)) {
-        authenticationVC.presentationContextProvider = self;
-        authenticationVC.prefersEphemeralWebBrowserSession = _prefersEphemeralSession;
+        _webAuthenticationVC.presentationContextProvider = self;
+        _webAuthenticationVC.prefersEphemeralWebBrowserSession = _prefersEphemeralSession;
       }
 #endif
-      _webAuthenticationVC = authenticationVC;
-      openedUserAgent = [authenticationVC start];
+      openedUserAgent = [_webAuthenticationVC start];
     }
   }
   // iOS 11, use SFAuthenticationSession
