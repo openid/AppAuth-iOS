@@ -121,6 +121,17 @@ NS_ASSUME_NONNULL_BEGIN
     @see https://tools.ietf.org/html/rfc6749#section-4.1.3
  */
 - (nullable OIDTokenRequest *)tokenExchangeRequestWithAdditionalParameters:
+    (nullable NSDictionary<NSString *, NSString *> *)additionalParameters;
+
+/*! @brief Creates a token request suitable for exchanging an authorization code for an access
+        token.
+    @param additionalParameters Additional parameters for the token request.
+    @param additionalHeaders Additional headers for the token request.
+    @return A @c OIDTokenRequest suitable for exchanging an authorization code for an access
+        token.
+    @see https://tools.ietf.org/html/rfc6749#section-4.1.3
+ */
+- (nullable OIDTokenRequest *)tokenExchangeRequestWithAdditionalParameters:
     (nullable NSDictionary<NSString *, NSString *> *)additionalParameters
                                                          additionalHeaders:
     (nullable NSDictionary<NSString *, NSString *> *)additionalHeaders;

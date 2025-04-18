@@ -12,16 +12,16 @@ on:
 jobs:
 
   xcode-project-test:
-    runs-on: macos-12
+    runs-on: macos-13
     strategy:
       matrix:
         flags: [
-          "-scheme AppAuth-iOS -destination 'platform=iOS Simulator,name=iPhone 11,OS=16.2' -sdk 'iphonesimulator16.2'",
-          "-scheme AppAuth-macOS -destination 'platform=macOS,arch=x86_64' -sdk 'macosx13.1'",
-          "-scheme AppAuth_macOS -destination 'platform=macOS,arch=x86_64' -sdk 'macosx13.1'",
-          "-scheme AppAuth-tvOS -destination 'platform=tvOS Simulator,name=Apple TV,OS=16.1' -sdk 'appletvsimulator16.1'",
-          "-scheme AppAuth_tvOS -destination 'platform=tvOS Simulator,name=Apple TV,OS=16.1' -sdk 'appletvsimulator16.1'",
-          "-scheme AppAuthTV -destination 'platform=tvOS Simulator,name=Apple TV,OS=16.1' -sdk 'appletvsimulator16.1'"
+          "-scheme AppAuth-iOS -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.2' -sdk 'iphonesimulator17.2'",
+          "-scheme AppAuth-macOS -destination 'platform=macOS,arch=x86_64' -sdk 'macosx14.2'",
+          "-scheme AppAuth_macOS -destination 'platform=macOS,arch=x86_64' -sdk 'macosx14.2'",
+          "-scheme AppAuth-tvOS -destination 'platform=tvOS Simulator,name=Apple TV,OS=17.2' -sdk 'appletvsimulator17.2'",
+          "-scheme AppAuth_tvOS -destination 'platform=tvOS Simulator,name=Apple TV,OS=17.2' -sdk 'appletvsimulator17.2'",
+          "-scheme AppAuthTV -destination 'platform=tvOS Simulator,name=Apple TV,OS=17.2' -sdk 'appletvsimulator17.2'"
         ]
     steps:
     - uses: actions/checkout@v3
@@ -32,7 +32,7 @@ jobs:
           ${{ matrix.flags }}
 
   pod-lib-lint:
-    runs-on: macos-12
+    runs-on: macos-13
     strategy:
       matrix:
         flags: [
@@ -50,12 +50,14 @@ jobs:
       run: pod lib lint --verbose ${{ matrix.flags }}
 
   spm-build-test:
-    runs-on: macos-11
+    runs-on: macos-13
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Build unit test target
       run: swift build
     - name: Run unit test target
       run: swift test --enable-code-coverage
     - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v2
+      uses: codecov/codecov-action@v3
+      with: 
+        version: v0.7.3

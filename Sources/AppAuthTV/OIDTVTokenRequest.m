@@ -94,6 +94,19 @@ static NSString *const kOIDTVDeviceTokenGrantType = @"urn:ietf:params:oauth:gran
                            deviceCode:(NSString *)deviceCode
                              clientID:(NSString *)clientID
                          clientSecret:(NSString *)clientSecret
+                 additionalParameters:(NSDictionary<NSString *, NSString *> *)additionalParameters {
+  return [self initWithConfiguration:configuration
+                          deviceCode:deviceCode
+                            clientID:clientID
+                        clientSecret:clientSecret
+                additionalParameters:additionalParameters
+                   additionalHeaders:nil];
+}
+
+- (instancetype)initWithConfiguration:(OIDTVServiceConfiguration *)configuration
+                           deviceCode:(NSString *)deviceCode
+                             clientID:(NSString *)clientID
+                         clientSecret:(NSString *)clientSecret
                  additionalParameters:(NSDictionary<NSString *, NSString *> *)additionalParameters
                     additionalHeaders:(NSDictionary<NSString *, NSString *> *)additionalHeaders {
   self = [super initWithConfiguration:configuration

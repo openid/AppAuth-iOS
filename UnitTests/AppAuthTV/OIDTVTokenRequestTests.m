@@ -21,11 +21,11 @@
 #if SWIFT_PACKAGE
 @import AppAuthTV;
 #else
-#import "Source/AppAuthCore/OIDScopeUtilities.h"
-#import "Source/AppAuthTV/OIDTVAuthorizationRequest.h"
-#import "Source/AppAuthTV/OIDTVAuthorizationResponse.h"
-#import "Source/AppAuthTV/OIDTVServiceConfiguration.h"
-#import "Source/AppAuthTV/OIDTVTokenRequest.h"
+#import "Sources/AppAuthCore/OIDScopeUtilities.h"
+#import "Sources/AppAuthTV/OIDTVAuthorizationRequest.h"
+#import "Sources/AppAuthTV/OIDTVAuthorizationResponse.h"
+#import "Sources/AppAuthTV/OIDTVServiceConfiguration.h"
+#import "Sources/AppAuthTV/OIDTVTokenRequest.h"
 #endif
 
 // Ignore warnings about "Use of GNU statement expression extension" which is
