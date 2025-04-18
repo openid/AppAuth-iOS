@@ -30,6 +30,13 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+#if DEBUG
+static const NSUInteger kExpiryTimeTolerance = 15;
+#else
+static const NSUInteger kExpiryTimeTolerance = 60;
+#endif
+
+
 /*! @brief Represents a block used to call an action with a fresh access token.
     @param accessToken A valid access token if available.
     @param idToken A valid ID token if available.

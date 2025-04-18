@@ -57,7 +57,6 @@ static NSString *const kAuthorizationErrorKey = @"authorizationError";
 
 /*! @brief Number of seconds the access token is refreshed before it actually expires.
  */
-static const NSUInteger kExpiryTimeTolerance = 60;
 
 /*! @brief Object to hold OIDAuthState pending actions.
  */
