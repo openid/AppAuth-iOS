@@ -42,7 +42,6 @@ NS_ASSUME_NONNULL_BEGIN
 #endif
 
 @implementation OIDExternalUserAgentIOS {
-//  UIViewController *_presentingViewController;
   BOOL _prefersEphemeralSession;
 
   BOOL _externalUserAgentFlowInProgress;
