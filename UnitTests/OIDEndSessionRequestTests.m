@@ -97,8 +97,22 @@ static NSString *const kTestIdTokenHint = @"id-token-hint";
     XCTAssertEqualObjects(request.additionalParameters[kTestAdditionalParameterKey],
                           kTestAdditionalParameterValue);
 
-    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:request];
-    OIDEndSessionRequest *requestCopy = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+    OIDEndSessionRequest *requestCopy;
+    NSError *error;
+    NSData *data;
+    if (@available(iOS 12.0, macOS 10.13, tvOS 11.0, watchOS 4.0, *)) {
+      data = [NSKeyedArchiver archivedDataWithRootObject:request
+                                   requiringSecureCoding:YES
+                                                   error:&error];
+      requestCopy = [NSKeyedUnarchiver unarchivedObjectOfClass:[OIDEndSessionRequest class]
+                                                      fromData:data
+                                                         error:&error];
+    } else {
+#if !TARGET_OS_IOS
+      data = [NSKeyedArchiver archivedDataWithRootObject:request];
+      requestCopy = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+#endif
+    }
 
     XCTAssertNotNil(requestCopy.configuration);
     XCTAssertEqualObjects(requestCopy.configuration.authorizationEndpoint,
