@@ -1,3 +1,7 @@
+# 2.0.0
+- Raise minimum supported iOS version to iOS 12. ([#918](https://github.com/openid/AppAuth-iOS/pull/918))
+- Remove deprecated `[UIApplication openURL:]` method to compile with Xcode 16. ([#911](https://github.com/openid/AppAuth-iOS/pull/911))
+
 # 1.7.6
 - Fix OIDExternalUserAgentIOSCustomBrowser on versions iOS 10+ ([#871](https://github.com/openid/AppAuth-iOS/pull/871))
 - Update runners in tests.yml to macos-13. ([#886](https://github.com/openid/AppAuth-iOS/pull/886))
