@@ -329,7 +329,7 @@ NS_ASSUME_NONNULL_BEGIN
     completion:(OIDDiscoveryCallback)completion {
     
     NSError *error = nil;
-    NSData *data = [[NSData alloc] initWithContentsOfURL:discoveryURL error:nil];
+    NSData *data = [[NSData alloc] initWithContentsOfURL:discoveryURL options:0 error:&error];
     if (error || !data) {
       NSString *errorDescription =
           [NSString stringWithFormat:@"Connection error fetching discovery document '%@': %@.",
