@@ -118,7 +118,7 @@ add the following `dependency` to your `Package.swift`:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/openid/AppAuth-iOS.git", .upToNextMajor(from: "1.3.0"))
+    .package(name: "AppAuth", url: "https://github.com/openid/AppAuth-iOS.git", .upToNextMajor(from: "1.4.0"))
 ]
 ```
 
