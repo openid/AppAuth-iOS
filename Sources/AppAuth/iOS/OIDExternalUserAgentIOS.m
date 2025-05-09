@@ -51,7 +51,6 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wpartial-availability"
   __weak SFSafariViewController *_safariVC;
-  SFAuthenticationSession *_authenticationVC;
   ASWebAuthenticationSession *_webAuthenticationVC;
 #pragma clang diagnostic pop
 }
@@ -139,65 +138,14 @@ NS_ASSUME_NONNULL_BEGIN
       openedUserAgent = [authenticationVC start];
     }
   }
-  // iOS 11, use SFAuthenticationSession
-  if (@available(iOS 11.0, *)) {
-    if (!openedUserAgent) {
-      BOOL assistiveAccessEnabled = NO;
-      if (@available(iOS 18.0, *)) {
-        assistiveAccessEnabled = AXAssistiveAccessEnabled();
-      }
-      // SFAuthenticationSession doesn't work with guided access (rdar://40809553) or assistive access
-      if (!UIAccessibilityIsGuidedAccessEnabled() && !assistiveAccessEnabled) {
-        __weak OIDExternalUserAgentIOS *weakSelf = self;
-        NSString *redirectScheme = request.redirectScheme;
-        SFAuthenticationSession *authenticationVC =
-            [[SFAuthenticationSession alloc] initWithURL:requestURL
-                                       callbackURLScheme:redirectScheme
-                                       completionHandler:^(NSURL * _Nullable callbackURL,
-                                                           NSError * _Nullable error) {
-          __strong OIDExternalUserAgentIOS *strongSelf = weakSelf;
-          if (!strongSelf) {
-              return;
-          }
-          strongSelf->_authenticationVC = nil;
-          if (callbackURL) {
-            [strongSelf->_session resumeExternalUserAgentFlowWithURL:callbackURL];
-          } else {
-            NSError *safariError =
-                [OIDErrorUtilities errorWithCode:OIDErrorCodeUserCanceledAuthorizationFlow
-                                 underlyingError:error
-                                     description:@"User cancelled."];
-            [strongSelf->_session failExternalUserAgentFlowWithError:safariError];
-          }
-        }];
-        _authenticationVC = authenticationVC;
-        openedUserAgent = [authenticationVC start];
-      }
-    }
-  }
-  // iOS 9 and 10, use SFSafariViewController
-  if (@available(iOS 9.0, *)) {
-    if (!openedUserAgent && _presentingViewController) {
-      SFSafariViewController *safariVC =
-          [[SFSafariViewController alloc] initWithURL:requestURL];
-      safariVC.delegate = self;
-      _safariVC = safariVC;
-      [_presentingViewController presentViewController:safariVC animated:YES completion:nil];
-      openedUserAgent = YES;
-    }
-  }
-  // iOS 8 and earlier, use mobile Safari
+  // If all else failed use the local browser.
   if (!openedUserAgent){
-    openedUserAgent = [[UIApplication sharedApplication] openURL:requestURL];
+    [[UIApplication sharedApplication] openURL:requestURL
+                                       options:@{}
+                             completionHandler:nil];
+    openedUserAgent = YES;
   }
 
-  if (!openedUserAgent) {
-    [self cleanUp];
-    NSError *safariError = [OIDErrorUtilities errorWithCode:OIDErrorCodeSafariOpenError
-                                            underlyingError:nil
-                                                description:@"Unable to open Safari."];
-    [session failExternalUserAgentFlowWithError:safariError];
-  }
   return openedUserAgent;
 }
 
@@ -211,7 +159,6 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wpartial-availability"
   SFSafariViewController *safariVC = _safariVC;
-  SFAuthenticationSession *authenticationVC = _authenticationVC;
   ASWebAuthenticationSession *webAuthenticationVC = _webAuthenticationVC;
 #pragma clang diagnostic pop
   
@@ -220,10 +167,6 @@ NS_ASSUME_NONNULL_BEGIN
   if (webAuthenticationVC) {
     // dismiss the ASWebAuthenticationSession
     [webAuthenticationVC cancel];
-    if (completion) completion();
-  } else if (authenticationVC) {
-    // dismiss the SFAuthenticationSession
-    [authenticationVC cancel];
     if (completion) completion();
   } else if (safariVC) {
     // dismiss the SFSafariViewController
@@ -237,7 +180,6 @@ NS_ASSUME_NONNULL_BEGIN
   // The weak references to |_safariVC| and |_session| are set to nil to avoid accidentally using
   // them while not in an authorization flow.
   _safariVC = nil;
-  _authenticationVC = nil;
   _webAuthenticationVC = nil;
   _session = nil;
   _externalUserAgentFlowInProgress = NO;

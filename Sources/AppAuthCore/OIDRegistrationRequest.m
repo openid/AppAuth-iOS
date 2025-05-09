@@ -130,12 +130,15 @@ static NSString *const kAdditionalParametersKey = @"additionalParameters";
                          forKey:kConfigurationKey];
   NSString *initialAccessToken = [aDecoder decodeObjectOfClass:[NSString class]
                                                         forKey:kInitialAccessToken];
-  NSArray<NSURL *> *redirectURIs = [aDecoder decodeObjectOfClass:[NSArray<NSURL *> class]
-                                                          forKey:kRedirectURIsKey];
-  NSArray<NSString *> *responseTypes = [aDecoder decodeObjectOfClass:[NSArray<NSString *> class]
-                                                              forKey:kResponseTypesKey];
-  NSArray<NSString *> *grantTypes = [aDecoder decodeObjectOfClass:[NSArray<NSString *> class]
-                                                           forKey:kGrantTypesKey];
+  NSArray<NSURL *> *redirectURIs =
+      [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[NSArray class], [NSURL class]]]
+                               forKey:kRedirectURIsKey];
+  NSArray<NSString *> *responseTypes =
+      [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[NSArray class], [NSString class]]]
+                               forKey:kResponseTypesKey];
+  NSArray<NSString *> *grantTypes =
+      [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[NSArray class], [NSString class]]]
+                               forKey:kGrantTypesKey];
   NSString *subjectType = [aDecoder decodeObjectOfClass:[NSString class]
                                                  forKey:kSubjectTypeKey];
   NSString *tokenEndpointAuthenticationMethod =
