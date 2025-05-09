@@ -24,6 +24,7 @@
 
 #import <SafariServices/SafariServices.h>
 #import <AuthenticationServices/AuthenticationServices.h>
+#import <Accessibility/Accessibility.h>
 
 #import "OIDErrorUtilities.h"
 #import "OIDExternalUserAgentSession.h"
@@ -99,8 +100,12 @@ NS_ASSUME_NONNULL_BEGIN
 
   // iOS 12 and later, use ASWebAuthenticationSession
   if (@available(iOS 12.0, *)) {
-    // ASWebAuthenticationSession doesn't work with guided access (rdar://40809553)
-    if (!UIAccessibilityIsGuidedAccessEnabled()) {
+    BOOL assistiveAccessEnabled = NO;
+    if (@available(iOS 18.0, *)) {
+      assistiveAccessEnabled = AXAssistiveAccessEnabled();
+    }
+    // ASWebAuthenticationSession doesn't work with guided access (rdar://40809553) or assistive access
+    if (!UIAccessibilityIsGuidedAccessEnabled() && !assistiveAccessEnabled) {
       __weak OIDExternalUserAgentIOS *weakSelf = self;
       NSString *redirectScheme = request.redirectScheme;
       ASWebAuthenticationSession *authenticationVC =
