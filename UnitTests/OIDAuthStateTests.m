@@ -204,18 +204,7 @@
   NSError *oauthError =
       [[self class] OAuthTokenInvalidGrantErrorWithUnderlyingError:nonCompliantError];
   [authstate updateWithAuthorizationError:oauthError];
-  NSError *error;
-  NSData *data;
-  if (@available(iOS 12.0, macOS 10.13, tvOS 11.0, watchOS 4.0, *)) {
-    data = [NSKeyedArchiver archivedDataWithRootObject:authstate
-                                 requiringSecureCoding:YES
-                                                 error:&error];
-    XCTAssertNoThrow(data, @"");
-  } else {
-#if !TARGET_OS_IOS
-    XCTAssertNoThrow([NSKeyedArchiver archivedDataWithRootObject:authstate], @"");
-#endif
-  }
+  XCTAssertNoThrow([NSKeyedArchiver archivedDataWithRootObject:authstate], @"");
 }
 
 /*! @brief Tests @c OIDAuthState.updateWithAuthorizationResponse:error: with a success response.
@@ -369,22 +358,8 @@
   XCTAssert([OIDAuthState supportsSecureCoding], @"");
 
   OIDAuthState *authState = [[self class] testInstance];
-  OIDAuthState *authStateCopy;
-  NSError *error;
-  NSData *data;
-  if (@available(iOS 12.0, macOS 10.13, tvOS 11.0, watchOS 4.0, *)) {
-    data = [NSKeyedArchiver archivedDataWithRootObject:authState
-                                 requiringSecureCoding:YES
-                                                 error:&error];
-    authStateCopy = [NSKeyedUnarchiver unarchivedObjectOfClass:[OIDAuthState class]
-                                                      fromData:data
-                                                         error:&error];
-  } else {
-#if !TARGET_OS_IOS
-    data = [NSKeyedArchiver archivedDataWithRootObject:authState];
-    authStateCopy = [NSKeyedUnarchiver unarchiveObjectWithData:data];
-#endif
-  }
+  NSData *data = [NSKeyedArchiver archivedDataWithRootObject:authState];
+  OIDAuthState *authStateCopy = [NSKeyedUnarchiver unarchiveObjectWithData:data];
 
   XCTAssertEqualObjects(authStateCopy.refreshToken, authState.refreshToken, @"");
   XCTAssertEqualObjects(authStateCopy.scope, authState.scope, @"");
@@ -400,26 +375,9 @@
   // Verify the error object is indeed restored.
   NSError *oauthError = [[self class] OAuthTokenInvalidGrantErrorWithUnderlyingError:nil];
   [authState updateWithTokenResponse:nil error:oauthError];
-  if (@available(iOS 12.0, macOS 10.13, tvOS 11.0, watchOS 4.0, *)) {
-    data = [NSKeyedArchiver archivedDataWithRootObject:authState
-                                 requiringSecureCoding:YES
-                                                 error:&error];
-  } else {
-#if !TARGET_OS_IOS
-    data = [NSKeyedArchiver archivedDataWithRootObject:authState];
-#endif
-  }
+  data = [NSKeyedArchiver archivedDataWithRootObject:authState];
   XCTAssertNotNil(authState.authorizationError, @"");
-
-  if (@available(iOS 12.0, macOS 10.13, tvOS 11.0, watchOS 4.0, *)) {
-    authStateCopy = [NSKeyedUnarchiver unarchivedObjectOfClass:[OIDAuthState class]
-                                                      fromData:data
-                                                         error:&error];
-  } else {
-#if !TARGET_OS_IOS
-    authStateCopy = [NSKeyedUnarchiver unarchiveObjectWithData:data];
-#endif
-  }
+  authStateCopy = [NSKeyedUnarchiver unarchiveObjectWithData:data];
   XCTAssertEqualObjects(authStateCopy.authorizationError.domain,
                         authState.authorizationError.domain, @"");
   XCTAssertEqual(authStateCopy.authorizationError.code, authState.authorizationError.code, @"");
