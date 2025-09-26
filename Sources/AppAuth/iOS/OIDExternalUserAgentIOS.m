@@ -25,6 +25,7 @@
 #import <SafariServices/SafariServices.h>
 #import <AuthenticationServices/AuthenticationServices.h>
 
+#import <AppAuth/OIDAuthorizationRequest.h>
 #import "OIDErrorUtilities.h"
 #import "OIDExternalUserAgentSession.h"
 #import "OIDExternalUserAgentRequest.h"
@@ -97,10 +98,42 @@ NS_ASSUME_NONNULL_BEGIN
   BOOL openedUserAgent = NO;
   NSURL *requestURL = [request externalUserAgentRequestURL];
 
+  // iOS 17.4 and later, use ASWebAuthenticationSession with universal link
+  if (@available(iOS 17.4, *) && [[request.redirectScheme lowercaseString] isEqualToString:@"https"]) {
+    // ASWebAuthenticationSession doesn't work with guided access (rdar://40809553)
+    if (!UIAccessibilityIsGuidedAccessEnabled()) {
+      __weak OIDExternalUserAgentIOS *weakSelf = self;
+      NSURL *redirectURL = ((OIDAuthorizationRequest *)request).redirectURL;
+      ASWebAuthenticationSessionCallback *callback = [ASWebAuthenticationSessionCallback callbackWithHTTPSHost:redirectURL.host path:redirectURL.path];
+      ASWebAuthenticationSession *authenticationVC =
+          [[ASWebAuthenticationSession alloc] initWithURL:requestURL
+                                        callback:callback
+                                        completionHandler:^(NSURL * _Nullable callbackURL,
+                                                            NSError * _Nullable error) {
+        __strong OIDExternalUserAgentIOS *strongSelf = weakSelf;
+        if (!strongSelf) { return; }
+        strongSelf->_webAuthenticationVC = nil;
+        if (callbackURL) {
+          [strongSelf->_session resumeExternalUserAgentFlowWithURL:callbackURL];
+        } else {
+          NSError *safariError =
+              [OIDErrorUtilities errorWithCode:OIDErrorCodeUserCanceledAuthorizationFlow
+                               underlyingError:error
+                                   description:nil];
+          [strongSelf->_session failExternalUserAgentFlowWithError:safariError];
+        }
+      }];
+      authenticationVC.presentationContextProvider = self;
+      authenticationVC.prefersEphemeralWebBrowserSession = NO;
+      _webAuthenticationVC = authenticationVC;
+      openedUserAgent = [authenticationVC start];
+    }
+  }
+
   // iOS 12 and later, use ASWebAuthenticationSession
   if (@available(iOS 12.0, *)) {
     // ASWebAuthenticationSession doesn't work with guided access (rdar://40809553)
-    if (!UIAccessibilityIsGuidedAccessEnabled()) {
+    if (!openedUserAgent && !UIAccessibilityIsGuidedAccessEnabled()) {
       __weak OIDExternalUserAgentIOS *weakSelf = self;
       NSString *redirectScheme = request.redirectScheme;
       ASWebAuthenticationSession *authenticationVC =
