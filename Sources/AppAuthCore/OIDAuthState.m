@@ -496,7 +496,7 @@ static const NSUInteger kExpiryTimeTolerance = 60;
 
 - (void)performActionWithFreshTokens:(OIDAuthStateAction)action
          additionalRefreshParameters:
-    (nullable NSDictionary<NSString *, NSString *> *)additionalParameters {
+    (nullable NSDictionary<NSString *, NSObject<NSCopying> *> *)additionalParameters {
   [self performActionWithFreshTokens:action
          additionalRefreshParameters:additionalParameters
                        dispatchQueue:dispatch_get_main_queue()];
@@ -504,7 +504,7 @@ static const NSUInteger kExpiryTimeTolerance = 60;
 
 - (void)performActionWithFreshTokens:(OIDAuthStateAction)action
          additionalRefreshParameters:
-    (nullable NSDictionary<NSString *, NSString *> *)additionalParameters
+    (nullable NSDictionary<NSString *, NSObject<NSCopying> *> *)additionalParameters
                        dispatchQueue:(dispatch_queue_t)dispatchQueue {
 
   if ([self isTokenFresh]) {

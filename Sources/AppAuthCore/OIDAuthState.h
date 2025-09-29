@@ -233,7 +233,7 @@ static NSString *const kRefreshTokenRequestException =
  */
 - (void)performActionWithFreshTokens:(OIDAuthStateAction)action
          additionalRefreshParameters:
-    (nullable NSDictionary<NSString *, NSString *> *)additionalParameters;
+    (nullable NSDictionary<NSString *, NSObject<NSCopying> *> *)additionalParameters;
 
 /*! @brief Calls the block with a valid access token (refreshing it first, if needed), or if a
         refresh was needed and failed, with the error that caused it to fail.
@@ -245,7 +245,7 @@ static NSString *const kRefreshTokenRequestException =
  */
 - (void)performActionWithFreshTokens:(OIDAuthStateAction)action
          additionalRefreshParameters:
-    (nullable NSDictionary<NSString *, NSString *> *)additionalParameters
+    (nullable NSDictionary<NSString *, NSObject<NSCopying> *> *)additionalParameters
                        dispatchQueue:(dispatch_queue_t)dispatchQueue;
 
 /*! @brief Forces a token refresh the next time @c OIDAuthState.performActionWithFreshTokens: is
