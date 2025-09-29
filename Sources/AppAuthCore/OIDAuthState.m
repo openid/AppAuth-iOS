@@ -419,7 +419,7 @@ static const NSUInteger kExpiryTimeTolerance = 60;
 }
 
 - (OIDTokenRequest *)tokenRefreshRequestWithAdditionalParameters:
-    (NSDictionary<NSString *, NSString *> *)additionalParameters {
+    (NSDictionary<NSString *, NSObject<NSCopying> *> *)additionalParameters {
 
   if (!_refreshToken) {
     [OIDErrorUtilities raiseException:kRefreshTokenRequestException];
@@ -439,7 +439,7 @@ static const NSUInteger kExpiryTimeTolerance = 60;
 }
 
 - (OIDTokenRequest *)tokenRefreshRequestWithAdditionalParameters:
-    (NSDictionary<NSString *, NSString *> *)additionalParameters
+    (NSDictionary<NSString *, NSObject<NSCopying> *> *)additionalParameters
                                                additionalHeaders:
     (NSDictionary<NSString *,NSString *> *)additionalHeaders {
 

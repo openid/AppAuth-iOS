@@ -29,7 +29,7 @@ static NSString *const kQueryStringParamAdditionalDisallowedCharacters = @"=&+";
 @implementation OIDURLQueryComponent {
   /*! @brief A dictionary of parameter names and values representing the contents of the query.
    */
-  NSMutableDictionary<NSString *, NSMutableArray<NSString *> *> *_parameters;
+  NSMutableDictionary<NSString *, NSMutableArray<NSObject<NSCopying> *> *> *_parameters;
 }
 
 - (nullable instancetype)init {
@@ -93,7 +93,7 @@ static NSString *const kQueryStringParamAdditionalDisallowedCharacters = @"=&+";
   // This method will flatten arrays in our @c _parameters' values if only one value exists.
   NSMutableDictionary<NSString *, NSObject<NSCopying> *> *values = [NSMutableDictionary dictionary];
   for (NSString *parameter in _parameters.allKeys) {
-    NSArray<NSString *> *value = _parameters[parameter];
+    NSArray<NSObject<NSCopying> *> *value = _parameters[parameter];
     if (value.count == 1) {
       values[parameter] = [value.firstObject copy];
     } else {
@@ -103,12 +103,12 @@ static NSString *const kQueryStringParamAdditionalDisallowedCharacters = @"=&+";
   return values;
 }
 
-- (NSArray<NSString *> *)valuesForParameter:(NSString *)parameter {
+- (NSArray<NSObject<NSCopying> *> *)valuesForParameter:(NSString *)parameter {
   return _parameters[parameter];
 }
 
-- (void)addParameter:(NSString *)parameter value:(NSString *)value {
-  NSMutableArray<NSString *> *parameterValues = _parameters[parameter];
+- (void)addParameter:(NSString *)parameter value:(NSObject<NSCopying> *)value {
+  NSMutableArray<NSObject<NSCopying> *> *parameterValues = _parameters[parameter];
   if (!parameterValues) {
     parameterValues = [NSMutableArray array];
     _parameters[parameter] = parameterValues;
@@ -116,7 +116,7 @@ static NSString *const kQueryStringParamAdditionalDisallowedCharacters = @"=&+";
   [parameterValues addObject:value];
 }
 
-- (void)addParameters:(NSDictionary<NSString *, NSString *> *)parameters {
+- (void)addParameters:(NSDictionary<NSString *, NSObject<NSCopying> *> *)parameters {
   for (NSString *parameterName in parameters.allKeys) {
     [self addParameter:parameterName value:parameters[parameterName]];
   }
@@ -129,7 +129,7 @@ static NSString *const kQueryStringParamAdditionalDisallowedCharacters = @"=&+";
 - (NSMutableArray<NSURLQueryItem *> *)queryItems NS_AVAILABLE(10.10, 8.0) {
   NSMutableArray<NSURLQueryItem *> *queryParameters = [NSMutableArray array];
   for (NSString *parameterName in _parameters.allKeys) {
-    NSArray<NSString *> *values = _parameters[parameterName];
+    NSArray<NSObject<NSCopying> *> *values = _parameters[parameterName];
     for (NSString *value in values) {
       NSURLQueryItem *item = [NSURLQueryItem queryItemWithName:parameterName value:value];
       [queryParameters addObject:item];
@@ -162,7 +162,7 @@ static NSString *const kQueryStringParamAdditionalDisallowedCharacters = @"=&+";
     NSString *encodedParameterName =
         [parameterName stringByAddingPercentEncodingWithAllowedCharacters:allowedParamCharacters];
 
-    NSArray<NSString *> *values = _parameters[parameterName];
+    NSArray<NSObject<NSCopying> *> *values = _parameters[parameterName];
     for (NSString *value in values) {
       NSString *encodedValue =
           [value stringByAddingPercentEncodingWithAllowedCharacters:allowedParamCharacters];

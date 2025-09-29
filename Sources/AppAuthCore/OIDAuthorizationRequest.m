@@ -133,7 +133,7 @@ NSString *const OIDOAuthorizationRequestCodeChallengeMethodS256 = @"S256";
             codeVerifier:(nullable NSString *)codeVerifier
            codeChallenge:(nullable NSString *)codeChallenge
      codeChallengeMethod:(nullable NSString *)codeChallengeMethod
-    additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters
+    additionalParameters:(nullable NSDictionary<NSString *, NSObject<NSCopying> *> *)additionalParameters
 {
   self = [super init];
   if (self) {
@@ -166,7 +166,7 @@ NSString *const OIDOAuthorizationRequestCodeChallengeMethodS256 = @"S256";
                   scopes:(nullable NSArray<NSString *> *)scopes
              redirectURL:(NSURL *)redirectURL
             responseType:(NSString *)responseType
-    additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters {
+    additionalParameters:(nullable NSDictionary<NSString *, NSObject<NSCopying> *> *)additionalParameters {
 
   // generates PKCE code verifier and challenge
   NSString *codeVerifier = [[self class] generateCodeVerifier];
@@ -192,7 +192,7 @@ NSString *const OIDOAuthorizationRequestCodeChallengeMethodS256 = @"S256";
                    scopes:(nullable NSArray<NSString *> *)scopes
               redirectURL:(NSURL *)redirectURL
              responseType:(NSString *)responseType
-    additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters {
+    additionalParameters:(nullable NSDictionary<NSString *, NSObject<NSCopying> *> *)additionalParameters {
   return [self initWithConfiguration:configuration
                             clientId:clientID
                         clientSecret:nil
@@ -209,7 +209,7 @@ NSString *const OIDOAuthorizationRequestCodeChallengeMethodS256 = @"S256";
               redirectURL:(NSURL *)redirectURL
              responseType:(NSString *)responseType
                     nonce:(nullable NSString *)nonce
-    additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters {
+    additionalParameters:(nullable NSDictionary<NSString *, NSObject<NSCopying> *> *)additionalParameters {
   // generates PKCE code verifier and challenge
   NSString *codeVerifier = [[self class] generateCodeVerifier];
   NSString *codeChallenge = [[self class] codeChallengeS256ForVerifier:codeVerifier];

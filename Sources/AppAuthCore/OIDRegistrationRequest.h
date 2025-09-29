@@ -82,7 +82,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /*! @brief The client's additional token request parameters.
  */
-@property(nonatomic, readonly, nullable) NSDictionary<NSString *, NSString *> *additionalParameters;
+@property(nonatomic, readonly, nullable) NSDictionary<NSString *, NSObject<NSCopying> *> *additionalParameters;
 
 /*! @internal
     @brief Unavailable. Please use initWithConfiguration
@@ -106,7 +106,7 @@ NS_ASSUME_NONNULL_BEGIN
                  grantTypes:(nullable NSArray<NSString *> *)grantTypes
                 subjectType:(nullable NSString *)subjectType
     tokenEndpointAuthMethod:(nullable NSString *)tokenEndpointAuthMethod
-       additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters;
+       additionalParameters:(nullable NSDictionary<NSString *, NSObject<NSCopying> *> *)additionalParameters;
 
 /*! @brief Designated initializer.
     @param configuration The service's configuration.
@@ -128,7 +128,7 @@ NS_ASSUME_NONNULL_BEGIN
                 subjectType:(nullable NSString *)subjectType
     tokenEndpointAuthMethod:(nullable NSString *)tokenEndpointAuthMethod
          initialAccessToken:(nullable NSString *)initialAccessToken
-       additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters
+       additionalParameters:(nullable NSDictionary<NSString *, NSObject<NSCopying> *> *)additionalParameters
     NS_DESIGNATED_INITIALIZER;
 
 /*! @brief Constructs an @c NSURLRequest representing the registration request.

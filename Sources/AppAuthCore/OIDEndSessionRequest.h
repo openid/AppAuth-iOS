@@ -59,7 +59,7 @@ NS_ASSUME_NONNULL_BEGIN
 /*! @brief The client's additional authorization parameters.
     @see https://tools.ietf.org/html/rfc6749#section-3.1
  */
-@property(nonatomic, readonly, nullable) NSDictionary<NSString *, NSString *> *additionalParameters;
+@property(nonatomic, readonly, nullable) NSDictionary<NSString *, NSObject<NSCopying> *> *additionalParameters;
 
 /*! @internal
     @brief Unavailable. Please use @c initWithConfiguration:clientId:scopes:redirectURL:additionalParameters:.
@@ -77,7 +77,7 @@ NS_ASSUME_NONNULL_BEGIN
     initWithConfiguration:(OIDServiceConfiguration *)configuration
               idTokenHint:(NSString *)idTokenHint
     postLogoutRedirectURL:(NSURL *)postLogoutRedirectURL
-     additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters;
+     additionalParameters:(nullable NSDictionary<NSString *, NSObject<NSCopying> *> *)additionalParameters;
 
 /*! @brief Designated initializer.
     @param configuration The service's configuration.
@@ -92,7 +92,7 @@ NS_ASSUME_NONNULL_BEGIN
               idTokenHint:(NSString *)idTokenHint
     postLogoutRedirectURL:(NSURL *)postLogoutRedirectURL
                     state:(NSString *)state
-     additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters
+     additionalParameters:(nullable NSDictionary<NSString *, NSObject<NSCopying> *> *)additionalParameters
     NS_DESIGNATED_INITIALIZER;
 
 /*! @brief Constructs the request URI by adding the request parameters to the query component of the

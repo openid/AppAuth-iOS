@@ -93,7 +93,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /*! @brief The client's additional token request parameters.
  */
-@property(nonatomic, readonly, nullable) NSDictionary<NSString *, NSString *> *additionalParameters;
+@property(nonatomic, readonly, nullable) NSDictionary<NSString *, NSObject<NSCopying> *> *additionalParameters;
 
 /*! @brief The client's additional token request headers.
  */
@@ -127,7 +127,7 @@ NS_ASSUME_NONNULL_BEGIN
                   scopes:(nullable NSArray<NSString *> *)scopes
             refreshToken:(nullable NSString *)refreshToken
             codeVerifier:(nullable NSString *)codeVerifier
-    additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters;
+    additionalParameters:(nullable NSDictionary<NSString *, NSObject<NSCopying> *> *)additionalParameters;
 
 /*! @param configuration The service's configuration.
     @param grantType the type of token being sent to the token endpoint, i.e. "authorization_code"
@@ -152,7 +152,7 @@ NS_ASSUME_NONNULL_BEGIN
                    scope:(nullable NSString *)scope
             refreshToken:(nullable NSString *)refreshToken
             codeVerifier:(nullable NSString *)codeVerifier
-    additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters;
+    additionalParameters:(nullable NSDictionary<NSString *, NSObject<NSCopying> *> *)additionalParameters;
 
 /*! @param configuration The service's configuration.
     @param grantType the type of token being sent to the token endpoint, i.e. "authorization_code"
@@ -177,7 +177,7 @@ NS_ASSUME_NONNULL_BEGIN
                   scopes:(nullable NSArray<NSString *> *)scopes
             refreshToken:(nullable NSString *)refreshToken
             codeVerifier:(nullable NSString *)codeVerifier
-    additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters
+    additionalParameters:(nullable NSDictionary<NSString *, NSObject<NSCopying> *> *)additionalParameters
        additionalHeaders:(nullable NSDictionary<NSString *, NSString *> *)additionalHeaders;
 
 /*! @brief Designated initializer.
@@ -205,7 +205,7 @@ NS_ASSUME_NONNULL_BEGIN
                    scope:(nullable NSString *)scope
             refreshToken:(nullable NSString *)refreshToken
             codeVerifier:(nullable NSString *)codeVerifier
-    additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters
+    additionalParameters:(nullable NSDictionary<NSString *, NSObject<NSCopying> *> *)additionalParameters
        additionalHeaders:(nullable NSDictionary<NSString *, NSString *> *)additionalHeaders
     NS_DESIGNATED_INITIALIZER;
 

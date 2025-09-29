@@ -121,7 +121,7 @@ static NSString *const kHTTPContentTypeHeaderValue =
   OIDTVServiceConfiguration *serviceConfiguration = [self testServiceConfiguration];
   NSArray<NSString *> *testScopes = @[ kTestScope, kTestScopeA ];
   NSString *testScopeString = [OIDScopeUtilities scopesWithArray:testScopes];
-  NSDictionary<NSString *, NSString *> *testAdditionalParameters =
+  NSDictionary<NSString *, NSObject<NSCopying> *> *testAdditionalParameters =
       @{kTestAdditionalParameterKey : kTestAdditionalParameterValue};
 
   OIDTVAuthorizationRequest *authRequest =

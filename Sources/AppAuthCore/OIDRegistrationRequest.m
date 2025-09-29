@@ -72,7 +72,7 @@ static NSString *const kAdditionalParametersKey = @"additionalParameters";
               grantTypes:(nullable NSArray<NSString *> *)grantTypes
              subjectType:(nullable NSString *)subjectType
  tokenEndpointAuthMethod:(nullable NSString *)tokenEndpointAuthenticationMethod
-    additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters {
+    additionalParameters:(nullable NSDictionary<NSString *, NSObject<NSCopying> *> *)additionalParameters {
   return [self initWithConfiguration:configuration
                         redirectURIs:redirectURIs
                        responseTypes:responseTypes
@@ -90,7 +90,7 @@ static NSString *const kAdditionalParametersKey = @"additionalParameters";
                 subjectType:(nullable NSString *)subjectType
     tokenEndpointAuthMethod:(nullable NSString *)tokenEndpointAuthenticationMethod
          initialAccessToken:(nullable NSString *)initialAccessToken
-       additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters {
+       additionalParameters:(nullable NSDictionary<NSString *, NSObject<NSCopying> *> *)additionalParameters {
   self = [super init];
   if (self) {
     _configuration = [configuration copy];

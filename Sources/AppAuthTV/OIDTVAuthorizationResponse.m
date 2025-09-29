@@ -153,7 +153,7 @@ static NSString *const kRequestKey = @"request";
 }
 
 - (OIDTVTokenRequest *)tokenPollRequestWithAdditionalParameters:
-    (NSDictionary<NSString *, NSString *> *)additionalParameters {
+    (NSDictionary<NSString *, NSObject<NSCopying> *> *)additionalParameters {
   return [[OIDTVTokenRequest alloc]
       initWithConfiguration:(OIDTVServiceConfiguration *)self.request.configuration
                  deviceCode:_deviceCode
@@ -175,7 +175,7 @@ static NSString *const kRequestKey = @"request";
 }
 
 - (OIDTVTokenRequest *)tokenPollRequestWithAdditionalParameters:
-    (NSDictionary<NSString *, NSString *> *)additionalParameters
+    (NSDictionary<NSString *, NSObject<NSCopying> *> *)additionalParameters
                                               additionalHeaders:
     (NSDictionary<NSString *, NSString *> *)additionalHeaders {
   return [[OIDTVTokenRequest alloc]

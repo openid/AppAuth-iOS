@@ -33,7 +33,7 @@
              codeVerifier:(nullable NSString *)codeVerifier
             codeChallenge:(nullable NSString *)codeChallenge
       codeChallengeMethod:(nullable NSString *)codeChallengeMethod
-     additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters {
+     additionalParameters:(nullable NSDictionary<NSString *, NSObject<NSCopying> *> *)additionalParameters {
 
   if (![configuration isKindOfClass:[OIDTVServiceConfiguration class]]) {
     NSAssert([configuration isKindOfClass:[OIDTVServiceConfiguration class]],
@@ -61,7 +61,7 @@
                  clientId:(NSString *)clientID
              clientSecret:(NSString *)clientSecret
                    scopes:(nullable NSArray<NSString *> *)scopes
-     additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters {
+     additionalParameters:(nullable NSDictionary<NSString *, NSObject<NSCopying> *> *)additionalParameters {
   return [self initWithConfiguration:configuration
                             clientId:clientID
                         clientSecret:clientSecret

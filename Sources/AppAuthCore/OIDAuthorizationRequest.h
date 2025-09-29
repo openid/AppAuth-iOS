@@ -132,7 +132,7 @@ extern NSString *const OIDOAuthorizationRequestCodeChallengeMethodS256;
 /*! @brief The client's additional authorization parameters.
     @see https://tools.ietf.org/html/rfc6749#section-3.1
  */
-@property(nonatomic, readonly, nullable) NSDictionary<NSString *, NSString *> *additionalParameters;
+@property(nonatomic, readonly, nullable) NSDictionary<NSString *, NSObject<NSCopying> *> *additionalParameters;
 
 /*! @internal
     @brief Unavailable. Please use
@@ -157,7 +157,7 @@ extern NSString *const OIDOAuthorizationRequestCodeChallengeMethodS256;
                    scopes:(nullable NSArray<NSString *> *)scopes
               redirectURL:(NSURL *)redirectURL
              responseType:(NSString *)responseType
-     additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters;
+     additionalParameters:(nullable NSDictionary<NSString *, NSObject<NSCopying> *> *)additionalParameters;
 
 /*! @brief Creates an authorization request with custom nonce, a secure @c state,
         and PKCE with S256 as the @c code_challenge_method.
@@ -180,7 +180,7 @@ extern NSString *const OIDOAuthorizationRequestCodeChallengeMethodS256;
               redirectURL:(NSURL *)redirectURL
              responseType:(NSString *)responseType
                     nonce:(nullable NSString *)nonce
-     additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters;
+     additionalParameters:(nullable NSDictionary<NSString *, NSObject<NSCopying> *> *)additionalParameters;
 
 /*! @brief Creates an authorization request with opinionated defaults (a secure @c state, @c nonce,
         and PKCE with S256 as the @c code_challenge_method).
@@ -201,7 +201,7 @@ extern NSString *const OIDOAuthorizationRequestCodeChallengeMethodS256;
                    scopes:(nullable NSArray<NSString *> *)scopes
               redirectURL:(NSURL *)redirectURL
              responseType:(NSString *)responseType
-     additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters;
+     additionalParameters:(nullable NSDictionary<NSString *, NSObject<NSCopying> *> *)additionalParameters;
 
 /*! @brief Designated initializer.
     @param configuration The service's configuration.
@@ -235,7 +235,7 @@ extern NSString *const OIDOAuthorizationRequestCodeChallengeMethodS256;
              codeVerifier:(nullable NSString *)codeVerifier
             codeChallenge:(nullable NSString *)codeChallenge
       codeChallengeMethod:(nullable NSString *)codeChallengeMethod
-     additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters
+     additionalParameters:(nullable NSDictionary<NSString *, NSObject<NSCopying> *> *)additionalParameters
     NS_DESIGNATED_INITIALIZER;
 
 /*! @brief Constructs the request URI by adding the request parameters to the query component of the

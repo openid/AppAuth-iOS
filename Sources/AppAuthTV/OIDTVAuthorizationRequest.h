@@ -41,7 +41,7 @@ NS_ASSUME_NONNULL_BEGIN
                  clientId:(NSString *)clientID
              clientSecret:(NSString *)clientSecret
                    scopes:(nullable NSArray<NSString *> *)scopes
-     additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters;
+     additionalParameters:(nullable NSDictionary<NSString *, NSObject<NSCopying> *> *)additionalParameters;
 
 /*! @brief Constructs an @c NSURLRequest representing the TV authorization request.
     @return An @c NSURLRequest representing the TV authorization request.

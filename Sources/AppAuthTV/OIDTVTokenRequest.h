@@ -55,7 +55,7 @@ NS_ASSUME_NONNULL_BEGIN
                          refreshToken:(nullable NSString *)refreshToken
                          codeVerifier:(nullable NSString *)codeVerifier
                  additionalParameters:
-                     (nullable NSDictionary<NSString *, NSString *> *)additionalParameters
+                     (nullable NSDictionary<NSString *, NSObject<NSCopying> *> *)additionalParameters
                     additionalHeaders:
                      (nullable NSDictionary<NSString *, NSString *> *)additionalHeaders
     NS_UNAVAILABLE;
@@ -75,7 +75,7 @@ NS_ASSUME_NONNULL_BEGIN
                          refreshToken:(nullable NSString *)refreshToken
                          codeVerifier:(nullable NSString *)codeVerifier
                  additionalParameters:
-                     (nullable NSDictionary<NSString *, NSString *> *)additionalParameters
+                     (nullable NSDictionary<NSString *, NSObject<NSCopying> *> *)additionalParameters
                     additionalHeaders:
                      (nullable NSDictionary<NSString *, NSString *> *)additionalHeaders
     NS_UNAVAILABLE;
@@ -92,7 +92,7 @@ NS_ASSUME_NONNULL_BEGIN
                              clientID:(NSString *)clientID
                          clientSecret:(nullable NSString *)clientSecret
                  additionalParameters:
-                     (nullable NSDictionary<NSString *, NSString *> *)additionalParameters;
+                     (nullable NSDictionary<NSString *, NSObject<NSCopying> *> *)additionalParameters;
 
 /*! @brief Designated initializer.
     @param configuration The service's configuration.
@@ -107,7 +107,7 @@ NS_ASSUME_NONNULL_BEGIN
                              clientID:(NSString *)clientID
                          clientSecret:(nullable NSString *)clientSecret
                  additionalParameters:
-                     (nullable NSDictionary<NSString *, NSString *> *)additionalParameters
+                     (nullable NSDictionary<NSString *, NSObject<NSCopying> *> *)additionalParameters
                     additionalHeaders:
                      (nullable NSDictionary<NSString *, NSString *> *)additionalHeaders
     NS_DESIGNATED_INITIALIZER;

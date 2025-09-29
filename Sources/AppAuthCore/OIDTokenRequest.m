@@ -144,7 +144,7 @@ static NSString *const kAdditionalHeadersKey = @"additionalHeaders";
                   scopes:(nullable NSArray<NSString *> *)scopes
             refreshToken:(nullable NSString *)refreshToken
             codeVerifier:(nullable NSString *)codeVerifier
-    additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters
+    additionalParameters:(nullable NSDictionary<NSString *, NSObject<NSCopying> *> *)additionalParameters
        additionalHeaders:(nullable NSDictionary<NSString *, NSString *> *)additionalHeaders {
   return [self initWithConfiguration:configuration
                            grantType:grantType
@@ -168,7 +168,7 @@ static NSString *const kAdditionalHeadersKey = @"additionalHeaders";
                    scope:(nullable NSString *)scope
             refreshToken:(nullable NSString *)refreshToken
             codeVerifier:(nullable NSString *)codeVerifier
-    additionalParameters:(nullable NSDictionary<NSString *, NSString *> *)additionalParameters
+    additionalParameters:(nullable NSDictionary<NSString *, NSObject<NSCopying> *> *)additionalParameters
        additionalHeaders:(nullable NSDictionary<NSString *, NSString *> *)additionalHeaders {
   self = [super init];
   if (self) {

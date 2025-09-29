@@ -65,12 +65,12 @@ extern BOOL gOIDURLQueryComponentForceIOS7Handling;
     @param parameter The name of the parameter. Case sensitive.
     @param value The value to add.
  */
-- (void)addParameter:(NSString *)parameter value:(NSString *)value;
+- (void)addParameter:(NSString *)parameter value:(NSObject<NSCopying> *)value;
 
 /*! @brief Adds multiple parameters with associated values to the query.
     @param parameters The parameter name value pairs to add to the query.
  */
-- (void)addParameters:(NSDictionary<NSString *, NSString *> *)parameters;
+- (void)addParameters:(NSDictionary<NSString *, NSObject<NSCopying> *> *)parameters;
 
 /*! @param URL The URL to add the query component to.
     @return The original URL with the query component replaced by the parameters from this query.

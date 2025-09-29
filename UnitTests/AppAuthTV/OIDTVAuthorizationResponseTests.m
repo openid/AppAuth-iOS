@@ -160,7 +160,7 @@ static int const kTestInterval = 5;
 - (void)testInitializer {
   OIDTVAuthorizationResponse *response = [self testAuthorizationResponse];
 
-  NSDictionary<NSString *, NSString *> *testAdditionalParameters =
+  NSDictionary<NSString *, NSObject<NSCopying> *> *testAdditionalParameters =
       @{kTestAdditionalParameterKey : kTestAdditionalParameterValue};
 
   XCTAssertEqualObjects(response.verificationURI, kTestVerificationURI);
@@ -192,7 +192,7 @@ static int const kTestInterval = 5;
              kTestAdditionalParameterKey : kTestAdditionalParameterValue
            }];
 
-  NSDictionary<NSString *, NSString *> *testAdditionalParameters =
+  NSDictionary<NSString *, NSObject<NSCopying> *> *testAdditionalParameters =
       @{kTestAdditionalParameterKey : kTestAdditionalParameterValue};
 
   // Tests that the alternative key used above maps to the verificationURI property, so
@@ -220,7 +220,7 @@ static int const kTestInterval = 5;
   OIDTVAuthorizationResponse *response = [self testAuthorizationResponse];
   OIDTVAuthorizationResponse *responseCopy = [response copy];
 
-  NSDictionary<NSString *, NSString *> *testAdditionalParameters =
+  NSDictionary<NSString *, NSObject<NSCopying> *> *testAdditionalParameters =
       @{kTestAdditionalParameterKey : kTestAdditionalParameterValue};
 
   XCTAssertEqualObjects(responseCopy.request, response.request);
@@ -240,7 +240,7 @@ static int const kTestInterval = 5;
   NSData *data = [NSKeyedArchiver archivedDataWithRootObject:response];
   OIDTVAuthorizationResponse *responseCopy = [NSKeyedUnarchiver unarchiveObjectWithData:data];
 
-  NSDictionary<NSString *, NSString *> *testAdditionalParameters =
+  NSDictionary<NSString *, NSObject<NSCopying> *> *testAdditionalParameters =
       @{kTestAdditionalParameterKey : kTestAdditionalParameterValue};
 
   // Not a full test of the request deserialization, but should be sufficient as a smoke test
@@ -276,10 +276,10 @@ static int const kTestInterval = 5;
 - (void)testTokenPollRequestWithAdditionalParametersAdditionalHeaders {
   OIDTVAuthorizationResponse *testResponse = [self testAuthorizationResponse];
 
-  NSDictionary<NSString *, NSString *> *testAdditionalParameters =
+  NSDictionary<NSString *, NSObject<NSCopying> *> *testAdditionalParameters =
       @{kTestAdditionalParameterKey : kTestAdditionalParameterValue};
   
-  NSDictionary<NSString *, NSString *> *testAdditionalHeaders =
+  NSDictionary<NSString *, NSObject<NSCopying> *> *testAdditionalHeaders =
       @{kTestAdditionalHeaderKey : kTestAdditionalHeaderValue};
 
   OIDTVTokenRequest *pollRequest =

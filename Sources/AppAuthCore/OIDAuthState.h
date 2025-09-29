@@ -271,7 +271,7 @@ static NSString *const kRefreshTokenRequestException =
     @see https://tools.ietf.org/html/rfc6749#section-1.5
  */
 - (nullable OIDTokenRequest *)tokenRefreshRequestWithAdditionalParameters:
-    (nullable NSDictionary<NSString *, NSString *> *)additionalParameters;
+    (nullable NSDictionary<NSString *, NSObject<NSCopying> *> *)additionalParameters;
 
 /*! @brief Creates a token request suitable for refreshing an access token.
     @param additionalParameters Additional parameters for the token request.
@@ -283,9 +283,9 @@ static NSString *const kRefreshTokenRequestException =
     @see https://tools.ietf.org/html/rfc6749#section-1.5
  */
 - (nullable OIDTokenRequest *)tokenRefreshRequestWithAdditionalParameters:
-    (nullable NSDictionary<NSString *, NSString *> *)additionalParameters
+    (nullable NSDictionary<NSString *, NSObject<NSCopying> *> *)additionalParameters
                                                         additionalHeaders:
-    (nullable NSDictionary<NSString *, NSString *> *)additionalHeaders;
+    (nullable NSDictionary<NSString *, NSObject<NSCopying> *> *)additionalHeaders;
 
 /*! @brief Creates a token request suitable for refreshing an access token.
     @param additionalHeaders Additional parameters for the token request.
@@ -296,7 +296,7 @@ static NSString *const kRefreshTokenRequestException =
     @see https://tools.ietf.org/html/rfc6749#section-1.5
  */
 - (nullable OIDTokenRequest *)tokenRefreshRequestWithAdditionalHeaders:
-    (nullable NSDictionary<NSString *, NSString *> *)additionalHeaders;
+    (nullable NSDictionary<NSString *, NSObject<NSCopying> *> *)additionalHeaders;
 
 @end
 
