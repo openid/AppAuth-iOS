@@ -26,6 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
     @see https://tools.ietf.org/html/rfc6749#section-3.2
     @see https://tools.ietf.org/html/rfc6749#section-4.1.3
  */
+__attribute__((swift_attr("@Sendable")))
 @interface OIDTokenResponse : NSObject <NSCopying, NSSecureCoding>
 
 /*! @brief The request which was serviced.
