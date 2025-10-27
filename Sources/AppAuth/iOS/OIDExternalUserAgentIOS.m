@@ -202,8 +202,18 @@ NS_ASSUME_NONNULL_BEGIN
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 130000
 #pragma mark - ASWebAuthenticationPresentationContextProviding
 
-- (ASPresentationAnchor)presentationAnchorForWebAuthenticationSession:(ASWebAuthenticationSession *)session API_AVAILABLE(ios(13.0)){
-  return _presentingViewController.view.window;
+- (ASPresentationAnchor)presentationAnchorForWebAuthenticationSession:(ASWebAuthenticationSession *)session API_AVAILABLE(ios(13.0)) {
+  __block UIWindow *window;
+  
+  if ([NSThread isMainThread]) {
+    window = _presentingViewController.view.window;
+  } else {
+    dispatch_sync(dispatch_get_main_queue(), ^{
+      window = _presentingViewController.view.window;
+    });
+  }
+  
+  return window;
 }
 #endif // __IPHONE_OS_VERSION_MAX_ALLOWED >= 130000
 
