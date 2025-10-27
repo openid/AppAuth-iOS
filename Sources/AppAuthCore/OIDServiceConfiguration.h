@@ -32,6 +32,7 @@ typedef void (^OIDServiceConfigurationCreated)
 
 /*! @brief Represents the information needed to construct a @c OIDAuthorizationService.
  */
+__attribute__((swift_attr("@Sendable")))
 @interface OIDServiceConfiguration : NSObject <NSCopying, NSSecureCoding>
 
 /*! @brief The authorization endpoint URI.
