@@ -21,11 +21,17 @@
 #import "OIDAuthorizationResponseTests.h"
 #import "OIDRegistrationResponseTests.h"
 #import "OIDTokenResponseTests.h"
-#import "Source/OIDAuthState.h"
-#import "Source/OIDAuthorizationResponse.h"
-#import "Source/OIDErrorUtilities.h"
-#import "Source/OIDRegistrationResponse.h"
-#import "Source/OIDTokenResponse.h"
+
+#if SWIFT_PACKAGE
+@import AppAuthCore;
+#else
+#import "Sources/AppAuthCore/OIDAuthState.h"
+#import "Sources/AppAuthCore/OIDAuthorizationResponse.h"
+#import "Sources/AppAuthCore/OIDErrorUtilities.h"
+#import "Sources/AppAuthCore/OIDRegistrationResponse.h"
+#import "Sources/AppAuthCore/OIDTokenResponse.h"
+#endif
+
 #import "OIDTokenRequestTests.h"
 
 // Ignore warnings about "Use of GNU statement expression extension" which is raised by our use of
@@ -198,7 +204,18 @@
   NSError *oauthError =
       [[self class] OAuthTokenInvalidGrantErrorWithUnderlyingError:nonCompliantError];
   [authstate updateWithAuthorizationError:oauthError];
-  XCTAssertNoThrow([NSKeyedArchiver archivedDataWithRootObject:authstate], @"");
+  NSError *error;
+  NSData *data;
+  if (@available(iOS 12.0, macOS 10.13, tvOS 11.0, watchOS 4.0, *)) {
+    data = [NSKeyedArchiver archivedDataWithRootObject:authstate
+                                 requiringSecureCoding:YES
+                                                 error:&error];
+    XCTAssertNoThrow(data, @"");
+  } else {
+#if !TARGET_OS_IOS
+    XCTAssertNoThrow([NSKeyedArchiver archivedDataWithRootObject:authstate], @"");
+#endif
+  }
 }
 
 /*! @brief Tests @c OIDAuthState.updateWithAuthorizationResponse:error: with a success response.
@@ -352,8 +369,22 @@
   XCTAssert([OIDAuthState supportsSecureCoding], @"");
 
   OIDAuthState *authState = [[self class] testInstance];
-  NSData *data = [NSKeyedArchiver archivedDataWithRootObject:authState];
-  OIDAuthState *authStateCopy = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+  OIDAuthState *authStateCopy;
+  NSError *error;
+  NSData *data;
+  if (@available(iOS 12.0, macOS 10.13, tvOS 11.0, watchOS 4.0, *)) {
+    data = [NSKeyedArchiver archivedDataWithRootObject:authState
+                                 requiringSecureCoding:YES
+                                                 error:&error];
+    authStateCopy = [NSKeyedUnarchiver unarchivedObjectOfClass:[OIDAuthState class]
+                                                      fromData:data
+                                                         error:&error];
+  } else {
+#if !TARGET_OS_IOS
+    data = [NSKeyedArchiver archivedDataWithRootObject:authState];
+    authStateCopy = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+#endif
+  }
 
   XCTAssertEqualObjects(authStateCopy.refreshToken, authState.refreshToken, @"");
   XCTAssertEqualObjects(authStateCopy.scope, authState.scope, @"");
@@ -369,9 +400,26 @@
   // Verify the error object is indeed restored.
   NSError *oauthError = [[self class] OAuthTokenInvalidGrantErrorWithUnderlyingError:nil];
   [authState updateWithTokenResponse:nil error:oauthError];
-  data = [NSKeyedArchiver archivedDataWithRootObject:authState];
+  if (@available(iOS 12.0, macOS 10.13, tvOS 11.0, watchOS 4.0, *)) {
+    data = [NSKeyedArchiver archivedDataWithRootObject:authState
+                                 requiringSecureCoding:YES
+                                                 error:&error];
+  } else {
+#if !TARGET_OS_IOS
+    data = [NSKeyedArchiver archivedDataWithRootObject:authState];
+#endif
+  }
   XCTAssertNotNil(authState.authorizationError, @"");
-  authStateCopy = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+
+  if (@available(iOS 12.0, macOS 10.13, tvOS 11.0, watchOS 4.0, *)) {
+    authStateCopy = [NSKeyedUnarchiver unarchivedObjectOfClass:[OIDAuthState class]
+                                                      fromData:data
+                                                         error:&error];
+  } else {
+#if !TARGET_OS_IOS
+    authStateCopy = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+#endif
+  }
   XCTAssertEqualObjects(authStateCopy.authorizationError.domain,
                         authState.authorizationError.domain, @"");
   XCTAssertEqual(authStateCopy.authorizationError.code, authState.authorizationError.code, @"");
@@ -427,6 +475,27 @@
       [[OIDAuthState alloc] initWithAuthorizationResponse:authorizationResponse
                                             tokenResponse:tokenResponse];
   XCTAssertEqual([authState isTokenFresh], YES, @"");
+}
+
+- (void)testThatRefreshTokenExceptionWillBeRaisedForTokenRequestWithAdditionalParameters {
+  OIDAuthState *authState = [[OIDAuthState alloc] initWithAuthorizationResponse:nil tokenResponse:nil registrationResponse:nil];
+  XCTAssertThrowsSpecificNamed([authState tokenRefreshRequestWithAdditionalParameters:nil],
+                               NSException,
+                               kRefreshTokenRequestException);
+}
+
+- (void)testThatRefreshTokenExceptionWillBeRaisedForTokenRequestWithAdditionalHeaders {
+  OIDAuthState *authState = [[OIDAuthState alloc] initWithAuthorizationResponse:nil tokenResponse:nil registrationResponse:nil];
+  XCTAssertThrowsSpecificNamed([authState tokenRefreshRequestWithAdditionalHeaders:nil],
+                               NSException,
+                               kRefreshTokenRequestException);
+}
+
+- (void)testThatRefreshTokenExceptionWillBeRaisedForTokenRequestWithAdditionalParametersAndHeaders {
+  OIDAuthState *authState = [[OIDAuthState alloc] initWithAuthorizationResponse:nil tokenResponse:nil registrationResponse:nil];
+  XCTAssertThrowsSpecificNamed([authState tokenRefreshRequestWithAdditionalHeaders:nil],
+                               NSException,
+                               kRefreshTokenRequestException);
 }
 
 @end

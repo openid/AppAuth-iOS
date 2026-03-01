@@ -20,11 +20,16 @@
 
 #import "OIDAuthorizationResponseTests.h"
 #import "OIDServiceConfigurationTests.h"
-#import "Source/OIDAuthorizationRequest.h"
-#import "Source/OIDAuthorizationResponse.h"
-#import "Source/OIDScopeUtilities.h"
-#import "Source/OIDServiceConfiguration.h"
-#import "Source/OIDTokenRequest.h"
+
+#if SWIFT_PACKAGE
+@import AppAuthCore;
+#else
+#import "Sources/AppAuthCore/OIDAuthorizationRequest.h"
+#import "Sources/AppAuthCore/OIDAuthorizationResponse.h"
+#import "Sources/AppAuthCore/OIDScopeUtilities.h"
+#import "Sources/AppAuthCore/OIDServiceConfiguration.h"
+#import "Sources/AppAuthCore/OIDTokenRequest.h"
+#endif
 
 // Ignore warnings about "Use of GNU statement expression extension" which is raised by our use of
 // the XCTAssert___ macros.
@@ -43,6 +48,22 @@ static NSString *const kTestAdditionalParameterKey = @"A";
  */
 static NSString *const kTestAdditionalParameterValue = @"1";
 
+/*! @brief Test key for the @c additionalHeaders property.
+ */
+static NSString *const kTestAdditionalHeaderKey = @"B";
+
+/*! @brief Test value for the @c additionalHeaders property.
+ */
+static NSString *const kTestAdditionalHeaderValue = @"2";
+
+/*! @brief Test key for the @c additionalHeaders property.
+ */
+static NSString *const kTestAdditionalHeaderKey2 = @"C";
+
+/*! @brief Test value for the @c additionalHeaders property.
+ */
+static NSString *const kTestAdditionalHeaderValue2 = @"3";
+
 @implementation OIDTokenRequestTests
 
 + (OIDTokenRequest *)testInstance {
@@ -51,6 +72,9 @@ static NSString *const kTestAdditionalParameterValue = @"1";
       [OIDScopeUtilities scopesArrayWithString:authResponse.request.scope];
   NSDictionary *additionalParameters =
       @{ kTestAdditionalParameterKey : kTestAdditionalParameterValue };
+  NSDictionary *additionalHeaders =
+      @{ kTestAdditionalHeaderKey : kTestAdditionalHeaderValue };
+  
   OIDTokenRequest *request =
       [[OIDTokenRequest alloc] initWithConfiguration:authResponse.request.configuration
                                            grantType:OIDGrantTypeAuthorizationCode
@@ -61,7 +85,8 @@ static NSString *const kTestAdditionalParameterValue = @"1";
                                               scopes:scopesArray
                                         refreshToken:kRefreshTokenTestValue
                                         codeVerifier:authResponse.request.codeVerifier
-                                additionalParameters:additionalParameters];
+                                additionalParameters:additionalParameters
+                                   additionalHeaders:additionalHeaders];
   return request;
 }
 
@@ -71,6 +96,9 @@ static NSString *const kTestAdditionalParameterValue = @"1";
       [OIDScopeUtilities scopesArrayWithString:authResponse.request.scope];
   NSDictionary *additionalParameters =
       @{ kTestAdditionalParameterKey : kTestAdditionalParameterValue };
+  NSDictionary *additionalHeaders =
+      @{ kTestAdditionalHeaderKey : kTestAdditionalHeaderValue };
+  
   OIDTokenRequest *request =
       [[OIDTokenRequest alloc] initWithConfiguration:authResponse.request.configuration
                                            grantType:OIDGrantTypeAuthorizationCode
@@ -81,7 +109,8 @@ static NSString *const kTestAdditionalParameterValue = @"1";
                                               scopes:scopesArray
                                         refreshToken:kRefreshTokenTestValue
                                         codeVerifier:authResponse.request.codeVerifier
-                                additionalParameters:additionalParameters];
+                                additionalParameters:additionalParameters
+                                   additionalHeaders:additionalHeaders];
   return request;
 }
 
@@ -91,6 +120,9 @@ static NSString *const kTestAdditionalParameterValue = @"1";
       [OIDScopeUtilities scopesArrayWithString:authResponse.request.scope];
   NSDictionary *additionalParameters =
       @{ kTestAdditionalParameterKey : kTestAdditionalParameterValue };
+  NSDictionary *additionalHeaders =
+      @{ kTestAdditionalHeaderKey : kTestAdditionalHeaderValue };
+  
   OIDTokenRequest *request =
       [[OIDTokenRequest alloc] initWithConfiguration:authResponse.request.configuration
                                            grantType:OIDGrantTypeAuthorizationCode
@@ -101,7 +133,8 @@ static NSString *const kTestAdditionalParameterValue = @"1";
                                               scopes:scopesArray
                                         refreshToken:kRefreshTokenTestValue
                                         codeVerifier:authResponse.request.codeVerifier
-                                additionalParameters:additionalParameters];
+                                additionalParameters:additionalParameters
+                                   additionalHeaders:additionalHeaders];
   return request;
 }
 
@@ -111,6 +144,9 @@ static NSString *const kTestAdditionalParameterValue = @"1";
       [OIDScopeUtilities scopesArrayWithString:authResponse.request.scope];
   NSDictionary *additionalParameters =
       @{ kTestAdditionalParameterKey : kTestAdditionalParameterValue };
+  NSDictionary *additionalHeaders =
+      @{ kTestAdditionalHeaderKey : kTestAdditionalHeaderValue };
+  
   OIDTokenRequest *request =
       [[OIDTokenRequest alloc] initWithConfiguration:authResponse.request.configuration
                                            grantType:OIDGrantTypeAuthorizationCode
@@ -121,7 +157,34 @@ static NSString *const kTestAdditionalParameterValue = @"1";
                                               scopes:scopesArray
                                         refreshToken:kRefreshTokenTestValue
                                         codeVerifier:authResponse.request.codeVerifier
-                                additionalParameters:additionalParameters];
+                                additionalParameters:additionalParameters
+                                   additionalHeaders:additionalHeaders];
+  return request;
+}
+
++ (OIDTokenRequest *)testInstanceAdditionalHeaders {
+  OIDAuthorizationResponse *authResponse = [OIDAuthorizationResponseTests testInstance];
+  NSArray<NSString *> *scopesArray =
+      [OIDScopeUtilities scopesArrayWithString:authResponse.request.scope];
+  NSDictionary *additionalParameters =
+      @{ kTestAdditionalParameterKey : kTestAdditionalParameterValue };
+  NSDictionary *additionalHeaders = @{
+    kTestAdditionalHeaderKey : kTestAdditionalHeaderValue,
+    kTestAdditionalHeaderKey2 : kTestAdditionalHeaderValue2
+  };
+  
+  OIDTokenRequest *request =
+      [[OIDTokenRequest alloc] initWithConfiguration:authResponse.request.configuration
+                                           grantType:OIDGrantTypeAuthorizationCode
+                                   authorizationCode:authResponse.authorizationCode
+                                         redirectURL:authResponse.request.redirectURL
+                                            clientID:authResponse.request.clientID
+                                        clientSecret:authResponse.request.clientSecret
+                                              scopes:scopesArray
+                                        refreshToken:kRefreshTokenTestValue
+                                        codeVerifier:authResponse.request.codeVerifier
+                                additionalParameters:additionalParameters
+                                   additionalHeaders:additionalHeaders];
   return request;
 }
 
@@ -152,11 +215,17 @@ static NSString *const kTestAdditionalParameterValue = @"1";
   XCTAssertEqualObjects(request.codeVerifier, authResponse.request.codeVerifier,
                         @"Request and response codeVerifiers should be equal.");
   XCTAssertNotNil(request.additionalParameters,
-                        @"Request's additionalParameters field should not be nil.");
+                  @"Request's additionalParameters field should not be nil.");
   XCTAssertEqualObjects(request.additionalParameters[kTestAdditionalParameterKey],
                         kTestAdditionalParameterValue,
                         @"The request's kTestAdditionalParameterKey additional parameter should "
                         "be equal to kTestAdditionalParameterValue.");
+  XCTAssertNotNil(request.additionalHeaders,
+                  @"Request's additionalHeaders field should not be nil.");
+  XCTAssertEqualObjects(request.additionalHeaders[kTestAdditionalHeaderKey],
+                        kTestAdditionalHeaderValue,
+                        @"The request's kTestAdditionalHeaderKey additional parameter should "
+                        "be equal to kTestAdditionalHeaderValue.");
 
   OIDTokenRequest *requestCopy = [request copy];
 
@@ -176,6 +245,9 @@ static NSString *const kTestAdditionalParameterValue = @"1";
   XCTAssertNotNil(requestCopy.additionalParameters, @"");
   XCTAssertEqualObjects(requestCopy.additionalParameters[kTestAdditionalParameterKey],
                         kTestAdditionalParameterValue, @"");
+  XCTAssertNotNil(requestCopy.additionalHeaders, @"");
+  XCTAssertEqualObjects(requestCopy.additionalHeaders[kTestAdditionalHeaderKey],
+                        kTestAdditionalHeaderValue, @"");
 }
 
 /*! @brief Tests the @c NSSecureCoding by round-tripping an instance through the coding process and
@@ -198,9 +270,30 @@ static NSString *const kTestAdditionalParameterValue = @"1";
   XCTAssertNotNil(request.additionalParameters, @"");
   XCTAssertEqualObjects(request.additionalParameters[kTestAdditionalParameterKey],
                         kTestAdditionalParameterValue, @"");
+  XCTAssertNotNil(request.additionalHeaders, @"");
+  XCTAssertEqualObjects(request.additionalHeaders[kTestAdditionalHeaderKey],
+                        kTestAdditionalHeaderValue, @"");
+  
+  NSURLRequest *urlRequest = [request URLRequest];
+  XCTAssertEqualObjects([urlRequest.allHTTPHeaderFields objectForKey:kTestAdditionalHeaderKey],
+                        kTestAdditionalHeaderValue);
 
-  NSData *data = [NSKeyedArchiver archivedDataWithRootObject:request];
-  OIDTokenRequest *requestCopy = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+  OIDTokenRequest *requestCopy;
+  NSError *error;
+  NSData *data;
+  if (@available(iOS 12.0, macOS 10.13, tvOS 11.0, watchOS 4.0, *)) {
+    data = [NSKeyedArchiver archivedDataWithRootObject:request
+                                 requiringSecureCoding:YES
+                                                 error:&error];
+    requestCopy = [NSKeyedUnarchiver unarchivedObjectOfClass:[OIDTokenRequest class]
+                                                    fromData:data
+                                                       error:&error];
+  } else {
+#if !TARGET_OS_IOS
+    data = [NSKeyedArchiver archivedDataWithRootObject:request];
+    requestCopy = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+#endif
+  }
 
   // Not a full test of the configuration deserialization, but should be sufficient as a smoke test
   // to make sure the configuration IS actually getting serialized and deserialized in the
@@ -219,6 +312,13 @@ static NSString *const kTestAdditionalParameterValue = @"1";
   XCTAssertNotNil(requestCopy.additionalParameters, @"");
   XCTAssertEqualObjects(requestCopy.additionalParameters[kTestAdditionalParameterKey],
                         kTestAdditionalParameterValue, @"");
+  XCTAssertNotNil(requestCopy.additionalHeaders, @"");
+  XCTAssertEqualObjects(requestCopy.additionalHeaders[kTestAdditionalHeaderKey],
+                        kTestAdditionalHeaderValue, @"");
+  
+  NSURLRequest *urlrequestCopy = [requestCopy URLRequest];
+  XCTAssertEqualObjects([urlrequestCopy.allHTTPHeaderFields objectForKey:kTestAdditionalHeaderKey],
+                        kTestAdditionalHeaderValue);
 }
 
 - (void)testURLRequestNoClientAuth {
@@ -243,6 +343,8 @@ static NSString *const kTestAdditionalParameterValue = @"1";
       [OIDScopeUtilities scopesArrayWithString:authResponse.request.scope];
   NSDictionary *additionalParameters =
       @{ kTestAdditionalParameterKey : kTestAdditionalParameterValue };
+  NSDictionary *additionalHeaders =
+      @{ kTestAdditionalHeaderKey : kTestAdditionalHeaderValue };
   XCTAssertThrows([[OIDTokenRequest alloc] initWithConfiguration:authResponse.request.configuration
                                                        grantType:OIDGrantTypeAuthorizationCode
                                                authorizationCode:authResponse.authorizationCode
@@ -252,7 +354,19 @@ static NSString *const kTestAdditionalParameterValue = @"1";
                                                           scopes:scopesArray
                                                     refreshToken:kRefreshTokenTestValue
                                                     codeVerifier:authResponse.request.codeVerifier
-                                            additionalParameters:additionalParameters], @"");
+                                            additionalParameters:additionalParameters
+                                               additionalHeaders:additionalHeaders], @"");
+}
+
+- (void)testThatAdditionalHeadersAreInTokenRequest {
+  OIDTokenRequest *request = [[self class] testInstanceAdditionalHeaders];
+  NSURLRequest* urlRequest = [request URLRequest];
+
+  XCTAssertEqualObjects([urlRequest.allHTTPHeaderFields objectForKey:kTestAdditionalHeaderKey],
+                        kTestAdditionalHeaderValue);
+  
+  XCTAssertEqualObjects([urlRequest.allHTTPHeaderFields objectForKey:kTestAdditionalHeaderKey2],
+                        kTestAdditionalHeaderValue2);
 }
 
 @end

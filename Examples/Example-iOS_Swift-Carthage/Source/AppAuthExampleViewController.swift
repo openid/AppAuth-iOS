@@ -228,7 +228,7 @@ extension AppAuthExampleViewController {
 
         let currentAccessToken: String? = self.authState?.lastTokenResponse?.accessToken
 
-        self.authState?.performAction() { (accessToken, idTOken, error) in
+        self.authState?.performAction() { (accessToken, idToken, error) in
 
             if error != nil  {
                 self.logMessage("Error fetching fresh tokens: \(error?.localizedDescription ?? "ERROR")")
@@ -349,7 +349,8 @@ extension AppAuthExampleViewController {
                                                                      grantTypes: nil,
                                                                      subjectType: nil,
                                                                      tokenEndpointAuthMethod: "client_secret_post",
-                                                                     additionalParameters: nil)
+                                                                     additionalParameters: nil,
+                                                                     additionalHeaders: nil)
 
         // performs registration request
         self.logMessage("Initiating registration request")
@@ -463,13 +464,15 @@ extension AppAuthExampleViewController {
         if let authState = self.authState {
             data = NSKeyedArchiver.archivedData(withRootObject: authState)
         }
-
-        UserDefaults.standard.set(data, forKey: kAppAuthExampleAuthStateKey)
-        UserDefaults.standard.synchronize()
+        
+        if let userDefaults = UserDefaults(suiteName: "group.net.openid.appauth.Example") {
+            userDefaults.set(data, forKey: kAppAuthExampleAuthStateKey)
+            userDefaults.synchronize()
+        }
     }
 
     func loadState() {
-        guard let data = UserDefaults.standard.object(forKey: kAppAuthExampleAuthStateKey) as? Data else {
+        guard let data = UserDefaults(suiteName: "group.net.openid.appauth.Example")?.object(forKey: kAppAuthExampleAuthStateKey) as? Data else {
             return
         }
 

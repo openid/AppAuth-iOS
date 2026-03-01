@@ -214,8 +214,9 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
     // performs authentication request
     self.appDelegate.currentAuthorizationFlow =
         [OIDAuthState authStateByPresentingAuthorizationRequest:request
-                            callback:^(OIDAuthState *_Nullable authState,
-                                       NSError *_Nullable error) {
+                                               presentingWindow:self.view.window
+                                                       callback:^(OIDAuthState *_Nullable authState,
+                                                                  NSError *_Nullable error) {
       if (authState) {
         [self setAuthState:authState];
         [self logMessage:@"Got authorization tokens. Access token: %@",
@@ -282,8 +283,8 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
     __weak __typeof(self) weakSelf = self;
     _redirectHTTPHandler.currentAuthorizationFlow =
         [OIDAuthState authStateByPresentingAuthorizationRequest:request
-                            callback:^(OIDAuthState *_Nullable authState,
-                                       NSError *_Nullable error) {
+                                               presentingWindow:self.view.window
+                                                       callback:^(OIDAuthState *_Nullable authState, NSError *_Nullable error) {
       // Brings this app to the foreground.
       [[NSRunningApplication currentApplication]
           activateWithOptions:(NSApplicationActivateAllWindows |
@@ -329,11 +330,12 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
                                           additionalParameters:nil];
     // performs authentication request
     [self logMessage:@"Initiating authorization request %@", request];
+
     self.appDelegate.currentAuthorizationFlow =
         [OIDAuthorizationService presentAuthorizationRequest:request
-                            callback:^(OIDAuthorizationResponse *_Nullable authorizationResponse,
-                                       NSError *_Nullable error) {
-
+                                            presentingWindow:self.view.window
+                                                    callback:^(OIDAuthorizationResponse *_Nullable authorizationResponse,
+                                                               NSError *_Nullable error) {
       if (authorizationResponse) {
         OIDAuthState *authState =
             [[OIDAuthState alloc] initWithAuthorizationResponse:authorizationResponse];
@@ -412,7 +414,7 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
     [request addValue:authorizationHeaderValue forHTTPHeaderField:@"Authorization"];
 
     NSURLSessionConfiguration *configuration =
-        [NSURLSessionConfiguration defaultSessionConfiguration];
+      [NSURLSessionConfiguration defaultSessionConfiguration];
     NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration
                                                           delegate:nil
                                                      delegateQueue:nil];
@@ -488,7 +490,9 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
   NSString *dateString = [dateFormatter stringFromDate:[NSDate date]];
   NSString *logLine = [NSString stringWithFormat:@"\n%@: %@", dateString, log];
   NSAttributedString* logLineAttr = [[NSAttributedString alloc] initWithString:logLine];
-  [[_logTextView textStorage] appendAttributedString:logLineAttr];
+  dispatch_async(dispatch_get_main_queue(), ^{
+    [[_logTextView textStorage] appendAttributedString:logLineAttr];
+  });
 }
 
 @end

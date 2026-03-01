@@ -21,10 +21,15 @@
 #import <objc/runtime.h>
 
 #import "OIDServiceDiscoveryTests.h"
-#import "Source/OIDAuthorizationService.h"
-#import "Source/OIDError.h"
-#import "Source/OIDServiceConfiguration.h"
-#import "Source/OIDServiceDiscovery.h"
+
+#if SWIFT_PACKAGE
+@import AppAuthCore;
+#else
+#import "Sources/AppAuthCore/OIDAuthorizationService.h"
+#import "Sources/AppAuthCore/OIDError.h"
+#import "Sources/AppAuthCore/OIDServiceConfiguration.h"
+#import "Sources/AppAuthCore/OIDServiceDiscovery.h"
+#endif
 
 // Ignore warnings about "Use of GNU statement expression extension" which is raised by our use of
 // the XCTAssert___ macros.
@@ -358,8 +363,22 @@ static NSString *const kIssuerTestExpectedFullDiscoveryURL =
  */
 - (void)testSecureCoding {
   OIDServiceConfiguration *configuration = [[self class] testInstance];
-  NSData *data = [NSKeyedArchiver archivedDataWithRootObject:configuration];
-  OIDServiceConfiguration *unarchived = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+  OIDServiceConfiguration *unarchived;
+  NSError *error;
+  NSData *data;
+  if (@available(iOS 12.0, macOS 10.13, tvOS 11.0, watchOS 4.0, *)) {
+    data = [NSKeyedArchiver archivedDataWithRootObject:configuration
+                                 requiringSecureCoding:YES
+                                                 error:&error];
+    unarchived = [NSKeyedUnarchiver unarchivedObjectOfClass:[OIDServiceConfiguration class]
+                                                   fromData:data
+                                                      error:&error];
+  } else {
+#if !TARGET_OS_IOS
+    data = [NSKeyedArchiver archivedDataWithRootObject:configuration];
+    unarchived = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+#endif
+  }
 
   XCTAssertEqualObjects(configuration.authorizationEndpoint, unarchived.authorizationEndpoint, @"");
   XCTAssertEqualObjects(configuration.tokenEndpoint, unarchived.tokenEndpoint, @"");

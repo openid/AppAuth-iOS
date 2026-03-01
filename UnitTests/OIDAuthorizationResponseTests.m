@@ -19,9 +19,14 @@
 #import "OIDAuthorizationResponseTests.h"
 
 #import "OIDAuthorizationRequestTests.h"
-#import "Source/OIDAuthorizationRequest.h"
-#import "Source/OIDAuthorizationResponse.h"
-#import "Source/OIDGrantTypes.h"
+
+#if SWIFT_PACKAGE
+@import AppAuthCore;
+#else
+#import "Sources/AppAuthCore/OIDAuthorizationRequest.h"
+#import "Sources/AppAuthCore/OIDAuthorizationResponse.h"
+#import "Sources/AppAuthCore/OIDGrantTypes.h"
+#endif
 
 // Ignore warnings about "Use of GNU statement expression extension" which is raised by our use of
 // the XCTAssert___ macros.
@@ -153,8 +158,22 @@ static NSString *const kTestScope = @"Scope";
  */
 - (void)testSecureCoding {
   OIDAuthorizationResponse *response = [[self class] testInstance];
-  NSData *data = [NSKeyedArchiver archivedDataWithRootObject:response];
-  OIDAuthorizationResponse *responseCopy = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+  OIDAuthorizationResponse *responseCopy;
+  NSError *error;
+  NSData *data;
+  if (@available(iOS 12.0, macOS 10.13, tvOS 11.0, watchOS 4.0, *)) {
+    data = [NSKeyedArchiver archivedDataWithRootObject:response
+                                 requiringSecureCoding:YES
+                                                 error:&error];
+    responseCopy = [NSKeyedUnarchiver unarchivedObjectOfClass:[OIDAuthorizationResponse class]
+                                                     fromData:data
+                                                        error:&error];
+  } else {
+#if !TARGET_OS_IOS
+    data = [NSKeyedArchiver archivedDataWithRootObject:response];
+    responseCopy = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+#endif
+  }
 
   // Not a full test of the request deserialization, but should be sufficient as a smoke test
   // to make sure the request IS actually getting serialized and deserialized in the

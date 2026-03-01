@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		06375C8521A4E46500338E3F /* AppAuthCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 06375C8421A4E46500338E3F /* AppAuthCore.framework */; };
+		06462457205ED68000072191 /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 06462456205ED68000072191 /* NotificationCenter.framework */; };
+		0646245B205ED68000072191 /* TodayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0646245A205ED68000072191 /* TodayViewController.m */; };
+		0646245E205ED68000072191 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0646245C205ED68000072191 /* MainInterface.storyboard */; };
+		06462463205ED68000072191 /* Example_Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 06462455205ED68000072191 /* Example_Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		346E916E1C29D42800D3620B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 346E916D1C29D42800D3620B /* main.m */; };
 		346E91711C29D42800D3620B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 346E91701C29D42800D3620B /* AppDelegate.m */; };
 		346E91791C29D42800D3620B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 346E91781C29D42800D3620B /* Assets.xcassets */; };
@@ -17,7 +22,40 @@
 		5FEA25251E75C17E00C2D71B /* AppAuth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FEA25241E75C17E00C2D71B /* AppAuth.framework */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		06462460205ED68000072191 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 346E91611C29D42800D3620B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 06462454205ED68000072191;
+			remoteInfo = Example_Extension;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		06462462205ED68000072191 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				06462463205ED68000072191 /* Example_Extension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		06375C8421A4E46500338E3F /* AppAuthCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppAuthCore.framework; path = Carthage/Build/iOS/AppAuthCore.framework; sourceTree = "<group>"; };
+		06462455205ED68000072191 /* Example_Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = Example_Extension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		06462456205ED68000072191 /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
+		06462459205ED68000072191 /* TodayViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TodayViewController.h; sourceTree = "<group>"; };
+		0646245A205ED68000072191 /* TodayViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TodayViewController.m; sourceTree = "<group>"; };
+		0646245D205ED68000072191 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
+		0646245F205ED68000072191 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		06462467205EDB5400072191 /* Example.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Example.entitlements; sourceTree = "<group>"; };
+		06462468205EDB9900072191 /* Example_Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Example_Extension.entitlements; sourceTree = "<group>"; };
 		346E91691C29D42800D3620B /* Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		346E916D1C29D42800D3620B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		346E916F1C29D42800D3620B /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -33,6 +71,15 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		06462452205ED68000072191 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				06375C8521A4E46500338E3F /* AppAuthCore.framework in Frameworks */,
+				06462457205ED68000072191 /* NotificationCenter.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		346E91661C29D42800D3620B /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -45,11 +92,25 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		06462458205ED68000072191 /* Example_Extension */ = {
+			isa = PBXGroup;
+			children = (
+				06462459205ED68000072191 /* TodayViewController.h */,
+				0646245A205ED68000072191 /* TodayViewController.m */,
+				0646245C205ED68000072191 /* MainInterface.storyboard */,
+				0646245F205ED68000072191 /* Info.plist */,
+				06462468205EDB9900072191 /* Example_Extension.entitlements */,
+			);
+			path = Example_Extension;
+			sourceTree = "<group>";
+		};
 		341564001C487ABA00ECA3D9 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				06375C8421A4E46500338E3F /* AppAuthCore.framework */,
 				5FEA25241E75C17E00C2D71B /* AppAuth.framework */,
 				346E91981C2A245000D3620B /* SafariServices.framework */,
+				06462456205ED68000072191 /* NotificationCenter.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -58,6 +119,7 @@
 			isa = PBXGroup;
 			children = (
 				346E916B1C29D42800D3620B /* Source */,
+				06462458205ED68000072191 /* Example_Extension */,
 				341564001C487ABA00ECA3D9 /* Frameworks */,
 				346E916A1C29D42800D3620B /* Products */,
 			);
@@ -67,6 +129,7 @@
 			isa = PBXGroup;
 			children = (
 				346E91691C29D42800D3620B /* Example.app */,
+				06462455205ED68000072191 /* Example_Extension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -83,6 +146,7 @@
 				346E91781C29D42800D3620B /* Assets.xcassets */,
 				346E917A1C29D42800D3620B /* LaunchScreen.storyboard */,
 				346E917D1C29D42800D3620B /* Info.plist */,
+				06462467205EDB5400072191 /* Example.entitlements */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -90,6 +154,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		06462454205ED68000072191 /* Example_Extension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 06462466205ED68000072191 /* Build configuration list for PBXNativeTarget "Example_Extension" */;
+			buildPhases = (
+				06462451205ED68000072191 /* Sources */,
+				06462452205ED68000072191 /* Frameworks */,
+				06462453205ED68000072191 /* Resources */,
+				06375C8621A4E48800338E3F /* Carthage */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Example_Extension;
+			productName = Example_Extension;
+			productReference = 06462455205ED68000072191 /* Example_Extension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		346E91681C29D42800D3620B /* Example */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 346E91801C29D42800D3620B /* Build configuration list for PBXNativeTarget "Example" */;
@@ -98,10 +180,12 @@
 				346E91661C29D42800D3620B /* Frameworks */,
 				346E91671C29D42800D3620B /* Resources */,
 				5FEA25261E75C1CF00C2D71B /* Carthage */,
+				06462462205ED68000072191 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				06462461205ED68000072191 /* PBXTargetDependency */,
 			);
 			name = Example;
 			productName = Example;
@@ -117,8 +201,22 @@
 				LastUpgradeCheck = 0720;
 				ORGANIZATIONNAME = "William Denniss";
 				TargetAttributes = {
+					06462454205ED68000072191 = {
+						CreatedOnToolsVersion = 9.2;
+						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
+						};
+					};
 					346E91681C29D42800D3620B = {
 						CreatedOnToolsVersion = 7.2;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -136,11 +234,20 @@
 			projectRoot = "";
 			targets = (
 				346E91681C29D42800D3620B /* Example */,
+				06462454205ED68000072191 /* Example_Extension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		06462453205ED68000072191 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0646245E205ED68000072191 /* MainInterface.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		346E91671C29D42800D3620B /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -154,6 +261,25 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		06375C8621A4E48800338E3F /* Carthage */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Carthage/Build/iOS/AppAuth.framework",
+			);
+			name = Carthage;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/usr/local/bin/carthage copy-frameworks\n";
+		};
 		5FEA25261E75C1CF00C2D71B /* Carthage */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -167,11 +293,19 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "/usr/local/bin/carthage copy-frameworks";
+			shellScript = "/usr/local/bin/carthage copy-frameworks\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		06462451205ED68000072191 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0646245B205ED68000072191 /* TodayViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		346E91651C29D42800D3620B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -184,7 +318,23 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		06462461205ED68000072191 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 06462454205ED68000072191 /* Example_Extension */;
+			targetProxy = 06462460205ED68000072191 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXVariantGroup section */
+		0646245C205ED68000072191 /* MainInterface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				0646245D205ED68000072191 /* Base */,
+			);
+			name = MainInterface.storyboard;
+			sourceTree = "<group>";
+		};
 		346E917A1C29D42800D3620B /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -196,6 +346,76 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		06462464205ED68000072191 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = Example_Extension/Example_Extension.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = Example_Extension/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "net.openid.appauth.Example.Example-Extension";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		06462465205ED68000072191 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = Example_Extension/Example_Extension.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = Example_Extension/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "net.openid.appauth.Example.Example-Extension";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		346E917E1C29D42800D3620B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -286,6 +506,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Source/Example.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
@@ -303,6 +526,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Source/Example.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
@@ -319,6 +545,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		06462466205ED68000072191 /* Build configuration list for PBXNativeTarget "Example_Extension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				06462464205ED68000072191 /* Debug */,
+				06462465205ED68000072191 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		346E91641C29D42800D3620B /* Build configuration list for PBXProject "Example" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

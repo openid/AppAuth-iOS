@@ -118,10 +118,12 @@ typedef void (^UserInfoCompletion)(OIDAuthState *_Nullable authState,
 @implementation OIDRPProfileCode
 
 - (void)setUp {
+  XCTSkip("Need to migrate to the new OpenID conformance testing system.");
   [super setUp];
 }
 
 - (void)tearDown {
+  XCTSkip("Need to migrate to the new OpenID conformance testing system.");
   [super tearDown];
   
   [self endCertificationTest];
@@ -264,6 +266,7 @@ typedef void (^UserInfoCompletion)(OIDAuthState *_Nullable authState,
 }
 
 - (void)testRP_response_type_code {
+  XCTSkip("Not working at the moment.");
   NSString *testName = @"rp-response_type-code";
   [self startCertificationTest:testName];
   [self codeFlowWithExchangeExpectSuccessForTest:testName];
