@@ -1,3 +1,6 @@
+# 2.1.0
+- Removed external browser (Safari) fallback from `OIDExternalUserAgentIOS`. If `ASWebAuthenticationSession` fails to start (e.g., Guided Access is enabled), the authorization flow now fails with an error instead of opening an external browser.
+
 # 2.0.0
 - Raise minimum supported iOS version to iOS 12. ([#918](https://github.com/openid/AppAuth-iOS/pull/918))
 - Remove deprecated `[UIApplication openURL:]` method to compile with Xcode 16. ([#911](https://github.com/openid/AppAuth-iOS/pull/911))
