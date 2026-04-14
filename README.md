@@ -41,9 +41,7 @@ For tvOS, AppAuth implements [OAuth 2.0 Device Authorization Grant
 
 AppAuth supports iOS 12 and above.
 
-iOS 9+ uses the in-app browser tab pattern
-(via `SFSafariViewController`), and falls back to the system browser (mobile
-Safari) on earlier versions.
+Authentication is performed using `ASWebAuthenticationSession`.
 
 #### Authorization Server Requirements
 
