@@ -15,6 +15,7 @@ jobs:
     runs-on: macos-14
     strategy:
       matrix:
+        # Check the Github runner images when updating this matrix: https://github.com/actions/runner-images/tree/main/images/macos
         flags: [
           "-scheme AppAuth-iOS -destination 'platform=iOS Simulator,name=iPhone 16,OS=18.2' -sdk 'iphonesimulator18.2'",
           "-scheme AppAuth-macOS -destination 'platform=macOS,arch=x86_64' -sdk 'macosx15.2'",
