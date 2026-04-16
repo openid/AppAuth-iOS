@@ -38,6 +38,8 @@ NSString *const OIDOAuthExceptionInvalidTokenRequestNullRedirectURL = @"A OIDTok
 
 NSString *const OIDOAuthErrorResponseErrorKey = @"OIDOAuthErrorResponseErrorKey";
 
+NSString *const OIDHTTPResponseHeadersKey = @"OIDHTTPResponseHeadersKey";
+
 NSString *const OIDOAuthErrorFieldError = @"error";
 
 NSString *const OIDOAuthErrorFieldErrorDescription = @"error_description";
