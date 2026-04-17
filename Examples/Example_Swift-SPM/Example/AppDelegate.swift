@@ -1,5 +1,5 @@
 //
-//  ExampleApp.swift
+//  AppDelegate.swift
 //
 //  Copyright (c) 2026 The AppAuth Authors.
 //
@@ -16,20 +16,19 @@
 //  limitations under the License.
 //
 
-import SwiftUI
+import UIKit
+import AppAuth
 
-@main
-struct ExampleApp: App {
-    @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
-    @StateObject private var authManager = AuthManager()
+class AppDelegate: NSObject, UIApplicationDelegate {
 
-    var body: some Scene {
-        WindowGroup {
-            ContentView()
-                .environmentObject(authManager)
-                .onAppear {
-                    authManager.appDelegate = appDelegate
-                }
+    var currentAuthorizationFlow: OIDExternalUserAgentSession?
+
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+        if let authorizationFlow = self.currentAuthorizationFlow, authorizationFlow.resumeExternalUserAgentFlow(with: url) {
+            self.currentAuthorizationFlow = nil
+            return true
         }
+
+        return false
     }
 }
