@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		09BB0F002F91B157004C0D4B /* AppAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 09BB0E002F91B157004C0D4B /* AppAuth */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		09BB0B542F91B157004C0D4B /* Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -13,16 +17,30 @@
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		09BB0B562F91B157004C0D4B /* Example */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				09BB0C002F91B157004C0D4B /* Example */,
+			);
 			path = Example;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		09BB0C002F91B157004C0D4B /* Example */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 09BB0B532F91B157004C0D4B /* Example */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		09BB0B512F91B157004C0D4B /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				09BB0F002F91B157004C0D4B /* AppAuth in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +83,7 @@
 			);
 			name = Example;
 			packageProductDependencies = (
+				09BB0E002F91B157004C0D4B /* AppAuth */,
 			);
 			productName = Example;
 			productReference = 09BB0B542F91B157004C0D4B /* Example.app */;
@@ -94,6 +113,9 @@
 			);
 			mainGroup = 09BB0B4B2F91B157004C0D4B;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				09BB0D002F91B157004C0D4B /* AppAuth */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 09BB0B552F91B157004C0D4B /* Products */;
 			projectDirPath = "";
@@ -252,12 +274,8 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
-				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Example/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -283,12 +301,8 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
-				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Example/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -328,6 +342,20 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		09BB0D002F91B157004C0D4B /* AppAuth */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = "../..";
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		09BB0E002F91B157004C0D4B /* AppAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = AppAuth;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 09BB0B4C2F91B157004C0D4B /* Project object */;
 }
