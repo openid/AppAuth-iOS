@@ -14,19 +14,8 @@
 		09BB0B542F91B157004C0D4B /* Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
-/* Begin PBXFileSystemSynchronizedRootGroup section */
-		09BB0B562F91B157004C0D4B /* Example */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				09BB0C002F91B157004C0D4B /* Example */,
-			);
-			path = Example;
-			sourceTree = "<group>";
-		};
-/* End PBXFileSystemSynchronizedRootGroup section */
-
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		09BB0C002F91B157004C0D4B /* Example */ = {
+		09BB0C002F91B157004C0D4B /* Exceptions for "Example" folder in "Example" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
@@ -34,6 +23,17 @@
 			target = 09BB0B532F91B157004C0D4B /* Example */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		09BB0B562F91B157004C0D4B /* Example */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				09BB0C002F91B157004C0D4B /* Exceptions for "Example" folder in "Example" target */,
+			);
+			path = Example;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		09BB0B512F91B157004C0D4B /* Frameworks */ = {
@@ -114,7 +114,7 @@
 			mainGroup = 09BB0B4B2F91B157004C0D4B;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				09BB0D002F91B157004C0D4B /* AppAuth */,
+				09BB0D002F91B157004C0D4B /* XCLocalSwiftPackageReference "../.." */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 09BB0B552F91B157004C0D4B /* Products */;
@@ -271,8 +271,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_STYLE = Automatic;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = Example/Info.plist;
@@ -281,8 +283,9 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = net.openid.appauth.Example;
+				PRODUCT_BUNDLE_IDENTIFIER = com.google.experimental0.dev;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
@@ -298,8 +301,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_STYLE = Automatic;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = Example/Info.plist;
@@ -308,8 +313,9 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = net.openid.appauth.Example;
+				PRODUCT_BUNDLE_IDENTIFIER = com.google.experimental0.dev;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
@@ -344,9 +350,9 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
-		09BB0D002F91B157004C0D4B /* AppAuth */ = {
+		09BB0D002F91B157004C0D4B /* XCLocalSwiftPackageReference "../.." */ = {
 			isa = XCLocalSwiftPackageReference;
-			relativePath = "../..";
+			relativePath = ../..;
 		};
 /* End XCLocalSwiftPackageReference section */
 

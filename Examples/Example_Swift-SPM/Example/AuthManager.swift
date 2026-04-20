@@ -23,9 +23,9 @@ import UIKit
 
 typealias PostRegistrationCallback = (OIDServiceConfiguration?, OIDRegistrationResponse?) -> Void
 
-let kIssuer: String = "https://issuer.example.com"
-let kClientID: String? = "YOUR_CLIENT_ID"
-let kRedirectURI: String = "com.example.app:/oauth2redirect/example-provider"
+let kIssuer: String = "https://accounts.google.com"
+let kClientID: String? = "352978860165-t1b6e11hpmom3bin0ml0kcpe8jp70qr4.apps.googleusercontent.com"
+let kRedirectURI: String = "com.googleusercontent.apps.352978860165-t1b6e11hpmom3bin0ml0kcpe8jp70qr4:/oauth2redirect/google"
 let kAppAuthExampleAuthStateKey: String = "authState"
 
 final class AuthManager: NSObject, ObservableObject {
