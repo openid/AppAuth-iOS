@@ -237,8 +237,7 @@ static NSString *const kRefreshTokenRequestException =
 
 /*! @brief Calls the block with a valid access token (refreshing it first, if needed), or if a
         refresh was needed and failed, with the error that caused it to fail.
-    @param action The block to execute with a fresh token. This block will be executed on the main
-        thread.
+    @param action The block to execute with a fresh token.
     @param additionalParameters Additional parameters for the token request if token is
         refreshed.
     @param dispatchQueue The dispatchQueue on which to dispatch the action block.
@@ -252,6 +251,17 @@ static NSString *const kRefreshTokenRequestException =
         called, even if the current tokens are considered valid.
  */
 - (void)setNeedsTokenRefresh;
+
+/*! @brief The shared queue used for token refresh operations and delegate callbacks.
+    @discussion By default, all token refresh operations and delegate callbacks occur on
+        the main queue. Set this to a background queue if you need to call
+        @c OIDAuthState.performActionWithFreshTokens: synchronously without risking deadlock.
+        When using a custom queue, @c OIDAuthState should only be used from that queue, because it is not thread-safe.
+        Delelegate calls are dispatched from this queue as well. 
+        This is a class-level property that affects all @c OIDAuthState instances.
+        The getter returns the main queue if no custom queue has been set.
+ */
+@property(class, nonatomic, strong, nullable) dispatch_queue_t sharedDelegateQueue;
 
 /*! @brief Creates a token request suitable for refreshing an access token.
     @return A @c OIDTokenRequest suitable for using a refresh token to obtain a new access token.
