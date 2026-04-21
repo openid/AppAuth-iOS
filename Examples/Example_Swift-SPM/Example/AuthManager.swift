@@ -23,9 +23,29 @@ import UIKit
 
 typealias PostRegistrationCallback = (OIDServiceConfiguration?, OIDRegistrationResponse?) -> Void
 
-let kIssuer: String = "https://accounts.google.com"
-let kClientID: String? = "352978860165-t1b6e11hpmom3bin0ml0kcpe8jp70qr4.apps.googleusercontent.com"
-let kRedirectURI: String = "com.googleusercontent.apps.352978860165-t1b6e11hpmom3bin0ml0kcpe8jp70qr4:/oauth2redirect/google"
+let kIssuer: String = {
+    guard let issuer = Bundle.main.object(forInfoDictionaryKey: "OIDCIssuer") as? String,
+          !issuer.isEmpty,
+          issuer != "https://issuer.example.com" else {
+        preconditionFailure("Please configure OIDC_ISSUER in Example.local.xcconfig")
+    }
+    return issuer
+}()
+let kClientID: String? = {
+    let clientID = Bundle.main.object(forInfoDictionaryKey: "OIDCClientID") as? String
+    if clientID == "YOUR_CLIENT_ID" || clientID?.isEmpty ?? true {
+        return nil
+    }
+    return clientID
+}()
+let kRedirectURI: String = {
+    guard let redirectURI = Bundle.main.object(forInfoDictionaryKey: "OIDCRedirectURI") as? String,
+          !redirectURI.isEmpty,
+          redirectURI != "com.example.app:/oauth2redirect/example-provider" else {
+        preconditionFailure("Please configure OIDC_REDIRECT_URI in Example.local.xcconfig")
+    }
+    return redirectURI
+}()
 let kAppAuthExampleAuthStateKey: String = "authState"
 
 final class AuthManager: NSObject, ObservableObject {
@@ -40,10 +60,26 @@ final class AuthManager: NSObject, ObservableObject {
 
     override init() {
         super.init()
+        self.validateOAuthConfiguration()
         self.loadState()
     }
 
     // MARK: Public Methods
+
+    func validateOAuthConfiguration() {
+        assert(kClientID != nil, "Register your OIDC Client ID in Example.local.xcconfig (OIDC_CLIENT_ID).")
+        assert(kRedirectURI != "com.example.app:/oauth2redirect/example-provider", "Register your OIDC Redirect URI in Example.local.xcconfig (OIDC_REDIRECT_URI).")
+
+        guard let urlTypes = Bundle.main.object(forInfoDictionaryKey: "CFBundleURLTypes") as? [[String: Any]],
+              let urlSchemes = urlTypes.first?["CFBundleURLSchemes"] as? [String],
+              let urlScheme = urlSchemes.first else {
+            assertionFailure("CFBundleURLSchemes not configured")
+            return
+        }
+
+        assert(urlScheme != "com.example.app", "Register your OIDC Redirect URI scheme in Example.local.xcconfig (OIDC_REDIRECT_URI_SCHEME).")
+        assert(kIssuer != "https://issuer.example.com", "Register your OIDC Issuer in Example.local.xcconfig (OIDC_ISSUER).")
+    }
 
     func authWithAutoCodeExchange() {
         guard let issuer = URL(string: kIssuer) else {

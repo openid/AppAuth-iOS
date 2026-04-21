@@ -23,7 +23,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.example.app</string>
+				<string>$(OIDC_REDIRECT_URI_SCHEME)</string>
 			</array>
 		</dict>
 	</array>
@@ -31,6 +31,12 @@
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>OIDCClientID</key>
+	<string>$(OIDC_CLIENT_ID)</string>
+	<key>OIDCIssuer</key>
+	<string>$(OIDC_ISSUER)</string>
+	<key>OIDCRedirectURI</key>
+	<string>$(OIDC_REDIRECT_URI)</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
