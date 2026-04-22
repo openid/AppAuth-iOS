@@ -2,7 +2,7 @@
 // Real OAuth client values belong in the sibling, gitignored Config/Example.local.xcconfig,
 // which overrides these defaults via the optional-include directive below.
 
-OIDC_ISSUER = https://issuer.example.com
+OIDC_ISSUER = https:/$()/issuer.example.com
 OIDC_CLIENT_ID = YOUR_CLIENT_ID
 OIDC_REDIRECT_URI = com.example.app:/oauth2redirect/example-provider
 OIDC_REDIRECT_URI_SCHEME = com.example.app
