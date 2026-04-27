@@ -20,7 +20,7 @@ How to get this information varies by IdP, but we have [instructions](../README.
 
 ### Configure the Example
 
-This sample reads them from an xcconfig file. Create your local override file by copying the committed defaults:
+The sample reads these values (Issuer, Client ID, Redirect URI) from an xcconfig file. Create your local override file by copying the committed defaults:
 
     cp Config/Example.xcconfig Config/Example.local.xcconfig
 

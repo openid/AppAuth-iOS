@@ -11,7 +11,7 @@ Each example has docs on how to configure:
 * [Example for iOS (Objective-C)](Example-iOS_ObjC/README.md)
 * [Example for iOS w/ Carthage (Objective-C)](Example-iOS_ObjC-Carthage/README.md)
 * [Example for iOS w/ Carthage (Swift)](Example-iOS_Swift-Carthage/README.md)
-* [Example for iOS w/ SPM (SwiftUI)](Example_Swift-SPM/README.md)
+* [Example for iOS w/ SPM (SwiftUI)](Example-iOS_Swift-SPM/README.md)
 * [Example for macOS](Example-macOS/README.md)
 * [Example for tvOS](Example-tvOS/README.md)
 

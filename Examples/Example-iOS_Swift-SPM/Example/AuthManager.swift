@@ -67,9 +67,6 @@ final class AuthManager: NSObject, ObservableObject {
     // MARK: Public Methods
 
     func validateOAuthConfiguration() {
-        assert(kClientID != nil, "Register your OIDC Client ID in Example.local.xcconfig (OIDC_CLIENT_ID).")
-        assert(kRedirectURI != "com.example.app:/oauth2redirect/example-provider", "Register your OIDC Redirect URI in Example.local.xcconfig (OIDC_REDIRECT_URI).")
-
         guard let urlTypes = Bundle.main.object(forInfoDictionaryKey: "CFBundleURLTypes") as? [[String: Any]],
               let urlSchemes = urlTypes.first?["CFBundleURLSchemes"] as? [String],
               let urlScheme = urlSchemes.first else {
@@ -99,6 +96,7 @@ final class AuthManager: NSObject, ObservableObject {
 
             self.logMessage("Got configuration: \(config)")
 
+            // If kClientID was provided, use it; otherwise perform RFC 7591 dynamic client registration.
             if let clientId = kClientID {
                 self.doAuthWithAutoCodeExchange(configuration: config, clientID: clientId, clientSecret: nil)
             } else {
@@ -137,6 +135,7 @@ final class AuthManager: NSObject, ObservableObject {
 
             self.logMessage("Got configuration: \(configuration)")
 
+            // If kClientID was provided, use it; otherwise perform RFC 7591 dynamic client registration.
             if let clientId = kClientID {
                 self.doAuthWithoutCodeExchange(configuration: configuration, clientID: clientId, clientSecret: nil)
             } else {

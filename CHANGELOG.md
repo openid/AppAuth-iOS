@@ -1,5 +1,5 @@
 # Unreleased
-- Add SwiftUI + Swift Package Manager sample app under `Examples/Example_Swift-SPM`.
+- Add SwiftUI + Swift Package Manager sample app under `Examples/Example-iOS_Swift-SPM`. ([#952](https://github.com/openid/AppAuth-iOS/pull/952))
 
 # 2.0.0
 - Raise minimum supported iOS version to iOS 12. ([#918](https://github.com/openid/AppAuth-iOS/pull/918))
