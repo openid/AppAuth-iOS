@@ -405,12 +405,18 @@ func application(_ app: UIApplication,
                  open url: URL,
                  options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
   // Sends the URL to the current authorization flow (if any) which will
-  // process it if it relates to an authorization response.
-  if let authorizationFlow = self.currentAuthorizationFlow,
-                             // Note: the error-returning variant is now preferred.
-                             authorizationFlow.resumeExternalUserAgentFlow(with: url) {
-    self.currentAuthorizationFlow = nil
-    return true
+  // process it if it relates to an authorization response. Handling the
+  // error lets you distinguish a benign URL mismatch (the URL belongs to
+  // another handler) from an unexpected condition such as no pending flow,
+  // which previously surfaced as an NSException.
+  if let authorizationFlow = self.currentAuthorizationFlow {
+    do {
+      try authorizationFlow.resumeExternalUserAgentFlow(with: url)
+      self.currentAuthorizationFlow = nil
+      return true
+    } catch {
+      print("Authorization flow could not handle URL: \(error.localizedDescription)")
+    }
   }
 
   // Your additional URL handling (if any)
