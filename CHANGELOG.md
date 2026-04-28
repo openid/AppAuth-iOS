@@ -1,3 +1,7 @@
+# 2.1.0
+- Added `resumeExternalUserAgentFlowWithURL:error:` to `OIDExternalUserAgentSession` protocol. This method returns errors via an out-parameter instead of throwing `NSException` in invalid-state scenarios. The previous `resumeExternalUserAgentFlowWithURL:` method is deprecated but continues to work.
+- Added `OIDErrorCodeURLMismatch` and `OIDErrorCodeInvalidAuthorizationFlow` error codes.
+
 # 2.0.0
 - Raise minimum supported iOS version to iOS 12. ([#918](https://github.com/openid/AppAuth-iOS/pull/918))
 - Remove deprecated `[UIApplication openURL:]` method to compile with Xcode 16. ([#911](https://github.com/openid/AppAuth-iOS/pull/911))
