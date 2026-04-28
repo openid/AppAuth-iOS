@@ -121,8 +121,17 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (BOOL)resumeExternalUserAgentFlowWithURL:(NSURL *)URL {
+  return [self resumeExternalUserAgentFlowWithURL:URL error:nil];
+}
+
+- (BOOL)resumeExternalUserAgentFlowWithURL:(NSURL *)URL error:(NSError *_Nullable *_Nullable)error {
   // rejects URLs that don't match redirect (these may be completely unrelated to the authorization)
   if (![self shouldHandleURL:URL]) {
+    if (error) {
+      *error = [OIDErrorUtilities errorWithCode:OIDErrorCodeURLMismatch
+                                underlyingError:nil
+                                    description:@"URL does not match the expected redirect URI."];
+    }
     return NO;
   }
   
@@ -130,24 +139,28 @@ NS_ASSUME_NONNULL_BEGIN
   
   // checks for an invalid state
   if (!_pendingauthorizationFlowCallback) {
-    [NSException raise:OIDOAuthExceptionInvalidAuthorizationFlow
-                format:@"%@", OIDOAuthExceptionInvalidAuthorizationFlow, nil];
+    if (error) {
+      *error = [OIDErrorUtilities errorWithCode:OIDErrorCodeInvalidAuthorizationFlow
+                                underlyingError:nil
+                                    description:OIDOAuthExceptionInvalidAuthorizationFlow];
+    }
+    return NO;
   }
 
   OIDURLQueryComponent *query = [[OIDURLQueryComponent alloc] initWithURL:URL];
 
-  NSError *error;
+  NSError *errorLocal;
   OIDAuthorizationResponse *response = nil;
 
   // checks for an OAuth error response as per RFC6749 Section 4.1.2.1
   if (query.dictionaryValue[OIDOAuthErrorFieldError]) {
-    error = [OIDErrorUtilities OAuthErrorWithDomain:OIDOAuthAuthorizationErrorDomain
+    errorLocal = [OIDErrorUtilities OAuthErrorWithDomain:OIDOAuthAuthorizationErrorDomain
                                       OAuthResponse:query.dictionaryValue
                                     underlyingError:nil];
   }
 
   // no error, should be a valid OAuth 2.0 response
-  if (!error) {
+  if (!errorLocal) {
     response = [[OIDAuthorizationResponse alloc] initWithRequest:_request
                                                       parameters:query.dictionaryValue];
       
@@ -161,14 +174,14 @@ NS_ASSUME_NONNULL_BEGIN
                                    response.state,
                                    response];
       response = nil;
-      error = [NSError errorWithDomain:OIDOAuthAuthorizationErrorDomain
+      errorLocal = [NSError errorWithDomain:OIDOAuthAuthorizationErrorDomain
                                   code:OIDErrorCodeOAuthAuthorizationClientError
                               userInfo:userInfo];
       }
   }
 
   [_externalUserAgent dismissExternalUserAgentAnimated:YES completion:^{
-      [self didFinishWithResponse:response error:error];
+      [self didFinishWithResponse:response error:errorLocal];
   }];
 
   return YES;
@@ -254,18 +267,32 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (BOOL)resumeExternalUserAgentFlowWithURL:(NSURL *)URL {
+  return [self resumeExternalUserAgentFlowWithURL:URL error:nil];
+}
+
+- (BOOL)resumeExternalUserAgentFlowWithURL:(NSURL *)URL
+                                     error:(NSError *_Nullable *_Nullable)error {
   // rejects URLs that don't match redirect (these may be completely unrelated to the authorization)
   if (![self shouldHandleURL:URL]) {
+    if (error) {
+      *error = [OIDErrorUtilities errorWithCode:OIDErrorCodeURLMismatch
+                                underlyingError:nil
+                                    description:@"URL does not match the expected redirect URI."];
+    }
     return NO;
   }
   // checks for an invalid state
   if (!_pendingEndSessionCallback) {
-    [NSException raise:OIDOAuthExceptionInvalidAuthorizationFlow
-                format:@"%@", OIDOAuthExceptionInvalidAuthorizationFlow, nil];
+    if (error) {
+      *error = [OIDErrorUtilities errorWithCode:OIDErrorCodeInvalidAuthorizationFlow
+                                underlyingError:nil
+                                    description:OIDOAuthExceptionInvalidAuthorizationFlow];
+    }
+    return NO;
   }
   
   
-  NSError *error;
+  NSError *responseError;
   OIDEndSessionResponse *response = nil;
 
   OIDURLQueryComponent *query = [[OIDURLQueryComponent alloc] initWithURL:URL];
@@ -282,13 +309,13 @@ NS_ASSUME_NONNULL_BEGIN
      response.state,
      response];
     response = nil;
-    error = [NSError errorWithDomain:OIDOAuthAuthorizationErrorDomain
+    responseError = [NSError errorWithDomain:OIDOAuthAuthorizationErrorDomain
                                 code:OIDErrorCodeOAuthAuthorizationClientError
                             userInfo:userInfo];
   }
   
   [_externalUserAgent dismissExternalUserAgentAnimated:YES completion:^{
-    [self didFinishWithResponse:response error:error];
+    [self didFinishWithResponse:response error:responseError];
   }];
   
   return YES;
