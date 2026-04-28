@@ -151,6 +151,14 @@ typedef NS_ENUM(NSInteger, OIDErrorCode) {
   /*! @brief The ID Token did not pass validation (e.g. issuer, audience checks).
    */
   OIDErrorCodeIDTokenFailedValidationError = -15,
+
+  /*! @brief The URL does not match the expected redirect URI for this session.
+   */
+  OIDErrorCodeURLMismatch = -16,
+
+  /*! @brief There is no pending authorization callback. The authorization flow may have already completed or was not started.
+   */
+  OIDErrorCodeInvalidAuthorizationFlow = -17,
 };
 
 /*! @brief Enum of all possible OAuth error codes as defined by RFC6749
