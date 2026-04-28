@@ -32,6 +32,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
 
+        // Note: resumeExternalUserAgentFlow(with:) is deprecated; the error-throwing variant is preferred.
         if let authorizationFlow = self.currentAuthorizationFlow, authorizationFlow.resumeExternalUserAgentFlow(with: url) {
             self.currentAuthorizationFlow = nil
             return true
