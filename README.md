@@ -382,6 +382,7 @@ authorization session (created in the previous session):
             options:(NSDictionary<NSString *, id> *)options {
   // Sends the URL to the current authorization flow (if any) which will
   // process it if it relates to an authorization response.
+  // Note: resumeExternalUserAgentFlowWithURL:error: is now preferred.
   if ([_currentAuthorizationFlow resumeExternalUserAgentFlowWithURL:url]) {
     _currentAuthorizationFlow = nil;
     return YES;
@@ -401,6 +402,7 @@ func application(_ app: UIApplication,
   // Sends the URL to the current authorization flow (if any) which will
   // process it if it relates to an authorization response.
   if let authorizationFlow = self.currentAuthorizationFlow,
+                             // Note: the error-returning variant is now preferred.
                              authorizationFlow.resumeExternalUserAgentFlow(with: url) {
     self.currentAuthorizationFlow = nil
     return true
