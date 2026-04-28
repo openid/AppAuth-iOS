@@ -382,10 +382,15 @@ authorization session (created in the previous session):
             options:(NSDictionary<NSString *, id> *)options {
   // Sends the URL to the current authorization flow (if any) which will
   // process it if it relates to an authorization response.
-  // Note: resumeExternalUserAgentFlowWithURL:error: is now preferred.
-  if ([_currentAuthorizationFlow resumeExternalUserAgentFlowWithURL:url]) {
+  // Inspect the error to distinguish a benign mismatch (the URL belongs to
+  // another handler) from an unexpected condition such as no pending flow,
+  // which previously surfaced as an NSException.
+  NSError *error = nil;
+  if ([_currentAuthorizationFlow resumeExternalUserAgentFlowWithURL:url error:&error]) {
     _currentAuthorizationFlow = nil;
     return YES;
+  } else if (error) {
+    NSLog(@"Authorization flow could not handle URL: %@", error.localizedDescription);
   }
 
   // Your additional URL handling (if any) goes here.
