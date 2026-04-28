@@ -32,10 +32,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
 
-        // Note: resumeExternalUserAgentFlow(with:) is deprecated; the error-throwing variant is preferred.
-        if let authorizationFlow = self.currentAuthorizationFlow, authorizationFlow.resumeExternalUserAgentFlow(with: url) {
-            self.currentAuthorizationFlow = nil
-            return true
+        // Inspecting the error lets you distinguish a benign URL mismatch
+        // (the URL belongs to another handler) from an unexpected condition
+        // such as no pending flow, which previously surfaced as an NSException.
+        if let authorizationFlow = self.currentAuthorizationFlow {
+            do {
+                try authorizationFlow.resumeExternalUserAgentFlow(with: url)
+                self.currentAuthorizationFlow = nil
+                return true
+            } catch {
+                print("Authorization flow could not handle URL: \(error.localizedDescription)")
+            }
         }
 
         return false
