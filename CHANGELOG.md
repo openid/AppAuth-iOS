@@ -1,3 +1,6 @@
+# Unreleased
+- Add SwiftUI + Swift Package Manager sample app under `Examples/Example-iOS_Swift-SPM`. ([#952](https://github.com/openid/AppAuth-iOS/pull/952))
+
 # 2.0.0
 - Raise minimum supported iOS version to iOS 12. ([#918](https://github.com/openid/AppAuth-iOS/pull/918))
 - Remove deprecated `[UIApplication openURL:]` method to compile with Xcode 16. ([#911](https://github.com/openid/AppAuth-iOS/pull/911))
