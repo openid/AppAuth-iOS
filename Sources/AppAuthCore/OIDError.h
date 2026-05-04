@@ -156,7 +156,8 @@ typedef NS_ENUM(NSInteger, OIDErrorCode) {
    */
   OIDErrorCodeURLMismatch = -16,
 
-  /*! @brief There is no pending authorization callback. The authorization flow may have already completed or was not started.
+  /*! @brief The redirect URL was received, but the session has no pending callback to deliver it
+        to (the callback was already invoked or the session was cancelled).
    */
   OIDErrorCodeInvalidAuthorizationFlow = -17,
 };
