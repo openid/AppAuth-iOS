@@ -133,12 +133,9 @@ NS_ASSUME_NONNULL_BEGIN
       openedUserAgent = [authenticationVC start];
     }
   }
-  // If all else failed use the local browser.
-  if (!openedUserAgent){
-    [[UIApplication sharedApplication] openURL:requestURL
-                                       options:@{}
-                             completionHandler:nil];
-    openedUserAgent = YES;
+  if (!openedUserAgent) {
+    [self cleanUp];
+    return NO;
   }
 
   return openedUserAgent;
