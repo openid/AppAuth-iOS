@@ -120,9 +120,12 @@ NS_ASSUME_NONNULL_BEGIN
   return [[self class] URL:URL matchesRedirectionURL:_request.redirectURL];
 }
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-implementations"
 - (BOOL)resumeExternalUserAgentFlowWithURL:(NSURL *)URL {
   return [self resumeExternalUserAgentFlowWithURL:URL error:nil];
 }
+#pragma clang diagnostic pop
 
 - (BOOL)resumeExternalUserAgentFlowWithURL:(NSURL *)URL error:(NSError *_Nullable *_Nullable)error {
   // rejects URLs that don't match redirect (these may be completely unrelated to the authorization)
@@ -266,9 +269,12 @@ NS_ASSUME_NONNULL_BEGIN
                         matchesRedirectionURL:_request.postLogoutRedirectURL];
 }
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-implementations"
 - (BOOL)resumeExternalUserAgentFlowWithURL:(NSURL *)URL {
   return [self resumeExternalUserAgentFlowWithURL:URL error:nil];
 }
+#pragma clang diagnostic pop
 
 - (BOOL)resumeExternalUserAgentFlowWithURL:(NSURL *)URL
                                      error:(NSError *_Nullable *_Nullable)error {
