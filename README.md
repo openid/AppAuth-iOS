@@ -380,14 +380,15 @@ authorization session (created in the previous session):
             options:(NSDictionary<NSString *, id> *)options {
   // Sends the URL to the current authorization flow (if any) which will
   // process it if it relates to an authorization response.
-  // Inspect the error to distinguish a benign mismatch (the URL belongs to
-  // another handler) from an unexpected condition such as no pending flow,
-  // which previously surfaced as an NSException.
+  // Handling the error lets you filter for conditions that require
+  // logging, such as an unexpected state
+  // (OIDErrorCodeInvalidAuthorizationFlow). Benign mismatches
+  // (OIDErrorCodeURLMismatch) are kept silent.
   NSError *error = nil;
   if ([_currentAuthorizationFlow resumeExternalUserAgentFlowWithURL:url error:&error]) {
     _currentAuthorizationFlow = nil;
     return YES;
-  } else if (error) {
+  } else if (error.code == OIDErrorCodeInvalidAuthorizationFlow) {
     NSLog(@"Authorization flow could not handle URL: %@", error.localizedDescription);
   }
 
@@ -404,16 +405,18 @@ func application(_ app: UIApplication,
                  options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
   // Sends the URL to the current authorization flow (if any) which will
   // process it if it relates to an authorization response. Handling the
-  // error lets you distinguish a benign URL mismatch (the URL belongs to
-  // another handler) from an unexpected condition such as no pending flow,
-  // which previously surfaced as an NSException.
+  // error lets you filter for conditions that require logging, such as
+  // an unexpected state (OIDErrorCodeInvalidAuthorizationFlow). Benign
+  // mismatches (OIDErrorCodeURLMismatch) are kept silent.
   if let authorizationFlow = self.currentAuthorizationFlow {
     do {
       try authorizationFlow.resumeExternalUserAgentFlow(with: url)
       self.currentAuthorizationFlow = nil
       return true
-    } catch {
+    } catch let error as NSError where error.code == OIDErrorCodeInvalidAuthorizationFlow.rawValue {
       print("Authorization flow could not handle URL: \(error.localizedDescription)")
+    } catch {
+      // Benign mismatch (e.g. OIDErrorCodeURLMismatch): fall through.
     }
   }
 
