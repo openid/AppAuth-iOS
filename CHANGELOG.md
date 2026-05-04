@@ -1,7 +1,7 @@
 # Unreleased
 - Add SwiftUI + Swift Package Manager sample app under `Examples/Example-iOS_Swift-SPM`. ([#952](https://github.com/openid/AppAuth-iOS/pull/952))
 - Removed external browser (Safari) fallback from `OIDExternalUserAgentIOS`. If `ASWebAuthenticationSession` fails to start (e.g., Guided Access isenabled), the authorization flow now fails with an error instead of opening an external browser.
-- Added `resumeExternalUserAgentFlowWithURL:error:` to `OIDExternalUserAgentSession` protocol. This method returns errors via an out-parameter instead of throwing `NSException` in invalid-state scenarios. The previous `resumeExternalUserAgentFlowWithURL:` method is deprecated but continues to work.
+- Added `resumeExternalUserAgentFlowWithURL:error:` to `OIDExternalUserAgentSession` protocol. This method returns errors via an out-parameter instead of throwing `NSException` in invalid-state scenarios. The previous `resumeExternalUserAgentFlowWithURL:` method is deprecated and forwards to the new method. Note that, as a side effect of this forwarding, the deprecated method no longer raises `NSException` (with name `OIDOAuthExceptionInvalidAuthorizationFlow`) on invalid state — it now returns `NO` silently. Migrate to the `resumeExternalUserAgentFlowWithURL:error:` variant to inspect the cause.
 - Added `OIDErrorCodeURLMismatch` and `OIDErrorCodeInvalidAuthorizationFlow` error codes.
 
 # 2.0.0
