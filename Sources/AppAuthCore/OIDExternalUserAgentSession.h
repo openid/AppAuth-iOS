@@ -51,7 +51,26 @@ NS_ASSUME_NONNULL_BEGIN
     @remarks Has no effect if called more than once, or after a @c cancel message was received.
     @return YES if the passed URL matches the expected redirect URL and was consumed, NO otherwise.
  */
-- (BOOL)resumeExternalUserAgentFlowWithURL:(NSURL *)URL;
+- (BOOL)resumeExternalUserAgentFlowWithURL:(NSURL *)URL __deprecated_msg("Use resumeExternalUserAgentFlowWithURL:error: instead");
+
+/*! @brief Clients should call this method with the result of the external user-agent code flow if
+        it becomes available. This is the preferred replacement for the deprecated version.
+    @param URL The redirect URL invoked by the server.
+    @param error On failure, an NSError describing why the URL was not handled. Pass NULL if you do
+        not need the error.
+    @discussion When the URL represented a valid response, implementations should clean up any
+        left-over UI state from the request, for example by closing the
+        \SFSafariViewController or loopback HTTP listener if those were used. The completion block
+        of the pending request should then be invoked.
+        Two specific error cases: (1) OIDErrorCodeURLMismatch when the URL does not match the
+        expected redirect, (2) OIDErrorCodeInvalidAuthorizationFlow when no pending authorization
+        flow exists.
+    @remarks Has no effect if called more than once, or after a @c cancel message was received.
+    @return YES if the passed URL matches the expected redirect URL and was consumed.
+        NO if the URL did not match (\@c OIDErrorCodeURLMismatch) or no authorization flow
+        was pending (\@c OIDErrorCodeInvalidAuthorizationFlow).
+ */
+- (BOOL)resumeExternalUserAgentFlowWithURL:(NSURL *)URL error:(NSError *_Nullable *_Nullable)error;
 
 /*! @brief @c OIDExternalUserAgent or clients should call this method when the
         external user-agent flow failed with a non-OAuth error.
