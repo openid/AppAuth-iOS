@@ -66,7 +66,9 @@ NS_ASSUME_NONNULL_BEGIN
         expected redirect, (2) OIDErrorCodeInvalidAuthorizationFlow when no pending authorization
         flow exists.
     @remarks Has no effect if called more than once, or after a @c cancel message was received.
-    @return YES if the passed URL matches the expected redirect URL and was consumed, NO otherwise.
+    @return YES if the passed URL matches the expected redirect URL and was consumed.
+        NO if the URL did not match (\@c OIDErrorCodeURLMismatch) or no authorization flow
+        was pending (\@c OIDErrorCodeInvalidAuthorizationFlow).
  */
 - (BOOL)resumeExternalUserAgentFlowWithURL:(NSURL *)URL error:(NSError *_Nullable *_Nullable)error;
 
