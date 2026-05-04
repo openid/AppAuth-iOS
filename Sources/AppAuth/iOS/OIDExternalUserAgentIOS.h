@@ -40,7 +40,9 @@ API_UNAVAILABLE(macCatalyst)
 
 /*! @brief The designated initializer.
     @param presentingViewController The view controller from which to present the authentication UI.
-    @discussion The specific authentication UI used depends on the iOS version and accessibility options. Uses @c ASWebAuthenticationSession. If Guided Access is enabled or the session cannot be started, the method returns NO and the authorization flow fails with an error.
+    @discussion The specific authentication UI used depends on the iOS version and accessibility
+        options. Uses @c ASWebAuthenticationSession. If Guided Access is enabled or the session
+        cannot be started, the method returns NO and the authorization flow fails with an error.
  */
 - (nullable instancetype)initWithPresentingViewController:
     (UIViewController *)presentingViewController
@@ -50,7 +52,9 @@ API_UNAVAILABLE(macCatalyst)
     @param presentingViewController The view controller from which to present the browser.
     @param prefersEphemeralSession Whether the caller prefers to use a private authentication
         session. See @c ASWebAuthenticationSession.prefersEphemeralWebBrowserSession for more.
-    @discussion Authentication is performed with @c ASWebAuthenticationSession, setting the ephemerality based on the argument. If Guided Access is enabled or the session cannot be started, the method returns NO and the authorization flow fails with an error.
+    @discussion Authentication is performed with @c ASWebAuthenticationSession, setting the
+        ephemerality based on the argument. If Guided Access is enabled or the session cannot
+        be started, the method returns NO and the authorization flow fails with an error.
  */
 - (nullable instancetype)initWithPresentingViewController:
     (UIViewController *)presentingViewController
