@@ -145,7 +145,7 @@ NS_ASSUME_NONNULL_BEGIN
     if (error) {
       *error = [OIDErrorUtilities errorWithCode:OIDErrorCodeInvalidAuthorizationFlow
                                 underlyingError:nil
-                                    description:OIDOAuthExceptionInvalidAuthorizationFlow];
+                                    description:@"There is no pending authorization flow to resume."];
     }
     return NO;
   }
@@ -292,7 +292,7 @@ NS_ASSUME_NONNULL_BEGIN
     if (error) {
       *error = [OIDErrorUtilities errorWithCode:OIDErrorCodeInvalidAuthorizationFlow
                                 underlyingError:nil
-                                    description:OIDOAuthExceptionInvalidAuthorizationFlow];
+                                    description:@"There is no pending authorization flow to resume."];
     }
     return NO;
   }
