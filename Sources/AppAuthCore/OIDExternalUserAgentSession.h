@@ -53,6 +53,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (BOOL)resumeExternalUserAgentFlowWithURL:(NSURL *)URL __deprecated_msg("Use resumeExternalUserAgentFlowWithURL:error: instead");
 
+@optional
 /*! @brief Clients should call this method with the result of the external user-agent code flow if
         it becomes available. This is the preferred replacement for the deprecated version.
     @param URL The redirect URL invoked by the server.
@@ -72,6 +73,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (BOOL)resumeExternalUserAgentFlowWithURL:(NSURL *)URL error:(NSError *_Nullable *_Nullable)error;
 
+@required
 /*! @brief @c OIDExternalUserAgent or clients should call this method when the
         external user-agent flow failed with a non-OAuth error.
     @param error The error that is the reason for the failure of this external flow.
