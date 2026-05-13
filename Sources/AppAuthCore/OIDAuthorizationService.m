@@ -152,18 +152,18 @@ NS_ASSUME_NONNULL_BEGIN
 
   OIDURLQueryComponent *query = [[OIDURLQueryComponent alloc] initWithURL:URL];
 
-  NSError *errorLocal;
+  NSError *responseError;
   OIDAuthorizationResponse *response = nil;
 
   // checks for an OAuth error response as per RFC6749 Section 4.1.2.1
   if (query.dictionaryValue[OIDOAuthErrorFieldError]) {
-    errorLocal = [OIDErrorUtilities OAuthErrorWithDomain:OIDOAuthAuthorizationErrorDomain
-                                      OAuthResponse:query.dictionaryValue
-                                    underlyingError:nil];
+    responseError = [OIDErrorUtilities OAuthErrorWithDomain:OIDOAuthAuthorizationErrorDomain
+                                              OAuthResponse:query.dictionaryValue
+                                            underlyingError:nil];
   }
 
   // no error, should be a valid OAuth 2.0 response
-  if (!errorLocal) {
+  if (!responseError) {
     response = [[OIDAuthorizationResponse alloc] initWithRequest:_request
                                                       parameters:query.dictionaryValue];
       
@@ -177,14 +177,14 @@ NS_ASSUME_NONNULL_BEGIN
                                    response.state,
                                    response];
       response = nil;
-      errorLocal = [NSError errorWithDomain:OIDOAuthAuthorizationErrorDomain
-                                  code:OIDErrorCodeOAuthAuthorizationClientError
-                              userInfo:userInfo];
+      responseError = [NSError errorWithDomain:OIDOAuthAuthorizationErrorDomain
+                                          code:OIDErrorCodeOAuthAuthorizationClientError
+                                      userInfo:userInfo];
       }
   }
 
   [_externalUserAgent dismissExternalUserAgentAnimated:YES completion:^{
-      [self didFinishWithResponse:response error:errorLocal];
+      [self didFinishWithResponse:response error:responseError];
   }];
 
   return YES;
@@ -276,8 +276,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 #pragma clang diagnostic pop
 
-- (BOOL)resumeExternalUserAgentFlowWithURL:(NSURL *)URL
-                                     error:(NSError *_Nullable *_Nullable)error {
+- (BOOL)resumeExternalUserAgentFlowWithURL:(NSURL *)URL error:(NSError *_Nullable *_Nullable)error {
   // rejects URLs that don't match redirect (these may be completely unrelated to the authorization)
   if (![self shouldHandleURL:URL]) {
     if (error) {
@@ -316,8 +315,8 @@ NS_ASSUME_NONNULL_BEGIN
      response];
     response = nil;
     responseError = [NSError errorWithDomain:OIDOAuthAuthorizationErrorDomain
-                                code:OIDErrorCodeOAuthAuthorizationClientError
-                            userInfo:userInfo];
+                                        code:OIDErrorCodeOAuthAuthorizationClientError
+                                    userInfo:userInfo];
   }
   
   [_externalUserAgent dismissExternalUserAgentAnimated:YES completion:^{

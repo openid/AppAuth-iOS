@@ -126,7 +126,8 @@ static NSString *const kHTMLErrorRedirectNotValid =
 - (void)HTTPConnection:(HTTPConnection *)conn didReceiveRequest:(HTTPServerRequest *)mess {
   // Sends URL to AppAuth.
   CFURLRef url = CFHTTPMessageCopyRequestURL(mess.request);
-  BOOL handled = [_currentAuthorizationFlow resumeExternalUserAgentFlowWithURL:(__bridge NSURL *)url error:nil];
+  BOOL handled = [_currentAuthorizationFlow resumeExternalUserAgentFlowWithURL:(__bridge NSURL *)url
+                                                                             error:nil];
 
   // Stops listening to further requests after the first valid authorization response.
   if (handled) {
