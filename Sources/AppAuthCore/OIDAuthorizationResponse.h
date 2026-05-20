@@ -28,6 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
     @see https://tools.ietf.org/html/rfc6749#section-5.1
     @see http://openid.net/specs/openid-connect-core-1_0.html#ImplicitAuthResponse
  */
+__attribute__((swift_attr("@Sendable")))
 @interface OIDAuthorizationResponse : NSObject <NSCopying, NSSecureCoding>
 
 /*! @brief The request which was serviced.
