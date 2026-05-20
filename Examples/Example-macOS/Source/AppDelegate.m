@@ -49,7 +49,7 @@ NS_ASSUME_NONNULL_BEGIN
            withReplyEvent:(NSAppleEventDescriptor *)replyEvent {
   NSString *URLString = [[event paramDescriptorForKeyword:keyDirectObject] stringValue];
   NSURL *URL = [NSURL URLWithString:URLString];
-  [_currentAuthorizationFlow resumeExternalUserAgentFlowWithURL:URL];
+  [_currentAuthorizationFlow resumeExternalUserAgentFlowWithURL:URL error:nil];
 }
 
 @end

@@ -24,9 +24,17 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     var currentAuthorizationFlow: OIDExternalUserAgentSession?
 
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-        if let authorizationFlow = self.currentAuthorizationFlow, authorizationFlow.resumeExternalUserAgentFlow(with: url) {
-            self.currentAuthorizationFlow = nil
-            return true
+        // Inspecting the error lets you distinguish a benign URL mismatch
+        // (the URL belongs to another handler) from an unexpected condition
+        // such as no pending flow, which previously surfaced as an NSException.
+        if let authorizationFlow = self.currentAuthorizationFlow {
+            do {
+                try authorizationFlow.resumeExternalUserAgentFlow(with: url)
+                self.currentAuthorizationFlow = nil
+                return true
+            } catch {
+                print("Authorization flow could not handle URL: \(error.localizedDescription)")
+            }
         }
 
         return false
