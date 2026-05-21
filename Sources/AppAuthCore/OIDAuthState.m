@@ -506,6 +506,36 @@ static const NSUInteger kExpiryTimeTolerance = 60;
          additionalRefreshParameters:
     (nullable NSDictionary<NSString *, NSString *> *)additionalParameters
                        dispatchQueue:(dispatch_queue_t)dispatchQueue {
+  [self performActionWithFreshTokens:action
+         additionalRefreshParameters:additionalParameters
+            additionalRefreshHeaders:nil
+                       dispatchQueue:dispatch_get_main_queue()];
+}
+
+- (void)performActionWithFreshTokens:(OIDAuthStateAction)action
+            additionalRefreshHeaders:
+    (nullable NSDictionary<NSString *, NSString *> *)additionalHeaders {
+  [self performActionWithFreshTokens:action
+            additionalRefreshHeaders:additionalHeaders
+                       dispatchQueue:dispatch_get_main_queue()];
+}
+
+- (void)performActionWithFreshTokens:(OIDAuthStateAction)action
+            additionalRefreshHeaders:
+    (nullable NSDictionary<NSString *, NSString *> *)additionalHeaders
+                       dispatchQueue:(dispatch_queue_t)dispatchQueue {
+  [self performActionWithFreshTokens:action
+         additionalRefreshParameters:nil
+            additionalRefreshHeaders:additionalHeaders
+                       dispatchQueue:dispatch_get_main_queue()];
+}
+
+- (void)performActionWithFreshTokens:(OIDAuthStateAction)action
+         additionalRefreshParameters:
+    (nullable NSDictionary<NSString *, NSString *> *)additionalParameters
+         additionalRefreshHeaders:
+    (nullable NSDictionary<NSString *, NSString *> *)additionalHeaders
+                       dispatchQueue:(dispatch_queue_t)dispatchQueue {
 
   if ([self isTokenFresh]) {
     // access token is valid within tolerance levels, perform action
@@ -544,7 +574,8 @@ static const NSUInteger kExpiryTimeTolerance = 60;
 
   // refresh the tokens
   OIDTokenRequest *tokenRefreshRequest =
-      [self tokenRefreshRequestWithAdditionalParameters:additionalParameters];
+  [self tokenRefreshRequestWithAdditionalParameters:additionalParameters 
+                                  additionalHeaders:additionalHeaders];
   [OIDAuthorizationService performTokenRequest:tokenRefreshRequest
                  originalAuthorizationResponse:_lastAuthorizationResponse
                                       callback:^(OIDTokenResponse *_Nullable response,

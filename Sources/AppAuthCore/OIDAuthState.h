@@ -248,6 +248,48 @@ static NSString *const kRefreshTokenRequestException =
     (nullable NSDictionary<NSString *, NSString *> *)additionalParameters
                        dispatchQueue:(dispatch_queue_t)dispatchQueue;
 
+/*! @brief Calls the block with a valid access token (refreshing it first, if needed), or if a
+        refresh was needed and failed, with the error that caused it to fail.
+    @param action The block to execute with a fresh token. This block will be executed on the main
+        thread.
+    @param additionalHeaders Additional parameters for the token request if token is
+      refreshed.
+ */
+- (void)performActionWithFreshTokens:(OIDAuthStateAction)action
+            additionalRefreshHeaders:
+    (nullable NSDictionary<NSString *, NSString *> *)additionalHeaders;
+
+/*! @brief Calls the block with a valid access token (refreshing it first, if needed), or if a
+        refresh was needed and failed, with the error that caused it to fail.
+    @param action The block to execute with a fresh token. This block will be executed on the main
+        thread.
+    @param additionalHeaders Additional parameters for the token request if token is
+        refreshed.
+    @param dispatchQueue The dispatchQueue on which to dispatch the action block.
+ */
+- (void)performActionWithFreshTokens:(OIDAuthStateAction)action
+            additionalRefreshHeaders:
+    (nullable NSDictionary<NSString *, NSString *> *)additionalHeaders
+                       dispatchQueue:(dispatch_queue_t)dispatchQueue;
+
+/*! @brief Calls the block with a valid access token (refreshing it first, if needed), or if a
+        refresh was needed and failed, with the error that caused it to fail.
+    @param action The block to execute with a fresh token. This block will be executed on the main
+        thread.
+    @param additionalParameters Additional parameters for the token request if token is
+        refreshed.
+    @param additionalHeaders Additional parameters for the token request if token is
+        refreshed.
+    @param dispatchQueue The dispatchQueue on which to dispatch the action block.
+ */
+- (void)performActionWithFreshTokens:(OIDAuthStateAction)action
+         additionalRefreshParameters:
+    (nullable NSDictionary<NSString *, NSString *> *)additionalParameters
+            additionalRefreshHeaders:
+    (nullable NSDictionary<NSString *, NSString *> *)additionalHeaders
+                       dispatchQueue:(dispatch_queue_t)dispatchQueue;
+
+
 /*! @brief Forces a token refresh the next time @c OIDAuthState.performActionWithFreshTokens: is
         called, even if the current tokens are considered valid.
  */
