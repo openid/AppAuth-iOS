@@ -25,7 +25,7 @@ jobs:
           "-scheme AppAuthTV -destination 'platform=tvOS Simulator,name=Apple TV,OS=18.2' -sdk 'appletvsimulator18.2'"
         ]
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v5
     - name: Select Xcode
       run: sudo xcode-select -s /Applications/Xcode_16.2.app/Contents/Developer
     - name: Run unit test targets
@@ -44,7 +44,7 @@ jobs:
           '--use-static-frameworks'
         ]
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v5
     - name: Update Bundler
       run: bundle update --bundler
     - name: Install Ruby gems with Bundler
@@ -55,12 +55,12 @@ jobs:
   spm-build-test:
     runs-on: macos-14
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v5
     - name: Build unit test target
       run: swift build
     - name: Run unit test target
       run: swift test --enable-code-coverage
     - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v3
+      uses: codecov/codecov-action@v6
       with: 
         version: v0.7.3
