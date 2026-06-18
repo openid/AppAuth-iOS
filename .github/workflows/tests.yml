@@ -14,8 +14,8 @@ jobs:
   xcode-project-test:
     runs-on: macos-15
     strategy:
+      fail-fast: false
       matrix:
-	fail-fast: false
        	# Check the Github runner images when updating this matrix: https://github.com/actions/runner-images/tree/main/images/macos
         flags: [
           "-scheme AppAuth-iOS -destination 'platform=iOS Simulator,name=iPhone 16,OS=18.6' -sdk 'iphonesimulator'",
