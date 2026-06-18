@@ -28,6 +28,8 @@ jobs:
     - uses: actions/checkout@v3
     - name: Select Xcode
       run: sudo xcode-select -s /Applications/Xcode_16.4.app/Contents/Developer
+    - name: Ensure tvOS simulator runtime
+      run: xcodebuild -downloadPlatform tvOS
     - name: Run unit test targets
       run: |
         xcodebuild test \
