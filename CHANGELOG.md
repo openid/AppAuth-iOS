@@ -1,3 +1,6 @@
+# UNRELEASED
+- Replace case range with explicit case labels in OIDTokenUtilities. Addresses issue #947. ([#962](https://github.com/openid/AppAuth-iOS/pull/962))
+
 # 2.1.0
 - Add SwiftUI + Swift Package Manager sample app under `Examples/Example-iOS_Swift-SPM`. ([#952](https://github.com/openid/AppAuth-iOS/pull/952))
 - Removed external browser (Safari) fallback from `OIDExternalUserAgentIOS`. If `ASWebAuthenticationSession` fails to start (e.g., Guided Access is enabled), the authorization flow now fails with an error instead of opening an external browser. ([#954](https://github.com/openid/AppAuth-iOS/pull/954))
