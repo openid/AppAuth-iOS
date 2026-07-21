@@ -71,7 +71,7 @@ NS_ASSUME_NONNULL_BEGIN
         NO if the URL did not match (\@c OIDErrorCodeURLMismatch) or no authorization flow
         was pending (\@c OIDErrorCodeInvalidAuthorizationFlow).
  */
-- (BOOL)resumeExternalUserAgentFlowWithURL:(NSURL *)URL error:(NSError *_Nullable *_Nullable)error;
+- (BOOL)resumeExternalUserAgentFlowWithURL:(NSURL *)URL error:(NSError *_Nullable *_Nullable)error NS_SWIFT_NAME(resumeExternalUserAgentFlow(_:));
 
 @required
 /*! @brief @c OIDExternalUserAgent or clients should call this method when the
