@@ -1,5 +1,6 @@
-# Unreleased
+# UNRELEASED
 - Add Swift name to `resumeExternalUserAgentFlowWithURL:error:` and update hint. (#966)
+- Replace case range with explicit case labels in OIDTokenUtilities. Addresses issue #947. ([#963](https://github.com/openid/AppAuth-iOS/pull/963))
 
 # 2.1.0
 - Add SwiftUI + Swift Package Manager sample app under `Examples/Example-iOS_Swift-SPM`. ([#952](https://github.com/openid/AppAuth-iOS/pull/952))

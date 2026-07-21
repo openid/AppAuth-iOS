@@ -12,22 +12,25 @@ on:
 jobs:
 
   xcode-project-test:
-    runs-on: macos-14
+    runs-on: macos-15
     strategy:
+      fail-fast: false
       matrix:
         # Check the Github runner images when updating this matrix: https://github.com/actions/runner-images/tree/main/images/macos
         flags: [
-          "-scheme AppAuth-iOS -destination 'platform=iOS Simulator,name=iPhone 16,OS=18.2' -sdk 'iphonesimulator18.2'",
-          "-scheme AppAuth-macOS -destination 'platform=macOS,arch=x86_64' -sdk 'macosx15.2'",
-          "-scheme AppAuth_macOS -destination 'platform=macOS,arch=x86_64' -sdk 'macosx15.2'",
-          "-scheme AppAuth-tvOS -destination 'platform=tvOS Simulator,name=Apple TV,OS=18.2' -sdk 'appletvsimulator18.2'",
-          "-scheme AppAuth_tvOS -destination 'platform=tvOS Simulator,name=Apple TV,OS=18.2' -sdk 'appletvsimulator18.2'",
-          "-scheme AppAuthTV -destination 'platform=tvOS Simulator,name=Apple TV,OS=18.2' -sdk 'appletvsimulator18.2'"
+          "-scheme AppAuth-iOS -destination 'platform=iOS Simulator,name=iPhone 16,OS=18.6' -sdk 'iphonesimulator'",
+          "-scheme AppAuth-macOS -destination 'platform=macOS,arch=x86_64' -sdk 'macosx'",
+          "-scheme AppAuth_macOS -destination 'platform=macOS,arch=x86_64' -sdk 'macosx'",
+          "-scheme AppAuth-tvOS -destination 'platform=tvOS Simulator,name=Apple TV,OS=18.5' -sdk 'appletvsimulator'",
+          "-scheme AppAuth_tvOS -destination 'platform=tvOS Simulator,name=Apple TV,OS=18.5' -sdk 'appletvsimulator'",
+          "-scheme AppAuthTV -destination 'platform=tvOS Simulator,name=Apple TV,OS=18.5' -sdk 'appletvsimulator'"
         ]
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v5
     - name: Select Xcode
-      run: sudo xcode-select -s /Applications/Xcode_16.2.app/Contents/Developer
+      run: sudo xcode-select -s /Applications/Xcode_16.4.app/Contents/Developer
+    - name: Warm up simulator runtimes
+      run: xcrun simctl list devices available
     - name: Run unit test targets
       run: |
         xcodebuild test \
@@ -35,7 +38,7 @@ jobs:
           ${{ matrix.flags }}
 
   pod-lib-lint:
-    runs-on: macos-14
+    runs-on: macos-15
     strategy:
       matrix:
         flags: [
@@ -44,7 +47,7 @@ jobs:
           '--use-static-frameworks'
         ]
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v5
     - name: Update Bundler
       run: bundle update --bundler
     - name: Install Ruby gems with Bundler
@@ -53,14 +56,14 @@ jobs:
       run: pod lib lint --verbose ${{ matrix.flags }}
 
   spm-build-test:
-    runs-on: macos-14
+    runs-on: macos-15
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v5
     - name: Build unit test target
       run: swift build
     - name: Run unit test target
       run: swift test --enable-code-coverage
     - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v3
+      uses: codecov/codecov-action@v6
       with: 
         version: v0.7.3
