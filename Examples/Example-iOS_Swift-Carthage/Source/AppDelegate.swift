@@ -37,7 +37,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // such as no pending flow, which previously surfaced as an NSException.
         if let authorizationFlow = self.currentAuthorizationFlow {
             do {
-                try authorizationFlow.resumeExternalUserAgentFlow(with: url)
+                try authorizationFlow.resumeExternalUserAgentFlow?(with: url)
                 self.currentAuthorizationFlow = nil
                 return true
             } catch {
