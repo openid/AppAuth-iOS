@@ -1,6 +1,7 @@
-# UNRELEASED
-- Add Swift name to `resumeExternalUserAgentFlowWithURL:error:` and update hint. (#966)
-- Replace case range with explicit case labels in OIDTokenUtilities. Addresses issue #947. ([#963](https://github.com/openid/AppAuth-iOS/pull/963))
+# 2.2.0
+- Add a Swift-specific name for `resumeExternalUserAgentFlowWithURL:error:`, which Swift callers now invoke as the throwing `resumeExternalUserAgentFlow(_:)`. Swift code written against 2.1.0 must update call sites from `resumeExternalUserAgentFlow(with:)` to `resumeExternalUserAgentFlow?(_:)`. ([#966](https://github.com/openid/AppAuth-iOS/pull/966))
+- Replace case range with explicit case labels in `OIDTokenUtilities`. Addresses issue #947. ([#963](https://github.com/openid/AppAuth-iOS/pull/963))
+- Update the `addressable` gem to address CVE-2026-35611. Addresses issue #958. ([#965](https://github.com/openid/AppAuth-iOS/pull/965))
 
 # 2.1.0
 - Add SwiftUI + Swift Package Manager sample app under `Examples/Example-iOS_Swift-SPM`. ([#952](https://github.com/openid/AppAuth-iOS/pull/952))
