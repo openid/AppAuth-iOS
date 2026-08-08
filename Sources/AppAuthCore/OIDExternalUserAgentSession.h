@@ -67,7 +67,6 @@ NS_ASSUME_NONNULL_BEGIN
         Two specific error cases: (1) OIDErrorCodeURLMismatch when the URL does not match the
         expected redirect, (2) OIDErrorCodeInvalidAuthorizationFlow when no pending authorization
         flow exists.
-        This method was optional when introduced in 2.1.0.
     @remarks Has no effect if called more than once, or after a @c cancel message was received.
     @return YES if the passed URL matches the expected redirect URL and was consumed.
         NO if the URL did not match (\@c OIDErrorCodeURLMismatch) or no authorization flow
