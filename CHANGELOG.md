@@ -1,5 +1,6 @@
 # UNRELEASED
-- Add Swift name to `resumeExternalUserAgentFlowWithURL:error:` and update hint. (#966)
+- BREAKING: `resumeExternalUserAgentFlowWithURL:error:` is now required in `OIDExternalUserAgentSession` to fix a Swift compiler crash (no workaround) caused by its `@optional` status with `NSError **`. Implementers must now provide this method. Affects projects since 2.1.0. ([#955](https://github.com/openid/AppAuth-iOS/pull/955))
+- Swift callers now spell the method `resumeExternalUserAgentFlow(_:)`. Since the method is no longer optional, you don't need optional-chaining anymore. For those migrating from 2.1.0, replace `try session.resumeExternalUserAgentFlow?(with: url)` with `try session.resumeExternalUserAgentFlow(url)`. Objective-C callers are unaffected. ([#966](https://github.com/openid/AppAuth-iOS/pull/966))
 - Replace case range with explicit case labels in OIDTokenUtilities. Addresses issue #947. ([#963](https://github.com/openid/AppAuth-iOS/pull/963))
 
 # 2.1.0
