@@ -410,7 +410,7 @@ func application(_ app: UIApplication,
   // mismatches (OIDErrorCodeURLMismatch) are kept silent.
   if let authorizationFlow = self.currentAuthorizationFlow {
     do {
-      try authorizationFlow.resumeExternalUserAgentFlow(with: url)
+      try authorizationFlow.resumeExternalUserAgentFlow(url)
       self.currentAuthorizationFlow = nil
       return true
     } catch let error as NSError where error.code == OIDErrorCodeInvalidAuthorizationFlow.rawValue {

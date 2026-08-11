@@ -55,16 +55,15 @@ NS_ASSUME_NONNULL_BEGIN
   __deprecated_msg("Use resumeExternalUserAgentFlowWithURL:error: instead. "
                    "Swift: Use the throwing resumeExternalUserAgentFlow(_:)");
 
-@optional
 /*! @brief Clients should call this method with the result of the external user-agent code flow if
         it becomes available. This is the preferred replacement for the deprecated version.
     @param URL The redirect URL invoked by the server.
     @param error On failure, an NSError describing why the URL was not handled. Pass NULL if you do
         not need the error.
-    @discussion When the URL represented a valid response, implementations should clean up any
-        left-over UI state from the request, for example by closing the
-        \SFSafariViewController or loopback HTTP listener if those were used. The completion block
-        of the pending request should then be invoked.
+    @discussion Conforming types are required to implement this method. When the URL represented a
+        valid response, implementations should clean up any left-over UI state from the request, for
+        example by closing the \SFSafariViewController or loopback HTTP listener if those were used.
+        The completion block of the pending request should then be invoked.
         Two specific error cases: (1) OIDErrorCodeURLMismatch when the URL does not match the
         expected redirect, (2) OIDErrorCodeInvalidAuthorizationFlow when no pending authorization
         flow exists.
@@ -75,7 +74,6 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (BOOL)resumeExternalUserAgentFlowWithURL:(NSURL *)URL error:(NSError *_Nullable *_Nullable)error NS_SWIFT_NAME(resumeExternalUserAgentFlow(_:));
 
-@required
 /*! @brief @c OIDExternalUserAgent or clients should call this method when the
         external user-agent flow failed with a non-OAuth error.
     @param error The error that is the reason for the failure of this external flow.
