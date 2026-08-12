@@ -180,8 +180,14 @@ static NSString *const kHTTPContentTypeHeaderValue =
                                                         scopes:nil
                                           additionalParameters:nil];
 
-  NSData *data = [NSKeyedArchiver archivedDataWithRootObject:authRequest];
-  OIDTVAuthorizationRequest *authRequestCopy = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+  NSError *error;
+  NSData *data = [NSKeyedArchiver archivedDataWithRootObject:authRequest
+                                       requiringSecureCoding:YES
+                                                       error:&error];
+  OIDTVAuthorizationRequest *authRequestCopy =
+      [NSKeyedUnarchiver unarchivedObjectOfClass:[OIDTVAuthorizationRequest class]
+                                        fromData:data
+                                           error:&error];
 
   NSURL *authRequestCopyDeviceAuthorizationEndpoint =
       ((OIDTVServiceConfiguration *)authRequestCopy.configuration).deviceAuthorizationEndpoint;
