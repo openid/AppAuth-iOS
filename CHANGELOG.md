@@ -1,4 +1,9 @@
 # UNRELEASED
+- BREAKING: Updates made to support Xcode 27.
+-- Raised minimum deployment targets to iOS 15.0, macOS 12.0, tvOS 15.0 and watchOS 9.0 (minimum for Xcode 27).
+-- Swift Package Manager users: The required `swift-tools-version` bump from 5.3 to 5.7, to pickup the new platforms,
+	results in package resolution now requiring Swift 5.7 / Xcode 14 or later.
+-- Projects that must keep supporting iOS 12-14 should stay on AppAuth 2.x, which remains buildable with Xcode 26 and earlier.
 - BREAKING: `resumeExternalUserAgentFlowWithURL:error:` is now required in `OIDExternalUserAgentSession` to fix a Swift compiler crash (no workaround) caused by its `@optional` status with `NSError **`. Implementers must now provide this method. Affects projects since 2.1.0. ([#955](https://github.com/openid/AppAuth-iOS/pull/955))
 - Swift callers now spell the method `resumeExternalUserAgentFlow(_:)`. Since the method is no longer optional, you don't need optional-chaining anymore. For those migrating from 2.1.0, replace `try session.resumeExternalUserAgentFlow?(with: url)` with `try session.resumeExternalUserAgentFlow(url)`. Objective-C callers are unaffected. ([#966](https://github.com/openid/AppAuth-iOS/pull/966))
 - Replace case range with explicit case labels in OIDTokenUtilities. Addresses issue #947. ([#963](https://github.com/openid/AppAuth-iOS/pull/963))

@@ -39,14 +39,13 @@ For tvOS, AppAuth implements [OAuth 2.0 Device Authorization Grant
 
 #### Supported Versions
 
-AppAuth supports iOS 12 and above.
+AppAuth supports iOS 15 and above.
 
 Authentication is performed using `ASWebAuthenticationSession`.
 
 #### Authorization Server Requirements
 
-Both Custom URI Schemes (all supported versions of iOS) and Universal Links
-(iOS 9+) can be used with the library.
+Both Custom URI Schemes and Universal Links can be used with the library.
 
 In general, AppAuth can work with any authorization server that supports
 native apps, as documented in [RFC 8252](https://tools.ietf.org/html/rfc8252),
@@ -58,7 +57,7 @@ confidentiality of the client secrets may not work well.
 
 #### Supported Versions
 
-AppAuth supports macOS (OS X) 10.9 and above.
+AppAuth supports macOS 12 and above.
 
 #### Authorization Server Requirements
 
@@ -75,7 +74,7 @@ confidentiality of the client secrets may not work well.
 
 #### Supported Versions
 
-AppAuth supports tvOS 9.0 and above. Please note that while it is possible to run the standard AppAuth library on tvOS, the documentation below describes implementing [OAuth 2.0 Device Authorization Grant](https://tools.ietf.org/html/rfc8628) (AppAuthTV).
+AppAuth supports tvOS 15.0 and above. Please note that while it is possible to run the standard AppAuth library on tvOS, the documentation below describes implementing [OAuth 2.0 Device Authorization Grant](https://tools.ietf.org/html/rfc8628) (AppAuthTV).
 
 #### Authorization Server Requirements
 
