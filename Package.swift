@@ -1,4 +1,4 @@
-// swift-tools-version:5.3
+// swift-tools-version:5.7
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 import PackageDescription
 
@@ -23,10 +23,10 @@ import PackageDescription
 let package = Package(
     name: "AppAuth",
     platforms: [
-        .macOS(.v10_12),
-        .iOS(.v12),
-        .tvOS(.v9),
-        .watchOS(.v2)
+        .macOS(.v12),
+        .iOS(.v15),
+        .tvOS(.v15),
+        .watchOS(.v9)
     ],
     products: [
         .library(
