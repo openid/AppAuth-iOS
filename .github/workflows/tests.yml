@@ -83,9 +83,9 @@ jobs:
           "-scheme AppAuth-iOS -destination 'platform=iOS Simulator,name=iPhone 17,OS=27.0' -sdk 'iphonesimulator'",
           "-scheme AppAuth-macOS -destination 'platform=macOS' -sdk 'macosx'",
           "-scheme AppAuth_macOS -destination 'platform=macOS' -sdk 'macosx'",
-          "-scheme AppAuth-tvOS -destination 'platform=tvOS Simulator,name=Apple TV,OS=27.0' -sdk 'appletvsimulator'",
-          "-scheme AppAuth_tvOS -destination 'platform=tvOS Simulator,name=Apple TV,OS=27.0' -sdk 'appletvsimulator'",
-          "-scheme AppAuthTV -destination 'platform=tvOS Simulator,name=Apple TV,OS=27.0' -sdk 'appletvsimulator'"
+          "-scheme AppAuth-tvOS -destination 'platform=tvOS Simulator,name=Apple TV 4K (3rd generation),OS=27.0' -sdk 'appletvsimulator'",
+          "-scheme AppAuth_tvOS -destination 'platform=tvOS Simulator,name=Apple TV 4K (3rd generation),OS=27.0' -sdk 'appletvsimulator'",
+          "-scheme AppAuthTV -destination 'platform=tvOS Simulator,name=Apple TV 4K (3rd generation),OS=27.0' -sdk 'appletvsimulator'"
         ]
     steps:
     - uses: actions/checkout@v5
