@@ -278,15 +278,14 @@ static NSString *const kTestAdditionalHeaderValue2 = @"3";
   XCTAssertEqualObjects([urlRequest.allHTTPHeaderFields objectForKey:kTestAdditionalHeaderKey],
                         kTestAdditionalHeaderValue);
 
-  OIDTokenRequest *requestCopy;
   NSError *error;
-  NSData *data;
-  data = [NSKeyedArchiver archivedDataWithRootObject:request
-                               requiringSecureCoding:YES
-                                               error:&error];
-  requestCopy = [NSKeyedUnarchiver unarchivedObjectOfClass:[OIDTokenRequest class]
-                                                  fromData:data
-                                                     error:&error];
+  NSData *data = [NSKeyedArchiver archivedDataWithRootObject:request
+                                       requiringSecureCoding:YES
+                                                       error:&error];
+  OIDTokenRequest *requestCopy =
+      [NSKeyedUnarchiver unarchivedObjectOfClass:[OIDTokenRequest class]
+                                        fromData:data
+                                           error:&error];
 
   // Not a full test of the configuration deserialization, but should be sufficient as a smoke test
   // to make sure the configuration IS actually getting serialized and deserialized in the

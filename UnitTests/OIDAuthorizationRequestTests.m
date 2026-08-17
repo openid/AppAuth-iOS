@@ -322,15 +322,14 @@ static int const kCodeVerifierRecommendedLength = 43;
   XCTAssertEqualObjects(request.additionalParameters[kTestAdditionalParameterKey],
                         kTestAdditionalParameterValue, @"");
 
-  OIDAuthorizationRequest *requestCopy;
   NSError *error;
-  NSData *data;
-  data = [NSKeyedArchiver archivedDataWithRootObject:request
-                               requiringSecureCoding:YES
-                                               error:&error];
-  requestCopy = [NSKeyedUnarchiver unarchivedObjectOfClass:[OIDAuthorizationRequest class]
-                                                   fromData:data
-                                                      error:&error];
+  NSData *data = [NSKeyedArchiver archivedDataWithRootObject:request
+                                       requiringSecureCoding:YES
+                                                       error:&error];
+  OIDAuthorizationRequest *requestCopy =
+      [NSKeyedUnarchiver unarchivedObjectOfClass:[OIDAuthorizationRequest class]
+                                        fromData:data
+                                           error:&error];
 
   // Not a full test of the configuration deserialization, but should be sufficient as a smoke test
   // to make sure the configuration IS actually getting serialized and deserialized in the

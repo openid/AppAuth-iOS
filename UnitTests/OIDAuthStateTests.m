@@ -205,10 +205,9 @@
       [[self class] OAuthTokenInvalidGrantErrorWithUnderlyingError:nonCompliantError];
   [authstate updateWithAuthorizationError:oauthError];
   NSError *error;
-  NSData *data;
-  data = [NSKeyedArchiver archivedDataWithRootObject:authstate
-                               requiringSecureCoding:YES
-                                               error:&error];
+  NSData *data = [NSKeyedArchiver archivedDataWithRootObject:authstate
+                                       requiringSecureCoding:YES
+                                                       error:&error];
   XCTAssertNoThrow(data, @"");
 }
 
@@ -363,15 +362,14 @@
   XCTAssert([OIDAuthState supportsSecureCoding], @"");
 
   OIDAuthState *authState = [[self class] testInstance];
-  OIDAuthState *authStateCopy;
   NSError *error;
-  NSData *data;
-  data = [NSKeyedArchiver archivedDataWithRootObject:authState
-                               requiringSecureCoding:YES
-                                               error:&error];
-  authStateCopy = [NSKeyedUnarchiver unarchivedObjectOfClass:[OIDAuthState class]
-                                                    fromData:data
+  NSData *data = [NSKeyedArchiver archivedDataWithRootObject:authState
+                                       requiringSecureCoding:YES
                                                        error:&error];
+  OIDAuthState *authStateCopy =
+      [NSKeyedUnarchiver unarchivedObjectOfClass:[OIDAuthState class]
+                                        fromData:data
+                                           error:&error];
 
   XCTAssertEqualObjects(authStateCopy.refreshToken, authState.refreshToken, @"");
   XCTAssertEqualObjects(authStateCopy.scope, authState.scope, @"");

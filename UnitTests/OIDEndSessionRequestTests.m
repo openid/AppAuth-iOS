@@ -97,15 +97,14 @@ static NSString *const kTestIdTokenHint = @"id-token-hint";
     XCTAssertEqualObjects(request.additionalParameters[kTestAdditionalParameterKey],
                           kTestAdditionalParameterValue);
 
-    OIDEndSessionRequest *requestCopy;
     NSError *error;
-    NSData *data;
-    data = [NSKeyedArchiver archivedDataWithRootObject:request
-                                 requiringSecureCoding:YES
-                                                 error:&error];
-    requestCopy = [NSKeyedUnarchiver unarchivedObjectOfClass:[OIDEndSessionRequest class]
-                                                    fromData:data
-                                                       error:&error];
+    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:request
+                                         requiringSecureCoding:YES
+                                                         error:&error];
+    OIDEndSessionRequest *requestCopy =
+        [NSKeyedUnarchiver unarchivedObjectOfClass:[OIDEndSessionRequest class]
+                                          fromData:data
+                                             error:&error];
 
     XCTAssertNotNil(requestCopy.configuration);
     XCTAssertEqualObjects(requestCopy.configuration.authorizationEndpoint,
