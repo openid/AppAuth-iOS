@@ -208,7 +208,8 @@
   NSData *data = [NSKeyedArchiver archivedDataWithRootObject:authstate
                                        requiringSecureCoding:YES
                                                        error:&error];
-  XCTAssertNoThrow(data, @"");
+  XCTAssertNotNil(data, @"");
+  XCTAssertNil(error, @"");
 }
 
 /*! @brief Tests @c OIDAuthState.updateWithAuthorizationResponse:error: with a success response.
