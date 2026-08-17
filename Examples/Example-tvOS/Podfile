@@ -1,4 +1,4 @@
-platform :tvos, '9.0'
+platform :tvos, '15.0'
 
 use_frameworks!
 

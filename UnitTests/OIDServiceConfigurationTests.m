@@ -363,22 +363,14 @@ static NSString *const kIssuerTestExpectedFullDiscoveryURL =
  */
 - (void)testSecureCoding {
   OIDServiceConfiguration *configuration = [[self class] testInstance];
-  OIDServiceConfiguration *unarchived;
   NSError *error;
-  NSData *data;
-  if (@available(iOS 12.0, macOS 10.13, tvOS 11.0, watchOS 4.0, *)) {
-    data = [NSKeyedArchiver archivedDataWithRootObject:configuration
-                                 requiringSecureCoding:YES
-                                                 error:&error];
-    unarchived = [NSKeyedUnarchiver unarchivedObjectOfClass:[OIDServiceConfiguration class]
-                                                   fromData:data
-                                                      error:&error];
-  } else {
-#if !TARGET_OS_IOS
-    data = [NSKeyedArchiver archivedDataWithRootObject:configuration];
-    unarchived = [NSKeyedUnarchiver unarchiveObjectWithData:data];
-#endif
-  }
+  NSData *data = [NSKeyedArchiver archivedDataWithRootObject:configuration
+                                       requiringSecureCoding:YES
+                                                       error:&error];
+  OIDServiceConfiguration *unarchived =
+      [NSKeyedUnarchiver unarchivedObjectOfClass:[OIDServiceConfiguration class]
+                                        fromData:data
+                                           error:&error];
 
   XCTAssertEqualObjects(configuration.authorizationEndpoint, unarchived.authorizationEndpoint, @"");
   XCTAssertEqualObjects(configuration.tokenEndpoint, unarchived.tokenEndpoint, @"");

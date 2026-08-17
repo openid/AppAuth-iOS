@@ -237,8 +237,14 @@ static int const kTestInterval = 5;
  */
 - (void)testSecureCoding {
   OIDTVAuthorizationResponse *response = [self testAuthorizationResponse];
-  NSData *data = [NSKeyedArchiver archivedDataWithRootObject:response];
-  OIDTVAuthorizationResponse *responseCopy = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+  NSError *error;
+  NSData *data = [NSKeyedArchiver archivedDataWithRootObject:response
+                                       requiringSecureCoding:YES
+                                                       error:&error];
+  OIDTVAuthorizationResponse *responseCopy =
+      [NSKeyedUnarchiver unarchivedObjectOfClass:[OIDTVAuthorizationResponse class]
+                                        fromData:data
+                                           error:&error];
 
   NSDictionary<NSString *, NSString *> *testAdditionalParameters =
       @{kTestAdditionalParameterKey : kTestAdditionalParameterValue};

@@ -447,27 +447,14 @@ static NSString *const kDiscoveryDocumentNotDictionary =
   OIDServiceDiscovery *discovery =
       [[OIDServiceDiscovery alloc] initWithDictionary:serviceDiscoveryDictionary
                                                              error:&error];
-  NSData *data;
-  if (@available(iOS 12.0, macOS 10.13, tvOS 11.0, watchOS 4.0, *)) {
-    data = [NSKeyedArchiver archivedDataWithRootObject:discovery
-                                 requiringSecureCoding:YES
-                                                 error:&error];
-  } else {
-#if !TARGET_OS_IOS
-    data = [NSKeyedArchiver archivedDataWithRootObject:discovery];
-#endif
-  }
-  
-  OIDServiceDiscovery *unarchived;
-  if (@available(iOS 12.0, macOS 10.13, tvOS 11.0, watchOS 4.0, *)) {
-    unarchived = [NSKeyedUnarchiver unarchivedObjectOfClass:[OIDServiceDiscovery class]
-                                                   fromData:data
-                                                      error:&error];
-  } else {
-#if !TARGET_OS_IOS
-    unarchived = [NSKeyedUnarchiver unarchiveObjectWithData:data];
-#endif
-  }
+  NSData *data = [NSKeyedArchiver archivedDataWithRootObject:discovery
+                                       requiringSecureCoding:YES
+                                                       error:&error];
+
+  OIDServiceDiscovery *unarchived =
+      [NSKeyedUnarchiver unarchivedObjectOfClass:[OIDServiceDiscovery class]
+                                        fromData:data
+                                           error:&error];
 
   XCTAssertEqualObjects(discovery.discoveryDictionary, unarchived.discoveryDictionary);
 }
@@ -481,33 +468,20 @@ static NSString *const kDiscoveryDocumentNotDictionary =
   OIDServiceDiscoveryOldEncoding *discovery =
       [[OIDServiceDiscoveryOldEncoding alloc] initWithDictionary:serviceDiscoveryDictionary
                                                            error:&error];
-  NSData *data;
-  if (@available(iOS 12.0, macOS 10.13, tvOS 11.0, watchOS 4.0, *)) {
-    data = [NSKeyedArchiver archivedDataWithRootObject:discovery
-                                 requiringSecureCoding:YES
-                                                 error:&error];
-  } else {
-#if !TARGET_OS_IOS
-    data = [NSKeyedArchiver archivedDataWithRootObject:discovery];
-#endif
-  }
-  
-  OIDServiceDiscovery *unarchived;
-  if (@available(iOS 12.0, macOS 10.13, tvOS 11.0, watchOS 4.0, *)) {
-    NSSet<Class> *allowedClasses = [NSSet setWithArray:@[[OIDServiceDiscovery class],
-                                                         [NSDictionary class],
-                                                         [NSArray class],
-                                                         [NSString class],
-                                                         [NSNumber class],
-                                                         [NSNull class]]];
-    unarchived = [NSKeyedUnarchiver unarchivedObjectOfClasses:allowedClasses
-                                                     fromData:data
-                                                        error:&error];
-  } else {
-#if !TARGET_OS_IOS
-    unarchived = [NSKeyedUnarchiver unarchiveObjectWithData:data];
-#endif
-  }
+  NSData *data = [NSKeyedArchiver archivedDataWithRootObject:discovery
+                                       requiringSecureCoding:YES
+                                                       error:&error];
+
+  NSSet<Class> *allowedClasses = [NSSet setWithArray:@[[OIDServiceDiscovery class],
+                                                       [NSDictionary class],
+                                                       [NSArray class],
+                                                       [NSString class],
+                                                       [NSNumber class],
+                                                       [NSNull class]]];
+  OIDServiceDiscovery *unarchived =
+      [NSKeyedUnarchiver unarchivedObjectOfClasses:allowedClasses
+                                          fromData:data
+                                             error:&error];
 
   XCTAssertEqualObjects(discovery.discoveryDictionary, unarchived.discoveryDictionary);
 }
@@ -521,33 +495,20 @@ static NSString *const kDiscoveryDocumentNotDictionary =
   OIDServiceDiscoveryOldDecoding *discovery =
       [[OIDServiceDiscoveryOldDecoding alloc] initWithDictionary:serviceDiscoveryDictionary
                                                            error:&error];
-  NSData *data;
-  if (@available(iOS 12.0, macOS 10.13, tvOS 11.0, watchOS 4.0, *)) {
-    data = [NSKeyedArchiver archivedDataWithRootObject:discovery
-                                 requiringSecureCoding:YES
-                                                 error:&error];
-  } else {
-#if !TARGET_OS_IOS
-    data = [NSKeyedArchiver archivedDataWithRootObject:discovery];
-#endif
-  }
-  
-  OIDServiceDiscovery *unarchived;
-  if (@available(iOS 12.0, macOS 10.13, tvOS 11.0, watchOS 4.0, *)) {
-    NSSet<Class> *allowedClasses = [NSSet setWithArray:@[[OIDServiceDiscoveryOldDecoding class],
-                                                         [NSDictionary class],
-                                                         [NSArray class],
-                                                         [NSString class],
-                                                         [NSNumber class],
-                                                         [NSNull class]]];
-    unarchived = [NSKeyedUnarchiver unarchivedObjectOfClasses:allowedClasses
-                                                     fromData:data
-                                                        error:&error];
-  } else {
-#if !TARGET_OS_IOS
-    unarchived = [NSKeyedUnarchiver unarchiveObjectWithData:data];
-#endif
-  }
+  NSData *data = [NSKeyedArchiver archivedDataWithRootObject:discovery
+                                       requiringSecureCoding:YES
+                                                       error:&error];
+
+  NSSet<Class> *allowedClasses = [NSSet setWithArray:@[[OIDServiceDiscoveryOldDecoding class],
+                                                       [NSDictionary class],
+                                                       [NSArray class],
+                                                       [NSString class],
+                                                       [NSNumber class],
+                                                       [NSNull class]]];
+  OIDServiceDiscovery *unarchived =
+      [NSKeyedUnarchiver unarchivedObjectOfClasses:allowedClasses
+                                          fromData:data
+                                             error:&error];
   XCTAssertNil(error);
   XCTAssertEqualObjects(discovery.discoveryDictionary, unarchived.discoveryDictionary);
 }
