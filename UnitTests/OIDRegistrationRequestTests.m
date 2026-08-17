@@ -142,15 +142,14 @@ static NSString *kTokenEndpointAuthMethodTestValue = @"client_secret_basic";
   XCTAssertEqualObjects(request.additionalParameters[kTestAdditionalParameterKey],
                         kTestAdditionalParameterValue);
 
-  OIDRegistrationRequest *requestCopy;
   NSError *error;
-  NSData *data;
-  data = [NSKeyedArchiver archivedDataWithRootObject:request
-                               requiringSecureCoding:YES
-                                               error:&error];
-  requestCopy = [NSKeyedUnarchiver unarchivedObjectOfClass:[OIDRegistrationRequest class]
-                                                  fromData:data
-                                                     error:&error];
+  NSData *data = [NSKeyedArchiver archivedDataWithRootObject:request
+                                       requiringSecureCoding:YES
+                                                       error:&error];
+  OIDRegistrationRequest *requestCopy =
+      [NSKeyedUnarchiver unarchivedObjectOfClass:[OIDRegistrationRequest class]
+                                        fromData:data
+                                           error:&error];
 
   // Not a full test of the configuration deserialization, but should be sufficient as a smoke test
   // to make sure the configuration IS actually getting serialized and deserialized in the
