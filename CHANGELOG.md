@@ -1,5 +1,5 @@
 # 3.0.0
-- BREAKING: Updates made to support Xcode 27.
+- BREAKING: Updates made to support Xcode 27. ([#972](https://github.com/openid/AppAuth-iOS/pull/972), [#973](https://github.com/openid/AppAuth-iOS/pull/973))
 -- Raised minimum deployment targets to iOS 15.0, macOS 12.0, tvOS 15.0 and watchOS 9.0 (minimum for Xcode 27).
 -- Swift Package Manager users: The required `swift-tools-version` bump from 5.3 to 5.7, to pickup the new platforms,
 	results in package resolution now requiring Swift 5.7 / Xcode 14 or later.
