@@ -11,4 +11,7 @@ OIDC_REDIRECT_URI_SCHEME = com.example.app
 // Example.local.xcconfig if you need Manual signing with a specific provisioning profile.
 CODE_SIGN_STYLE = Automatic
 
+// The bundle identifier for the sample app.
+PRODUCT_BUNDLE_IDENTIFIER = net.openid.appauth.SwiftExample
+
 #include? "Example.local.xcconfig"
