@@ -170,12 +170,22 @@ NS_ASSUME_NONNULL_BEGIN
     // verifies that the state in the response matches the state in the request, or both are nil
     if (!OIDIsEqualIncludingNil(_request.state, response.state)) {
       NSMutableDictionary *userInfo = [query.dictionaryValue mutableCopy];
-      userInfo[NSLocalizedDescriptionKey] =
-        [NSString stringWithFormat:@"State mismatch, expecting %@ but got %@ in authorization "
-                                   "response %@",
-                                   _request.state,
-                                   response.state,
-                                   response];
+      if (response.state == nil) {
+        userInfo[NSLocalizedDescriptionKey] =
+          [NSString stringWithFormat:@"The authorization response is missing the state parameter, "
+                                     "expecting %@. RFC 6749 section 4.1.2 requires the "
+                                     "authorization server to return the exact state value sent "
+                                     "in the request. Authorization response: %@",
+                                     _request.state,
+                                     response];
+      } else {
+        userInfo[NSLocalizedDescriptionKey] =
+          [NSString stringWithFormat:@"State mismatch, expecting %@ but got %@ in authorization "
+                                     "response %@",
+                                     _request.state,
+                                     response.state,
+                                     response];
+      }
       response = nil;
       responseError = [NSError errorWithDomain:OIDOAuthAuthorizationErrorDomain
                                           code:OIDErrorCodeOAuthAuthorizationClientError
