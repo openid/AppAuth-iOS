@@ -327,10 +327,10 @@ NS_ASSUME_NONNULL_BEGIN
                                       "such endpoints do not echo the OAuth state parameter. "
                                       "Verify the end_session_endpoint in the provider's "
                                       "discovery document. If the provider genuinely cannot "
-                                      "return state, the caller may construct "
-                                      "OIDEndSessionRequest with an explicit nil state to omit "
-                                      "it, which disables state validation and the CSRF "
-                                      "protection it provides, in end session response %@",
+                                      "return state, the OIDEndSessionRequest may be "
+                                      "constructed without a state value, which disables "
+                                      "state validation and the CSRF protection it provides, "
+                                      "in end session response %@",
                                       _request.state,
                                       response];
     } else {
