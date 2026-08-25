@@ -173,9 +173,9 @@ NS_ASSUME_NONNULL_BEGIN
       if (response.state == nil) {
         userInfo[NSLocalizedDescriptionKey] =
           [NSString stringWithFormat:@"The authorization response is missing the state parameter, "
-                                      "expecting %@. RFC 6749 section 4.1.2 requires the "
-                                      "authorization server to echo the exact state value from "
-                                      "the request. Response: %@",
+                                      "expecting %@. RFC 6749 section 4.1.2 and OpenID Connect "
+                                      "Core section 3.1.2.5 require the authorization server to "
+                                      "echo the exact state value from the request. Response: %@",
                                       _request.state,
                                       response];
       } else {
