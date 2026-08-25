@@ -320,8 +320,8 @@ NS_ASSUME_NONNULL_BEGIN
     if (!response.state) {
       userInfo[NSLocalizedDescriptionKey] =
           [NSString stringWithFormat:@"The end session response is missing the state parameter, "
-                                      "expecting %@. This usually means end_session_endpoint is "
-                                      "not an OpenID Connect RP-Initiated Logout endpoint; some "
+                                      "expecting %@. This may mean end_session_endpoint is not "
+                                      "an OpenID Connect RP-Initiated Logout endpoint; some "
                                       "providers advertise a legacy or SAML single-logout "
                                       "endpoint under that key, and those do not echo state. "
                                       "Check end_session_endpoint in the provider's discovery "
