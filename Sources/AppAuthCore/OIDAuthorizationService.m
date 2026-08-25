@@ -170,12 +170,22 @@ NS_ASSUME_NONNULL_BEGIN
     // verifies that the state in the response matches the state in the request, or both are nil
     if (!OIDIsEqualIncludingNil(_request.state, response.state)) {
       NSMutableDictionary *userInfo = [query.dictionaryValue mutableCopy];
-      userInfo[NSLocalizedDescriptionKey] =
-        [NSString stringWithFormat:@"State mismatch, expecting %@ but got %@ in authorization "
-                                   "response %@",
-                                   _request.state,
-                                   response.state,
-                                   response];
+      if (response.state == nil) {
+        userInfo[NSLocalizedDescriptionKey] =
+          [NSString stringWithFormat:@"The authorization response is missing the state parameter, "
+                                     "expecting %@. RFC 6749 section 4.1.2 requires the "
+                                     "authorization server to return the exact state value sent "
+                                     "in the request. Authorization response: %@",
+                                     _request.state,
+                                     response];
+      } else {
+        userInfo[NSLocalizedDescriptionKey] =
+          [NSString stringWithFormat:@"State mismatch, expecting %@ but got %@ in authorization "
+                                     "response %@",
+                                     _request.state,
+                                     response.state,
+                                     response];
+      }
       response = nil;
       responseError = [NSError errorWithDomain:OIDOAuthAuthorizationErrorDomain
                                           code:OIDErrorCodeOAuthAuthorizationClientError
@@ -307,12 +317,31 @@ NS_ASSUME_NONNULL_BEGIN
   // verifies that the state in the response matches the state in the request, or both are nil
   if (!OIDIsEqualIncludingNil(_request.state, response.state)) {
     NSMutableDictionary *userInfo = [query.dictionaryValue mutableCopy];
-    userInfo[NSLocalizedDescriptionKey] =
-    [NSString stringWithFormat:@"State mismatch, expecting %@ but got %@ in authorization "
-     "response %@",
-     _request.state,
-     response.state,
-     response];
+    if (!response.state) {
+      userInfo[NSLocalizedDescriptionKey] =
+          [NSString stringWithFormat:@"The end session response is missing the state parameter, "
+                                      "expecting %@ but got nil. This commonly means the "
+                                      "configured end_session_endpoint is not an OpenID Connect "
+                                      "RP-Initiated Logout endpoint - some providers advertise a "
+                                      "legacy or SAML single-logout endpoint under that key, and "
+                                      "such endpoints do not echo the OAuth state parameter. "
+                                      "Verify the end_session_endpoint in the provider's "
+                                      "discovery document. If the provider genuinely cannot "
+                                      "return state, the OIDEndSessionRequest may be "
+                                      "constructed without a state value, which disables "
+                                      "state validation and the CSRF protection it provides, "
+                                      "in end session response %@",
+                                      _request.state,
+                                      response];
+    } else {
+      userInfo[NSLocalizedDescriptionKey] =
+          [NSString stringWithFormat:@"State mismatch, expecting %@ but got %@ in end session "
+                                      "response %@. The state in the response does not match "
+                                      "the state in the request.",
+                                      _request.state,
+                                      response.state,
+                                      response];
+    }
     response = nil;
     responseError = [NSError errorWithDomain:OIDOAuthAuthorizationErrorDomain
                                         code:OIDErrorCodeOAuthAuthorizationClientError
