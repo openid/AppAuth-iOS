@@ -170,12 +170,22 @@ NS_ASSUME_NONNULL_BEGIN
     // verifies that the state in the response matches the state in the request, or both are nil
     if (!OIDIsEqualIncludingNil(_request.state, response.state)) {
       NSMutableDictionary *userInfo = [query.dictionaryValue mutableCopy];
-      userInfo[NSLocalizedDescriptionKey] =
-        [NSString stringWithFormat:@"State mismatch, expecting %@ but got %@ in authorization "
-                                   "response %@",
-                                   _request.state,
-                                   response.state,
-                                   response];
+      if (response.state == nil) {
+        userInfo[NSLocalizedDescriptionKey] =
+          [NSString stringWithFormat:@"The authorization response is missing the state parameter, "
+                                      "expecting %@. RFC 6749 section 4.1.2 and OpenID Connect "
+                                      "Core section 3.1.2.5 require the authorization server to "
+                                      "echo the exact state value from the request. Response: %@",
+                                      _request.state,
+                                      response];
+      } else {
+        userInfo[NSLocalizedDescriptionKey] =
+          [NSString stringWithFormat:@"State mismatch, expecting %@ but got %@ in authorization "
+                                     "response %@",
+                                     _request.state,
+                                     response.state,
+                                     response];
+      }
       response = nil;
       responseError = [NSError errorWithDomain:OIDOAuthAuthorizationErrorDomain
                                           code:OIDErrorCodeOAuthAuthorizationClientError
@@ -307,12 +317,25 @@ NS_ASSUME_NONNULL_BEGIN
   // verifies that the state in the response matches the state in the request, or both are nil
   if (!OIDIsEqualIncludingNil(_request.state, response.state)) {
     NSMutableDictionary *userInfo = [query.dictionaryValue mutableCopy];
-    userInfo[NSLocalizedDescriptionKey] =
-    [NSString stringWithFormat:@"State mismatch, expecting %@ but got %@ in authorization "
-     "response %@",
-     _request.state,
-     response.state,
-     response];
+    if (!response.state) {
+      userInfo[NSLocalizedDescriptionKey] =
+          [NSString stringWithFormat:@"The end session response is missing the state parameter, "
+                                      "expecting %@. This may mean end_session_endpoint is not "
+                                      "an OpenID Connect RP-Initiated Logout endpoint; some "
+                                      "providers advertise a legacy or SAML single-logout "
+                                      "endpoint under that key, and those do not echo state. "
+                                      "Check end_session_endpoint in the provider's discovery "
+                                      "document. Response: %@",
+                                      _request.state,
+                                      response];
+    } else {
+      userInfo[NSLocalizedDescriptionKey] =
+          [NSString stringWithFormat:@"State in the end session response does not match the "
+                                      "request, expecting %@ but got %@. Response: %@",
+                                      _request.state,
+                                      response.state,
+                                      response];
+    }
     response = nil;
     responseError = [NSError errorWithDomain:OIDOAuthAuthorizationErrorDomain
                                         code:OIDErrorCodeOAuthAuthorizationClientError
