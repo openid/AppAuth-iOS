@@ -165,7 +165,9 @@ static const NSUInteger kExpiryTimeTolerance = 60;
                                callback(authState, authorizationError);
                              }
                            } else {
-                             callback(nil, authorizationError);
+                             dispatch_async(dispatch_get_main_queue(), ^{
+                               callback(nil, authorizationError);
+                             });
                            }
                          }];
   return authFlowSession;
