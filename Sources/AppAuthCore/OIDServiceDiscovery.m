@@ -106,6 +106,16 @@ static NSString *const kOPTosURIKey = @"op_tos_uri";
     return nil;
   }
 
+  NSString *issuer = (NSString *) json[@"issuer"];
+  if (issuer && [issuer containsString:@"{tenantid}"]) {
+    // The Azure AD discovery document's "issuer" value contains the special placeholder
+    // "{tenantid}". '{' and '}' are invalid characters in URLs and have to be URL encoded before
+    // the issuer URL can be parsed by NSURL.
+    NSMutableDictionary *newJson = [NSMutableDictionary dictionaryWithDictionary:json];
+    newJson[@"issuer"] = [issuer stringByReplacingOccurrencesOfString:@"{tenantid}" withString:@"%7Btenantid%7D"];
+    json = newJson;
+  }
+
   return [self initWithDictionary:json error:error];
 }
 
