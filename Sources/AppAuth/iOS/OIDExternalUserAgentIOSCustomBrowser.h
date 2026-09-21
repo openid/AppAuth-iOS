@@ -70,6 +70,10 @@ API_UNAVAILABLE(macCatalyst)
  */
 + (instancetype)CustomBrowserSafari;
 
+/*! @brief An instance of @c OIDExternalUserAgentIOSCustomBrowser for Edge.
+ */
++ (instancetype)CustomBrowserEdge;
+
 /*! @brief Creates a @c OIDCustomBrowserURLTransformation using the scheme substitution method used
         iOS browsers like Chrome and Firefox.
  */
