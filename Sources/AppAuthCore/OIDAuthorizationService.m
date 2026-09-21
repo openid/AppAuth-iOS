@@ -317,7 +317,7 @@ NS_ASSUME_NONNULL_BEGIN
   // verifies that the state in the response matches the state in the request, or both are nil
   if (!OIDIsEqualIncludingNil(_request.state, response.state)) {
     NSMutableDictionary *userInfo = [query.dictionaryValue mutableCopy];
-    if (!response.state) {
+    if (response.state == nil) {
       userInfo[NSLocalizedDescriptionKey] =
           [NSString stringWithFormat:@"The end session response is missing the state parameter, "
                                       "expecting %@. This may mean end_session_endpoint is not "
