@@ -1,3 +1,6 @@
+# UNRELEASED
+- Improved the state validation error messages to distinguish a missing `state` parameter from a mismatched one. The end session message now notes that a provider's `end_session_endpoint` may point at a legacy or SAML single-logout endpoint, which does not echo `state`. Addresses issue #956.
+
 # 3.0.0
 - BREAKING: Updates made to support Xcode 27. ([#972](https://github.com/openid/AppAuth-iOS/pull/972), [#973](https://github.com/openid/AppAuth-iOS/pull/973))
 -- Raised minimum deployment targets to iOS 15.0, macOS 12.0, tvOS 15.0 and watchOS 9.0 (minimum for Xcode 27).
