@@ -50,6 +50,7 @@ extern NSString *const OIDRegistrationClientURIParam;
 /*! @brief Represents a registration response.
     @see https://openid.net/specs/openid-connect-registration-1_0.html#RegistrationResponse
  */
+__attribute__((swift_attr("@Sendable")))
 @interface OIDRegistrationResponse : NSObject <NSCopying, NSSecureCoding>
 
 /*! @brief The request which was serviced.

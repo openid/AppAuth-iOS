@@ -100,7 +100,18 @@ NS_ASSUME_NONNULL_BEGIN
   // iOS 12 and later, use ASWebAuthenticationSession
   if (@available(iOS 12.0, *)) {
     // ASWebAuthenticationSession doesn't work with guided access (rdar://40809553)
-    if (!UIAccessibilityIsGuidedAccessEnabled()) {
+    
+    __block BOOL isUIAccessibilityIsGuidedAccessEnabled = NO;
+    
+    if ([NSThread isMainThread]) {
+      isUIAccessibilityIsGuidedAccessEnabled = UIAccessibilityIsGuidedAccessEnabled();
+    } else {
+      dispatch_sync(dispatch_get_main_queue(), ^{
+        isUIAccessibilityIsGuidedAccessEnabled = UIAccessibilityIsGuidedAccessEnabled();
+      });
+    }
+    
+    if (!isUIAccessibilityIsGuidedAccessEnabled) {
       __weak OIDExternalUserAgentIOS *weakSelf = self;
       NSString *redirectScheme = request.redirectScheme;
       ASWebAuthenticationSession *authenticationVC =
@@ -199,8 +210,18 @@ NS_ASSUME_NONNULL_BEGIN
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 130000
 #pragma mark - ASWebAuthenticationPresentationContextProviding
 
-- (ASPresentationAnchor)presentationAnchorForWebAuthenticationSession:(ASWebAuthenticationSession *)session API_AVAILABLE(ios(13.0)){
-  return _presentingViewController.view.window;
+- (ASPresentationAnchor)presentationAnchorForWebAuthenticationSession:(ASWebAuthenticationSession *)session API_AVAILABLE(ios(13.0)) {
+  __block UIWindow *window;
+  
+  if ([NSThread isMainThread]) {
+    window = _presentingViewController.view.window;
+  } else {
+    dispatch_sync(dispatch_get_main_queue(), ^{
+      window = _presentingViewController.view.window;
+    });
+  }
+  
+  return window;
 }
 #endif // __IPHONE_OS_VERSION_MAX_ALLOWED >= 130000
 

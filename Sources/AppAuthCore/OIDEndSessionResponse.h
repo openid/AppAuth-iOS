@@ -25,7 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 /*! @brief Represents the response to an End Session request.
     @see http://openid.net/specs/openid-connect-session-1_0.html#RPLogout
  */
-
+__attribute__((swift_attr("@Sendable")))
 @interface OIDEndSessionResponse : NSObject <NSCopying, NSSecureCoding>
 
 /*! @brief The request which was serviced.
