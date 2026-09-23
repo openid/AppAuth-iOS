@@ -43,27 +43,6 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 #endif
 
-API_AVAILABLE(ios(17.4))
-ASWebAuthenticationSessionCallback *_Nullable
-    OIDHTTPSCallbackForRequest(id<OIDExternalUserAgentRequest> request) {
-  NSURL *redirectURL = nil;
-  // OIDExternalUserAgentRequest does not conform to NSObject, so message the request as id.
-  id requestObject = request;
-  if ([requestObject isKindOfClass:[OIDAuthorizationRequest class]]) {
-    redirectURL = ((OIDAuthorizationRequest *)requestObject).redirectURL;
-  } else if ([requestObject isKindOfClass:[OIDEndSessionRequest class]]) {
-    redirectURL = ((OIDEndSessionRequest *)requestObject).postLogoutRedirectURL;
-  }
-  if (![[redirectURL.scheme lowercaseString] isEqualToString:@"https"] ||
-      redirectURL.host.length == 0) {
-    return nil;
-  }
-  // A redirect URL with no path is normalized to the root path, so that it matches the callback
-  // URL the authorization server redirects to.
-  NSString *path = redirectURL.path.length > 0 ? redirectURL.path : @"/";
-  return [ASWebAuthenticationSessionCallback callbackWithHTTPSHost:redirectURL.host path:path];
-}
-
 @implementation OIDExternalUserAgentIOS {
   UIViewController *_presentingViewController;
   BOOL _prefersEphemeralSession;
@@ -108,6 +87,30 @@ ASWebAuthenticationSessionCallback *_Nullable
   return self;
 }
 
+/*! @brief Creates the callback for a request whose redirect URL is an HTTPS universal link.
+    @return The callback, or nil if the request is of an unsupported type, or its redirect URL is
+        not an HTTPS URL with a host.
+ */
++ (nullable ASWebAuthenticationSessionCallback *)HTTPSCallbackForRequest:
+    (id<OIDExternalUserAgentRequest>)request API_AVAILABLE(ios(17.4)) {
+  NSURL *redirectURL = nil;
+  // OIDExternalUserAgentRequest does not conform to NSObject, so message the request as id.
+  id requestObject = request;
+  if ([requestObject isKindOfClass:[OIDAuthorizationRequest class]]) {
+    redirectURL = ((OIDAuthorizationRequest *)requestObject).redirectURL;
+  } else if ([requestObject isKindOfClass:[OIDEndSessionRequest class]]) {
+    redirectURL = ((OIDEndSessionRequest *)requestObject).postLogoutRedirectURL;
+  }
+  if (![[redirectURL.scheme lowercaseString] isEqualToString:@"https"] ||
+      redirectURL.host.length == 0) {
+    return nil;
+  }
+  // A redirect URL with no path is normalized to the root path, so that it matches the callback
+  // URL the authorization server redirects to.
+  NSString *path = redirectURL.path.length > 0 ? redirectURL.path : @"/";
+  return [ASWebAuthenticationSessionCallback callbackWithHTTPSHost:redirectURL.host path:path];
+}
+
 - (BOOL)presentExternalUserAgentRequest:(id<OIDExternalUserAgentRequest>)request
                                 session:(id<OIDExternalUserAgentSession>)session {
   if (_externalUserAgentFlowInProgress) {
@@ -119,101 +122,60 @@ ASWebAuthenticationSessionCallback *_Nullable
   _session = session;
   BOOL openedUserAgent = NO;
   NSURL *requestURL = [request externalUserAgentRequestURL];
-  // An HTTPS redirect is a universal link, which only the iOS 17.4 callback below can handle.
-  // ASWebAuthenticationSession does not support @c https as a callbackURLScheme, so such a request
-  // must never reach the scheme based session: it would open a browser whose callback never fires.
-  // Before iOS 17.4 such a request therefore fails to open, ending the flow with an error rather
-  // than leaving it hanging.
-  BOOL hasHTTPSRedirect = [[request.redirectScheme lowercaseString] isEqualToString:@"https"];
 
-  // iOS 17.4 and later: if the redirect URL is an HTTPS universal link, use
-  // ASWebAuthenticationSession's HTTPS callback.
-  if (@available(iOS 17.4, *)) {
-    // ASWebAuthenticationSession doesn't work with guided access (rdar://40809553)
-    if (hasHTTPSRedirect && !UIAccessibilityIsGuidedAccessEnabled()) {
-      ASWebAuthenticationSessionCallback *callback = OIDHTTPSCallbackForRequest(request);
-      if (!callback) {
-        // The redirect URL is HTTPS but a callback couldn't be created for it (e.g. it has no
-        // host). A session started with such a redirect could never complete, so fail instead.
-        [self cleanUp];
-        NSError *error =
-            [OIDErrorUtilities errorWithCode:OIDErrorCodeSafariOpenError
-                             underlyingError:nil
-                                 description:@"The request's HTTPS redirect URL is not a valid "
-                                              "universal link."];
-        [session failExternalUserAgentFlowWithError:error];
-        return NO;
+  // ASWebAuthenticationSession doesn't work with guided access (rdar://40809553)
+  if (!UIAccessibilityIsGuidedAccessEnabled()) {
+    __weak OIDExternalUserAgentIOS *weakSelf = self;
+    ASWebAuthenticationSessionCompletionHandler completionHandler =
+        ^(NSURL * _Nullable callbackURL, NSError * _Nullable error) {
+      __strong OIDExternalUserAgentIOS *strongSelf = weakSelf;
+      if (!strongSelf) {
+          return;
       }
-      __weak OIDExternalUserAgentIOS *weakSelf = self;
-      ASWebAuthenticationSession *authenticationVC =
-          [[ASWebAuthenticationSession alloc] initWithURL:requestURL
-                                                 callback:callback
-                                        completionHandler:^(NSURL * _Nullable callbackURL,
-                                                            NSError * _Nullable error) {
-        __strong OIDExternalUserAgentIOS *strongSelf = weakSelf;
-        if (!strongSelf) {
-            return;
+      strongSelf->_webAuthenticationVC = nil;
+      if (callbackURL) {
+        // The session matches callback URLs more loosely than the flow checks the redirect URL (a
+        // custom scheme callback matches on the scheme alone, and an HTTPS callback ignores case
+        // and the port), so the flow can reject the URL. Fail the flow if it does, rather than
+        // leaving it with neither a response nor an error.
+        NSError *resumeError;
+        if (![strongSelf->_session resumeExternalUserAgentFlowWithURL:callbackURL
+                                                                error:&resumeError]) {
+          [strongSelf->_session failExternalUserAgentFlowWithError:resumeError];
         }
-        strongSelf->_webAuthenticationVC = nil;
-        if (callbackURL) {
-          // The callback matches the redirect URL case insensitively and ignores its port, so it
-          // can fire for a URL the session itself rejects. Report that instead of leaving the
-          // flow with neither a response nor an error.
-          NSError *resumeError;
-          if (![strongSelf->_session resumeExternalUserAgentFlowWithURL:callbackURL
-                                                                  error:&resumeError]) {
-            [strongSelf->_session failExternalUserAgentFlowWithError:resumeError];
-          }
-        } else {
-          NSError *safariError =
-              [OIDErrorUtilities errorWithCode:OIDErrorCodeUserCanceledAuthorizationFlow
-                               underlyingError:error
-                                   description:nil];
-          [strongSelf->_session failExternalUserAgentFlowWithError:safariError];
-        }
-      }];
-      authenticationVC.presentationContextProvider = self;
-      authenticationVC.prefersEphemeralWebBrowserSession = _prefersEphemeralSession;
-      _webAuthenticationVC = authenticationVC;
-      openedUserAgent = [authenticationVC start];
-    }
-  }
+      } else {
+        NSError *safariError =
+            [OIDErrorUtilities errorWithCode:OIDErrorCodeUserCanceledAuthorizationFlow
+                             underlyingError:error
+                                 description:nil];
+        [strongSelf->_session failExternalUserAgentFlowWithError:safariError];
+      }
+    };
 
-  // iOS 12 and later, use ASWebAuthenticationSession
-  if (@available(iOS 12.0, *)) {
-    // ASWebAuthenticationSession doesn't work with guided access (rdar://40809553)
-    if (!hasHTTPSRedirect && !UIAccessibilityIsGuidedAccessEnabled()) {
-      __weak OIDExternalUserAgentIOS *weakSelf = self;
-      NSString *redirectScheme = request.redirectScheme;
-      ASWebAuthenticationSession *authenticationVC =
-          [[ASWebAuthenticationSession alloc] initWithURL:requestURL
-                                        callbackURLScheme:redirectScheme
-                                        completionHandler:^(NSURL * _Nullable callbackURL,
-                                                            NSError * _Nullable error) {
-        __strong OIDExternalUserAgentIOS *strongSelf = weakSelf;
-        if (!strongSelf) {
-            return;
+    ASWebAuthenticationSession *authenticationVC = nil;
+    NSString *redirectScheme = request.redirectScheme;
+    if ([[redirectScheme lowercaseString] isEqualToString:@"https"]) {
+      // An HTTPS redirect URL is a universal link, which needs the HTTPS callback added in iOS 17.4.
+      // Without one no session is started, as https is not supported as a callbackURLScheme: the
+      // session's callback would never fire.
+      if (@available(iOS 17.4, *)) {
+        ASWebAuthenticationSessionCallback *callback =
+            [[self class] HTTPSCallbackForRequest:request];
+        if (callback) {
+          authenticationVC = [[ASWebAuthenticationSession alloc] initWithURL:requestURL
+                                                                   callback:callback
+                                                          completionHandler:completionHandler];
         }
-        strongSelf->_webAuthenticationVC = nil;
-        if (callbackURL) {
-          [strongSelf->_session resumeExternalUserAgentFlowWithURL:callbackURL error:nil];
-        } else {
-          NSError *safariError =
-              [OIDErrorUtilities errorWithCode:OIDErrorCodeUserCanceledAuthorizationFlow
-                               underlyingError:error
-                                   description:nil];
-          [strongSelf->_session failExternalUserAgentFlowWithError:safariError];
-        }
-      }];
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 130000
-      if (@available(iOS 13.0, *)) {
-        authenticationVC.presentationContextProvider = self;
-        authenticationVC.prefersEphemeralWebBrowserSession = _prefersEphemeralSession;
       }
-#endif
-      _webAuthenticationVC = authenticationVC;
-      openedUserAgent = [authenticationVC start];
+    } else {
+      authenticationVC = [[ASWebAuthenticationSession alloc] initWithURL:requestURL
+                                                       callbackURLScheme:redirectScheme
+                                                       completionHandler:completionHandler];
     }
+    authenticationVC.presentationContextProvider = self;
+    authenticationVC.prefersEphemeralWebBrowserSession = _prefersEphemeralSession;
+    _webAuthenticationVC = authenticationVC;
+    openedUserAgent = [authenticationVC start];
   }
   if (!openedUserAgent) {
     [self cleanUp];

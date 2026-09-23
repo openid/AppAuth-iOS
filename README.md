@@ -45,7 +45,8 @@ Authentication is performed using `ASWebAuthenticationSession`.
 
 #### Authorization Server Requirements
 
-Both Custom URI Schemes and Universal Links can be used with the library.
+Both Custom URI Schemes and Universal Links (iOS 17.4+, requires the Associated Domains
+entitlement and an AASA file for the host) can be used with the library.
 
 In general, AppAuth can work with any authorization server that supports
 native apps, as documented in [RFC 8252](https://tools.ietf.org/html/rfc8252),

@@ -1,7 +1,7 @@
 /*! @file OIDExternalUserAgentIOSTests.m
     @brief AppAuth iOS SDK
     @copyright
-        Copyright 2025 Google Inc. All Rights Reserved.
+        Copyright 2026 Google Inc. All Rights Reserved.
     @copydetails
         Licensed under the Apache License, Version 2.0 (the "License");
         you may not use this file except in compliance with the License.
@@ -26,6 +26,7 @@
 
 #import <AuthenticationServices/AuthenticationServices.h>
 
+#import "Sources/AppAuth/iOS/OIDExternalUserAgentIOS.h"
 #import "Sources/AppAuthCore/OIDAuthorizationRequest.h"
 #import "Sources/AppAuthCore/OIDEndSessionRequest.h"
 #import "Sources/AppAuthCore/OIDExternalUserAgentRequest.h"
@@ -33,15 +34,11 @@
 #import "Sources/AppAuthCore/OIDScopes.h"
 #import "Sources/AppAuthCore/OIDServiceConfiguration.h"
 
-/*! @brief Creates the @c ASWebAuthenticationSessionCallback for a request whose redirect URL is an
-        HTTPS universal link, or nil if one couldn't be created; for example, the request is of an
-        unsupported type, or its redirect URL is not a valid HTTPS URL with a host.
-    @discussion Implemented in @c OIDExternalUserAgentIOS.m and declared here rather than in a
-        header, so that it is testable without becoming part of AppAuth's public API.
- */
-extern ASWebAuthenticationSessionCallback *_Nullable
-    OIDHTTPSCallbackForRequest(id<OIDExternalUserAgentRequest> _Nonnull request)
-    API_AVAILABLE(ios(17.4));
+@interface OIDExternalUserAgentIOS (Testing)
+  // expose private method for simple testing
++ (nullable ASWebAuthenticationSessionCallback *)HTTPSCallbackForRequest:
+    (nonnull id<OIDExternalUserAgentRequest>)request API_AVAILABLE(ios(17.4));
+@end
 
 // Ignore warnings about "Use of GNU statement expression extension" which is raised by our use of
 // the XCTAssert___ macros.
@@ -64,7 +61,7 @@ static NSString *const kTestTokenEndpoint = @"https://accounts.example.com/token
  */
 static NSString *const kTestIDTokenHint = @"id-token-hint";
 
-/*! @brief A request of a type unknown to @c OIDHTTPSCallbackForRequest.
+/*! @brief A request of a type unknown to @c OIDExternalUserAgentIOS.HTTPSCallbackForRequest:.
  */
 @interface OIDUnsupportedExternalUserAgentRequest : NSObject <OIDExternalUserAgentRequest>
 @end
@@ -106,7 +103,7 @@ static NSString *const kTestIDTokenHint = @"id-token-hint";
   if (@available(iOS 17.4, *)) {
     OIDAuthorizationRequest *request = [self authorizationRequestWithRedirectURL:
         [NSURL URLWithString:@"https://client.example.com/oauth2redirect"]];
-    ASWebAuthenticationSessionCallback *callback = OIDHTTPSCallbackForRequest(request);
+    ASWebAuthenticationSessionCallback *callback = [OIDExternalUserAgentIOS HTTPSCallbackForRequest:request];
     XCTAssertNotNil(callback);
     XCTAssertTrue([callback matchesURL:
         [NSURL URLWithString:@"https://client.example.com/oauth2redirect?code=1234"]]);
@@ -130,7 +127,7 @@ static NSString *const kTestIDTokenHint = @"id-token-hint";
                   idTokenHint:kTestIDTokenHint
         postLogoutRedirectURL:[NSURL URLWithString:@"https://client.example.com/signout"]
          additionalParameters:nil];
-    ASWebAuthenticationSessionCallback *callback = OIDHTTPSCallbackForRequest(request);
+    ASWebAuthenticationSessionCallback *callback = [OIDExternalUserAgentIOS HTTPSCallbackForRequest:request];
     XCTAssertNotNil(callback);
     XCTAssertTrue([callback matchesURL:
         [NSURL URLWithString:@"https://client.example.com/signout?state=1234"]]);
@@ -145,7 +142,7 @@ static NSString *const kTestIDTokenHint = @"id-token-hint";
   if (@available(iOS 17.4, *)) {
     OIDAuthorizationRequest *request = [self authorizationRequestWithRedirectURL:
         [NSURL URLWithString:@"com.example.app:/oauth2redirect"]];
-    XCTAssertNil(OIDHTTPSCallbackForRequest(request));
+    XCTAssertNil([OIDExternalUserAgentIOS HTTPSCallbackForRequest:request]);
   } else {
     XCTSkip(@"ASWebAuthenticationSessionCallback requires iOS 17.4.");
   }
@@ -157,7 +154,7 @@ static NSString *const kTestIDTokenHint = @"id-token-hint";
   if (@available(iOS 17.4, *)) {
     OIDAuthorizationRequest *request = [self authorizationRequestWithRedirectURL:
         [NSURL URLWithString:@"https:///oauth2redirect"]];
-    XCTAssertNil(OIDHTTPSCallbackForRequest(request));
+    XCTAssertNil([OIDExternalUserAgentIOS HTTPSCallbackForRequest:request]);
   } else {
     XCTSkip(@"ASWebAuthenticationSessionCallback requires iOS 17.4.");
   }
@@ -169,7 +166,7 @@ static NSString *const kTestIDTokenHint = @"id-token-hint";
   if (@available(iOS 17.4, *)) {
     OIDAuthorizationRequest *request = [self authorizationRequestWithRedirectURL:
         [NSURL URLWithString:@"https://client.example.com"]];
-    ASWebAuthenticationSessionCallback *callback = OIDHTTPSCallbackForRequest(request);
+    ASWebAuthenticationSessionCallback *callback = [OIDExternalUserAgentIOS HTTPSCallbackForRequest:request];
     XCTAssertNotNil(callback);
     XCTAssertTrue([callback matchesURL:
         [NSURL URLWithString:@"https://client.example.com/?code=1234"]]);
@@ -186,7 +183,7 @@ static NSString *const kTestIDTokenHint = @"id-token-hint";
   if (@available(iOS 17.4, *)) {
     id<OIDExternalUserAgentRequest> request =
         [[OIDUnsupportedExternalUserAgentRequest alloc] init];
-    XCTAssertNil(OIDHTTPSCallbackForRequest(request));
+    XCTAssertNil([OIDExternalUserAgentIOS HTTPSCallbackForRequest:request]);
   } else {
     XCTSkip(@"ASWebAuthenticationSessionCallback requires iOS 17.4.");
   }
