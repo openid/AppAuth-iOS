@@ -45,12 +45,14 @@ Authentication is performed using `ASWebAuthenticationSession`.
 
 #### Authorization Server Requirements
 
-Both Custom URI Schemes and Universal Links (iOS 17.4+, requires a `webcredentials` Associated
-Domains entitlement and an AASA file for the host) can be used with the library.
+Both custom URI scheme redirects and HTTPS redirects (RFC 8252 "claimed https" redirect URIs) can
+be used with the library. HTTPS redirects require iOS 17.4+, an Associated Domains entitlement
+for the redirect host using the `webcredentials` service, and an AASA file on that host listing
+the app under `webcredentials`. An `applinks` (Universal Links) association alone is not enough.
 
 In general, AppAuth can work with any authorization server that supports
 native apps, as documented in [RFC 8252](https://tools.ietf.org/html/rfc8252),
-either through custom URI scheme redirects, or universal links.
+either through custom URI scheme redirects, or HTTPS redirects.
 Authorization servers that assume all clients are web-based, or require clients to maintain
 confidentiality of the client secrets may not work well.
 

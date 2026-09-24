@@ -87,7 +87,7 @@ NS_ASSUME_NONNULL_BEGIN
   return self;
 }
 
-/*! @brief Creates the callback for a request whose redirect URL is an HTTPS universal link.
+/*! @brief Creates the callback for a request whose redirect URL is an HTTPS URL.
     @return The callback, or nil if the request is of an unsupported type, or its redirect URL is
         not an HTTPS URL with a host.
  */
@@ -155,7 +155,7 @@ NS_ASSUME_NONNULL_BEGIN
     ASWebAuthenticationSession *authenticationVC = nil;
     NSString *redirectScheme = request.redirectScheme;
     if ([[redirectScheme lowercaseString] isEqualToString:@"https"]) {
-      // An HTTPS redirect URL is a universal link, which needs the HTTPS callback added in iOS 17.4.
+      // An HTTPS redirect URL needs the HTTPS callback added in iOS 17.4.
       // Without one no session is started, as https is not supported as a callbackURLScheme: the
       // session's callback would never fire.
       if (@available(iOS 17.4, *)) {

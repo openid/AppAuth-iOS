@@ -78,7 +78,7 @@ static NSString *const kTestIDTokenHint = @"id-token-hint";
 
 @end
 
-/*! @brief Unit tests for the iOS external user agent's HTTPS (universal link) callback support.
+/*! @brief Unit tests for the iOS external user agent's HTTPS redirect callback support.
  */
 @interface OIDExternalUserAgentIOSTests : XCTestCase
 @end
@@ -136,7 +136,7 @@ static NSString *const kTestIDTokenHint = @"id-token-hint";
   }
 }
 
-/*! @brief A custom scheme redirect is not a universal link, so no callback is created.
+/*! @brief A custom scheme redirect is not an HTTPS redirect, so no callback is created.
  */
 - (void)testNoHTTPSCallbackForCustomSchemeRedirect {
   if (@available(iOS 17.4, *)) {
