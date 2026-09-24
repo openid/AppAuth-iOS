@@ -606,6 +606,8 @@
 		CF37C0701F1FC21A00662E41 /* OIDEndSessionRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = CF37C06C1F1FC21A00662E41 /* OIDEndSessionRequest.m */; };
 		CF37C0711F1FC21A00662E41 /* OIDEndSessionRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = CF37C06C1F1FC21A00662E41 /* OIDEndSessionRequest.m */; };
 		CF6431F41F228A980075B6B5 /* OIDEndSessionResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = CF6431F31F228A980075B6B5 /* OIDEndSessionResponse.m */; };
+		E56963F03064815800AC4DFE /* OIDExternalUserAgentIOSTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E56963EF3064815800AC4DFE /* OIDExternalUserAgentIOSTests.m */; };
+		E56963F13064815800AC4DFE /* OIDExternalUserAgentIOSTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E56963EF3064815800AC4DFE /* OIDExternalUserAgentIOSTests.m */; };
 		F9A7082E2355ED74004B3E6D /* OIDExternalUserAgentCatalyst.h in Headers */ = {isa = PBXBuildFile; fileRef = F9A7082C2355ED74004B3E6D /* OIDExternalUserAgentCatalyst.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F9A7082F2355ED74004B3E6D /* OIDExternalUserAgentCatalyst.m in Sources */ = {isa = PBXBuildFile; fileRef = F9A7082D2355ED74004B3E6D /* OIDExternalUserAgentCatalyst.m */; };
 /* End PBXBuildFile section */
@@ -848,6 +850,7 @@
 		CF37C06C1F1FC21A00662E41 /* OIDEndSessionRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OIDEndSessionRequest.m; sourceTree = "<group>"; };
 		CF6431F21F228A980075B6B5 /* OIDEndSessionResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OIDEndSessionResponse.h; sourceTree = "<group>"; };
 		CF6431F31F228A980075B6B5 /* OIDEndSessionResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OIDEndSessionResponse.m; sourceTree = "<group>"; };
+		E56963EF3064815800AC4DFE /* OIDExternalUserAgentIOSTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OIDExternalUserAgentIOSTests.m; sourceTree = "<group>"; };
 		F6F60FB01D2BFEFE00325CB3 /* OIDAuthState+IOS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "OIDAuthState+IOS.m"; sourceTree = "<group>"; };
 		F6F60FB11D2BFEFE00325CB3 /* OIDAuthorizationService+IOS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "OIDAuthorizationService+IOS.m"; sourceTree = "<group>"; };
 		F6F60FB31D2BFEFE00325CB3 /* OIDAuthorizationService+IOS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "OIDAuthorizationService+IOS.h"; sourceTree = "<group>"; };
@@ -1109,6 +1112,7 @@
 		341741FB1C5D82D3000EF209 /* UnitTests */ = {
 			isa = PBXGroup;
 			children = (
+				E56963EF3064815800AC4DFE /* OIDExternalUserAgentIOSTests.m */,
 				2D52A08D24C24C260022E402 /* AppAuthTV */,
 				341742231C5D8317000EF209 /* UnitTestsInfo.plist */,
 				341742001C5D82D3000EF209 /* OIDAuthorizationRequestTests.h */,
@@ -2206,6 +2210,7 @@
 				341742211C5D82D3000EF209 /* OIDURLQueryComponentTests.m in Sources */,
 				341742201C5D82D3000EF209 /* OIDTokenResponseTests.m in Sources */,
 				341742221C5D82D3000EF209 /* OIDURLQueryComponentTestsIOS7.m in Sources */,
+				E56963F03064815800AC4DFE /* OIDExternalUserAgentIOSTests.m in Sources */,
 				3417421E1C5D82D3000EF209 /* OIDServiceDiscoveryTests.m in Sources */,
 				3417421F1C5D82D3000EF209 /* OIDTokenRequestTests.m in Sources */,
 				341742181C5D82D3000EF209 /* OIDAuthorizationResponseTests.m in Sources */,
@@ -2386,6 +2391,7 @@
 				343AAA7C1E8346B400F9D36E /* OIDTokenResponseTests.m in Sources */,
 				343AAA7B1E8346B400F9D36E /* OIDTokenRequestTests.m in Sources */,
 				343AAA771E8346B400F9D36E /* OIDResponseTypesTests.m in Sources */,
+				E56963F13064815800AC4DFE /* OIDExternalUserAgentIOSTests.m in Sources */,
 				343AAA7F1E8346B400F9D36E /* OIDRegistrationRequestTests.m in Sources */,
 				343AAA731E8346B400F9D36E /* OIDAuthorizationRequestTests.m in Sources */,
 				343AAA761E8346B400F9D36E /* OIDGrantTypesTests.m in Sources */,
