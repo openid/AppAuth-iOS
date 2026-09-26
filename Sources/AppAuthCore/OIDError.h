@@ -73,6 +73,14 @@ extern NSString *const OIDHTTPErrorDomain;
  */
 extern NSString *const OIDOAuthErrorResponseErrorKey;
 
+/*! @brief An error key used to access the HTTP response headers from a failed AppAuth request.
+    @discussion When an AppAuth request fails due to a non-2xx HTTP response, the server's
+        response headers are attached to the returned NSError's `userInfo` dictionary under this key.
+        The value is an NSDictionary<NSString *, id>, matching the structure of
+        NSHTTPURLResponse.allHeaderFields.
+ */
+extern NSString *const OIDHTTPResponseHeadersKey;
+
 /*! @brief The key of the 'error' response field in a RFC6749 Section 5.2 response.
     @remark error
     @see https://tools.ietf.org/html/rfc6749#section-5.2
