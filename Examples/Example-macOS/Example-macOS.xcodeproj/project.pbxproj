@@ -3,18 +3,18 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		341AA4C31E7F2E5000FCA5C6 /* AppAuthExampleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 341AA4C21E7F2E5000FCA5C6 /* AppAuthExampleTests.m */; };
-		EFEF6E9CC6F12EA4870987D5 /* libPods-Example-macOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FED92DEDC2639A35907A5D4D /* libPods-Example-macOS.a */; };
 		F6016E951D2BD988003497D7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F6016E8B1D2BD988003497D7 /* AppDelegate.m */; };
 		F6016E971D2BD988003497D7 /* AppAuthExampleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F6016E8D1D2BD988003497D7 /* AppAuthExampleViewController.m */; };
 		F6016E981D2BD988003497D7 /* AppAuthExampleViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F6016E8F1D2BD988003497D7 /* AppAuthExampleViewController.xib */; };
 		F6016E991D2BD988003497D7 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = F6016E911D2BD988003497D7 /* MainMenu.xib */; };
 		F6016E9A1D2BD988003497D7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F6016E931D2BD988003497D7 /* main.m */; };
 		F6016E9C1D2BD9C0003497D7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F6016E9B1D2BD9C0003497D7 /* Assets.xcassets */; };
+		F6016EA21D2BD9C7003497D7 /* AppAuth in Frameworks */ = {isa = PBXBuildFile; productRef = F6016EA11D2BD9C7003497D7 /* AppAuth */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -31,8 +31,6 @@
 		341AA4C01E7F2E5000FCA5C6 /* Example-macOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Example-macOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		341AA4C21E7F2E5000FCA5C6 /* AppAuthExampleTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppAuthExampleTests.m; sourceTree = "<group>"; };
 		341AA4C41E7F2E5000FCA5C6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		60553B3AB5BA3E1BB259E487 /* Pods-Example-macOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Example-macOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-Example-macOS/Pods-Example-macOS.release.xcconfig"; sourceTree = "<group>"; };
-		7FF583C8F7036437BE8875B3 /* Pods-Example-macOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Example-macOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Example-macOS/Pods-Example-macOS.debug.xcconfig"; sourceTree = "<group>"; };
 		F6016E701D2AC11F003497D7 /* Example-macOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Example-macOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6016E8B1D2BD988003497D7 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = Source/AppDelegate.m; sourceTree = "<group>"; };
 		F6016E8D1D2BD988003497D7 /* AppAuthExampleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppAuthExampleViewController.m; path = Source/AppAuthExampleViewController.m; sourceTree = "<group>"; };
@@ -43,7 +41,6 @@
 		F6016E941D2BD988003497D7 /* AppAuthExampleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppAuthExampleViewController.h; path = Source/AppAuthExampleViewController.h; sourceTree = "<group>"; };
 		F6016E9B1D2BD9C0003497D7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = Source/Assets.xcassets; sourceTree = "<group>"; };
 		F6016E9D1D2BD9C7003497D7 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Source/Info.plist; sourceTree = "<group>"; };
-		FED92DEDC2639A35907A5D4D /* libPods-Example-macOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Example-macOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,26 +55,16 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EFEF6E9CC6F12EA4870987D5 /* libPods-Example-macOS.a in Frameworks */,
+				F6016EA21D2BD9C7003497D7 /* AppAuth in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		186006823FF563B11A81B036 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				7FF583C8F7036437BE8875B3 /* Pods-Example-macOS.debug.xcconfig */,
-				60553B3AB5BA3E1BB259E487 /* Pods-Example-macOS.release.xcconfig */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
 		27454E5D219A9EBB94F74197 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				FED92DEDC2639A35907A5D4D /* libPods-Example-macOS.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -97,7 +84,6 @@
 				F6016E8A1D2BD973003497D7 /* Source */,
 				341AA4C11E7F2E5000FCA5C6 /* Tests */,
 				F6016E711D2AC11F003497D7 /* Products */,
-				186006823FF563B11A81B036 /* Pods */,
 				27454E5D219A9EBB94F74197 /* Frameworks */,
 			);
 			sourceTree = "<group>";
@@ -152,17 +138,18 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F6016E811D2AC11F003497D7 /* Build configuration list for PBXNativeTarget "Example-macOS" */;
 			buildPhases = (
-				C9395BB900D0A44A3F7EB0BE /* [CP] Check Pods Manifest.lock */,
 				F6016E6C1D2AC11F003497D7 /* Sources */,
 				F6016E6D1D2AC11F003497D7 /* Frameworks */,
 				F6016E6E1D2AC11F003497D7 /* Resources */,
-				1C5B2EF60536044DE119E500 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			name = "Example-macOS";
+			packageProductDependencies = (
+				F6016EA11D2BD9C7003497D7 /* AppAuth */,
+			);
 			productName = "Example-macOS";
 			productReference = F6016E701D2AC11F003497D7 /* Example-macOS.app */;
 			productType = "com.apple.product-type.application";
@@ -187,7 +174,7 @@
 				};
 			};
 			buildConfigurationList = F6016E6B1D2AC11E003497D7 /* Build configuration list for PBXProject "Example-macOS" */;
-			compatibilityVersion = "Xcode 3.2";
+			compatibilityVersion = "Xcode 15.0";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -196,6 +183,9 @@
 				Base,
 			);
 			mainGroup = F6016E671D2AC11E003497D7;
+			packageReferences = (
+				F6016EA01D2BD9C7003497D7 /* XCLocalSwiftPackageReference "../.." */,
+			);
 			productRefGroup = F6016E711D2AC11F003497D7 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -225,47 +215,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		1C5B2EF60536044DE119E500 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Example-macOS/Pods-Example-macOS-resources.sh",
-				"${PODS_CONFIGURATION_BUILD_DIR}/AppAuth/AppAuthCore_Privacy.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/AppAuth/AppAuthExternalUserAgent_Privacy.bundle",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AppAuthCore_Privacy.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AppAuthExternalUserAgent_Privacy.bundle",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Example-macOS/Pods-Example-macOS-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		C9395BB900D0A44A3F7EB0BE /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Example-macOS-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		341AA4BC1E7F2E5000FCA5C6 /* Sources */ = {
@@ -433,7 +382,6 @@
 		};
 		F6016E821D2AC11F003497D7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7FF583C8F7036437BE8875B3 /* Pods-Example-macOS.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -447,7 +395,6 @@
 		};
 		F6016E831D2AC11F003497D7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 60553B3AB5BA3E1BB259E487 /* Pods-Example-macOS.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -490,6 +437,21 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		F6016EA01D2BD9C7003497D7 /* XCLocalSwiftPackageReference "../.." */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../..;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		F6016EA11D2BD9C7003497D7 /* AppAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F6016EA01D2BD9C7003497D7 /* XCLocalSwiftPackageReference "../.." */;
+			productName = AppAuth;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = F6016E681D2AC11E003497D7 /* Project object */;
 }

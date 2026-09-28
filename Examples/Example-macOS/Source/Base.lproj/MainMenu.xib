@@ -144,11 +144,7 @@ Copy the client ID to the clipboard.
 
 ### Configure the Example-Mac Xcode project
 
-1. In the Example-Mac folder, run the following command to install the required library pods.
-$ pod install
-
-2. Open the open Example-Mac.xcworkspace/:
-$ open Example-Mac.xcworkspace
+Open Example-macOS.xcodeproj; Xcode resolves the local AppAuth package automatically.
 
 ### Configure the Example
 

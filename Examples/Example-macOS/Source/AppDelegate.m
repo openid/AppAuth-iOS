@@ -18,7 +18,7 @@
 
 #import "AppDelegate.h"
 
-#import <AppAuth/AppAuth.h>
+@import AppAuth;
 
 #import "AppAuthExampleViewController.h"
 
