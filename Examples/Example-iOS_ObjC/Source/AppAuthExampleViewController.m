@@ -20,7 +20,7 @@
 
 #import <QuartzCore/QuartzCore.h>
 
-#import "AppAuth.h"
+@import AppAuth;
 #import "AppDelegate.h"
 
 typedef void (^PostRegistrationCallback)(OIDServiceConfiguration *configuration,
