@@ -18,8 +18,8 @@
 
 #import "AppAuthTVExampleViewController.h"
 
-#import <AppAuth/AppAuthCore.h>
-#import <AppAuth/AppAuthTV.h>
+@import AppAuthCore;
+@import AppAuthTV;
 
 /*! @brief Indicates whether YES to discover endpoints from @c kIssuer or NO to use the
         @c kDeviceAuthorizationEndpoint, @c kTokenEndpoint, and @c kUserInfoEndpoint values defined
