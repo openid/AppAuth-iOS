@@ -1,5 +1,6 @@
 # UNRELEASED
 - Improved the state validation error messages to distinguish a missing `state` parameter from a mismatched one. The end session message now notes that a provider's `end_session_endpoint` may point at a legacy or SAML single-logout endpoint, which does not echo `state`. Addresses issue #956.
+- Deprecated CocoaPods distribution. AppAuth 3.0.0 is the last release published to CocoaPods; CocoaPods trunk becomes read-only on December 2, 2026. See [MIGRATING_FROM_COCOAPODS.md](MIGRATING_FROM_COCOAPODS.md) for moving to Swift Package Manager. Addresses issue #962.
 
 # 3.0.0
 - BREAKING: Updates made to support Xcode 27. ([#972](https://github.com/openid/AppAuth-iOS/pull/972), [#973](https://github.com/openid/AppAuth-iOS/pull/973))
