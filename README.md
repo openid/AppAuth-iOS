@@ -3,9 +3,8 @@
 [![codecov](https://codecov.io/gh/openid/AppAuth-iOS/branch/master/graph/badge.svg)](https://codecov.io/gh/openid/AppAuth-iOS)
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-brightgreen.svg?style=flat)](https://github.com/Carthage/Carthage)
 [![SwiftPM compatible](https://img.shields.io/badge/SwiftPM-compatible-brightgreen.svg?style=flat)](https://swift.org/package-manager)
-[![Pod Version](https://img.shields.io/cocoapods/v/AppAuth.svg?style=flat)](https://cocoapods.org/pods/AppAuth)
-[![Pod License](https://img.shields.io/cocoapods/l/AppAuth.svg?style=flat)](https://github.com/openid/AppAuth-iOS/blob/master/LICENSE)
-[![Pod Platform](https://img.shields.io/cocoapods/p/AppAuth.svg?style=flat)](https://cocoapods.org/pods/AppAuth)
+[![Release](https://img.shields.io/github/v/release/openid/AppAuth-iOS?style=flat)](https://github.com/openid/AppAuth-iOS/releases)
+[![License](https://img.shields.io/github/license/openid/AppAuth-iOS?style=flat)](LICENSE)
 [![Catalyst compatible](https://img.shields.io/badge/Catalyst-compatible-brightgreen.svg?style=flat)](https://developer.apple.com/documentation/xcode/creating_a_mac_version_of_your_ipad_app)
 
 > [!IMPORTANT]
