@@ -1,5 +1,6 @@
 # UNRELEASED
 - Improved the state validation error messages to distinguish a missing `state` parameter from a mismatched one. The end session message now notes that a provider's `end_session_endpoint` may point at a legacy or SAML single-logout endpoint, which does not echo `state`. Addresses issue #956.
+- Discovery documents containing a JSON `null` or a non-string value in a URL-valued field now fail with `OIDErrorCodeInvalidDiscoveryDocument` instead of raising `NSInvalidArgumentException`. URL-valued metadata fields that are present are now all checked, not only the required ones.
 
 # 3.0.0
 - BREAKING: Updates made to support Xcode 27. ([#972](https://github.com/openid/AppAuth-iOS/pull/972), [#973](https://github.com/openid/AppAuth-iOS/pull/973))
