@@ -27,6 +27,7 @@
 #import "OIDAuthorizationRequest.h"
 #import "OIDAuthorizationService.h"
 #import "OIDErrorUtilities.h"
+#import "OIDExternalUserAgentSession.h"
 #import "OIDURLQueryComponent.h"
 
 #if !TARGET_OS_MACCATALYST
@@ -153,9 +154,24 @@ NS_ASSUME_NONNULL_BEGIN
   // Transforms the request URL and opens it.
   NSURL *requestURL = [request externalUserAgentRequestURL];
   requestURL = _URLTransformation(requestURL);
-  BOOL willOpen = [[UIApplication sharedApplication] canOpenURL:requestURL];
-  [[UIApplication sharedApplication] openURL:requestURL options:@{} completionHandler:nil];
-  return willOpen;
+  if (!requestURL) {
+    return NO;
+  }
+  // -canOpenURL: is not used to decide whether the request was presented: it is subject to
+  // LSApplicationQueriesSchemes and can return NO for a URL that
+  // -openURL:options:completionHandler: opens successfully (e.g. an https URL when Safari is
+  // unavailable and another browser is the default). The flow fails only if the open really fails.
+  [[UIApplication sharedApplication] openURL:requestURL
+                                     options:@{}
+                           completionHandler:^(BOOL success) {
+    if (!success) {
+      NSError *safariError = [OIDErrorUtilities errorWithCode:OIDErrorCodeSafariOpenError
+                                              underlyingError:nil
+                                                  description:@"Unable to open Safari."];
+      [session failExternalUserAgentFlowWithError:safariError];
+    }
+  }];
+  return YES;
 }
 
 - (void)dismissExternalUserAgentAnimated:(BOOL)animated
