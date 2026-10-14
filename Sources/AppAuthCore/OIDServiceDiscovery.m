@@ -156,15 +156,28 @@ static NSString *const kOPTosURIKey = @"op_tos_uri";
     }
   }
 
-  // Check required URL fields are valid URLs.
-  NSArray *requiredURLFields = @[
+  // Check that present URL-valued fields are valid URLs; absent ones are skipped because optional
+  // fields may be omitted.
+  NSArray *urlFields = @[
     kIssuerKey,
+    kAuthorizationEndpointKey,
+    kDeviceAuthorizationEndpointKey,
     kTokenEndpointKey,
-    kJWKSURLKey
+    kUserinfoEndpointKey,
+    kJWKSURLKey,
+    kRegistrationEndpointKey,
+    kEndSessionEndpointKey,
+    kServiceDocumentationKey,
+    kOPPolicyURIKey,
+    kOPTosURIKey
   ];
 
-  for (NSString *field in requiredURLFields) {
-    if (![NSURL URLWithString:dictionary[field]]) {
+  for (NSString *field in urlFields) {
+    id value = dictionary[field];
+    if (!value) {
+      continue;
+    }
+    if (![value isKindOfClass:[NSString class]] || ![NSURL URLWithString:value]) {
       if (error) {
         NSString *errorText = [NSString stringWithFormat:kInvalidURLFieldErrorText, field];
         *error = [OIDErrorUtilities errorWithCode:OIDErrorCodeInvalidDiscoveryDocument
