@@ -133,6 +133,11 @@
       userInfo[NSLocalizedDescriptionKey] = serverResponse;
     }
   }
+  
+  if (HTTPURLResponse.allHeaderFields) {
+    userInfo[OIDHTTPResponseHeadersKey] = HTTPURLResponse.allHeaderFields;
+  }
+  
   NSError *serverError =
       [NSError errorWithDomain:OIDHTTPErrorDomain
                           code:HTTPURLResponse.statusCode
