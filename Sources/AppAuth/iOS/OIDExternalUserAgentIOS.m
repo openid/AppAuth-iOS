@@ -43,25 +43,29 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 #endif
 
-/*! @brief How long a dismissed session is kept alive. Long enough to outlast its dismiss animation.
+/*! @brief How long a finished session is kept alive once the main queue is next free.
+    @discussion This is a heuristic. It needs to outlast the session's dismiss animation, which
+        has no API to observe.
  */
-static const NSTimeInterval kOIDSessionRetentionDelay = 1.0;
+static const NSTimeInterval kOIDSessionRetentionDelay = 3.0;
 
-/*! @brief Keeps @c session alive for a short while after the caller lets go of it.
-    @discussion ASWebAuthenticationSession can crash if it is deallocated during its own
-        completion handler or while its dismiss animation is still running (FB12132525).
-        Holding it on a delayed main-queue block outlives both.
+/*! @brief Keeps @c session alive for a while after the caller lets go of it.
+    @discussion ASWebAuthenticationSession can crash if it is deallocated during a) its own
+        completion handler or b) its dismiss animation (FB12132525). The delay starts once the
+        main queue is free, so a slow completion callback doesn't eat into it.
     @param session The session to keep alive, or nil.
  */
 static void OIDRetainSessionBriefly(ASWebAuthenticationSession *_Nullable session) {
   if (!session) {
     return;
   }
-  dispatch_after(
-      dispatch_time(DISPATCH_TIME_NOW, (int64_t)(kOIDSessionRetentionDelay * NSEC_PER_SEC)),
-      dispatch_get_main_queue(), ^{
-        (void)session;
-      });
+  dispatch_async(dispatch_get_main_queue(), ^{
+    dispatch_after(
+        dispatch_time(DISPATCH_TIME_NOW, (int64_t)(kOIDSessionRetentionDelay * NSEC_PER_SEC)),
+        dispatch_get_main_queue(), ^{
+          (void)session;
+        });
+  });
 }
 
 @implementation OIDExternalUserAgentIOS {
