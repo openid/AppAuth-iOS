@@ -44,15 +44,15 @@ NS_ASSUME_NONNULL_BEGIN
 #endif
 
 /*! @brief How long a finished session is kept alive once the main queue is next free.
-    @discussion This is a heuristic. It needs to outlast the session's dismiss animation, which
-        has no API to observe.
+    @discussion This is a heuristic. It needs to outlast the session's dismiss transition, which
+        hasn't started yet when the completion handler runs.
  */
-static const NSTimeInterval kOIDSessionRetentionDelay = 3.0;
+static const NSTimeInterval kOIDSessionRetentionDelay = 2.0;
 
 /*! @brief Keeps @c session alive for a while after the caller lets go of it.
-    @discussion ASWebAuthenticationSession can crash if it is deallocated during a) its own
-        completion handler or b) its dismiss animation (FB12132525). The delay starts once the
-        main queue is free, so a slow completion callback doesn't eat into it.
+    @discussion If the session is deallocated before its dismiss transition ends, it crashes
+        when the transition completes (FB12132525). The delay starts once the main queue is
+        free, so a slow completion callback doesn't eat into it.
     @param session The session to keep alive, or nil.
  */
 static void OIDRetainSessionBriefly(ASWebAuthenticationSession *_Nullable session) {
