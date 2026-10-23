@@ -1,5 +1,7 @@
 # UNRELEASED
 - Improved the state validation error messages to distinguish a missing `state` parameter from a mismatched one. The end session message now notes that a provider's `end_session_endpoint` may point at a legacy or SAML single-logout endpoint, which does not echo `state`. Addresses issue #956.
+- Fixed `OIDExternalUserAgentIOSCustomBrowser` failing the flow with "Unable to open Safari." when `canOpenURL:` returns `NO` for a URL that the system can open, for example an https URL when Safari is restricted and another browser is the default. The flow now fails only if the URL really cannot be opened. Addresses issue #980.
+- Fixed a crash when the user cancels sign-in on iOS, caused by `ASWebAuthenticationSession` being deallocated during its completion handler or dismiss animation. Based on [#917](https://github.com/openid/AppAuth-iOS/pull/917) by @Prash88.
 - Deprecated CocoaPods distribution. AppAuth 3.0.0 is the last release published to CocoaPods; CocoaPods trunk becomes read-only on December 2, 2026. See [MIGRATING_FROM_COCOAPODS.md](MIGRATING_FROM_COCOAPODS.md) for moving to Swift Package Manager. Addresses issue #962.
 
 # 3.0.0
