@@ -43,6 +43,31 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 #endif
 
+/*! @brief How long a finished session is kept alive once the main queue is next free.
+    @discussion This is a heuristic. It needs to outlast the session's dismiss transition, which
+        hasn't started yet when the completion handler runs.
+ */
+static const NSTimeInterval kOIDSessionRetentionDelay = 2.0;
+
+/*! @brief Keeps @c session alive for a while after the caller lets go of it.
+    @discussion If the session is deallocated before its dismiss transition ends, it crashes
+        when the transition completes (FB12132525). The delay starts once the main queue is
+        free, so a slow completion callback doesn't eat into it.
+    @param session The session to keep alive, or nil.
+ */
+static void OIDRetainSessionBriefly(ASWebAuthenticationSession *_Nullable session) {
+  if (!session) {
+    return;
+  }
+  dispatch_async(dispatch_get_main_queue(), ^{
+    dispatch_after(
+        dispatch_time(DISPATCH_TIME_NOW, (int64_t)(kOIDSessionRetentionDelay * NSEC_PER_SEC)),
+        dispatch_get_main_queue(), ^{
+          (void)session;
+        });
+  });
+}
+
 @implementation OIDExternalUserAgentIOS {
   UIViewController *_presentingViewController;
   BOOL _prefersEphemeralSession;
@@ -132,6 +157,7 @@ NS_ASSUME_NONNULL_BEGIN
       if (!strongSelf) {
           return;
       }
+      OIDRetainSessionBriefly(strongSelf->_webAuthenticationVC);
       strongSelf->_webAuthenticationVC = nil;
       if (callbackURL) {
         // The session matches callback URLs more loosely than the flow checks the redirect URL (a
@@ -203,6 +229,7 @@ NS_ASSUME_NONNULL_BEGIN
   if (webAuthenticationVC) {
     // dismiss the ASWebAuthenticationSession
     [webAuthenticationVC cancel];
+    OIDRetainSessionBriefly(webAuthenticationVC);
     if (completion) completion();
   } else if (safariVC) {
     // dismiss the SFSafariViewController
