@@ -386,6 +386,23 @@ static NSString *const kDiscoveryDocumentNotDictionary =
   XCTAssertEqual(error.code, OIDErrorCodeInvalidDiscoveryDocument, @"");
 }
 
+/*! @brief Tests that a present optional URL-valued field that does not parse is accepted, with
+        its property reading as nil.
+ */
+- (void)testNoErrorWhenOptionalURLFieldDoesNotParse {
+  NSError *error;
+  NSMutableDictionary *serviceDiscoveryDictionary =
+      [[[self class] minimumServiceDiscoveryDictionary] mutableCopy];
+  serviceDiscoveryDictionary[kOPPolicyURIKey] = kTestURLInvalid;
+
+  OIDServiceDiscovery *discovery =
+      [[OIDServiceDiscovery alloc] initWithDictionary:serviceDiscoveryDictionary error:&error];
+  XCTAssertNotNil(discovery, @"An optional URL field that does not parse should not reject the "
+                             "discovery document.");
+  XCTAssertNil(error, @"");
+  XCTAssertNil(discovery.OPPolicyURI, @"");
+}
+
 /*! @brief Tests that the JSON String version results in a valid object.
  */
 - (void)testJSONStringDecoding {
