@@ -127,7 +127,9 @@ static NSString *const kOPTosURIKey = @"op_tos_uri";
     @discussion This test is not meant to provide semantic analysis of the document (eg. fields
         where the value @c none is not an allowed option would not cause this method to fail if
         their value was @c none.) We are just testing to make sure we can meet the nullability
-        contract we promised in the header.
+        contract we promised in the header. A URL-valued field that is present must be a string,
+        or the getters would raise. A URL field that does not parse is an error only for the
+        nonnull URL properties. The nullable ones return nil for it instead.
  */
 + (BOOL)dictionaryHasRequiredFields:(NSDictionary<NSString *, id> *)dictionary
                               error:(NSError **_Nullable)error {
@@ -156,9 +158,9 @@ static NSString *const kOPTosURIKey = @"op_tos_uri";
     }
   }
 
-  // Check that present URL-valued fields are valid URLs; absent ones are skipped because optional
-  // fields may be omitted.
-  NSArray *urlFields = @[
+  // Every URL-valued field that is present must be a string. NSJSONSerialization turns a JSON
+  // null into NSNull, and +[NSURL URLWithString:] raises on anything that is not a string.
+  NSArray<NSString *> *urlFields = @[
     kIssuerKey,
     kAuthorizationEndpointKey,
     kDeviceAuthorizationEndpointKey,
@@ -174,10 +176,29 @@ static NSString *const kOPTosURIKey = @"op_tos_uri";
 
   for (NSString *field in urlFields) {
     id value = dictionary[field];
-    if (!value) {
-      continue;
+    if (value && ![value isKindOfClass:[NSString class]]) {
+      if (error) {
+        NSString *errorText = [NSString stringWithFormat:kInvalidURLFieldErrorText, field];
+        *error = [OIDErrorUtilities errorWithCode:OIDErrorCodeInvalidDiscoveryDocument
+                                  underlyingError:nil
+                                      description:errorText];
+      }
+      return NO;
     }
-    if (![value isKindOfClass:[NSString class]] || ![NSURL URLWithString:value]) {
+  }
+
+  // The nonnull URL properties must also parse. The nullable ones return nil for a value that
+  // does not parse, so a sloppy optional field does not reject the whole document. Keep this
+  // list in sync with the nonnull NSURL properties in OIDServiceDiscovery.h.
+  NSArray<NSString *> *requiredURLFields = @[
+    kIssuerKey,
+    kAuthorizationEndpointKey,
+    kTokenEndpointKey,
+    kJWKSURLKey
+  ];
+
+  for (NSString *field in requiredURLFields) {
+    if (![NSURL URLWithString:(NSString *)dictionary[field]]) {
       if (error) {
         NSString *errorText = [NSString stringWithFormat:kInvalidURLFieldErrorText, field];
         *error = [OIDErrorUtilities errorWithCode:OIDErrorCodeInvalidDiscoveryDocument
