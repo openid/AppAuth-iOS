@@ -368,10 +368,10 @@ static NSString *const kDiscoveryDocumentNotDictionary =
   XCTAssertEqual(error.code, OIDErrorCodeInvalidDiscoveryDocument, @"");
 }
 
-/*! @brief Tests that a present optional URL-valued field that is not a string produces an error
-        instead of raising.
+/*! @brief Tests that a present optional URL-valued field that is not a string is accepted, with
+        its property reading as nil.
  */
-- (void)testErrorWhenOptionalURLFieldIsNotAString {
+- (void)testNoErrorWhenOptionalURLFieldIsNotAString {
   NSError *error;
   NSMutableDictionary *serviceDiscoveryDictionary =
       [[[self class] minimumServiceDiscoveryDictionary] mutableCopy];
@@ -379,11 +379,27 @@ static NSString *const kDiscoveryDocumentNotDictionary =
 
   OIDServiceDiscovery *discovery =
       [[OIDServiceDiscovery alloc] initWithDictionary:serviceDiscoveryDictionary error:&error];
-  XCTAssertNil(discovery, @"When initializing a discovery document, it should not return an "
-                          "instance if an optional URL field is not a string.");
-  XCTAssertNotNil(error, @"There should be an error indicating the discovery document is invalid.");
-  XCTAssertEqualObjects(error.domain, OIDGeneralErrorDomain, @"");
-  XCTAssertEqual(error.code, OIDErrorCodeInvalidDiscoveryDocument, @"");
+  XCTAssertNotNil(discovery, @"An optional URL field that is not a string should not reject the "
+                             "discovery document.");
+  XCTAssertNil(error, @"");
+  XCTAssertNil(discovery.OPPolicyURI, @"");
+}
+
+/*! @brief Tests that a present optional URL-valued field set to JSON null is accepted, with its
+        property reading as nil.
+ */
+- (void)testNoErrorWhenOptionalURLFieldIsJSONNull {
+  NSError *error;
+  NSMutableDictionary *serviceDiscoveryDictionary =
+      [[[self class] minimumServiceDiscoveryDictionary] mutableCopy];
+  serviceDiscoveryDictionary[kOPPolicyURIKey] = [NSNull null];
+
+  OIDServiceDiscovery *discovery =
+      [[OIDServiceDiscovery alloc] initWithDictionary:serviceDiscoveryDictionary error:&error];
+  XCTAssertNotNil(discovery, @"An optional URL field set to JSON null should not reject the "
+                             "discovery document.");
+  XCTAssertNil(error, @"");
+  XCTAssertNil(discovery.OPPolicyURI, @"");
 }
 
 /*! @brief Tests that a present optional URL-valued field that does not parse is accepted, with
