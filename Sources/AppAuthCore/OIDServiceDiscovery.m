@@ -121,7 +121,7 @@ static NSString *const kOPTosURIKey = @"op_tos_uri";
   return self;
 }
 
-#pragma mark -
+#pragma mark - Validation
 
 /*! @brief Builds the error for a discovery document that fails validation.
     @param description The error description.
