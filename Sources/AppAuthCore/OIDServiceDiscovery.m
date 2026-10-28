@@ -121,24 +121,43 @@ static NSString *const kOPTosURIKey = @"op_tos_uri";
   return self;
 }
 
-#pragma mark -
+#pragma mark - Validation
+
+/*! @brief Builds the error for a discovery document that fails validation.
+    @param description The error description.
+ */
+static NSError *OIDInvalidDiscoveryDocumentError(NSString *description) {
+  return [OIDErrorUtilities errorWithCode:OIDErrorCodeInvalidDiscoveryDocument
+                          underlyingError:nil
+                              description:description];
+}
+
+/*! @brief Reads a URL-valued field of the discovery document.
+    @param value The raw value of the field, if any.
+    @return The URL, or nil when the value is missing, is not a string or does not parse.
+ */
+static NSURL *_Nullable OIDURLFromDiscoveryValue(id _Nullable value) {
+  if (![value isKindOfClass:[NSString class]]) {
+    return nil;
+  }
+  return [NSURL URLWithString:(NSString *)value];
+}
 
 /*! @brief Checks to see if the specified dictionary contains the required fields.
     @discussion This test is not meant to provide semantic analysis of the document (eg. fields
         where the value @c none is not an allowed option would not cause this method to fail if
         their value was @c none.) We are just testing to make sure we can meet the nullability
-        contract we promised in the header.
+        contract we promised in the header. The nullable URL getters read as nil for a value that
+        is missing, is not a string or does not parse, so only the nonnull URL properties are
+        checked here.
  */
 + (BOOL)dictionaryHasRequiredFields:(NSDictionary<NSString *, id> *)dictionary
                               error:(NSError **_Nullable)error {
   static NSString *const kMissingFieldErrorText = @"Missing field: %@";
   static NSString *const kInvalidURLFieldErrorText = @"Invalid URL: %@";
 
-  NSArray *requiredFields = @[
-    kIssuerKey,
-    kAuthorizationEndpointKey,
-    kTokenEndpointKey,
-    kJWKSURLKey,
+  // Required fields that are not URLs.
+  NSArray<NSString *> *requiredFields = @[
     kResponseTypesSupportedKey,
     kSubjectTypesSupportedKey,
     kIDTokenSigningAlgorithmValuesSupportedKey
@@ -148,28 +167,34 @@ static NSString *const kOPTosURIKey = @"op_tos_uri";
     if (!dictionary[field]) {
       if (error) {
         NSString *errorText = [NSString stringWithFormat:kMissingFieldErrorText, field];
-        *error = [OIDErrorUtilities errorWithCode:OIDErrorCodeInvalidDiscoveryDocument
-                                  underlyingError:nil
-                                      description:errorText];
+        *error = OIDInvalidDiscoveryDocumentError(errorText);
       }
       return NO;
     }
   }
 
-  // Check required URL fields are valid URLs.
-  NSArray *requiredURLFields = @[
+  // The URL-valued fields whose NSURL property in OIDServiceDiscovery.h is nonnull. Each one must
+  // be present and parse. Keep this list in sync with the header.
+  NSArray<NSString *> *requiredURLFields = @[
     kIssuerKey,
+    kAuthorizationEndpointKey,
     kTokenEndpointKey,
     kJWKSURLKey
   ];
 
   for (NSString *field in requiredURLFields) {
-    if (![NSURL URLWithString:dictionary[field]]) {
+    if (!dictionary[field]) {
+      if (error) {
+        NSString *errorText = [NSString stringWithFormat:kMissingFieldErrorText, field];
+        *error = OIDInvalidDiscoveryDocumentError(errorText);
+      }
+      return NO;
+    }
+    // NSJSONSerialization turns a JSON null into NSNull, which is present but not a string.
+    if (!OIDURLFromDiscoveryValue(dictionary[field])) {
       if (error) {
         NSString *errorText = [NSString stringWithFormat:kInvalidURLFieldErrorText, field];
-        *error = [OIDErrorUtilities errorWithCode:OIDErrorCodeInvalidDiscoveryDocument
-                                  underlyingError:nil
-                                      description:errorText];
+        *error = OIDInvalidDiscoveryDocumentError(errorText);
       }
       return NO;
     }
@@ -237,35 +262,35 @@ static NSString *const kOPTosURIKey = @"op_tos_uri";
 }
 
 - (NSURL *)issuer {
-  return [NSURL URLWithString:_discoveryDictionary[kIssuerKey]];
+  return OIDURLFromDiscoveryValue(_discoveryDictionary[kIssuerKey]);
 }
 
 - (NSURL *)authorizationEndpoint {
-  return [NSURL URLWithString:_discoveryDictionary[kAuthorizationEndpointKey]];
+  return OIDURLFromDiscoveryValue(_discoveryDictionary[kAuthorizationEndpointKey]);
 }
 
 - (nullable NSURL *)deviceAuthorizationEndpoint {
-  return [NSURL URLWithString:_discoveryDictionary[kDeviceAuthorizationEndpointKey]];
+  return OIDURLFromDiscoveryValue(_discoveryDictionary[kDeviceAuthorizationEndpointKey]);
 }
 
 - (NSURL *)tokenEndpoint {
-  return [NSURL URLWithString:_discoveryDictionary[kTokenEndpointKey]];
+  return OIDURLFromDiscoveryValue(_discoveryDictionary[kTokenEndpointKey]);
 }
 
 - (nullable NSURL *)userinfoEndpoint {
-  return [NSURL URLWithString:_discoveryDictionary[kUserinfoEndpointKey]];
+  return OIDURLFromDiscoveryValue(_discoveryDictionary[kUserinfoEndpointKey]);
 }
 
 - (NSURL *)jwksURL {
-  return [NSURL URLWithString:_discoveryDictionary[kJWKSURLKey]];
+  return OIDURLFromDiscoveryValue(_discoveryDictionary[kJWKSURLKey]);
 }
 
 - (nullable NSURL *)registrationEndpoint {
-  return [NSURL URLWithString:_discoveryDictionary[kRegistrationEndpointKey]];
+  return OIDURLFromDiscoveryValue(_discoveryDictionary[kRegistrationEndpointKey]);
 }
 
 - (nullable NSURL *)endSessionEndpoint {
-    return [NSURL URLWithString:_discoveryDictionary[kEndSessionEndpointKey]];
+  return OIDURLFromDiscoveryValue(_discoveryDictionary[kEndSessionEndpointKey]);
 }
 
 - (nullable NSArray<NSString *> *)scopesSupported {
@@ -349,7 +374,7 @@ static NSString *const kOPTosURIKey = @"op_tos_uri";
 }
 
 - (nullable NSURL *)serviceDocumentation {
-  return [NSURL URLWithString:_discoveryDictionary[kServiceDocumentationKey]];
+  return OIDURLFromDiscoveryValue(_discoveryDictionary[kServiceDocumentationKey]);
 }
 
 - (nullable NSArray<NSString *> *)claimsLocalesSupported {
@@ -381,11 +406,11 @@ static NSString *const kOPTosURIKey = @"op_tos_uri";
 }
 
 - (nullable NSURL *)OPPolicyURI {
-  return [NSURL URLWithString:_discoveryDictionary[kOPPolicyURIKey]];
+  return OIDURLFromDiscoveryValue(_discoveryDictionary[kOPPolicyURIKey]);
 }
 
 - (nullable NSURL *)OPTosURI {
-  return [NSURL URLWithString:_discoveryDictionary[kOPTosURIKey]];
+  return OIDURLFromDiscoveryValue(_discoveryDictionary[kOPTosURIKey]);
 }
 
 @end
