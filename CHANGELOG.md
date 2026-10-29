@@ -4,6 +4,7 @@
 - Fixed a crash when the user cancels sign-in on iOS, caused by `ASWebAuthenticationSession` being deallocated during its completion handler or dismiss animation. Based on [#917](https://github.com/openid/AppAuth-iOS/pull/917) by @Prash88.
 - Discovery documents with a JSON `null` or a non-string value in an optional URL-valued field no longer raise `NSInvalidArgumentException`; the property reads as `nil`. The same value in a required URL field now fails with `OIDErrorCodeInvalidDiscoveryDocument`. An `authorization_endpoint` that does not parse now fails the document too, like the other required URL fields.
 - Deprecated CocoaPods distribution. AppAuth 3.0.0 is the last release published to CocoaPods; CocoaPods trunk becomes read-only on December 2, 2026. See [MIGRATING_FROM_COCOAPODS.md](MIGRATING_FROM_COCOAPODS.md) for moving to Swift Package Manager. Addresses issue #962.
+- Fix a crash (`NSInvalidArgumentException`) when a token or registration endpoint answers with a JSON array instead of an object. The callback now gets an error. Addresses issue #987.
 
 # 3.0.0
 - BREAKING: Updates made to support Xcode 27. ([#972](https://github.com/openid/AppAuth-iOS/pull/972), [#973](https://github.com/openid/AppAuth-iOS/pull/973))
