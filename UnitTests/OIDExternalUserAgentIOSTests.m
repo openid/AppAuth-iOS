@@ -83,10 +83,10 @@ static NSString *const kTestIDTokenHint = @"id-token-hint";
 
 /*! @brief An external user agent that refuses to present anything.
  */
-@interface OIDRefusingExternalUserAgent : NSObject <OIDExternalUserAgent>
+@interface OIDRefusingIOSTestUserAgent : NSObject <OIDExternalUserAgent>
 @end
 
-@implementation OIDRefusingExternalUserAgent
+@implementation OIDRefusingIOSTestUserAgent
 
 - (BOOL)presentExternalUserAgentRequest:(id<OIDExternalUserAgentRequest>)request
                                 session:(id<OIDExternalUserAgentSession>)session {
@@ -120,7 +120,7 @@ static NSString *const kTestIDTokenHint = @"id-token-hint";
                        callback:(OIDAuthorizationCallback)callback {
   _lastExternalUserAgent = externalUserAgent;
   return [super presentAuthorizationRequest:request
-                          externalUserAgent:[[OIDRefusingExternalUserAgent alloc] init]
+                          externalUserAgent:[[OIDRefusingIOSTestUserAgent alloc] init]
                                    callback:callback];
 }
 
