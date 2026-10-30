@@ -71,6 +71,29 @@ NS_ASSUME_NONNULL_BEGIN
                                                       callback:(OIDAuthorizationCallback)callback
     __deprecated_msg("For macOS 10.15 and above please use presentAuthorizationRequest:presentingWindow:callback:");
 
+/*! @brief Instance counterpart of @c +presentAuthorizationRequest:presentingWindow:callback:.
+    @param request The authorization request.
+    @param presentingWindow The window to present the authentication flow.
+    @param callback The method called when the request has completed or failed.
+ */
+- (id<OIDExternalUserAgentSession>)presentAuthorizationRequest:(OIDAuthorizationRequest *)request
+                                              presentingWindow:(NSWindow *)presentingWindow
+                                                      callback:(OIDAuthorizationCallback)callback;
+
+/*! @brief Instance counterpart of
+        @c +presentAuthorizationRequest:presentingWindow:prefersEphemeralSession:callback:.
+    @param request The authorization request.
+    @param presentingWindow The window to present the authentication flow.
+    @param prefersEphemeralSession Whether the caller prefers to use a private authentication
+        session. See @c ASWebAuthenticationSession.prefersEphemeralWebBrowserSession for more.
+    @param callback The method called when the request has completed or failed.
+ */
+- (id<OIDExternalUserAgentSession>)presentAuthorizationRequest:(OIDAuthorizationRequest *)request
+                                              presentingWindow:(NSWindow *)presentingWindow
+                                       prefersEphemeralSession:(BOOL)prefersEphemeralSession
+                                                      callback:(OIDAuthorizationCallback)callback
+    API_AVAILABLE(macos(10.15));
+
 @end
 
 NS_ASSUME_NONNULL_END
