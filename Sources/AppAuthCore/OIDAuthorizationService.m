@@ -842,6 +842,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - Instance API
 
+- (instancetype)init {
+  return [super init];
+}
+
 - (id<OIDExternalUserAgentSession>)
     presentAuthorizationRequest:(OIDAuthorizationRequest *)request
               externalUserAgent:(id<OIDExternalUserAgent>)externalUserAgent
