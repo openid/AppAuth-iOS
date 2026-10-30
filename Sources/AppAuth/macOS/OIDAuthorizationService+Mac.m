@@ -57,6 +57,27 @@ NS_ASSUME_NONNULL_BEGIN
                                   callback:callback];
 }
 
+- (id<OIDExternalUserAgentSession>)presentAuthorizationRequest:(OIDAuthorizationRequest *)request
+                                              presentingWindow:(NSWindow *)presentingWindow
+                                                      callback:(OIDAuthorizationCallback)callback {
+  OIDExternalUserAgentMac *externalUserAgent = [[OIDExternalUserAgentMac alloc] initWithPresentingWindow:presentingWindow];
+  return [self presentAuthorizationRequest:request
+                         externalUserAgent:externalUserAgent
+                                  callback:callback];
+}
+
+- (id<OIDExternalUserAgentSession>)presentAuthorizationRequest:(OIDAuthorizationRequest *)request
+                                              presentingWindow:(NSWindow *)presentingWindow
+                                       prefersEphemeralSession:(BOOL)prefersEphemeralSession
+                                                      callback:(OIDAuthorizationCallback)callback {
+  OIDExternalUserAgentMac *externalUserAgent =
+      [[OIDExternalUserAgentMac alloc] initWithPresentingWindow:presentingWindow
+                                        prefersEphemeralSession:prefersEphemeralSession];
+  return [self presentAuthorizationRequest:request
+                         externalUserAgent:externalUserAgent
+                                  callback:callback];
+}
+
 @end
 
 NS_ASSUME_NONNULL_END

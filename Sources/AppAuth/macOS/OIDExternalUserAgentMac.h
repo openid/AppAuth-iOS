@@ -30,6 +30,10 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @interface OIDExternalUserAgentMac : NSObject <OIDExternalUserAgent>
 
+/*! @brief The window from which the authentication UI is presented.
+ */
+@property(nonatomic, readonly, nullable) NSWindow *presentingWindow;
+
 /*! @brief The designated initializer.
     @param presentingWindow The window from which to present the @c ASWebAuthenticationSession on
         macOS 10.15 and above.  Older macOS versions use the system browser.

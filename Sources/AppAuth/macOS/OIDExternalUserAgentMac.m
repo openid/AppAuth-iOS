@@ -47,6 +47,8 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma clang diagnostic pop
 }
 
+@synthesize presentingWindow = _presentingWindow;
+
 - (instancetype)initWithPresentingWindow:(NSWindow *)presentingWindow {
   self = [super init];
   if (self) {
