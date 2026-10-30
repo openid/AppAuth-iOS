@@ -29,9 +29,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation OIDFakeAuthorizationService
 
-- (id<OIDExternalUserAgentSession>)presentAuthorizationRequest:(OIDAuthorizationRequest *)request
-                                             externalUserAgent:(id<OIDExternalUserAgent>)externalUserAgent
-                                                      callback:(OIDAuthorizationCallback)callback {
+- (id<OIDExternalUserAgentSession>)
+    presentAuthorizationRequest:(OIDAuthorizationRequest *)request
+              externalUserAgent:(id<OIDExternalUserAgent>)externalUserAgent
+                       callback:(OIDAuthorizationCallback)callback {
   _lastAuthorizationRequest = request;
   _lastExternalUserAgent = externalUserAgent;
   _lastAuthorizationCallback = [callback copy];
@@ -39,9 +40,10 @@ NS_ASSUME_NONNULL_BEGIN
   return _lastAuthorizationSession;
 }
 
-- (id<OIDExternalUserAgentSession>)presentEndSessionRequest:(OIDEndSessionRequest *)request
-                                          externalUserAgent:(id<OIDExternalUserAgent>)externalUserAgent
-                                                   callback:(OIDEndSessionCallback)callback {
+- (id<OIDExternalUserAgentSession>)
+    presentEndSessionRequest:(OIDEndSessionRequest *)request
+           externalUserAgent:(id<OIDExternalUserAgent>)externalUserAgent
+                    callback:(OIDEndSessionCallback)callback {
   _lastEndSessionRequest = request;
   _lastEndSessionCallback = [callback copy];
   return [[OIDFakeExternalUserAgentSession alloc] init];
