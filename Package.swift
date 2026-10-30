@@ -37,7 +37,10 @@ let package = Package(
             targets: ["AppAuth"]),
         .library(
             name: "AppAuthTV",
-            targets: ["AppAuthTV"])
+            targets: ["AppAuthTV"]),
+        .library(
+            name: "AppAuthTestHelpers",
+            targets: ["AppAuthTestHelpers"])
     ],
     dependencies: [],
     targets: [
@@ -67,9 +70,15 @@ let package = Package(
             resources: [.copy("Resources/PrivacyInfo.xcprivacy")],
             publicHeadersPath: ""
         ),
+        .target(
+            name: "AppAuthTestHelpers",
+            dependencies: ["AppAuthCore"],
+            path: "Sources/AppAuthTestHelpers",
+            publicHeadersPath: ""
+        ),
         .testTarget(
             name: "AppAuthCoreTests",
-            dependencies: ["AppAuthCore"],
+            dependencies: ["AppAuthCore", "AppAuthTestHelpers"],
             path: "UnitTests",
             exclude: ["OIDSwiftTests.swift", "AppAuthTV"]
         ),
