@@ -22,6 +22,8 @@ import UIKit
 struct ContentView: View {
     @EnvironmentObject var authManager: AuthManager
     @State private var sampleWindow = SampleWindow()
+    @Environment(\.openWindow) private var openWindow
+    @Environment(\.supportsMultipleWindows) private var supportsMultipleWindows
 
     var body: some View {
         NavigationStack {
@@ -78,6 +80,17 @@ struct ContentView: View {
             .background(PresentingViewControllerReader(sampleWindow: sampleWindow))
             .navigationTitle("AppAuth Example (\(sampleWindow.label))")
             .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    // hidden where this app can't open a second window
+                    if supportsMultipleWindows {
+                        Button {
+                            openWindow(id: ExampleApp.windowGroupID)
+                        } label: {
+                            Image(systemName: "plus.rectangle.on.rectangle")
+                        }
+                        .accessibilityLabel("New Window")
+                    }
+                }
                 ToolbarItem(placement: .topBarTrailing) {
                     Menu {
                         Button(role: .destructive) {

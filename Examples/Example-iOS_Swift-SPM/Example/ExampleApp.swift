@@ -20,11 +20,13 @@ import SwiftUI
 
 @main
 struct ExampleApp: App {
+    /// The window group that the New Window button opens another window of.
+    static let windowGroupID = "main"
     @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
     @StateObject private var authManager = AuthManager()
 
     var body: some Scene {
-        WindowGroup {
+        WindowGroup(id: ExampleApp.windowGroupID) {
             ContentView()
                 .environmentObject(authManager)
                 .onAppear {
