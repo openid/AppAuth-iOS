@@ -840,6 +840,41 @@ NS_ASSUME_NONNULL_BEGIN
   }] resume];
 }
 
+#pragma mark - Instance API
+
+- (id<OIDExternalUserAgentSession>)presentAuthorizationRequest:(OIDAuthorizationRequest *)request
+                                             externalUserAgent:(id<OIDExternalUserAgent>)externalUserAgent
+                                                      callback:(OIDAuthorizationCallback)callback {
+  return [OIDAuthorizationService presentAuthorizationRequest:request
+                                            externalUserAgent:externalUserAgent
+                                                     callback:callback];
+}
+
+- (id<OIDExternalUserAgentSession>)presentEndSessionRequest:(OIDEndSessionRequest *)request
+                                          externalUserAgent:(id<OIDExternalUserAgent>)externalUserAgent
+                                                   callback:(OIDEndSessionCallback)callback {
+  return [OIDAuthorizationService presentEndSessionRequest:request
+                                         externalUserAgent:externalUserAgent
+                                                  callback:callback];
+}
+
+- (void)performTokenRequest:(OIDTokenRequest *)request callback:(OIDTokenCallback)callback {
+  [self performTokenRequest:request originalAuthorizationResponse:nil callback:callback];
+}
+
+- (void)performTokenRequest:(OIDTokenRequest *)request
+    originalAuthorizationResponse:(OIDAuthorizationResponse *_Nullable)authorizationResponse
+                         callback:(OIDTokenCallback)callback {
+  [OIDAuthorizationService performTokenRequest:request
+                 originalAuthorizationResponse:authorizationResponse
+                                      callback:callback];
+}
+
+- (void)performRegistrationRequest:(OIDRegistrationRequest *)request
+                        completion:(OIDRegistrationCompletion)completion {
+  [OIDAuthorizationService performRegistrationRequest:request completion:completion];
+}
+
 @end
 
 NS_ASSUME_NONNULL_END
