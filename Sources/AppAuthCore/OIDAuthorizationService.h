@@ -90,10 +90,8 @@ typedef void (^OIDRegistrationCompletion)(OIDRegistrationResponse *_Nullable reg
  */
 @property(nonatomic, readonly) OIDServiceConfiguration *configuration;
 
-/*! @brief Creates a service whose instance methods perform the same operations as the class
-        methods of this class.
-    @discussion Hold an instance where you would otherwise call the class methods directly, so
-        that tests can substitute a subclass such as @c OIDFakeAuthorizationService.
+/*! @brief Creates a service whose instance methods call the matching class methods.
+    @discussion Tests can hand in a subclass that fakes the instance methods.
  */
 - (instancetype)init;
 
@@ -173,18 +171,20 @@ typedef void (^OIDRegistrationCompletion)(OIDRegistrationResponse *_Nullable reg
         request.
     @param callback The method called when the request has completed or failed.
  */
-- (id<OIDExternalUserAgentSession>)presentAuthorizationRequest:(OIDAuthorizationRequest *)request
-                                             externalUserAgent:(id<OIDExternalUserAgent>)externalUserAgent
-                                                      callback:(OIDAuthorizationCallback)callback;
+- (id<OIDExternalUserAgentSession>)
+    presentAuthorizationRequest:(OIDAuthorizationRequest *)request
+              externalUserAgent:(id<OIDExternalUserAgent>)externalUserAgent
+                       callback:(OIDAuthorizationCallback)callback;
 
 /*! @brief Instance counterpart of @c +presentEndSessionRequest:externalUserAgent:callback:.
     @param request The end-session logout request.
     @param externalUserAgent Generic external user-agent that can present user-agent requests.
     @param callback The method called when the request has completed or failed.
  */
-- (id<OIDExternalUserAgentSession>)presentEndSessionRequest:(OIDEndSessionRequest *)request
-                                          externalUserAgent:(id<OIDExternalUserAgent>)externalUserAgent
-                                                   callback:(OIDEndSessionCallback)callback;
+- (id<OIDExternalUserAgentSession>)
+    presentEndSessionRequest:(OIDEndSessionRequest *)request
+           externalUserAgent:(id<OIDExternalUserAgent>)externalUserAgent
+                    callback:(OIDEndSessionCallback)callback;
 
 /*! @brief Instance counterpart of @c +performTokenRequest:callback:.
     @param request The token request.
