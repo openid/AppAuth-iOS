@@ -150,15 +150,28 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation OIDExternalUserAgentIOSCustomBrowserTests
 
-- (OIDExternalUserAgentIOSCustomBrowser *)customBrowserWithOpener:
-    (id<OIDExternalUserAgentIOSCustomBrowserURLOpener>)opener {
+/*! @brief Returns a custom browser configured with the test scheme transform,
+        @c canOpenURLScheme, @c appStoreURL, and @c opener.
+ */
+- (OIDExternalUserAgentIOSCustomBrowser *)
+    customBrowserWithOpener:(id<OIDExternalUserAgentIOSCustomBrowserURLOpener>)opener
+           canOpenURLScheme:(nullable NSString *)canOpenURLScheme
+                appStoreURL:(nullable NSURL *)appStoreURL {
   OIDCustomBrowserURLTransformation transform = [OIDExternalUserAgentIOSCustomBrowser
       URLTransformationSchemeSubstitutionHTTPS:@"testbrowser"
                                           HTTP:@"testbrowser-http"];
   return [[OIDExternalUserAgentIOSCustomBrowser alloc] initWithURLTransformation:transform
-                                                                canOpenURLScheme:nil
-                                                                     appStoreURL:nil
+                                                                canOpenURLScheme:canOpenURLScheme
+                                                                     appStoreURL:appStoreURL
                                                                        URLOpener:opener];
+}
+
+/*! @brief Returns a custom browser configured with the test scheme transform and @c opener, with
+        no App Store fallback.
+ */
+- (OIDExternalUserAgentIOSCustomBrowser *)customBrowserWithOpener:
+    (id<OIDExternalUserAgentIOSCustomBrowserURLOpener>)opener {
+  return [self customBrowserWithOpener:opener canOpenURLScheme:nil appStoreURL:nil];
 }
 
 - (void)testPresentOpensTransformedURLAndReturnsYES {
@@ -190,6 +203,55 @@ NS_ASSUME_NONNULL_BEGIN
 
   XCTAssertTrue(presented);
   XCTAssertEqual(opener.openedURLs.count, 1u);
+  XCTAssertEqual(session.failureErrors.count, 0u);
+}
+
+/*! @brief Opens the App Store URL and returns @c NO when the custom browser is not installed.
+ */
+- (void)testPresentOpensAppStoreWhenBrowserIsNotInstalled {
+  OIDTestCustomBrowserURLOpener *opener = [[OIDTestCustomBrowserURLOpener alloc] init];
+  opener.canOpenURLResult = NO;
+  OIDTestExternalUserAgentSession *session = [[OIDTestExternalUserAgentSession alloc] init];
+  NSURL *appStoreURL = [NSURL URLWithString:@"https://apps.example.com/testbrowser"];
+  OIDExternalUserAgentIOSCustomBrowser *browser =
+      [self customBrowserWithOpener:opener
+                   canOpenURLScheme:@"testbrowser"
+                        appStoreURL:appStoreURL];
+
+  BOOL presented =
+      [browser presentExternalUserAgentRequest:[OIDAuthorizationRequestTests testInstance]
+                                       session:session];
+
+  XCTAssertFalse(presented);
+  XCTAssertEqual(opener.canOpenURLQueries.count, 1u);
+  XCTAssertEqualObjects(opener.canOpenURLQueries.firstObject,
+                        [NSURL URLWithString:@"testbrowser://example.com"]);
+  XCTAssertEqual(opener.openedURLs.count, 1u);
+  XCTAssertEqualObjects(opener.openedURLs.firstObject, appStoreURL);
+  // Returning NO hands the flow back to the caller - the App Store open never fails the session.
+  XCTAssertEqual(session.failureErrors.count, 0u);
+}
+
+/*! @brief Opens the transformed request URL and returns @c YES when the custom browser is
+        installed.
+ */
+- (void)testPresentOpensBrowserWhenInstalled {
+  OIDTestCustomBrowserURLOpener *opener = [[OIDTestCustomBrowserURLOpener alloc] init];
+  OIDTestExternalUserAgentSession *session = [[OIDTestExternalUserAgentSession alloc] init];
+  NSURL *appStoreURL = [NSURL URLWithString:@"https://apps.example.com/testbrowser"];
+  OIDExternalUserAgentIOSCustomBrowser *browser =
+      [self customBrowserWithOpener:opener
+                   canOpenURLScheme:@"testbrowser"
+                        appStoreURL:appStoreURL];
+
+  BOOL presented =
+      [browser presentExternalUserAgentRequest:[OIDAuthorizationRequestTests testInstance]
+                                       session:session];
+
+  XCTAssertTrue(presented);
+  XCTAssertEqual(opener.canOpenURLQueries.count, 1u);
+  XCTAssertEqual(opener.openedURLs.count, 1u);
+  XCTAssertEqualObjects(opener.openedURLs.firstObject.scheme, @"testbrowser");
   XCTAssertEqual(session.failureErrors.count, 0u);
 }
 

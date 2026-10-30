@@ -44,6 +44,13 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation OIDExternalUserAgentIOSCustomBrowserApplicationURLOpener
 
 - (BOOL)canOpenURL:(NSURL *)URL {
+  // canOpenURL: answers NO for any scheme missing from LSApplicationQueriesSchemes, which would
+  // send every user to the App Store. Asserting here catches the missing entry in development.
+  NSArray<NSString *> __unused *canOpenURLs =
+      [[NSBundle mainBundle] objectForInfoDictionaryKey:@"LSApplicationQueriesSchemes"];
+  NSAssert(canOpenURLs, @"plist missing LSApplicationQueriesSchemes key");
+  NSAssert1([canOpenURLs containsObject:URL.scheme],
+            @"plist missing LSApplicationQueriesSchemes entry for '%@'", URL.scheme);
   return [[UIApplication sharedApplication] canOpenURL:URL];
 }
 
@@ -168,13 +175,6 @@ NS_ASSUME_NONNULL_BEGIN
                                 session:(nonnull id<OIDExternalUserAgentSession>)session {
   // If the app store URL is set, checks if the app is installed and if not opens the app store.
   if (_appStoreURL && _canOpenURLScheme) {
-    // Verifies existence of LSApplicationQueriesSchemes Info.plist key.
-    NSArray __unused* canOpenURLs =
-        [[NSBundle mainBundle] objectForInfoDictionaryKey:@"LSApplicationQueriesSchemes"];
-    NSAssert(canOpenURLs, @"plist missing LSApplicationQueriesSchemes key");
-    NSAssert1([canOpenURLs containsObject:_canOpenURLScheme],
-              @"plist missing LSApplicationQueriesSchemes entry for '%@'", _canOpenURLScheme);
-
     // Opens AppStore if app isn't installed
     NSString *testURLString = [NSString stringWithFormat:@"%@://example.com", _canOpenURLScheme];
     NSURL *testURL = [NSURL URLWithString:testURLString];
