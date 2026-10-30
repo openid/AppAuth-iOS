@@ -76,9 +76,10 @@ NS_ASSUME_NONNULL_BEGIN
     @param presentingWindow The window to present the authentication flow.
     @param callback The method called when the request has completed or failed.
  */
-- (id<OIDExternalUserAgentSession>)presentAuthorizationRequest:(OIDAuthorizationRequest *)request
-                                              presentingWindow:(NSWindow *)presentingWindow
-                                                      callback:(OIDAuthorizationCallback)callback;
+- (id<OIDExternalUserAgentSession>)
+    presentAuthorizationRequest:(OIDAuthorizationRequest *)request
+               presentingWindow:(NSWindow *)presentingWindow
+                       callback:(OIDAuthorizationCallback)callback;
 
 /*! @brief Instance counterpart of
         @c +presentAuthorizationRequest:presentingWindow:prefersEphemeralSession:callback:.
@@ -88,10 +89,11 @@ NS_ASSUME_NONNULL_BEGIN
         session. See @c ASWebAuthenticationSession.prefersEphemeralWebBrowserSession for more.
     @param callback The method called when the request has completed or failed.
  */
-- (id<OIDExternalUserAgentSession>)presentAuthorizationRequest:(OIDAuthorizationRequest *)request
-                                              presentingWindow:(NSWindow *)presentingWindow
-                                       prefersEphemeralSession:(BOOL)prefersEphemeralSession
-                                                      callback:(OIDAuthorizationCallback)callback
+- (id<OIDExternalUserAgentSession>)
+    presentAuthorizationRequest:(OIDAuthorizationRequest *)request
+               presentingWindow:(NSWindow *)presentingWindow
+        prefersEphemeralSession:(BOOL)prefersEphemeralSession
+                       callback:(OIDAuthorizationCallback)callback
     API_AVAILABLE(macos(10.15));
 
 @end

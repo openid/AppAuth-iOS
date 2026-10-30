@@ -26,10 +26,13 @@
 
 #import <AuthenticationServices/AuthenticationServices.h>
 
+#import "Sources/AppAuth/iOS/OIDAuthorizationService+IOS.h"
 #import "Sources/AppAuth/iOS/OIDExternalUserAgentIOS.h"
 #import "Sources/AppAuthCore/OIDAuthorizationRequest.h"
+#import "Sources/AppAuthCore/OIDAuthorizationService.h"
 #import "Sources/AppAuthCore/OIDEndSessionRequest.h"
 #import "Sources/AppAuthCore/OIDExternalUserAgentRequest.h"
+#import "Sources/AppAuthCore/OIDExternalUserAgentSession.h"
 #import "Sources/AppAuthCore/OIDResponseTypes.h"
 #import "Sources/AppAuthCore/OIDScopes.h"
 #import "Sources/AppAuthCore/OIDServiceConfiguration.h"
@@ -74,6 +77,51 @@ static NSString *const kTestIDTokenHint = @"id-token-hint";
 
 - (NSString *)redirectScheme {
   return @"https";
+}
+
+@end
+
+/*! @brief An external user agent that refuses to present anything.
+ */
+@interface OIDRefusingExternalUserAgent : NSObject <OIDExternalUserAgent>
+@end
+
+@implementation OIDRefusingExternalUserAgent
+
+- (BOOL)presentExternalUserAgentRequest:(id<OIDExternalUserAgentRequest>)request
+                                session:(id<OIDExternalUserAgentSession>)session {
+  return NO;
+}
+
+- (void)dismissExternalUserAgentAnimated:(BOOL)animated completion:(void (^)(void))completion {
+  if (completion) {
+    completion();
+  }
+}
+
+@end
+
+/*! @brief Records the external user agent it is handed, then fails the flow with a user agent
+        that refuses to present.
+ */
+@interface OIDUserAgentRecordingAuthorizationService : OIDAuthorizationService
+
+/*! @brief The external user agent passed to the most recent authorization request.
+ */
+@property(nonatomic, readonly, nullable) id<OIDExternalUserAgent> lastExternalUserAgent;
+
+@end
+
+@implementation OIDUserAgentRecordingAuthorizationService
+
+- (id<OIDExternalUserAgentSession>)
+    presentAuthorizationRequest:(OIDAuthorizationRequest *)request
+              externalUserAgent:(id<OIDExternalUserAgent>)externalUserAgent
+                       callback:(OIDAuthorizationCallback)callback {
+  _lastExternalUserAgent = externalUserAgent;
+  return [super presentAuthorizationRequest:request
+                          externalUserAgent:[[OIDRefusingExternalUserAgent alloc] init]
+                                   callback:callback];
 }
 
 @end
@@ -187,6 +235,51 @@ static NSString *const kTestIDTokenHint = @"id-token-hint";
   } else {
     XCTSkip(@"ASWebAuthenticationSessionCallback requires iOS 17.4.");
   }
+}
+
+/*! @brief The presenting view controller reads back as the one passed to the initializer.
+ */
+- (void)testPresentingViewControllerIsTheOneItWasCreatedWith {
+  UIViewController *presentingViewController = [[UIViewController alloc] init];
+  OIDExternalUserAgentIOS *userAgent = [[OIDExternalUserAgentIOS alloc]
+      initWithPresentingViewController:presentingViewController];
+  XCTAssertEqual(userAgent.presentingViewController, presentingViewController);
+}
+
+/*! @brief The instance convenience method hands an iOS user agent for the given view controller to
+        the instance core method.
+ */
+- (void)testInstancePresentAuthorizationRequestBuildsIOSUserAgent {
+  OIDUserAgentRecordingAuthorizationService *service =
+      [[OIDUserAgentRecordingAuthorizationService alloc] init];
+  UIViewController *presentingViewController = [[UIViewController alloc] init];
+  OIDAuthorizationRequest *request = [self authorizationRequestWithRedirectURL:
+      [NSURL URLWithString:@"com.example.app:/oauth2redirect"]];
+  [service presentAuthorizationRequest:request
+              presentingViewController:presentingViewController
+                              callback:^(OIDAuthorizationResponse *_Nullable response,
+                                         NSError *_Nullable error) {}];
+  XCTAssertTrue([service.lastExternalUserAgent isKindOfClass:[OIDExternalUserAgentIOS class]]);
+  OIDExternalUserAgentIOS *userAgent = (OIDExternalUserAgentIOS *)service.lastExternalUserAgent;
+  XCTAssertEqual(userAgent.presentingViewController, presentingViewController);
+}
+
+/*! @brief The ephemeral instance convenience method does the same.
+ */
+- (void)testInstancePresentAuthorizationRequestWithEphemeralSessionBuildsIOSUserAgent {
+  OIDUserAgentRecordingAuthorizationService *service =
+      [[OIDUserAgentRecordingAuthorizationService alloc] init];
+  UIViewController *presentingViewController = [[UIViewController alloc] init];
+  OIDAuthorizationRequest *request = [self authorizationRequestWithRedirectURL:
+      [NSURL URLWithString:@"com.example.app:/oauth2redirect"]];
+  [service presentAuthorizationRequest:request
+              presentingViewController:presentingViewController
+               prefersEphemeralSession:YES
+                              callback:^(OIDAuthorizationResponse *_Nullable response,
+                                         NSError *_Nullable error) {}];
+  XCTAssertTrue([service.lastExternalUserAgent isKindOfClass:[OIDExternalUserAgentIOS class]]);
+  OIDExternalUserAgentIOS *userAgent = (OIDExternalUserAgentIOS *)service.lastExternalUserAgent;
+  XCTAssertEqual(userAgent.presentingViewController, presentingViewController);
 }
 
 @end
