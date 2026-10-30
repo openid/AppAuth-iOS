@@ -143,9 +143,10 @@ static NSString *const kOpenIDConfigurationWellKnownPath = @".well-known/openid-
                                             options:0
                                               error:&jsonDeserializationError];
 
-        // if the HTTP 400 response parses as JSON and has an 'error' key, it's an OAuth error
-        // these errors are special as they indicate a problem with the authorization grant
-        if (json[OIDOAuthErrorFieldError]) {
+        // If the HTTP 400 response parses as a JSON object with an 'error' key, it's an OAuth
+        // error. These errors are special as they indicate a problem with the authorization grant.
+        // Any other JSON shape (an array, say) is treated as a plain server error below.
+        if ([json isKindOfClass:[NSDictionary class]] && json[OIDOAuthErrorFieldError]) {
           NSError *oauthError =
             [OIDErrorUtilities OAuthErrorWithDomain:OIDOAuthTokenErrorDomain
                                       OAuthResponse:json
@@ -179,6 +180,17 @@ static NSString *const kOpenIDConfigurationWellKnownPath = @".well-known/openid-
           [OIDErrorUtilities errorWithCode:OIDErrorCodeJSONDeserializationError
                            underlyingError:jsonDeserializationError
                                description:nil];
+      dispatch_async(dispatch_get_main_queue(), ^{
+        initialization(nil, returnedError);
+      });
+      return;
+    }
+    if (![json isKindOfClass:[NSDictionary class]]) {
+      // The body parsed as JSON but not as an object, so there is no response to build from it.
+      NSError *returnedError =
+          [OIDErrorUtilities errorWithCode:OIDErrorCodeJSONDeserializationError
+                           underlyingError:nil
+                               description:@"Device authorization response is not a JSON object."];
       dispatch_async(dispatch_get_main_queue(), ^{
         initialization(nil, returnedError);
       });
