@@ -16,5 +16,4 @@
         limitations under the License.
  */
 
-#import "OIDFakeAuthorizationService.h"
 #import "OIDFakeExternalUserAgentSession.h"

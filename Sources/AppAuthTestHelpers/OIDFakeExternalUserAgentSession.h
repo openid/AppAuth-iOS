@@ -23,20 +23,25 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /*! @brief An @c OIDExternalUserAgentSession that records the messages it receives instead of
-        driving a user agent. Returned by @c OIDFakeAuthorizationService.
+        driving a user agent.
  */
 @interface OIDFakeExternalUserAgentSession : NSObject <OIDExternalUserAgentSession>
 
-/*! @brief How many times @c -cancel or @c -cancelWithCompletion: was called. */
+/*! @brief How many times @c -cancel or @c -cancelWithCompletion: was called.
+ */
 @property(nonatomic, readonly) NSUInteger cancelCount;
 
-/*! @brief The URL passed to the most recent @c -resumeExternalUserAgentFlowWithURL:error:, if any. */
+/*! @brief The URL passed to the most recent @c -resumeExternalUserAgentFlowWithURL:error:, if
+        any.
+ */
 @property(nonatomic, readonly, nullable) NSURL *lastResumedURL;
 
-/*! @brief What @c -resumeExternalUserAgentFlowWithURL:error: returns. Defaults to YES. */
+/*! @brief What @c -resumeExternalUserAgentFlowWithURL:error: returns. Defaults to YES.
+ */
 @property(nonatomic) BOOL resumeResult;
 
-/*! @brief The error passed to the most recent @c -failExternalUserAgentFlowWithError:, if any. */
+/*! @brief The error passed to the most recent @c -failExternalUserAgentFlowWithError:, if any.
+ */
 @property(nonatomic, readonly, nullable) NSError *lastFailureError;
 
 @end
