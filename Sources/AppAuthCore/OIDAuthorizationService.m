@@ -842,17 +842,19 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - Instance API
 
-- (id<OIDExternalUserAgentSession>)presentAuthorizationRequest:(OIDAuthorizationRequest *)request
-                                             externalUserAgent:(id<OIDExternalUserAgent>)externalUserAgent
-                                                      callback:(OIDAuthorizationCallback)callback {
+- (id<OIDExternalUserAgentSession>)
+    presentAuthorizationRequest:(OIDAuthorizationRequest *)request
+              externalUserAgent:(id<OIDExternalUserAgent>)externalUserAgent
+                       callback:(OIDAuthorizationCallback)callback {
   return [OIDAuthorizationService presentAuthorizationRequest:request
                                             externalUserAgent:externalUserAgent
                                                      callback:callback];
 }
 
-- (id<OIDExternalUserAgentSession>)presentEndSessionRequest:(OIDEndSessionRequest *)request
-                                          externalUserAgent:(id<OIDExternalUserAgent>)externalUserAgent
-                                                   callback:(OIDEndSessionCallback)callback {
+- (id<OIDExternalUserAgentSession>)
+    presentEndSessionRequest:(OIDEndSessionRequest *)request
+           externalUserAgent:(id<OIDExternalUserAgent>)externalUserAgent
+                    callback:(OIDEndSessionCallback)callback {
   return [OIDAuthorizationService presentEndSessionRequest:request
                                          externalUserAgent:externalUserAgent
                                                   callback:callback];
