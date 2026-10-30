@@ -31,42 +31,58 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @interface OIDFakeAuthorizationService : OIDAuthorizationService
 
-/*! @brief The request passed to the most recent @c -presentAuthorizationRequest:externalUserAgent:callback:. */
+/*! @brief The request passed to the most recent
+        @c -presentAuthorizationRequest:externalUserAgent:callback:.
+ */
 @property(nonatomic, readonly, nullable) OIDAuthorizationRequest *lastAuthorizationRequest;
 
 /*! @brief The external user agent passed to the most recent authorization request. For the
-        platform convenience methods this is the agent AppAuth built, e.g. an
-        @c OIDExternalUserAgentIOS whose @c presentingViewController is the one the caller supplied. */
+        platform convenience methods, this is the agent AppAuth built for the caller's view
+        controller or window.
+ */
 @property(nonatomic, readonly, nullable) id<OIDExternalUserAgent> lastExternalUserAgent;
 
-/*! @brief The callback of the most recent authorization request. Invoke it to complete the flow. */
+/*! @brief The callback of the most recent authorization request. Invoke it to complete the flow.
+ */
 @property(nonatomic, readonly, copy, nullable) OIDAuthorizationCallback lastAuthorizationCallback;
 
-/*! @brief The session returned from the most recent authorization request. */
+/*! @brief The session returned from the most recent authorization request.
+ */
 @property(nonatomic, readonly, nullable) OIDFakeExternalUserAgentSession *lastAuthorizationSession;
 
-/*! @brief The request passed to the most recent @c -presentEndSessionRequest:externalUserAgent:callback:. */
+/*! @brief The request passed to the most recent
+        @c -presentEndSessionRequest:externalUserAgent:callback:.
+ */
 @property(nonatomic, readonly, nullable) OIDEndSessionRequest *lastEndSessionRequest;
 
-/*! @brief The callback of the most recent end-session request. */
+/*! @brief The callback of the most recent end-session request.
+ */
 @property(nonatomic, readonly, copy, nullable) OIDEndSessionCallback lastEndSessionCallback;
 
-/*! @brief How many token requests have been performed. */
+/*! @brief How many token requests have been performed.
+ */
 @property(nonatomic, readonly) NSUInteger tokenRequestCount;
 
-/*! @brief The request passed to the most recent @c -performTokenRequest:originalAuthorizationResponse:callback:. */
+/*! @brief The request passed to the most recent
+        @c -performTokenRequest:originalAuthorizationResponse:callback:.
+ */
 @property(nonatomic, readonly, nullable) OIDTokenRequest *lastTokenRequest;
 
-/*! @brief The authorization response passed alongside the most recent token request, if any. */
-@property(nonatomic, readonly, nullable) OIDAuthorizationResponse *lastOriginalAuthorizationResponse;
+/*! @brief The authorization response passed alongside the most recent token request, if any.
+ */
+@property(nonatomic, readonly, nullable)
+    OIDAuthorizationResponse *lastOriginalAuthorizationResponse;
 
-/*! @brief The callback of the most recent token request. Invoke it to complete the request. */
+/*! @brief The callback of the most recent token request. Invoke it to complete the request.
+ */
 @property(nonatomic, readonly, copy, nullable) OIDTokenCallback lastTokenCallback;
 
-/*! @brief The request passed to the most recent @c -performRegistrationRequest:completion:. */
+/*! @brief The request passed to the most recent @c -performRegistrationRequest:completion:.
+ */
 @property(nonatomic, readonly, nullable) OIDRegistrationRequest *lastRegistrationRequest;
 
-/*! @brief The completion of the most recent registration request. */
+/*! @brief The completion of the most recent registration request.
+ */
 @property(nonatomic, readonly, copy, nullable) OIDRegistrationCompletion lastRegistrationCompletion;
 
 @end
