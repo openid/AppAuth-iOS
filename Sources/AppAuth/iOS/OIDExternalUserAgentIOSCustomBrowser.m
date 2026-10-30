@@ -34,6 +34,32 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/*! @brief The default @c OIDExternalUserAgentIOSCustomBrowserURLOpener, backed by
+        @c UIApplication.
+ */
+@interface OIDExternalUserAgentIOSCustomBrowserApplicationURLOpener
+    : NSObject <OIDExternalUserAgentIOSCustomBrowserURLOpener>
+@end
+
+@implementation OIDExternalUserAgentIOSCustomBrowserApplicationURLOpener
+
+- (BOOL)canOpenURL:(NSURL *)URL {
+  // canOpenURL: answers NO for any scheme missing from LSApplicationQueriesSchemes, which would
+  // send every user to the App Store. Asserting here catches the missing entry in development.
+  NSArray<NSString *> __unused *canOpenURLs =
+      [[NSBundle mainBundle] objectForInfoDictionaryKey:@"LSApplicationQueriesSchemes"];
+  NSAssert(canOpenURLs, @"plist missing LSApplicationQueriesSchemes key");
+  NSAssert1([canOpenURLs containsObject:URL.scheme],
+            @"plist missing LSApplicationQueriesSchemes entry for '%@'", URL.scheme);
+  return [[UIApplication sharedApplication] canOpenURL:URL];
+}
+
+- (void)openURL:(NSURL *)URL completionHandler:(nullable void (^)(BOOL))completionHandler {
+  [[UIApplication sharedApplication] openURL:URL options:@{} completionHandler:completionHandler];
+}
+
+@end
+
 @implementation OIDExternalUserAgentIOSCustomBrowser
 
 + (instancetype)CustomBrowserChrome {
@@ -122,11 +148,25 @@ NS_ASSUME_NONNULL_BEGIN
     initWithURLTransformation:(OIDCustomBrowserURLTransformation)URLTransformation
              canOpenURLScheme:(nullable NSString *)canOpenURLScheme
                   appStoreURL:(nullable NSURL *)appStoreURL {
+  return [self initWithURLTransformation:URLTransformation
+                        canOpenURLScheme:canOpenURLScheme
+                             appStoreURL:appStoreURL
+                               URLOpener:nil];
+}
+
+- (nullable instancetype)
+    initWithURLTransformation:(OIDCustomBrowserURLTransformation)URLTransformation
+             canOpenURLScheme:(nullable NSString *)canOpenURLScheme
+                  appStoreURL:(nullable NSURL *)appStoreURL
+                    URLOpener:
+    (nullable id<OIDExternalUserAgentIOSCustomBrowserURLOpener>)URLOpener {
   self = [super init];
   if (self) {
     _URLTransformation = URLTransformation;
     _canOpenURLScheme = canOpenURLScheme;
     _appStoreURL = appStoreURL;
+    _URLOpener =
+        URLOpener ?: [[OIDExternalUserAgentIOSCustomBrowserApplicationURLOpener alloc] init];
   }
   return self;
 }
@@ -135,18 +175,11 @@ NS_ASSUME_NONNULL_BEGIN
                                 session:(nonnull id<OIDExternalUserAgentSession>)session {
   // If the app store URL is set, checks if the app is installed and if not opens the app store.
   if (_appStoreURL && _canOpenURLScheme) {
-    // Verifies existence of LSApplicationQueriesSchemes Info.plist key.
-    NSArray __unused* canOpenURLs =
-        [[NSBundle mainBundle] objectForInfoDictionaryKey:@"LSApplicationQueriesSchemes"];
-    NSAssert(canOpenURLs, @"plist missing LSApplicationQueriesSchemes key");
-    NSAssert1([canOpenURLs containsObject:_canOpenURLScheme],
-              @"plist missing LSApplicationQueriesSchemes entry for '%@'", _canOpenURLScheme);
-
     // Opens AppStore if app isn't installed
     NSString *testURLString = [NSString stringWithFormat:@"%@://example.com", _canOpenURLScheme];
     NSURL *testURL = [NSURL URLWithString:testURLString];
-    if (![[UIApplication sharedApplication] canOpenURL:testURL]) {
-      [[UIApplication sharedApplication] openURL:_appStoreURL options:@{} completionHandler:nil];
+    if (![_URLOpener canOpenURL:testURL]) {
+      [_URLOpener openURL:_appStoreURL completionHandler:nil];
       return NO;
     }
   }
@@ -161,16 +194,15 @@ NS_ASSUME_NONNULL_BEGIN
   // LSApplicationQueriesSchemes and can return NO for a URL that
   // -openURL:options:completionHandler: opens successfully (e.g. an https URL when Safari is
   // unavailable and another browser is the default). The flow fails only if the open really fails.
-  [[UIApplication sharedApplication] openURL:requestURL
-                                     options:@{}
-                           completionHandler:^(BOOL success) {
-    if (!success) {
-      NSError *safariError = [OIDErrorUtilities errorWithCode:OIDErrorCodeSafariOpenError
-                                              underlyingError:nil
-                                                  description:@"Unable to open Safari."];
-      [session failExternalUserAgentFlowWithError:safariError];
-    }
-  }];
+  [_URLOpener openURL:requestURL
+    completionHandler:^(BOOL success) {
+      if (!success) {
+        NSError *safariError = [OIDErrorUtilities errorWithCode:OIDErrorCodeSafariOpenError
+                                                underlyingError:nil
+                                                    description:@"Unable to open Safari."];
+        [session failExternalUserAgentFlowWithError:safariError];
+      }
+    }];
   return YES;
 }
 
