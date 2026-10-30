@@ -90,10 +90,12 @@ typedef void (^OIDRegistrationCompletion)(OIDRegistrationResponse *_Nullable reg
  */
 @property(nonatomic, readonly) OIDServiceConfiguration *configuration;
 
-/*! @internal
-    @brief Unavailable. This class should not be initialized.
+/*! @brief Creates a service whose instance methods perform the same operations as the class
+        methods of this class.
+    @discussion Hold an instance where you would otherwise call the class methods directly, so
+        that tests can substitute a subclass such as @c OIDFakeAuthorizationService.
  */
-- (instancetype)init NS_UNAVAILABLE;
+- (instancetype)init;
 
 /*! @brief Convenience method for creating an authorization service configuration from an OpenID
         Connect compliant issuer URL.
@@ -163,6 +165,47 @@ typedef void (^OIDRegistrationCompletion)(OIDRegistrationResponse *_Nullable reg
     @param completion The method called when the request has completed or failed.
  */
 + (void)performRegistrationRequest:(OIDRegistrationRequest *)request
+                        completion:(OIDRegistrationCompletion)completion;
+
+/*! @brief Instance counterpart of @c +presentAuthorizationRequest:externalUserAgent:callback:.
+    @param request The authorization request.
+    @param externalUserAgent Generic external user-agent that can present an authorization
+        request.
+    @param callback The method called when the request has completed or failed.
+ */
+- (id<OIDExternalUserAgentSession>)presentAuthorizationRequest:(OIDAuthorizationRequest *)request
+                                             externalUserAgent:(id<OIDExternalUserAgent>)externalUserAgent
+                                                      callback:(OIDAuthorizationCallback)callback;
+
+/*! @brief Instance counterpart of @c +presentEndSessionRequest:externalUserAgent:callback:.
+    @param request The end-session logout request.
+    @param externalUserAgent Generic external user-agent that can present user-agent requests.
+    @param callback The method called when the request has completed or failed.
+ */
+- (id<OIDExternalUserAgentSession>)presentEndSessionRequest:(OIDEndSessionRequest *)request
+                                          externalUserAgent:(id<OIDExternalUserAgent>)externalUserAgent
+                                                   callback:(OIDEndSessionCallback)callback;
+
+/*! @brief Instance counterpart of @c +performTokenRequest:callback:.
+    @param request The token request.
+    @param callback The method called when the request has completed or failed.
+ */
+- (void)performTokenRequest:(OIDTokenRequest *)request callback:(OIDTokenCallback)callback;
+
+/*! @brief Instance counterpart of @c +performTokenRequest:originalAuthorizationResponse:callback:.
+    @param request The token request.
+    @param authorizationResponse The original authorization response related to this token request.
+    @param callback The method called when the request has completed or failed.
+ */
+- (void)performTokenRequest:(OIDTokenRequest *)request
+    originalAuthorizationResponse:(OIDAuthorizationResponse *_Nullable)authorizationResponse
+                         callback:(OIDTokenCallback)callback;
+
+/*! @brief Instance counterpart of @c +performRegistrationRequest:completion:.
+    @param request The registration request.
+    @param completion The method called when the request has completed or failed.
+ */
+- (void)performRegistrationRequest:(OIDRegistrationRequest *)request
                         completion:(OIDRegistrationCompletion)completion;
 
 @end
