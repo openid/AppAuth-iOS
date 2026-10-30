@@ -6,7 +6,7 @@
 - Deprecated CocoaPods distribution. AppAuth 3.0.0 is the last release published to CocoaPods; CocoaPods trunk becomes read-only on December 2, 2026. See [MIGRATING_FROM_COCOAPODS.md](MIGRATING_FROM_COCOAPODS.md) for moving to Swift Package Manager. Addresses issue #962.
 - Added instance-method counterparts of the `OIDAuthorizationService` class methods, and made `-init` public, so the service can be injected and faked in tests.
 - Added instance-method counterparts of the iOS and macOS `OIDAuthorizationService` convenience methods, and read-only `presentingViewController` / `presentingWindow` properties on the external user agents.
-- Added the `AppAuthTestHelpers` Swift package product, with `OIDFakeExternalUserAgentSession`, for testing code that depends on AppAuth.
+- Added the `AppAuthTestHelpers` Swift package product, with `OIDFakeAuthorizationService` and `OIDFakeExternalUserAgentSession`, for testing code that depends on AppAuth.
 
 # 3.0.0
 - BREAKING: Updates made to support Xcode 27. ([#972](https://github.com/openid/AppAuth-iOS/pull/972), [#973](https://github.com/openid/AppAuth-iOS/pull/973))

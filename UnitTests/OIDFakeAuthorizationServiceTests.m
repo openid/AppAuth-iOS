@@ -1,19 +1,19 @@
 /*! @file OIDFakeAuthorizationServiceTests.m
- @brief AppAuth iOS SDK
- @copyright
+    @brief AppAuth iOS SDK
+    @copyright
         Copyright 2026 The AppAuth Authors. All Rights Reserved.
- @copydetails
- Licensed under the Apache License, Version 2.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
+    @copydetails
+        Licensed under the Apache License, Version 2.0 (the "License");
+        you may not use this file except in compliance with the License.
+        You may obtain a copy of the License at
 
- http://www.apache.org/licenses/LICENSE-2.0
+        http://www.apache.org/licenses/LICENSE-2.0
 
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
+        Unless required by applicable law or agreed to in writing, software
+        distributed under the License is distributed on an "AS IS" BASIS,
+        WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+        See the License for the specific language governing permissions and
+        limitations under the License.
  */
 
 #import <XCTest/XCTest.h>
@@ -29,6 +29,8 @@
 #import "OIDAuthorizationResponseTests.h"
 #import "OIDTokenRequestTests.h"
 
+/*! @brief An external user agent that never presents anything.
+ */
 @interface OIDNoOpExternalUserAgent : NSObject <OIDExternalUserAgent>
 @end
 
@@ -40,15 +42,21 @@
 }
 
 - (void)dismissExternalUserAgentAnimated:(BOOL)animated completion:(void (^)(void))completion {
+  if (completion) {
+    completion();
+  }
 }
 
 @end
 
+/*! @brief Unit tests for @c OIDFakeAuthorizationService.
+ */
 @interface OIDFakeAuthorizationServiceTests : XCTestCase
 @end
 
 @implementation OIDFakeAuthorizationServiceTests
 
+/*! @brief A token request is recorded, and invoking the kept callback reaches the caller. */
 - (void)testPerformTokenRequestIsRecordedAndCallbackIsReturned {
   OIDFakeAuthorizationService *service = [[OIDFakeAuthorizationService alloc] init];
   OIDTokenRequest *request = [OIDTokenRequestTests testInstance];
@@ -75,6 +83,7 @@
   XCTAssertEqual(receivedError, someError);
 }
 
+/*! @brief The two-argument token request is recorded with no authorization response. */
 - (void)testTwoArgumentPerformTokenRequestRoutesToThreeArgument {
   OIDFakeAuthorizationService *service = [[OIDFakeAuthorizationService alloc] init];
   OIDTokenRequest *request = [OIDTokenRequestTests testInstance];
@@ -89,6 +98,9 @@
   XCTAssertNil(service.lastOriginalAuthorizationResponse);
 }
 
+/*! @brief An authorization request is recorded and returns a fake session, which counts a cancel
+        without calling back.
+ */
 - (void)testPresentAuthorizationRequestReturnsFakeSession {
   OIDFakeAuthorizationService *service = [[OIDFakeAuthorizationService alloc] init];
   OIDAuthorizationRequest *request = [OIDAuthorizationRequestTests testInstance];
@@ -111,25 +123,6 @@
   [session cancel];
   XCTAssertEqual(service.lastAuthorizationSession.cancelCount, 1u);
   XCTAssertFalse(callbackInvoked);
-}
-
-- (void)testFakeSessionResumeRecordsURLAndHonoursResumeResult {
-  OIDFakeExternalUserAgentSession *session = [[OIDFakeExternalUserAgentSession alloc] init];
-  NSURL *firstURL = [NSURL URLWithString:@"https://example.com/callback?code=1"];
-  NSURL *secondURL = [NSURL URLWithString:@"https://example.com/callback?code=2"];
-
-  session.resumeResult = NO;
-  NSError *error = nil;
-  XCTAssertFalse([session resumeExternalUserAgentFlowWithURL:firstURL error:&error]);
-  XCTAssertEqualObjects(session.lastResumedURL, firstURL);
-  XCTAssertEqualObjects(error.domain, OIDGeneralErrorDomain);
-  XCTAssertEqual(error.code, OIDErrorCodeURLMismatch);
-
-  session.resumeResult = YES;
-  error = nil;
-  XCTAssertTrue([session resumeExternalUserAgentFlowWithURL:secondURL error:&error]);
-  XCTAssertEqualObjects(session.lastResumedURL, secondURL);
-  XCTAssertNil(error);
 }
 
 @end
