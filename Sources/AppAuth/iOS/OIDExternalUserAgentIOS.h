@@ -34,6 +34,10 @@ NS_ASSUME_NONNULL_BEGIN
 API_UNAVAILABLE(macCatalyst)
 @interface OIDExternalUserAgentIOS : NSObject<OIDExternalUserAgent>
 
+/*! @brief The view controller from which the authentication UI is presented.
+ */
+@property(nonatomic, readonly, nullable) UIViewController *presentingViewController;
+
 - (null_unspecified instancetype)init API_AVAILABLE(ios(11))
     __deprecated_msg("This method will not work on iOS 13, use "
                      "initWithPresentingViewController:presentingViewController");

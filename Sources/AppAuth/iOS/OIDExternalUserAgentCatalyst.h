@@ -32,6 +32,10 @@ NS_ASSUME_NONNULL_BEGIN
 API_AVAILABLE(macCatalyst(13)) API_UNAVAILABLE(ios)
 @interface OIDExternalUserAgentCatalyst : NSObject<OIDExternalUserAgent>
 
+/*! @brief The view controller from which the authentication UI is presented.
+ */
+@property(nonatomic, readonly, nullable) UIViewController *presentingViewController;
+
 /*! @internal
     @brief Unavailable. Please use @c initWithPresentingViewController:
  */

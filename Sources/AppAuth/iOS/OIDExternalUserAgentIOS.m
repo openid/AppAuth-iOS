@@ -81,6 +81,8 @@ static void OIDRetainSessionBriefly(ASWebAuthenticationSession *_Nullable sessio
 #pragma clang diagnostic pop
 }
 
+@synthesize presentingViewController = _presentingViewController;
+
 - (null_unspecified instancetype)init {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wnonnull"
