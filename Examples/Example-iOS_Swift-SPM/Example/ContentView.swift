@@ -17,22 +17,24 @@
 //
 
 import SwiftUI
+import UIKit
 
 struct ContentView: View {
     @EnvironmentObject var authManager: AuthManager
+    @State private var sampleWindow = SampleWindow()
 
     var body: some View {
         NavigationStack {
             VStack(spacing: 12) {
                 HStack {
                     Button(authManager.hasAuthState ? "Re-Auth (Auto)" : "Auto") {
-                        authManager.authWithAutoCodeExchange()
+                        authManager.authWithAutoCodeExchange(from: sampleWindow)
                     }
                     .buttonStyle(.borderedProminent)
                     .frame(maxWidth: .infinity)
 
                     Button(authManager.hasAuthState ? "Re-Auth (Manual)" : "Manual") {
-                        authManager.authNoCodeExchange()
+                        authManager.authNoCodeExchange(from: sampleWindow)
                     }
                     .buttonStyle(.borderedProminent)
                     .frame(maxWidth: .infinity)
@@ -40,14 +42,14 @@ struct ContentView: View {
 
                 HStack {
                     Button("Code Exchange") {
-                        authManager.codeExchange()
+                        authManager.codeExchange(from: sampleWindow)
                     }
                     .buttonStyle(.borderedProminent)
                     .disabled(!authManager.hasAuthorizationCode)
                     .frame(maxWidth: .infinity)
 
                     Button("User Info") {
-                        authManager.userinfo()
+                        authManager.userinfo(from: sampleWindow)
                     }
                     .buttonStyle(.borderedProminent)
                     .disabled(!authManager.isAuthorized)
@@ -73,12 +75,13 @@ struct ContentView: View {
                 }
             }
             .padding()
-            .navigationTitle("AppAuth Example")
+            .background(PresentingViewControllerReader(sampleWindow: sampleWindow))
+            .navigationTitle("AppAuth Example (\(sampleWindow.label))")
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Menu {
                         Button(role: .destructive) {
-                            authManager.clearAuthState()
+                            authManager.clearAuthState(from: sampleWindow)
                         } label: {
                             Text("Clear OAuth State")
                         }
@@ -95,4 +98,18 @@ struct ContentView: View {
             }
         }
     }
+}
+
+/// Puts an empty view controller into this window, and hands it to the SampleWindow.
+/// The browser sheet is anchored to its presenting view controller's window, so it opens in the window that asked.
+struct PresentingViewControllerReader: UIViewControllerRepresentable {
+    let sampleWindow: SampleWindow
+
+    func makeUIViewController(context: Context) -> UIViewController {
+        let viewController = UIViewController()
+        sampleWindow.presentingViewController = viewController
+        return viewController
+    }
+
+    func updateUIViewController(_ uiViewController: UIViewController, context: Context) {}
 }

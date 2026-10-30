@@ -21,16 +21,19 @@ import AppAuth
 
 class AppDelegate: NSObject, UIApplicationDelegate {
 
-    var currentAuthorizationFlow: OIDExternalUserAgentSession?
+    /// The flows in progress, keyed by the label of the window that started each one.
+    /// With one shared slot, a second window's flow would replace the first, and the first would be released mid-flow.
+    var authorizationFlows: [String: OIDExternalUserAgentSession] = [:]
 
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
         // Inspecting the error lets you distinguish a benign URL mismatch
         // (the URL belongs to another handler) from an unexpected condition
         // such as no pending flow, which previously surfaced as an NSException.
-        if let authorizationFlow = self.currentAuthorizationFlow {
+        // Each window has its own flow. Flows match on the redirect URI alone, so with two in progress the wrong one can take a response, and fail it on the state check.
+        for (label, flow) in authorizationFlows {
             do {
-                try authorizationFlow.resumeExternalUserAgentFlow(url)
-                self.currentAuthorizationFlow = nil
+                try flow.resumeExternalUserAgentFlow(url)
+                authorizationFlows[label] = nil
                 return true
             } catch {
                 print("Authorization flow could not handle URL: \(error.localizedDescription)")
