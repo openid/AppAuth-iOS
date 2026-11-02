@@ -7,6 +7,7 @@
 - Deprecated CocoaPods distribution. AppAuth 3.0.0 is the last release published to CocoaPods; CocoaPods trunk becomes read-only on December 2, 2026. See [MIGRATING_FROM_COCOAPODS.md](MIGRATING_FROM_COCOAPODS.md) for moving to Swift Package Manager. Addresses issue #962.
 - Fix a crash (`NSInvalidArgumentException`) when a token, registration or device authorization endpoint answers with a JSON array instead of an object. The callback now gets an error. Addresses issue #987.
 - Added instance-method counterparts of the `OIDAuthorizationService` class methods, and made `-init` public, so the service can be injected and faked in tests.
+- Deprecated `OIDAuthorizationService.configuration`. It is never set and is always `nil`; use the request's `configuration` instead. It will be removed in 4.0.
 
 # 3.0.0
 - BREAKING: Updates made to support Xcode 27. ([#972](https://github.com/openid/AppAuth-iOS/pull/972), [#973](https://github.com/openid/AppAuth-iOS/pull/973))

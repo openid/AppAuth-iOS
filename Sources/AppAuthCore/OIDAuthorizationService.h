@@ -82,13 +82,13 @@ typedef void (^OIDRegistrationCompletion)(OIDRegistrationResponse *_Nullable reg
  */
 @interface OIDAuthorizationService : NSObject
 
-/*! @brief The service's configuration.
-    @remarks Each authorization service is initialized with a configuration. This configuration
-        specifies how to connect to a particular OAuth provider. Clients should use separate
-        authorization service instances for each provider they wish to integrate with.
-        Configurations may be created manually, or via an OpenID Connect Discovery Document.
+/*! @brief Unused, and always nil.
+    @discussion No initializer sets this, and nothing in AppAuth reads it. Each request carries
+        its own configuration (@c request.configuration). This property will be removed in
+        AppAuth 4.0.
  */
-@property(nonatomic, readonly) OIDServiceConfiguration *configuration;
+@property(nonatomic, readonly) OIDServiceConfiguration *configuration
+    __deprecated_msg("Always nil. Use the configuration on the request instead.");
 
 /*! @brief Creates a service whose instance methods call the matching class methods.
     @discussion Tests can hand in a subclass that fakes the instance methods.
