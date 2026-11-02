@@ -82,18 +82,18 @@ typedef void (^OIDRegistrationCompletion)(OIDRegistrationResponse *_Nullable reg
  */
 @interface OIDAuthorizationService : NSObject
 
-/*! @brief The service's configuration.
-    @remarks Each authorization service is initialized with a configuration. This configuration
-        specifies how to connect to a particular OAuth provider. Clients should use separate
-        authorization service instances for each provider they wish to integrate with.
-        Configurations may be created manually, or via an OpenID Connect Discovery Document.
+/*! @brief Unused, and always nil.
+    @discussion No initializer sets this, and nothing in AppAuth reads it. Each request carries
+        its own configuration (@c request.configuration). This property will be removed in
+        AppAuth 4.0.
  */
-@property(nonatomic, readonly) OIDServiceConfiguration *configuration;
+@property(nonatomic, readonly) OIDServiceConfiguration *configuration
+    __deprecated_msg("Always nil. Use the configuration on the request instead.");
 
-/*! @internal
-    @brief Unavailable. This class should not be initialized.
+/*! @brief Creates a service whose instance methods call the matching class methods.
+    @discussion Tests can hand in a subclass that fakes the instance methods.
  */
-- (instancetype)init NS_UNAVAILABLE;
+- (instancetype)init;
 
 /*! @brief Convenience method for creating an authorization service configuration from an OpenID
         Connect compliant issuer URL.
@@ -163,6 +163,49 @@ typedef void (^OIDRegistrationCompletion)(OIDRegistrationResponse *_Nullable reg
     @param completion The method called when the request has completed or failed.
  */
 + (void)performRegistrationRequest:(OIDRegistrationRequest *)request
+                        completion:(OIDRegistrationCompletion)completion;
+
+/*! @brief Instance counterpart of @c +presentAuthorizationRequest:externalUserAgent:callback:.
+    @param request The authorization request.
+    @param externalUserAgent Generic external user-agent that can present an authorization
+        request.
+    @param callback The method called when the request has completed or failed.
+ */
+- (id<OIDExternalUserAgentSession>)
+    presentAuthorizationRequest:(OIDAuthorizationRequest *)request
+              externalUserAgent:(id<OIDExternalUserAgent>)externalUserAgent
+                       callback:(OIDAuthorizationCallback)callback;
+
+/*! @brief Instance counterpart of @c +presentEndSessionRequest:externalUserAgent:callback:.
+    @param request The end-session logout request.
+    @param externalUserAgent Generic external user-agent that can present user-agent requests.
+    @param callback The method called when the request has completed or failed.
+ */
+- (id<OIDExternalUserAgentSession>)
+    presentEndSessionRequest:(OIDEndSessionRequest *)request
+           externalUserAgent:(id<OIDExternalUserAgent>)externalUserAgent
+                    callback:(OIDEndSessionCallback)callback;
+
+/*! @brief Instance counterpart of @c +performTokenRequest:callback:.
+    @param request The token request.
+    @param callback The method called when the request has completed or failed.
+ */
+- (void)performTokenRequest:(OIDTokenRequest *)request callback:(OIDTokenCallback)callback;
+
+/*! @brief Instance counterpart of @c +performTokenRequest:originalAuthorizationResponse:callback:.
+    @param request The token request.
+    @param authorizationResponse The original authorization response related to this token request.
+    @param callback The method called when the request has completed or failed.
+ */
+- (void)performTokenRequest:(OIDTokenRequest *)request
+    originalAuthorizationResponse:(OIDAuthorizationResponse *_Nullable)authorizationResponse
+                         callback:(OIDTokenCallback)callback;
+
+/*! @brief Instance counterpart of @c +performRegistrationRequest:completion:.
+    @param request The registration request.
+    @param completion The method called when the request has completed or failed.
+ */
+- (void)performRegistrationRequest:(OIDRegistrationRequest *)request
                         completion:(OIDRegistrationCompletion)completion;
 
 @end
