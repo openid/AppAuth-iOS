@@ -193,6 +193,26 @@ NS_ASSUME_NONNULL_BEGIN
       }
   }
 
+  // verifies that a successful response to a request whose response_type includes "code" carries
+  // the authorization code (RFC 6749 Section 4.1.2, OpenID Connect Core Section 3.3.2.5). Without
+  // this check the response is delivered without a code and the code exchange raises
+  // kTokenExchangeRequestException.
+  NSArray<NSString *> *responseTypes = [_request.responseType componentsSeparatedByString:@" "];
+  if (response && !response.authorizationCode &&
+      [responseTypes containsObject:OIDResponseTypeCode]) {
+    NSMutableDictionary *userInfo = [query.dictionaryValue mutableCopy];
+    userInfo[NSLocalizedDescriptionKey] =
+      [NSString stringWithFormat:@"The authorization response is missing the code parameter, "
+                                  "which is required for response_type \"%@\" (RFC 6749 section "
+                                  "4.1.2). Response: %@",
+                                  _request.responseType,
+                                  response];
+    response = nil;
+    responseError = [NSError errorWithDomain:OIDOAuthAuthorizationErrorDomain
+                                        code:OIDErrorCodeOAuthAuthorizationClientError
+                                    userInfo:userInfo];
+  }
+
   [_externalUserAgent dismissExternalUserAgentAnimated:YES completion:^{
       [self didFinishWithResponse:response error:responseError];
   }];
