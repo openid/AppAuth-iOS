@@ -18,14 +18,21 @@
 
 #import <XCTest/XCTest.h>
 
+#import "OIDAuthorizationRequestTests.h"
 #import "OIDRegistrationRequestTests.h"
+#import "OIDServiceConfigurationTests.h"
 #import "OIDTokenRequestTests.h"
 
 #if SWIFT_PACKAGE
 @import AppAuthCore;
 #else
+#import "Sources/AppAuthCore/OIDAuthState.h"
+#import "Sources/AppAuthCore/OIDAuthorizationRequest.h"
+#import "Sources/AppAuthCore/OIDAuthorizationResponse.h"
 #import "Sources/AppAuthCore/OIDAuthorizationService.h"
 #import "Sources/AppAuthCore/OIDError.h"
+#import "Sources/AppAuthCore/OIDExternalUserAgent.h"
+#import "Sources/AppAuthCore/OIDExternalUserAgentSession.h"
 #import "Sources/AppAuthCore/OIDRegistrationRequest.h"
 #import "Sources/AppAuthCore/OIDRegistrationResponse.h"
 #import "Sources/AppAuthCore/OIDTokenRequest.h"
@@ -91,6 +98,26 @@ static NSData *gStubbedBody;
 
 /*! @brief Unit tests for the response handling in @c OIDAuthorizationService.
  */
+// An external user agent that "presents" immediately and dismisses synchronously, so a test can
+// drive an authorization session by resuming it with a redirect URL itself.
+@interface OIDImmediateExternalUserAgent : NSObject <OIDExternalUserAgent>
+@end
+
+@implementation OIDImmediateExternalUserAgent
+
+- (BOOL)presentExternalUserAgentRequest:(id<OIDExternalUserAgentRequest>)request
+                                session:(id<OIDExternalUserAgentSession>)session {
+  return YES;
+}
+
+- (void)dismissExternalUserAgentAnimated:(BOOL)animated completion:(void (^)(void))completion {
+  if (completion) {
+    completion();
+  }
+}
+
+@end
+
 @interface OIDAuthorizationServiceTests : XCTestCase
 @end
 
@@ -264,6 +291,158 @@ static NSData *gStubbedBody;
   XCTAssertNil(response);
   XCTAssertEqualObjects(error.domain, OIDGeneralErrorDomain);
   XCTAssertEqual(error.code, OIDErrorCodeJSONDeserializationError);
+}
+
+#pragma mark - Authorization responses
+
+/*! @brief Presents @c request with an immediate user agent, resumes the session with
+        @c redirectURL and returns the callback's error, passing the response out through
+        @c response.
+ */
+- (NSError *)errorFromAuthorizationRequest:(OIDAuthorizationRequest *)request
+                               redirectURL:(NSURL *)redirectURL
+                                  response:(OIDAuthorizationResponse **)response {
+  __block OIDAuthorizationResponse *returnedResponse = nil;
+  __block NSError *returnedError = nil;
+  __block BOOL called = NO;
+  id<OIDExternalUserAgentSession> session = [OIDAuthorizationService
+      presentAuthorizationRequest:request
+                externalUserAgent:[[OIDImmediateExternalUserAgent alloc] init]
+                         callback:^(OIDAuthorizationResponse *_Nullable authorizationResponse,
+                                    NSError *_Nullable error) {
+    returnedResponse = authorizationResponse;
+    returnedError = error;
+    called = YES;
+  }];
+  NSError *resumeError = nil;
+  XCTAssertTrue([session resumeExternalUserAgentFlowWithURL:redirectURL error:&resumeError]);
+  XCTAssertNil(resumeError);
+  XCTAssertTrue(called);
+  if (response) {
+    *response = returnedResponse;
+  }
+  return returnedError;
+}
+
+/*! @brief Tests that a code flow redirect without a @c code parameter fails the flow with an error
+        instead of delivering a response that has no authorization code. Addresses issue #813.
+ */
+- (void)testCodeFlowResponseWithoutCodeReturnsError {
+  OIDAuthorizationRequest *request = [OIDAuthorizationRequestTests testInstanceCodeFlow];
+  NSURL *redirect = [NSURL URLWithString:@"http://www.google.com/?state=State"];
+  OIDAuthorizationResponse *response = nil;
+  NSError *error = [self errorFromAuthorizationRequest:request
+                                           redirectURL:redirect
+                                              response:&response];
+  XCTAssertNil(response);
+  XCTAssertEqualObjects(error.domain, OIDOAuthAuthorizationErrorDomain);
+  XCTAssertEqual(error.code, OIDErrorCodeOAuthAuthorizationClientError);
+  XCTAssertTrue([error.localizedDescription containsString:@"missing the code parameter"]);
+}
+
+/*! @brief Tests that a hybrid flow (@c "code id_token") redirect without a @c code parameter also
+        fails the flow.
+ */
+- (void)testHybridFlowResponseWithoutCodeReturnsError {
+  OIDAuthorizationRequest *request =
+      [self requestWithResponseType:[NSString stringWithFormat:@"%@ %@", OIDResponseTypeCode,
+                                                               OIDResponseTypeIDToken]];
+  NSURL *redirect = [NSURL URLWithString:@"http://www.google.com/?state=State&id_token=abc"];
+  OIDAuthorizationResponse *response = nil;
+  NSError *error = [self errorFromAuthorizationRequest:request
+                                           redirectURL:redirect
+                                              response:&response];
+  XCTAssertNil(response);
+  XCTAssertEqualObjects(error.domain, OIDOAuthAuthorizationErrorDomain);
+  XCTAssertEqual(error.code, OIDErrorCodeOAuthAuthorizationClientError);
+}
+
+/*! @brief Tests that a code flow redirect with a @c code parameter is still delivered.
+ */
+- (void)testCodeFlowResponseWithCodeSucceeds {
+  OIDAuthorizationRequest *request = [OIDAuthorizationRequestTests testInstanceCodeFlow];
+  NSURL *redirect = [NSURL URLWithString:@"http://www.google.com/?code=AuthCode&state=State"];
+  OIDAuthorizationResponse *response = nil;
+  NSError *error = [self errorFromAuthorizationRequest:request
+                                           redirectURL:redirect
+                                              response:&response];
+  XCTAssertNil(error);
+  XCTAssertEqualObjects(response.authorizationCode, @"AuthCode");
+}
+
+/*! @brief Tests that an OAuth error redirect is reported as the server's error, not as a missing
+        code.
+ */
+- (void)testCodeFlowErrorResponseKeepsOAuthError {
+  OIDAuthorizationRequest *request = [OIDAuthorizationRequestTests testInstanceCodeFlow];
+  NSURL *redirect =
+      [NSURL URLWithString:@"http://www.google.com/?error=access_denied&state=State"];
+  OIDAuthorizationResponse *response = nil;
+  NSError *error = [self errorFromAuthorizationRequest:request
+                                           redirectURL:redirect
+                                              response:&response];
+  XCTAssertNil(response);
+  XCTAssertEqualObjects(error.domain, OIDOAuthAuthorizationErrorDomain);
+  XCTAssertEqual(error.code, OIDErrorCodeOAuthAuthorizationAccessDenied);
+}
+
+/*! @brief Tests that a state mismatch is still reported as such when the code is also missing.
+ */
+- (void)testStateMismatchTakesPrecedenceOverMissingCode {
+  OIDAuthorizationRequest *request = [OIDAuthorizationRequestTests testInstanceCodeFlow];
+  NSURL *redirect = [NSURL URLWithString:@"http://www.google.com/?state=Other"];
+  OIDAuthorizationResponse *response = nil;
+  NSError *error = [self errorFromAuthorizationRequest:request
+                                           redirectURL:redirect
+                                              response:&response];
+  XCTAssertNil(response);
+  XCTAssertTrue([error.localizedDescription containsString:@"State mismatch"]);
+}
+
+/*! @brief Tests that the @c OIDAuthState convenience flow reports a missing code through its
+        callback. It used to call @c tokenExchangeRequest on a response without a code, which
+        raises @c kTokenExchangeRequestException and crashes the app.
+ */
+- (void)testAuthStateCodeFlowWithoutCodeReturnsErrorInsteadOfRaising {
+  OIDAuthorizationRequest *request = [OIDAuthorizationRequestTests testInstanceCodeFlow];
+  __block OIDAuthState *returnedState = nil;
+  __block NSError *returnedError = nil;
+  __block BOOL called = NO;
+  OIDImmediateExternalUserAgent *userAgent = [[OIDImmediateExternalUserAgent alloc] init];
+  id<OIDExternalUserAgentSession> session =
+      [OIDAuthState authStateByPresentingAuthorizationRequest:request
+                                            externalUserAgent:userAgent
+                                                     callback:^(OIDAuthState *_Nullable authState,
+                                                                NSError *_Nullable error) {
+    returnedState = authState;
+    returnedError = error;
+    called = YES;
+  }];
+  NSURL *redirect = [NSURL URLWithString:@"http://www.google.com/?state=State"];
+  XCTAssertNoThrow([session resumeExternalUserAgentFlowWithURL:redirect error:NULL]);
+  XCTAssertTrue(called);
+  XCTAssertNil(returnedState);
+  XCTAssertEqualObjects(returnedError.domain, OIDOAuthAuthorizationErrorDomain);
+  XCTAssertEqual(returnedError.code, OIDErrorCodeOAuthAuthorizationClientError);
+}
+
+/*! @brief Returns a request like @c [OIDAuthorizationRequestTests testInstanceCodeFlow] with the
+        given response type and state @c "State".
+ */
+- (OIDAuthorizationRequest *)requestWithResponseType:(NSString *)responseType {
+  return [[OIDAuthorizationRequest alloc]
+      initWithConfiguration:[OIDServiceConfigurationTests testInstance]
+                   clientId:@"ClientID"
+               clientSecret:nil
+                      scope:@"openid"
+                redirectURL:[NSURL URLWithString:@"http://www.google.com/"]
+               responseType:responseType
+                      state:@"State"
+                      nonce:@"Nonce"
+               codeVerifier:nil
+              codeChallenge:nil
+        codeChallengeMethod:nil
+       additionalParameters:nil];
 }
 
 @end
