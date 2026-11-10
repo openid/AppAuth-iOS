@@ -70,7 +70,7 @@
 static NSString *const kTestURL = @"http://www.google.com/";
 
 /*! A string for testing an invalid URL. */
-static NSString *const kTestURLInvalid = @"abc";
+static NSString *const kTestURLInvalid = @"http://foo bar/";
 
 /*! Field keys associated with an OpenID Connect Discovery Document. */
 static NSString *const kIssuerKey = @"issuer";
@@ -337,8 +337,7 @@ static NSString *const kDiscoveryDocumentNotDictionary =
 
 /*! @brief Tests that we get an error when the required fields are present but invalid.
  */
-// TODO: this test is failing
-- (void)pendingTestErrorWhenMalformedFields {
+- (void)testErrorWhenMalformedFields {
   NSError *error;
   // builds a discovery document with a munged field
   NSMutableDictionary *serviceDiscoveryDictionary =
@@ -358,8 +357,7 @@ static NSString *const kDiscoveryDocumentNotDictionary =
 
 /*! @brief Tests that we get an error when null is passed in through JSON.
  */
-// TODO: this test is failing
-- (void)pendingTestErrorWhenJSONNullField {
+- (void)testErrorWhenJSONNullField {
   NSError *error;
   OIDServiceDiscovery *discovery =
       [[OIDServiceDiscovery alloc] initWithJSON:kDiscoveryDocumentNullField error:&error];
@@ -368,6 +366,57 @@ static NSString *const kDiscoveryDocumentNotDictionary =
   XCTAssertNotNil(error, @"There should be an error indicating we are missing required fields.");
   XCTAssertEqualObjects(error.domain, OIDGeneralErrorDomain, @"");
   XCTAssertEqual(error.code, OIDErrorCodeInvalidDiscoveryDocument, @"");
+}
+
+/*! @brief Tests that a present optional URL-valued field that is not a string is accepted, with
+        its property reading as nil.
+ */
+- (void)testNoErrorWhenOptionalURLFieldIsNotAString {
+  NSError *error;
+  NSMutableDictionary *serviceDiscoveryDictionary =
+      [[[self class] minimumServiceDiscoveryDictionary] mutableCopy];
+  serviceDiscoveryDictionary[kOPPolicyURIKey] = @42;
+
+  OIDServiceDiscovery *discovery =
+      [[OIDServiceDiscovery alloc] initWithDictionary:serviceDiscoveryDictionary error:&error];
+  XCTAssertNotNil(discovery, @"An optional URL field that is not a string should not reject the "
+                             "discovery document.");
+  XCTAssertNil(error, @"");
+  XCTAssertNil(discovery.OPPolicyURI, @"");
+}
+
+/*! @brief Tests that a present optional URL-valued field set to JSON null is accepted, with its
+        property reading as nil.
+ */
+- (void)testNoErrorWhenOptionalURLFieldIsJSONNull {
+  NSError *error;
+  NSMutableDictionary *serviceDiscoveryDictionary =
+      [[[self class] minimumServiceDiscoveryDictionary] mutableCopy];
+  serviceDiscoveryDictionary[kOPPolicyURIKey] = [NSNull null];
+
+  OIDServiceDiscovery *discovery =
+      [[OIDServiceDiscovery alloc] initWithDictionary:serviceDiscoveryDictionary error:&error];
+  XCTAssertNotNil(discovery, @"An optional URL field set to JSON null should not reject the "
+                             "discovery document.");
+  XCTAssertNil(error, @"");
+  XCTAssertNil(discovery.OPPolicyURI, @"");
+}
+
+/*! @brief Tests that a present optional URL-valued field that does not parse is accepted, with
+        its property reading as nil.
+ */
+- (void)testNoErrorWhenOptionalURLFieldDoesNotParse {
+  NSError *error;
+  NSMutableDictionary *serviceDiscoveryDictionary =
+      [[[self class] minimumServiceDiscoveryDictionary] mutableCopy];
+  serviceDiscoveryDictionary[kOPPolicyURIKey] = kTestURLInvalid;
+
+  OIDServiceDiscovery *discovery =
+      [[OIDServiceDiscovery alloc] initWithDictionary:serviceDiscoveryDictionary error:&error];
+  XCTAssertNotNil(discovery, @"An optional URL field that does not parse should not reject the "
+                             "discovery document.");
+  XCTAssertNil(error, @"");
+  XCTAssertNil(discovery.OPPolicyURI, @"");
 }
 
 /*! @brief Tests that the JSON String version results in a valid object.

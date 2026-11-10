@@ -33,6 +33,26 @@ NS_ASSUME_NONNULL_BEGIN
  */
 typedef NSURL *_Nullable (^OIDCustomBrowserURLTransformation)(NSURL *_Nullable requestURL);
 
+/*! @brief Opens URLs on behalf of @c OIDExternalUserAgentIOSCustomBrowser.
+    @discussion The default opener forwards to @c UIApplication. Supply your own to open URLs
+        where @c UIApplication is unavailable, or to substitute the opener in tests.
+ */
+@protocol OIDExternalUserAgentIOSCustomBrowserURLOpener <NSObject>
+
+/*! @brief Whether @c URL can be opened. Mirrors @c -[UIApplication canOpenURL:] and is subject
+        to the same @c LSApplicationQueriesSchemes restrictions.
+ */
+- (BOOL)canOpenURL:(NSURL *)URL;
+
+/*! @brief Opens @c URL and reports the outcome on the main queue. Mirrors
+        @c -[UIApplication openURL:options:completionHandler:].
+    @param URL The URL to open.
+    @param completionHandler Called with YES if the URL was opened, NO otherwise. May be nil.
+ */
+- (void)openURL:(NSURL *)URL completionHandler:(nullable void (^)(BOOL success))completionHandler;
+
+@end
+
 /*! @brief An implementation of the OIDExternalUserAgent protocol for iOS that uses
         a custom browser (i.e. not Safari) for external requests. It is suitable for browsers that
         offer a custom url scheme that simply replaces the "https" scheme. It is not designed
@@ -53,6 +73,10 @@ API_UNAVAILABLE(macCatalyst)
 /*! @brief URL of the browser's App Store listing.
  */
 @property(nonatomic, readonly, nullable) NSURL *appStoreURL;
+
+/*! @brief The object used to open URLs. Defaults to an opener backed by @c UIApplication.
+ */
+@property(nonatomic, readonly) id<OIDExternalUserAgentIOSCustomBrowserURLOpener> URLOpener;
 
 /*! @brief An instance of @c OIDExternalUserAgentIOSCustomBrowser for Chrome.
  */
@@ -92,7 +116,7 @@ API_UNAVAILABLE(macCatalyst)
  */
 - (nullable instancetype)initWithURLTransformation:(OIDCustomBrowserURLTransformation)URLTransformation;
 
-/*! @brief The designated initializer.
+/*! @brief Convenience initializer. Uses an opener backed by @c UIApplication.
     @param URLTransformation the transformation block to translate the URL into one that will open
         in the desired custom browser.
     @param canOpenURLScheme any scheme supported by the browser used to check if the browser is
@@ -103,7 +127,24 @@ API_UNAVAILABLE(macCatalyst)
  */
 - (nullable instancetype)initWithURLTransformation:(OIDCustomBrowserURLTransformation)URLTransformation
                                   canOpenURLScheme:(nullable NSString *)canOpenURLScheme
+                                       appStoreURL:(nullable NSURL *)appStoreURL;
+
+/*! @brief The designated initializer.
+    @param URLTransformation the transformation block to translate the URL into one that will open
+        in the desired custom browser.
+    @param canOpenURLScheme any scheme supported by the browser used to check if the browser is
+        installed.
+    @param appStoreURL URL of the browser in the app store. When this and @c canOpenURLScheme
+        are non-nil, @c presentExternalUserAgentRequest:session will redirect the user to the app store
+        if the browser is not installed.
+    @param URLOpener the object used to open URLs. Pass nil to use an opener backed by
+        @c UIApplication.
+ */
+- (nullable instancetype)initWithURLTransformation:(OIDCustomBrowserURLTransformation)URLTransformation
+                                  canOpenURLScheme:(nullable NSString *)canOpenURLScheme
                                        appStoreURL:(nullable NSURL *)appStoreURL
+                                         URLOpener:
+    (nullable id<OIDExternalUserAgentIOSCustomBrowserURLOpener>)URLOpener
     NS_DESIGNATED_INITIALIZER;
 
 @end

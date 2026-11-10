@@ -3,10 +3,12 @@
 [![codecov](https://codecov.io/gh/openid/AppAuth-iOS/branch/master/graph/badge.svg)](https://codecov.io/gh/openid/AppAuth-iOS)
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-brightgreen.svg?style=flat)](https://github.com/Carthage/Carthage)
 [![SwiftPM compatible](https://img.shields.io/badge/SwiftPM-compatible-brightgreen.svg?style=flat)](https://swift.org/package-manager)
-[![Pod Version](https://img.shields.io/cocoapods/v/AppAuth.svg?style=flat)](https://cocoapods.org/pods/AppAuth)
-[![Pod License](https://img.shields.io/cocoapods/l/AppAuth.svg?style=flat)](https://github.com/openid/AppAuth-iOS/blob/master/LICENSE)
-[![Pod Platform](https://img.shields.io/cocoapods/p/AppAuth.svg?style=flat)](https://cocoapods.org/pods/AppAuth)
+[![Release](https://img.shields.io/github/v/release/openid/AppAuth-iOS?style=flat)](https://github.com/openid/AppAuth-iOS/releases)
+[![License](https://img.shields.io/github/license/openid/AppAuth-iOS?style=flat)](LICENSE)
 [![Catalyst compatible](https://img.shields.io/badge/Catalyst-compatible-brightgreen.svg?style=flat)](https://developer.apple.com/documentation/xcode/creating_a_mac_version_of_your_ipad_app)
+
+> [!IMPORTANT]
+> **CocoaPods distribution is deprecated.** CocoaPods trunk becomes read-only on December 2, 2026. AppAuth 3.0.0 is the last version published to CocoaPods; future releases are distributed through Swift Package Manager and Carthage. See [Migrating from CocoaPods to Swift Package Manager](MIGRATING_FROM_COCOAPODS.md).
 
 AppAuth for iOS and macOS, and tvOS is a client SDK for communicating with 
 [OAuth 2.0](https://tools.ietf.org/html/rfc6749) and 
@@ -85,44 +87,34 @@ AppAuthTV is designed for servers that support the device authorization flow as 
 
 ## Try
 
-Want to try out AppAuth? Just run:
-
-    pod try AppAuth
-
-Follow the instructions in [Examples/README.md](Examples/README.md) to configure
-with your own OAuth client (you need to update three configuration points with your
-client info to try the demo).
+Want to try out AppAuth? Follow the instructions in [Examples/README.md](Examples/README.md) to
+configure the example apps with your own OAuth client (you need to update three configuration
+points with your client info to try the demo).
 
 ## Setup
 
-AppAuth supports four options for dependency management.
-
-### CocoaPods
-
-With [CocoaPods](https://guides.cocoapods.org/using/getting-started.html),
-add the following line to your `Podfile`:
-
-    pod 'AppAuth'
-
-Then, run `pod install`.
-
-**tvOS:** Use the `TV` subspec:
-
-    pod 'AppAuth/TV'
-
+AppAuth supports three options for dependency management.
 
 ### Swift Package Manager
 
-With [Swift Package Manager](https://swift.org/package-manager), 
-add the following `dependency` to your `Package.swift`:
+With [Swift Package Manager](https://swift.org/package-manager), in Xcode choose
+**File > Add Package Dependencies…**, enter `https://github.com/openid/AppAuth-iOS`, and add
+the product you need to your target:
+
+* `AppAuth` — the full library, including the platform's external user agent.
+* `AppAuthCore` — core types only (for example, in app extensions).
+* `AppAuthTV` — the tvOS device authorization flow (use with `AppAuthCore`).
+
+Or add the following `dependency` to your `Package.swift`:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/openid/AppAuth-iOS.git", .upToNextMajor(from: "1.3.0"))
+    .package(url: "https://github.com/openid/AppAuth-iOS.git", .upToNextMajor(from: "3.0.0"))
 ]
 ```
 
-**tvOS:** Use the `AppAuthTV` target.
+If you currently use CocoaPods, see
+[Migrating from CocoaPods to Swift Package Manager](MIGRATING_FROM_COCOAPODS.md).
 
 ### Carthage
 
