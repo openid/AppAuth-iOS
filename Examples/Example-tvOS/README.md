@@ -2,21 +2,15 @@
 
 ## Setup & Open the Project
 
-1. In the `Example-tvOS` folder, run the following command to install the AppAuth pod with the TV
-subspec.
+Open the `Example-tvOS.xcodeproj` project. Xcode resolves the local AppAuth package from the
+repository root automatically and links the `AppAuthTV` product.
 
 ```
-pod install
+open Example-tvOS.xcodeproj
 ```
 
-2. Open the `Example-tvOS.xcworkspace` workspace.
-
-```
-open Example-tvOS.xcworkspace
-```
-
-This workspace is configured to include AppAuth via CocoaPods. You can also include AppAuthTV using 
-Carthage or Swift Package Manager, please see the main [README](../../README.md) for instructions. 
+You can also include AppAuthTV using Carthage, please see the main [README](../../README.md) for
+instructions.
 
 ## Configuration
 

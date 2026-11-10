@@ -2,21 +2,14 @@
 
 ## Setup & Open the Project
 
-1. In the `Example-macOS` folder, run the following command to install the
-AppAuth pod.
+Open the `Example-macOS.xcodeproj` project. Xcode resolves the local AppAuth package from the
+repository root automatically.
 
 ```
-pod install
+open Example-macOS.xcodeproj
 ```
 
-2. Open the `Example-macOS.xcworkspace` workspace
-
-```
-open Example-macOS.xcworkspace
-```
-
-This workspace is configured to include AppAuth via CocoaPods. You can also
-directly include AppAuth as a static library using the build targets in the
+You can also include AppAuth as a static library using the build targets in the
 `AppAuth.xcodeproj` project.
 
 ## Configuration

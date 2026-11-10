@@ -7,8 +7,7 @@
 [![License](https://img.shields.io/github/license/openid/AppAuth-iOS?style=flat)](LICENSE)
 [![Catalyst compatible](https://img.shields.io/badge/Catalyst-compatible-brightgreen.svg?style=flat)](https://developer.apple.com/documentation/xcode/creating_a_mac_version_of_your_ipad_app)
 
-> [!IMPORTANT]
-> **CocoaPods distribution is deprecated.** CocoaPods trunk becomes read-only on December 2, 2026. AppAuth 3.0.0 is the last version published to CocoaPods; future releases are distributed through Swift Package Manager and Carthage. See [Migrating from CocoaPods to Swift Package Manager](MIGRATING_FROM_COCOAPODS.md).
+> **CocoaPods support ended with AppAuth 3.0.0.** Later releases are distributed through Swift Package Manager and Carthage. See [Migrating from CocoaPods to Swift Package Manager](MIGRATING_FROM_COCOAPODS.md).
 
 AppAuth for iOS and macOS, and tvOS is a client SDK for communicating with 
 [OAuth 2.0](https://tools.ietf.org/html/rfc6749) and 
