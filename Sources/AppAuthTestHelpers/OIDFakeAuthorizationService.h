@@ -28,6 +28,8 @@ NS_ASSUME_NONNULL_BEGIN
     @discussion Inject an instance where production code would otherwise call the class methods of
         @c OIDAuthorizationService. The class methods of this fake are inherited unchanged and still
         perform real work; only the instance methods are faked.
+        A kept callback clears itself once invoked. Callbacks usually capture the caller, and the
+        caller often holds this fake. Keeping the callback would leak both.
  */
 @interface OIDFakeAuthorizationService : OIDAuthorizationService
 
@@ -43,6 +45,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic, readonly, nullable) id<OIDExternalUserAgent> lastExternalUserAgent;
 
 /*! @brief The callback of the most recent authorization request. Invoke it to complete the flow.
+        Becomes nil once invoked.
  */
 @property(nonatomic, readonly, copy, nullable) OIDAuthorizationCallback lastAuthorizationCallback;
 
@@ -55,7 +58,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property(nonatomic, readonly, nullable) OIDEndSessionRequest *lastEndSessionRequest;
 
-/*! @brief The callback of the most recent end-session request.
+/*! @brief The callback of the most recent end-session request. Becomes nil once invoked.
  */
 @property(nonatomic, readonly, copy, nullable) OIDEndSessionCallback lastEndSessionCallback;
 
@@ -74,6 +77,7 @@ NS_ASSUME_NONNULL_BEGIN
     OIDAuthorizationResponse *lastOriginalAuthorizationResponse;
 
 /*! @brief The callback of the most recent token request. Invoke it to complete the request.
+        Becomes nil once invoked.
  */
 @property(nonatomic, readonly, copy, nullable) OIDTokenCallback lastTokenCallback;
 
@@ -81,7 +85,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property(nonatomic, readonly, nullable) OIDRegistrationRequest *lastRegistrationRequest;
 
-/*! @brief The completion of the most recent registration request.
+/*! @brief The completion of the most recent registration request. Becomes nil once invoked.
  */
 @property(nonatomic, readonly, copy, nullable) OIDRegistrationCompletion lastRegistrationCompletion;
 
