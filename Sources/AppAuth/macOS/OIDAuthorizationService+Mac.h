@@ -93,8 +93,7 @@ NS_ASSUME_NONNULL_BEGIN
     presentAuthorizationRequest:(OIDAuthorizationRequest *)request
                presentingWindow:(NSWindow *)presentingWindow
         prefersEphemeralSession:(BOOL)prefersEphemeralSession
-                       callback:(OIDAuthorizationCallback)callback
-    API_AVAILABLE(macos(10.15));
+                       callback:(OIDAuthorizationCallback)callback;
 
 @end
 

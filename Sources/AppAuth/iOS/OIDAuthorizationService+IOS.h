@@ -83,8 +83,7 @@ NS_ASSUME_NONNULL_BEGIN
     presentAuthorizationRequest:(OIDAuthorizationRequest *)request
        presentingViewController:(UIViewController *)presentingViewController
         prefersEphemeralSession:(BOOL)prefersEphemeralSession
-                       callback:(OIDAuthorizationCallback)callback
-    API_AVAILABLE(ios(13));
+                       callback:(OIDAuthorizationCallback)callback;
 
 @end
 
