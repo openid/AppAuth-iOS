@@ -125,4 +125,65 @@
   XCTAssertFalse(callbackInvoked);
 }
 
+/*! @brief Invoking the kept token callback clears it, and the fake stops holding what it captured.
+ */
+- (void)testInvokingTokenCallbackClearsIt {
+  OIDFakeAuthorizationService *service = [[OIDFakeAuthorizationService alloc] init];
+  __weak NSObject *weakCaptured = nil;
+  @autoreleasepool {
+    NSObject *captured = [[NSObject alloc] init];
+    weakCaptured = captured;
+    [service performTokenRequest:[OIDTokenRequestTests testInstance]
+                        callback:^(OIDTokenResponse *_Nullable tokenResponse,
+                                   NSError *_Nullable error) {
+                          (void)captured;
+                        }];
+    service.lastTokenCallback(nil, nil);
+  }
+  XCTAssertNil(service.lastTokenCallback);
+  XCTAssertNil(weakCaptured);
+}
+
+/*! @brief Invoking the kept authorization callback clears it, and the fake stops holding what it
+        captured.
+ */
+- (void)testInvokingAuthorizationCallbackClearsIt {
+  OIDFakeAuthorizationService *service = [[OIDFakeAuthorizationService alloc] init];
+  OIDNoOpExternalUserAgent *userAgent = [[OIDNoOpExternalUserAgent alloc] init];
+  __weak NSObject *weakCaptured = nil;
+  @autoreleasepool {
+    NSObject *captured = [[NSObject alloc] init];
+    weakCaptured = captured;
+    [service presentAuthorizationRequest:[OIDAuthorizationRequestTests testInstance]
+                       externalUserAgent:userAgent
+                                callback:^(OIDAuthorizationResponse *_Nullable response,
+                                           NSError *_Nullable error) {
+                                  (void)captured;
+                                }];
+    service.lastAuthorizationCallback(nil, nil);
+  }
+  XCTAssertNil(service.lastAuthorizationCallback);
+  XCTAssertNil(weakCaptured);
+}
+
+/*! @brief Invoking an older kept callback leaves the newer one in place.
+ */
+- (void)testInvokingOlderTokenCallbackKeepsNewerOne {
+  OIDFakeAuthorizationService *service = [[OIDFakeAuthorizationService alloc] init];
+  OIDTokenRequest *request = [OIDTokenRequestTests testInstance];
+  [service performTokenRequest:request
+                      callback:^(OIDTokenResponse *_Nullable tokenResponse,
+                                 NSError *_Nullable error) {
+                      }];
+  OIDTokenCallback olderCallback = service.lastTokenCallback;
+  [service performTokenRequest:request
+                      callback:^(OIDTokenResponse *_Nullable tokenResponse,
+                                 NSError *_Nullable error) {
+                      }];
+  OIDTokenCallback newerCallback = service.lastTokenCallback;
+
+  olderCallback(nil, nil);
+  XCTAssertEqual(service.lastTokenCallback, newerCallback);
+}
+
 @end
