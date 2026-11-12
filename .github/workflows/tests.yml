@@ -71,7 +71,7 @@ jobs:
   xcode-27-preview-test:
     # Xcode 27 is currently only available on the preview `xcode-27` image,
     # on which Xcode 27 beta is the only (thus, default) Xcode and the simulator
-    # runtimes are the 27.0 generation. The image is preview, so this job is does
+    # runtimes are the 27.0 generation. The image is preview, so this job does
     # not block merges.
     # https://github.com/actions/runner-images/issues/14404
     runs-on: xcode-27
@@ -79,20 +79,71 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        flags: [
-          "-scheme AppAuth-iOS -destination 'platform=iOS Simulator,name=iPhone 17,OS=27.0' -sdk 'iphonesimulator'",
-          "-scheme AppAuth-macOS -destination 'platform=macOS' -sdk 'macosx'",
-          "-scheme AppAuth_macOS -destination 'platform=macOS' -sdk 'macosx'",
-          "-scheme AppAuth-tvOS -destination 'platform=tvOS Simulator,name=Apple TV 4K (3rd generation),OS=27.0' -sdk 'appletvsimulator'",
-          "-scheme AppAuth_tvOS -destination 'platform=tvOS Simulator,name=Apple TV 4K (3rd generation),OS=27.0' -sdk 'appletvsimulator'",
-          "-scheme AppAuthTV -destination 'platform=tvOS Simulator,name=Apple TV 4K (3rd generation),OS=27.0' -sdk 'appletvsimulator'"
-        ]
+        include:
+          - scheme: AppAuth-iOS
+            sdk: iphonesimulator
+            runtime: iOS-27-0
+            device: iPhone 17
+          - scheme: AppAuth-macOS
+            sdk: macosx
+          - scheme: AppAuth_macOS
+            sdk: macosx
+          - scheme: AppAuth-tvOS
+            sdk: appletvsimulator
+            runtime: tvOS-27-0
+            device: Apple TV 4K (3rd generation)
+          - scheme: AppAuth_tvOS
+            sdk: appletvsimulator
+            runtime: tvOS-27-0
+            device: Apple TV 4K (3rd generation)
+          - scheme: AppAuthTV
+            sdk: appletvsimulator
+            runtime: tvOS-27-0
+            device: Apple TV 4K (3rd generation)
     steps:
     - uses: actions/checkout@v5
     - name: Warm up simulator runtimes
       run: xcrun simctl list devices available
-    - name: Run unit test targets
+    # Boot the simulator before xcodebuild does. On this image the tvOS 27
+    # simulator can take longer than xcodebuild's 120s boot timeout.
+    - name: Boot the simulator
+      if: matrix.device != ''
+      timeout-minutes: 10
+      env:
+        RUNTIME: com.apple.CoreSimulator.SimRuntime.${{ matrix.runtime }}
+        DEVICE: ${{ matrix.device }}
       run: |
-        xcodebuild test \
-          -project AppAuth.xcodeproj \
-          ${{ matrix.flags }}
+        udid=$(xcrun simctl list -j devices available \
+          | jq -r --arg rt "$RUNTIME" --arg name "$DEVICE" \
+            '.devices[$rt] // [] | map(select(.name == $name)) | .[0].udid // empty')
+        if [ -z "$udid" ]; then
+          echo "::error::No available '$DEVICE' simulator for $RUNTIME"
+          xcrun simctl list devices available
+          exit 1
+        fi
+        xcrun simctl boot "$udid" || true
+        xcrun simctl bootstatus "$udid" -b
+        echo "SIM_UDID=$udid" >> "$GITHUB_ENV"
+    # One retry: the preview image's simulators still drop the test runner
+    # now and then.
+    - name: Run unit test targets
+      env:
+        SCHEME: ${{ matrix.scheme }}
+        SDK: ${{ matrix.sdk }}
+      run: |
+        if [ -n "$SIM_UDID" ]; then
+          destination="id=$SIM_UDID"
+        else
+          destination="platform=macOS"
+        fi
+        run_tests() {
+          xcodebuild test \
+            -project AppAuth.xcodeproj \
+            -scheme "$SCHEME" \
+            -sdk "$SDK" \
+            -destination "$destination"
+        }
+        run_tests || {
+          echo "::warning::$SCHEME failed on the first try; retrying once"
+          run_tests
+        }
