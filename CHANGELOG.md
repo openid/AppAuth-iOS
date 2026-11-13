@@ -9,7 +9,7 @@
 - Added instance-method counterparts of the `OIDAuthorizationService` class methods, and made `-init` public, so the service can be injected and faked in tests.
 - Deprecated `OIDAuthorizationService.configuration`. It is never set and is always `nil`; use the request's `configuration` instead. It will be removed in 4.0.
 - Added instance-method counterparts of the iOS and macOS `OIDAuthorizationService` convenience methods, and read-only `presentingViewController` / `presentingWindow` properties on the external user agents.
-- Added the `AppAuthTestHelpers` Swift package product, with `OIDFakeExternalUserAgentSession`, for testing code that depends on AppAuth.
+- Added the `AppAuthTestHelpers` Swift package product, with `OIDFakeAuthorizationService` and `OIDFakeExternalUserAgentSession`, for testing code that depends on AppAuth.
 
 # 3.0.0
 - BREAKING: Updates made to support Xcode 27. ([#972](https://github.com/openid/AppAuth-iOS/pull/972), [#973](https://github.com/openid/AppAuth-iOS/pull/973))
