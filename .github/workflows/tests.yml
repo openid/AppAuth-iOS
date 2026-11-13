@@ -71,7 +71,7 @@ jobs:
   xcode-27-preview-test:
     # Xcode 27 is currently only available on the preview `xcode-27` image,
     # on which Xcode 27 beta is the only (thus, default) Xcode and the simulator
-    # runtimes are the 27.0 generation. The image is preview, so this job does
+    # runtimes are the 27 generation. The image is preview, so this job does
     # not block merges.
     # https://github.com/actions/runner-images/issues/14404
     runs-on: xcode-27
@@ -90,22 +90,22 @@ jobs:
             sdk: macosx
           - scheme: AppAuth-tvOS
             sdk: appletvsimulator
-            runtime: tvOS-27-0
-            device: Apple TV 4K (3rd generation)
+            runtime: tvOS-27-2
+            device: Apple TV 4K (4th generation)
           - scheme: AppAuth_tvOS
             sdk: appletvsimulator
-            runtime: tvOS-27-0
-            device: Apple TV 4K (3rd generation)
+            runtime: tvOS-27-2
+            device: Apple TV 4K (4th generation)
           - scheme: AppAuthTV
             sdk: appletvsimulator
-            runtime: tvOS-27-0
-            device: Apple TV 4K (3rd generation)
+            runtime: tvOS-27-2
+            device: Apple TV 4K (4th generation)
     steps:
     - uses: actions/checkout@v5
     - name: Warm up simulator runtimes
       run: xcrun simctl list devices available
-    # Boot the simulator before xcodebuild does. On this image the tvOS 27
-    # simulator can take longer than xcodebuild's 120s boot timeout.
+    # Boot the simulator before xcodebuild does. A missing runtime or a slow
+    # boot then fails here, with its own error.
     - name: Boot the simulator
       if: matrix.device != ''
       timeout-minutes: 10
