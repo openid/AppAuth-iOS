@@ -79,73 +79,22 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        include:
-          - scheme: AppAuth-iOS
-            sdk: iphonesimulator
-            runtime: iOS-27-2
-            device: iPhone 17
-          - scheme: AppAuth-macOS
-            sdk: macosx
-          - scheme: AppAuth_macOS
-            sdk: macosx
-          - scheme: AppAuth-tvOS
-            sdk: appletvsimulator
-            runtime: tvOS-27-2
-            device: Apple TV 4K (4th generation)
-          - scheme: AppAuth_tvOS
-            sdk: appletvsimulator
-            runtime: tvOS-27-2
-            device: Apple TV 4K (4th generation)
-          - scheme: AppAuthTV
-            sdk: appletvsimulator
-            runtime: tvOS-27-2
-            device: Apple TV 4K (4th generation)
+        flags: [
+          "-scheme AppAuth-iOS -destination 'platform=iOS Simulator,name=iPhone 17,OS=27.2' -sdk 'iphonesimulator'",
+          "-scheme AppAuth-macOS -destination 'platform=macOS' -sdk 'macosx'",
+          "-scheme AppAuth_macOS -destination 'platform=macOS' -sdk 'macosx'",
+          "-scheme AppAuth-tvOS -destination 'platform=tvOS Simulator,name=Apple TV 4K (4th generation),OS=27.2' -sdk 'appletvsimulator'",
+          "-scheme AppAuth_tvOS -destination 'platform=tvOS Simulator,name=Apple TV 4K (4th generation),OS=27.2' -sdk 'appletvsimulator'",
+          "-scheme AppAuthTV -destination 'platform=tvOS Simulator,name=Apple TV 4K (4th generation),OS=27.2' -sdk 'appletvsimulator'"
+        ]
     steps:
     - uses: actions/checkout@v5
     - name: Select Xcode
       run: sudo xcode-select -s /Applications/Xcode_27.2.app/Contents/Developer
     - name: Warm up simulator runtimes
       run: xcrun simctl list devices available
-    # Boot the simulator before xcodebuild does. A missing runtime or a slow
-    # boot then fails here, with its own error.
-    - name: Boot the simulator
-      if: matrix.device != ''
-      timeout-minutes: 10
-      env:
-        RUNTIME: com.apple.CoreSimulator.SimRuntime.${{ matrix.runtime }}
-        DEVICE: ${{ matrix.device }}
-      run: |
-        udid=$(xcrun simctl list -j devices available \
-          | jq -r --arg rt "$RUNTIME" --arg name "$DEVICE" \
-            '.devices[$rt] // [] | map(select(.name == $name)) | .[0].udid // empty')
-        if [ -z "$udid" ]; then
-          echo "::error::No available '$DEVICE' simulator for $RUNTIME"
-          xcrun simctl list devices available
-          exit 1
-        fi
-        xcrun simctl boot "$udid" || true
-        xcrun simctl bootstatus "$udid" -b
-        echo "SIM_UDID=$udid" >> "$GITHUB_ENV"
-    # One retry: the preview image's simulators still drop the test runner
-    # now and then.
     - name: Run unit test targets
-      env:
-        SCHEME: ${{ matrix.scheme }}
-        SDK: ${{ matrix.sdk }}
       run: |
-        if [ -n "$SIM_UDID" ]; then
-          destination="id=$SIM_UDID"
-        else
-          destination="platform=macOS"
-        fi
-        run_tests() {
-          xcodebuild test \
-            -project AppAuth.xcodeproj \
-            -scheme "$SCHEME" \
-            -sdk "$SDK" \
-            -destination "$destination"
-        }
-        run_tests || {
-          echo "::warning::$SCHEME failed on the first try; retrying once"
-          run_tests
-        }
+        xcodebuild test \
+          -project AppAuth.xcodeproj \
+          ${{ matrix.flags }}
