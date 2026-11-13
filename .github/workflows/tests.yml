@@ -69,10 +69,10 @@ jobs:
         version: v0.7.3
 
   xcode-27-preview-test:
-    # Xcode 27 is currently only available on the preview `xcode-27` image,
-    # on which Xcode 27 beta is the only (thus, default) Xcode and the simulator
-    # runtimes are the 27 generation. The image is preview, so this job does
-    # not block merges.
+    # Xcode 27 is currently only available on the preview `xcode-27` image.
+    # It has Xcode 27.0, 27.1 (the default) and 27.2; the job selects 27.2 and
+    # tests on its 27.2 simulators. The image is preview, so this job does not
+    # block merges.
     # https://github.com/actions/runner-images/issues/14404
     runs-on: xcode-27
     continue-on-error: true
@@ -82,7 +82,7 @@ jobs:
         include:
           - scheme: AppAuth-iOS
             sdk: iphonesimulator
-            runtime: iOS-27-0
+            runtime: iOS-27-2
             device: iPhone 17
           - scheme: AppAuth-macOS
             sdk: macosx
@@ -102,6 +102,8 @@ jobs:
             device: Apple TV 4K (4th generation)
     steps:
     - uses: actions/checkout@v5
+    - name: Select Xcode
+      run: sudo xcode-select -s /Applications/Xcode_27.2.app/Contents/Developer
     - name: Warm up simulator runtimes
       run: xcrun simctl list devices available
     # Boot the simulator before xcodebuild does. A missing runtime or a slow
