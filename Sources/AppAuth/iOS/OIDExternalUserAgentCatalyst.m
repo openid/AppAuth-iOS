@@ -45,6 +45,8 @@ NS_ASSUME_NONNULL_BEGIN
   ASWebAuthenticationSession *_webAuthenticationVC;
 }
 
+@synthesize presentingViewController = _presentingViewController;
+
 - (nullable instancetype)initWithPresentingViewController:
     (UIViewController *)presentingViewController {
   self = [super init];
