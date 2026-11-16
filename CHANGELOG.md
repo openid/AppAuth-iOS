@@ -8,6 +8,7 @@
 - Fix a crash (`NSInvalidArgumentException`) when a token, registration or device authorization endpoint answers with a JSON array instead of an object. The callback now gets an error. Addresses issue #987.
 - Added instance-method counterparts of the `OIDAuthorizationService` class methods, and made `-init` public, so the service can be injected and faked in tests.
 - Deprecated `OIDAuthorizationService.configuration`. It is never set and is always `nil`; use the request's `configuration` instead. It will be removed in 4.0.
+- Added instance-method counterparts of the iOS and macOS `OIDAuthorizationService` convenience methods, and read-only `presentingViewController` / `presentingWindow` properties on the external user agents.
 
 # 3.0.0
 - BREAKING: Updates made to support Xcode 27. ([#972](https://github.com/openid/AppAuth-iOS/pull/972), [#973](https://github.com/openid/AppAuth-iOS/pull/973))
