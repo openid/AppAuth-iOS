@@ -28,6 +28,14 @@
 #import "OIDTokenRequest.h"
 #import "OIDTokenResponse.h"
 
+#if SWIFT_PACKAGE
+@import AppAuth;
+#else
+#import "OIDExternalUserAgentCatalyst.h"
+#import "OIDExternalUserAgentIOS.h"
+#import "OIDExternalUserAgentMac.h"
+#endif
+
 NS_ASSUME_NONNULL_BEGIN
 
 @implementation OIDFakeAuthorizationService {
@@ -83,6 +91,10 @@ NS_ASSUME_NONNULL_BEGIN
   return [[OIDFakeExternalUserAgentSession alloc] init];
 }
 
+- (void)performTokenRequest:(OIDTokenRequest *)request callback:(OIDTokenCallback)callback {
+  [self performTokenRequest:request originalAuthorizationResponse:nil callback:callback];
+}
+
 - (void)performTokenRequest:(OIDTokenRequest *)request
     originalAuthorizationResponse:(nullable OIDAuthorizationResponse *)authorizationResponse
                          callback:(OIDTokenCallback)callback {
@@ -115,5 +127,80 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 @end
+
+#if TARGET_OS_IOS || TARGET_OS_MACCATALYST
+
+@implementation OIDFakeAuthorizationService (IOS)
+
+- (id<OIDExternalUserAgentSession>)
+    presentAuthorizationRequest:(OIDAuthorizationRequest *)request
+       presentingViewController:(UIViewController *)presentingViewController
+                       callback:(OIDAuthorizationCallback)callback {
+#if TARGET_OS_MACCATALYST
+  id<OIDExternalUserAgent> externalUserAgent = [[OIDExternalUserAgentCatalyst alloc]
+      initWithPresentingViewController:presentingViewController];
+#else // TARGET_OS_MACCATALYST
+  id<OIDExternalUserAgent> externalUserAgent = [[OIDExternalUserAgentIOS alloc]
+      initWithPresentingViewController:presentingViewController];
+#endif // TARGET_OS_MACCATALYST
+  return [self presentAuthorizationRequest:request
+                         externalUserAgent:externalUserAgent
+                                  callback:callback];
+}
+
+- (id<OIDExternalUserAgentSession>)
+    presentAuthorizationRequest:(OIDAuthorizationRequest *)request
+       presentingViewController:(UIViewController *)presentingViewController
+        prefersEphemeralSession:(BOOL)prefersEphemeralSession
+                       callback:(OIDAuthorizationCallback)callback {
+#if TARGET_OS_MACCATALYST
+  id<OIDExternalUserAgent> externalUserAgent = [[OIDExternalUserAgentCatalyst alloc]
+      initWithPresentingViewController:presentingViewController
+               prefersEphemeralSession:prefersEphemeralSession];
+#else // TARGET_OS_MACCATALYST
+  id<OIDExternalUserAgent> externalUserAgent = [[OIDExternalUserAgentIOS alloc]
+      initWithPresentingViewController:presentingViewController
+               prefersEphemeralSession:prefersEphemeralSession];
+#endif // TARGET_OS_MACCATALYST
+  return [self presentAuthorizationRequest:request
+                         externalUserAgent:externalUserAgent
+                                  callback:callback];
+}
+
+@end
+
+#endif // TARGET_OS_IOS || TARGET_OS_MACCATALYST
+
+#if TARGET_OS_OSX
+
+@implementation OIDFakeAuthorizationService (Mac)
+
+- (id<OIDExternalUserAgentSession>)
+    presentAuthorizationRequest:(OIDAuthorizationRequest *)request
+               presentingWindow:(NSWindow *)presentingWindow
+                       callback:(OIDAuthorizationCallback)callback {
+  OIDExternalUserAgentMac *externalUserAgent =
+      [[OIDExternalUserAgentMac alloc] initWithPresentingWindow:presentingWindow];
+  return [self presentAuthorizationRequest:request
+                         externalUserAgent:externalUserAgent
+                                  callback:callback];
+}
+
+- (id<OIDExternalUserAgentSession>)
+    presentAuthorizationRequest:(OIDAuthorizationRequest *)request
+               presentingWindow:(NSWindow *)presentingWindow
+        prefersEphemeralSession:(BOOL)prefersEphemeralSession
+                       callback:(OIDAuthorizationCallback)callback {
+  OIDExternalUserAgentMac *externalUserAgent =
+      [[OIDExternalUserAgentMac alloc] initWithPresentingWindow:presentingWindow
+                                        prefersEphemeralSession:prefersEphemeralSession];
+  return [self presentAuthorizationRequest:request
+                         externalUserAgent:externalUserAgent
+                                  callback:callback];
+}
+
+@end
+
+#endif // TARGET_OS_OSX
 
 NS_ASSUME_NONNULL_END
