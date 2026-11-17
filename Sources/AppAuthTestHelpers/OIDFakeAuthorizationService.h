@@ -17,21 +17,28 @@
  */
 
 #import <Foundation/Foundation.h>
+#import <TargetConditionals.h>
 
 #import "OIDAuthorizationService.h"
 #import "OIDFakeExternalUserAgentSession.h"
 
+#if SWIFT_PACKAGE
+@import AppAuth;
+#else
+#import "OIDAuthorizationService+IOS.h"
+#import "OIDAuthorizationService+Mac.h"
+#endif
+
 NS_ASSUME_NONNULL_BEGIN
 
-/*! @brief An @c OIDAuthorizationService whose instance methods record their arguments and keep the
+/*! @brief An @c OIDAuthorizationServiceProtocol whose methods record their arguments and keep the
         callbacks for the test to invoke, instead of presenting UI or making network requests.
-    @discussion Inject an instance where production code would otherwise call the class methods of
-        @c OIDAuthorizationService. The class methods of this fake are inherited unchanged and still
-        perform real work; only the instance methods are faked.
+    @discussion Inject an instance where production code takes an
+        @c id<OIDAuthorizationServiceProtocol>.
         A kept callback clears itself once invoked. Callbacks usually capture the caller, and the
         caller often holds this fake. Keeping the callback would leak both.
  */
-@interface OIDFakeAuthorizationService : OIDAuthorizationService
+@interface OIDFakeAuthorizationService : NSObject <OIDAuthorizationServiceProtocol>
 
 /*! @brief The request passed to the most recent
         @c -presentAuthorizationRequest:externalUserAgent:callback:.
@@ -39,7 +46,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic, readonly, nullable) OIDAuthorizationRequest *lastAuthorizationRequest;
 
 /*! @brief The external user agent passed to the most recent authorization request. For the
-        platform convenience methods, this is the agent AppAuth built for the caller's view
+        platform convenience methods, this is the agent AppAuth would build for the caller's view
         controller or window.
  */
 @property(nonatomic, readonly, nullable) id<OIDExternalUserAgent> lastExternalUserAgent;
@@ -90,5 +97,27 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic, readonly, copy, nullable) OIDRegistrationCompletion lastRegistrationCompletion;
 
 @end
+
+#if TARGET_OS_IOS || TARGET_OS_MACCATALYST
+
+/*! @brief The iOS convenience methods. Each builds the external user agent AppAuth would build
+        for the view controller, then records the request like
+        @c -presentAuthorizationRequest:externalUserAgent:callback:.
+ */
+@interface OIDFakeAuthorizationService (IOS) <OIDAuthorizationServiceIOSProtocol>
+@end
+
+#endif // TARGET_OS_IOS || TARGET_OS_MACCATALYST
+
+#if TARGET_OS_OSX
+
+/*! @brief The macOS convenience methods. Each builds the external user agent AppAuth would build
+        for the window, then records the request like
+        @c -presentAuthorizationRequest:externalUserAgent:callback:.
+ */
+@interface OIDFakeAuthorizationService (Mac) <OIDAuthorizationServiceMacProtocol>
+@end
+
+#endif // TARGET_OS_OSX
 
 NS_ASSUME_NONNULL_END

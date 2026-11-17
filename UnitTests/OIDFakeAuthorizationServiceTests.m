@@ -22,6 +22,8 @@
 @import AppAuthCore;
 @import AppAuthTestHelpers;
 #else
+#import "Sources/AppAuth/iOS/OIDExternalUserAgentIOS.h"
+#import "Sources/AppAuth/macOS/OIDExternalUserAgentMac.h"
 #import "Sources/AppAuthCore.h"
 #import "Sources/AppAuthTestHelpers/AppAuthTestHelpers.h"
 #endif
@@ -185,5 +187,92 @@
   olderCallback(nil, nil);
   XCTAssertEqual(service.lastTokenCallback, newerCallback);
 }
+
+/*! @brief The fake conforms to @c OIDAuthorizationServiceProtocol, and is not an
+        @c OIDAuthorizationService.
+ */
+- (void)testFakeConformsToServiceProtocol {
+  id<OIDAuthorizationServiceProtocol> service = [[OIDFakeAuthorizationService alloc] init];
+  XCTAssertTrue([service conformsToProtocol:@protocol(OIDAuthorizationServiceProtocol)]);
+  XCTAssertFalse([service isKindOfClass:[OIDAuthorizationService class]]);
+}
+
+#if TARGET_OS_IOS && !TARGET_OS_MACCATALYST && !SWIFT_PACKAGE
+
+/*! @brief The view controller methods record the request with an @c OIDExternalUserAgentIOS for
+        that view controller.
+ */
+- (void)testPresentingViewControllerRecordsIOSAgent {
+  OIDFakeAuthorizationService *service = [[OIDFakeAuthorizationService alloc] init];
+  OIDAuthorizationRequest *request = [OIDAuthorizationRequestTests testInstance];
+  UIViewController *viewController = [[UIViewController alloc] init];
+
+  id<OIDExternalUserAgentSession> session =
+      [service presentAuthorizationRequest:request
+                  presentingViewController:viewController
+                                  callback:^(OIDAuthorizationResponse *_Nullable response,
+                                             NSError *_Nullable error) {
+                                  }];
+
+  XCTAssertEqual(service.lastAuthorizationRequest, request);
+  XCTAssertTrue([service.lastExternalUserAgent isKindOfClass:[OIDExternalUserAgentIOS class]]);
+  OIDExternalUserAgentIOS *agent = (OIDExternalUserAgentIOS *)service.lastExternalUserAgent;
+  XCTAssertEqual(agent.presentingViewController, viewController);
+  XCTAssertNotNil(service.lastAuthorizationCallback);
+  XCTAssertEqual(session, service.lastAuthorizationSession);
+
+  UIViewController *secondViewController = [[UIViewController alloc] init];
+  [service presentAuthorizationRequest:request
+              presentingViewController:secondViewController
+               prefersEphemeralSession:YES
+                              callback:^(OIDAuthorizationResponse *_Nullable response,
+                                         NSError *_Nullable error) {
+                              }];
+
+  XCTAssertTrue([service.lastExternalUserAgent isKindOfClass:[OIDExternalUserAgentIOS class]]);
+  OIDExternalUserAgentIOS *secondAgent = (OIDExternalUserAgentIOS *)service.lastExternalUserAgent;
+  XCTAssertEqual(secondAgent.presentingViewController, secondViewController);
+}
+
+#endif // TARGET_OS_IOS && !TARGET_OS_MACCATALYST && !SWIFT_PACKAGE
+
+#if TARGET_OS_OSX && !SWIFT_PACKAGE
+
+/*! @brief The window methods record the request with an @c OIDExternalUserAgentMac for that
+        window.
+ */
+- (void)testPresentingWindowRecordsMacAgent {
+  OIDFakeAuthorizationService *service = [[OIDFakeAuthorizationService alloc] init];
+  OIDAuthorizationRequest *request = [OIDAuthorizationRequestTests testInstance];
+  NSWindow *window = [[NSWindow alloc] init];
+
+  id<OIDExternalUserAgentSession> session =
+      [service presentAuthorizationRequest:request
+                          presentingWindow:window
+                                  callback:^(OIDAuthorizationResponse *_Nullable response,
+                                             NSError *_Nullable error) {
+                                  }];
+
+  XCTAssertEqual(service.lastAuthorizationRequest, request);
+  XCTAssertTrue([service.lastExternalUserAgent isKindOfClass:[OIDExternalUserAgentMac class]]);
+  OIDExternalUserAgentMac *agent = (OIDExternalUserAgentMac *)service.lastExternalUserAgent;
+  XCTAssertEqual(agent.presentingWindow, window);
+  XCTAssertNotNil(service.lastAuthorizationCallback);
+  XCTAssertEqual(session, service.lastAuthorizationSession);
+
+  NSWindow *secondWindow = [[NSWindow alloc] init];
+  [service presentAuthorizationRequest:request
+                      presentingWindow:secondWindow
+               prefersEphemeralSession:YES
+                              callback:^(OIDAuthorizationResponse *_Nullable response,
+                                         NSError *_Nullable error) {
+                              }];
+
+  XCTAssertTrue([service.lastExternalUserAgent isKindOfClass:[OIDExternalUserAgentMac class]]);
+  OIDExternalUserAgentMac *secondAgent = (OIDExternalUserAgentMac *)service.lastExternalUserAgent;
+  XCTAssertEqual(secondAgent.presentingWindow, secondWindow);
+}
+
+#endif // TARGET_OS_OSX && !SWIFT_PACKAGE
 
 @end
