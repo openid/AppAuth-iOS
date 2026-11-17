@@ -97,6 +97,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation OIDAuthorizationServiceInstanceTests
 
+/*! @brief The service conforms to @c OIDAuthorizationServiceProtocol, so it can be passed where the
+        protocol is expected.
+ */
+- (void)testServiceConformsToProtocol {
+  id<OIDAuthorizationServiceProtocol> service = [[OIDAuthorizationService alloc] init];
+  XCTAssertTrue([service conformsToProtocol:@protocol(OIDAuthorizationServiceProtocol)]);
+}
+
 /*! @brief A refused authorization request fails with @c OIDErrorCodeSafariOpenError. */
 - (void)testPresentAuthorizationRequestFailsWhenUserAgentRefuses {
   OIDAuthorizationService *service = [[OIDAuthorizationService alloc] init];

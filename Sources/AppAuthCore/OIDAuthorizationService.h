@@ -77,10 +77,69 @@ typedef NSDictionary<NSString *, NSString *> *_Nullable OIDTokenEndpointParamete
 typedef void (^OIDRegistrationCompletion)(OIDRegistrationResponse *_Nullable registrationResponse,
                                           NSError *_Nullable error);
 
+/*! @brief The instance methods of @c OIDAuthorizationService.
+    @discussion Code that takes an @c id<OIDAuthorizationServiceProtocol> can be handed a fake in
+        tests. @c OIDAuthorizationService conforms, and its instance methods call the matching
+        class methods.
+ */
+@protocol OIDAuthorizationServiceProtocol <NSObject>
+
+/*! @brief Performs an authorization flow using a generic flow shim.
+    @param request The authorization request.
+    @param externalUserAgent Generic external user-agent that can present an authorization
+        request.
+    @param callback The method called when the request has completed or failed.
+    @return A @c OIDExternalUserAgentSession instance which will terminate when it
+        receives a @c OIDExternalUserAgentSession.cancel message, or after processing a
+        @c OIDExternalUserAgentSession.resumeExternalUserAgentFlowWithURL:error: message.
+ */
+- (id<OIDExternalUserAgentSession>)
+    presentAuthorizationRequest:(OIDAuthorizationRequest *)request
+              externalUserAgent:(id<OIDExternalUserAgent>)externalUserAgent
+                       callback:(OIDAuthorizationCallback)callback;
+
+/*! @brief Performs a logout request.
+    @param request The end-session logout request.
+    @param externalUserAgent Generic external user-agent that can present user-agent requests.
+    @param callback The method called when the request has completed or failed.
+    @return A @c OIDExternalUserAgentSession instance which will terminate when it
+        receives a @c OIDExternalUserAgentSession.cancel message, or after processing a
+        @c OIDExternalUserAgentSession.resumeExternalUserAgentFlowWithURL:error: message.
+    @see http://openid.net/specs/openid-connect-session-1_0.html#RPLogout
+ */
+- (id<OIDExternalUserAgentSession>)
+    presentEndSessionRequest:(OIDEndSessionRequest *)request
+           externalUserAgent:(id<OIDExternalUserAgent>)externalUserAgent
+                    callback:(OIDEndSessionCallback)callback;
+
+/*! @brief Performs a token request.
+    @param request The token request.
+    @param callback The method called when the request has completed or failed.
+ */
+- (void)performTokenRequest:(OIDTokenRequest *)request callback:(OIDTokenCallback)callback;
+
+/*! @brief Performs a token request.
+    @param request The token request.
+    @param authorizationResponse The original authorization response related to this token request.
+    @param callback The method called when the request has completed or failed.
+ */
+- (void)performTokenRequest:(OIDTokenRequest *)request
+    originalAuthorizationResponse:(OIDAuthorizationResponse *_Nullable)authorizationResponse
+                         callback:(OIDTokenCallback)callback;
+
+/*! @brief Performs a registration request.
+    @param request The registration request.
+    @param completion The method called when the request has completed or failed.
+ */
+- (void)performRegistrationRequest:(OIDRegistrationRequest *)request
+                        completion:(OIDRegistrationCompletion)completion;
+
+@end
+
 /*! @brief Performs various OAuth and OpenID Connect related calls via the user agent or
         \NSURLSession.
  */
-@interface OIDAuthorizationService : NSObject
+@interface OIDAuthorizationService : NSObject <OIDAuthorizationServiceProtocol>
 
 /*! @brief Unused, and always nil.
     @discussion No initializer sets this, and nothing in AppAuth reads it. Each request carries
@@ -91,7 +150,8 @@ typedef void (^OIDRegistrationCompletion)(OIDRegistrationResponse *_Nullable reg
     __deprecated_msg("Always nil. Use the configuration on the request instead.");
 
 /*! @brief Creates a service whose instance methods call the matching class methods.
-    @discussion Tests can hand in a subclass that fakes the instance methods.
+    @discussion Tests can hand in a fake that conforms to @c OIDAuthorizationServiceProtocol
+        instead.
  */
 - (instancetype)init;
 
@@ -163,49 +223,6 @@ typedef void (^OIDRegistrationCompletion)(OIDRegistrationResponse *_Nullable reg
     @param completion The method called when the request has completed or failed.
  */
 + (void)performRegistrationRequest:(OIDRegistrationRequest *)request
-                        completion:(OIDRegistrationCompletion)completion;
-
-/*! @brief Instance counterpart of @c +presentAuthorizationRequest:externalUserAgent:callback:.
-    @param request The authorization request.
-    @param externalUserAgent Generic external user-agent that can present an authorization
-        request.
-    @param callback The method called when the request has completed or failed.
- */
-- (id<OIDExternalUserAgentSession>)
-    presentAuthorizationRequest:(OIDAuthorizationRequest *)request
-              externalUserAgent:(id<OIDExternalUserAgent>)externalUserAgent
-                       callback:(OIDAuthorizationCallback)callback;
-
-/*! @brief Instance counterpart of @c +presentEndSessionRequest:externalUserAgent:callback:.
-    @param request The end-session logout request.
-    @param externalUserAgent Generic external user-agent that can present user-agent requests.
-    @param callback The method called when the request has completed or failed.
- */
-- (id<OIDExternalUserAgentSession>)
-    presentEndSessionRequest:(OIDEndSessionRequest *)request
-           externalUserAgent:(id<OIDExternalUserAgent>)externalUserAgent
-                    callback:(OIDEndSessionCallback)callback;
-
-/*! @brief Instance counterpart of @c +performTokenRequest:callback:.
-    @param request The token request.
-    @param callback The method called when the request has completed or failed.
- */
-- (void)performTokenRequest:(OIDTokenRequest *)request callback:(OIDTokenCallback)callback;
-
-/*! @brief Instance counterpart of @c +performTokenRequest:originalAuthorizationResponse:callback:.
-    @param request The token request.
-    @param authorizationResponse The original authorization response related to this token request.
-    @param callback The method called when the request has completed or failed.
- */
-- (void)performTokenRequest:(OIDTokenRequest *)request
-    originalAuthorizationResponse:(OIDAuthorizationResponse *_Nullable)authorizationResponse
-                         callback:(OIDTokenCallback)callback;
-
-/*! @brief Instance counterpart of @c +performRegistrationRequest:completion:.
-    @param request The registration request.
-    @param completion The method called when the request has completed or failed.
- */
-- (void)performRegistrationRequest:(OIDRegistrationRequest *)request
                         completion:(OIDRegistrationCompletion)completion;
 
 @end

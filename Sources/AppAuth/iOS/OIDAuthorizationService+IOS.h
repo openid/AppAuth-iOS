@@ -27,9 +27,46 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/*! @brief The iOS convenience instance methods of @c OIDAuthorizationService.
+ */
+@protocol OIDAuthorizationServiceIOSProtocol <OIDAuthorizationServiceProtocol>
+
+/*! @brief Performs an authorization flow, presenting an appropriate browser for the user to
+        authenticate.
+    @param request The authorization request.
+    @param presentingViewController The view controller from which to present authentication UI.
+    @param callback The method called when the request has completed or failed.
+    @return A @c OIDExternalUserAgentSession instance which will terminate when it
+        receives a @c OIDExternalUserAgentSession.cancel message, or after processing a
+        @c OIDExternalUserAgentSession.resumeExternalUserAgentFlowWithURL:error: message.
+ */
+- (id<OIDExternalUserAgentSession>)
+    presentAuthorizationRequest:(OIDAuthorizationRequest *)request
+       presentingViewController:(UIViewController *)presentingViewController
+                       callback:(OIDAuthorizationCallback)callback;
+
+/*! @brief Performs an authorization flow using @c ASWebAuthenticationSession, optionally with an
+        ephemeral browser session that shares no cookies or data with the normal browser session.
+    @param request The authorization request.
+    @param presentingViewController The view controller from which to present authentication UI.
+    @param prefersEphemeralSession Whether the caller prefers to use a private authentication
+        session. See @c ASWebAuthenticationSession.prefersEphemeralWebBrowserSession for more.
+    @param callback The method called when the request has completed or failed.
+    @return A @c OIDExternalUserAgentSession instance which will terminate when it
+        receives a @c OIDExternalUserAgentSession.cancel message, or after processing a
+        @c OIDExternalUserAgentSession.resumeExternalUserAgentFlowWithURL:error: message.
+ */
+- (id<OIDExternalUserAgentSession>)
+    presentAuthorizationRequest:(OIDAuthorizationRequest *)request
+       presentingViewController:(UIViewController *)presentingViewController
+        prefersEphemeralSession:(BOOL)prefersEphemeralSession
+                       callback:(OIDAuthorizationCallback)callback;
+
+@end
+
 /*! @brief Provides iOS specific authorization request handling.
  */
-@interface OIDAuthorizationService (IOS)
+@interface OIDAuthorizationService (IOS) <OIDAuthorizationServiceIOSProtocol>
 
 /*! @brief Perform an authorization flow, presenting an appropriate browser for the user to
         authenticate.
@@ -59,31 +96,6 @@ NS_ASSUME_NONNULL_BEGIN
     presentingViewController:(UIViewController *)presentingViewController
      prefersEphemeralSession:(BOOL)prefersEphemeralSession
                     callback:(OIDAuthorizationCallback)callback API_AVAILABLE(ios(13));
-
-/*! @brief Instance counterpart of
-        @c +presentAuthorizationRequest:presentingViewController:callback:.
-    @param request The authorization request.
-    @param presentingViewController The view controller from which to present authentication UI.
-    @param callback The method called when the request has completed or failed.
- */
-- (id<OIDExternalUserAgentSession>)
-    presentAuthorizationRequest:(OIDAuthorizationRequest *)request
-       presentingViewController:(UIViewController *)presentingViewController
-                       callback:(OIDAuthorizationCallback)callback;
-
-/*! @brief Instance counterpart of
-        @c +presentAuthorizationRequest:presentingViewController:prefersEphemeralSession:callback:.
-    @param request The authorization request.
-    @param presentingViewController The view controller from which to present authentication UI.
-    @param prefersEphemeralSession Whether the caller prefers to use a private authentication
-        session. See @c ASWebAuthenticationSession.prefersEphemeralWebBrowserSession for more.
-    @param callback The method called when the request has completed or failed.
- */
-- (id<OIDExternalUserAgentSession>)
-    presentAuthorizationRequest:(OIDAuthorizationRequest *)request
-       presentingViewController:(UIViewController *)presentingViewController
-        prefersEphemeralSession:(BOOL)prefersEphemeralSession
-                       callback:(OIDAuthorizationCallback)callback;
 
 @end
 
