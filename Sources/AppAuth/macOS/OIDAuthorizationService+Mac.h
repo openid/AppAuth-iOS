@@ -29,23 +29,29 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @protocol OIDAuthorizationServiceMacProtocol <OIDAuthorizationServiceProtocol>
 
-/*! @brief Instance counterpart of @c +presentAuthorizationRequest:presentingWindow:callback:.
+/*! @brief Performs an authorization flow using @c ASWebAuthenticationSession.
     @param request The authorization request.
     @param presentingWindow The window to present the authentication flow.
     @param callback The method called when the request has completed or failed.
+    @return A @c OIDExternalUserAgentSession instance which will terminate when it
+        receives a @c OIDExternalUserAgentSession.cancel message, or after processing a
+        @c OIDExternalUserAgentSession.resumeExternalUserAgentFlowWithURL:error: message.
  */
 - (id<OIDExternalUserAgentSession>)
     presentAuthorizationRequest:(OIDAuthorizationRequest *)request
                presentingWindow:(NSWindow *)presentingWindow
                        callback:(OIDAuthorizationCallback)callback;
 
-/*! @brief Instance counterpart of
-        @c +presentAuthorizationRequest:presentingWindow:prefersEphemeralSession:callback:.
+/*! @brief Performs an authorization flow using @c ASWebAuthenticationSession, optionally with an
+        ephemeral browser session that shares no cookies or data with the normal browser session.
     @param request The authorization request.
     @param presentingWindow The window to present the authentication flow.
     @param prefersEphemeralSession Whether the caller prefers to use a private authentication
         session. See @c ASWebAuthenticationSession.prefersEphemeralWebBrowserSession for more.
     @param callback The method called when the request has completed or failed.
+    @return A @c OIDExternalUserAgentSession instance which will terminate when it
+        receives a @c OIDExternalUserAgentSession.cancel message, or after processing a
+        @c OIDExternalUserAgentSession.resumeExternalUserAgentFlowWithURL:error: message.
  */
 - (id<OIDExternalUserAgentSession>)
     presentAuthorizationRequest:(OIDAuthorizationRequest *)request

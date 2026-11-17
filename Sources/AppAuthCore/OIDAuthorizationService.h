@@ -84,34 +84,41 @@ typedef void (^OIDRegistrationCompletion)(OIDRegistrationResponse *_Nullable reg
  */
 @protocol OIDAuthorizationServiceProtocol <NSObject>
 
-/*! @brief Instance counterpart of @c +presentAuthorizationRequest:externalUserAgent:callback:.
+/*! @brief Performs an authorization flow using a generic flow shim.
     @param request The authorization request.
     @param externalUserAgent Generic external user-agent that can present an authorization
         request.
     @param callback The method called when the request has completed or failed.
+    @return A @c OIDExternalUserAgentSession instance which will terminate when it
+        receives a @c OIDExternalUserAgentSession.cancel message, or after processing a
+        @c OIDExternalUserAgentSession.resumeExternalUserAgentFlowWithURL:error: message.
  */
 - (id<OIDExternalUserAgentSession>)
     presentAuthorizationRequest:(OIDAuthorizationRequest *)request
               externalUserAgent:(id<OIDExternalUserAgent>)externalUserAgent
                        callback:(OIDAuthorizationCallback)callback;
 
-/*! @brief Instance counterpart of @c +presentEndSessionRequest:externalUserAgent:callback:.
+/*! @brief Performs a logout request.
     @param request The end-session logout request.
     @param externalUserAgent Generic external user-agent that can present user-agent requests.
     @param callback The method called when the request has completed or failed.
+    @return A @c OIDExternalUserAgentSession instance which will terminate when it
+        receives a @c OIDExternalUserAgentSession.cancel message, or after processing a
+        @c OIDExternalUserAgentSession.resumeExternalUserAgentFlowWithURL:error: message.
+    @see http://openid.net/specs/openid-connect-session-1_0.html#RPLogout
  */
 - (id<OIDExternalUserAgentSession>)
     presentEndSessionRequest:(OIDEndSessionRequest *)request
            externalUserAgent:(id<OIDExternalUserAgent>)externalUserAgent
                     callback:(OIDEndSessionCallback)callback;
 
-/*! @brief Instance counterpart of @c +performTokenRequest:callback:.
+/*! @brief Performs a token request.
     @param request The token request.
     @param callback The method called when the request has completed or failed.
  */
 - (void)performTokenRequest:(OIDTokenRequest *)request callback:(OIDTokenCallback)callback;
 
-/*! @brief Instance counterpart of @c +performTokenRequest:originalAuthorizationResponse:callback:.
+/*! @brief Performs a token request.
     @param request The token request.
     @param authorizationResponse The original authorization response related to this token request.
     @param callback The method called when the request has completed or failed.
@@ -120,7 +127,7 @@ typedef void (^OIDRegistrationCompletion)(OIDRegistrationResponse *_Nullable reg
     originalAuthorizationResponse:(OIDAuthorizationResponse *_Nullable)authorizationResponse
                          callback:(OIDTokenCallback)callback;
 
-/*! @brief Instance counterpart of @c +performRegistrationRequest:completion:.
+/*! @brief Performs a registration request.
     @param request The registration request.
     @param completion The method called when the request has completed or failed.
  */
