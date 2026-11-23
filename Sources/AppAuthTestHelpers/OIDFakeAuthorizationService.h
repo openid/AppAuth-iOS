@@ -22,11 +22,14 @@
 #import "OIDAuthorizationService.h"
 #import "OIDFakeExternalUserAgentSession.h"
 
-#if SWIFT_PACKAGE
-@import AppAuth;
-#else
+// Apps that use the Swift package don't define SWIFT_PACKAGE. Check for the header instead.
+// AppAuth.xcodeproj finds these headers by name, and the package finds them by directory.
+#if __has_include("OIDAuthorizationService+IOS.h")
 #import "OIDAuthorizationService+IOS.h"
 #import "OIDAuthorizationService+Mac.h"
+#else
+#import "iOS/OIDAuthorizationService+IOS.h"
+#import "macOS/OIDAuthorizationService+Mac.h"
 #endif
 
 NS_ASSUME_NONNULL_BEGIN
