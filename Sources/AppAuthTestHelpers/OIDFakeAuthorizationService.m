@@ -60,7 +60,7 @@ NS_ASSUME_NONNULL_BEGIN
   NSUInteger requestNumber = ++_authorizationRequestCount;
   __weak OIDFakeAuthorizationService *weakSelf = self;
   _lastAuthorizationRequest = request;
-  _lastExternalUserAgent = externalUserAgent;
+  _lastAuthorizationExternalUserAgent = externalUserAgent;
   _lastAuthorizationCallback = ^(OIDAuthorizationResponse *_Nullable authorizationResponse,
                                  NSError *_Nullable error) {
     callback(authorizationResponse, error);

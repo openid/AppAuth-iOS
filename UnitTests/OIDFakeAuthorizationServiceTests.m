@@ -122,7 +122,7 @@
   XCTAssertEqual(session, service.lastAuthorizationSession);
   XCTAssertTrue([session isKindOfClass:[OIDFakeExternalUserAgentSession class]]);
   XCTAssertEqual(service.lastAuthorizationRequest, request);
-  XCTAssertEqual(service.lastExternalUserAgent, userAgent);
+  XCTAssertEqual(service.lastAuthorizationExternalUserAgent, userAgent);
 
   [session cancel];
   XCTAssertEqual(service.lastAuthorizationSession.cancelCount, 1u);
@@ -214,7 +214,7 @@
   XCTAssertEqual(service.lastEndSessionRequest, request);
   XCTAssertEqual(service.lastEndSessionExternalUserAgent, userAgent);
   XCTAssertNil(service.lastAuthorizationSession);
-  XCTAssertNil(service.lastExternalUserAgent);
+  XCTAssertNil(service.lastAuthorizationExternalUserAgent);
   XCTAssertNotNil(service.lastEndSessionCallback);
 
   NSError *someError = [NSError errorWithDomain:@"com.example" code:42 userInfo:nil];
@@ -359,8 +359,10 @@
                                   }];
 
   XCTAssertEqual(service.lastAuthorizationRequest, request);
-  XCTAssertTrue([service.lastExternalUserAgent isKindOfClass:[OIDExternalUserAgentIOS class]]);
-  OIDExternalUserAgentIOS *agent = (OIDExternalUserAgentIOS *)service.lastExternalUserAgent;
+  XCTAssertTrue(
+      [service.lastAuthorizationExternalUserAgent isKindOfClass:[OIDExternalUserAgentIOS class]]);
+  OIDExternalUserAgentIOS *agent =
+      (OIDExternalUserAgentIOS *)service.lastAuthorizationExternalUserAgent;
   XCTAssertEqual(agent.presentingViewController, viewController);
   XCTAssertNotNil(service.lastAuthorizationCallback);
   XCTAssertEqual(session, service.lastAuthorizationSession);
@@ -373,8 +375,10 @@
                                          NSError *_Nullable error) {
                               }];
 
-  XCTAssertTrue([service.lastExternalUserAgent isKindOfClass:[OIDExternalUserAgentIOS class]]);
-  OIDExternalUserAgentIOS *secondAgent = (OIDExternalUserAgentIOS *)service.lastExternalUserAgent;
+  XCTAssertTrue(
+      [service.lastAuthorizationExternalUserAgent isKindOfClass:[OIDExternalUserAgentIOS class]]);
+  OIDExternalUserAgentIOS *secondAgent =
+      (OIDExternalUserAgentIOS *)service.lastAuthorizationExternalUserAgent;
   XCTAssertEqual(secondAgent.presentingViewController, secondViewController);
 }
 
@@ -398,8 +402,10 @@
                                   }];
 
   XCTAssertEqual(service.lastAuthorizationRequest, request);
-  XCTAssertTrue([service.lastExternalUserAgent isKindOfClass:[OIDExternalUserAgentMac class]]);
-  OIDExternalUserAgentMac *agent = (OIDExternalUserAgentMac *)service.lastExternalUserAgent;
+  XCTAssertTrue(
+      [service.lastAuthorizationExternalUserAgent isKindOfClass:[OIDExternalUserAgentMac class]]);
+  OIDExternalUserAgentMac *agent =
+      (OIDExternalUserAgentMac *)service.lastAuthorizationExternalUserAgent;
   XCTAssertEqual(agent.presentingWindow, window);
   XCTAssertNotNil(service.lastAuthorizationCallback);
   XCTAssertEqual(session, service.lastAuthorizationSession);
@@ -412,8 +418,10 @@
                                          NSError *_Nullable error) {
                               }];
 
-  XCTAssertTrue([service.lastExternalUserAgent isKindOfClass:[OIDExternalUserAgentMac class]]);
-  OIDExternalUserAgentMac *secondAgent = (OIDExternalUserAgentMac *)service.lastExternalUserAgent;
+  XCTAssertTrue(
+      [service.lastAuthorizationExternalUserAgent isKindOfClass:[OIDExternalUserAgentMac class]]);
+  OIDExternalUserAgentMac *secondAgent =
+      (OIDExternalUserAgentMac *)service.lastAuthorizationExternalUserAgent;
   XCTAssertEqual(secondAgent.presentingWindow, secondWindow);
 }
 

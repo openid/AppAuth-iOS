@@ -52,7 +52,8 @@ NS_ASSUME_NONNULL_BEGIN
         platform convenience methods, this is the agent AppAuth would build for the caller's view
         controller or window.
  */
-@property(nonatomic, readonly, nullable) id<OIDExternalUserAgent> lastExternalUserAgent;
+@property(nonatomic, readonly, nullable)
+    id<OIDExternalUserAgent> lastAuthorizationExternalUserAgent;
 
 /*! @brief The callback of the most recent authorization request. Invoke it to complete the flow.
         Becomes nil once invoked.
