@@ -80,6 +80,7 @@ NS_ASSUME_NONNULL_BEGIN
   NSUInteger requestNumber = ++_endSessionRequestCount;
   __weak OIDFakeAuthorizationService *weakSelf = self;
   _lastEndSessionRequest = request;
+  _lastEndSessionExternalUserAgent = externalUserAgent;
   _lastEndSessionCallback = ^(OIDEndSessionResponse *_Nullable endSessionResponse,
                               NSError *_Nullable error) {
     callback(endSessionResponse, error);
@@ -88,7 +89,8 @@ NS_ASSUME_NONNULL_BEGIN
       strongSelf->_lastEndSessionCallback = nil;
     }
   };
-  return [[OIDFakeExternalUserAgentSession alloc] init];
+  _lastEndSessionSession = [[OIDFakeExternalUserAgentSession alloc] init];
+  return _lastEndSessionSession;
 }
 
 - (void)performTokenRequest:(OIDTokenRequest *)request callback:(OIDTokenCallback)callback {

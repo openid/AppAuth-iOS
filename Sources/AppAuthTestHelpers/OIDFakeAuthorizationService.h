@@ -68,9 +68,17 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property(nonatomic, readonly, nullable) OIDEndSessionRequest *lastEndSessionRequest;
 
+/*! @brief The external user agent passed to the most recent end-session request.
+ */
+@property(nonatomic, readonly, nullable) id<OIDExternalUserAgent> lastEndSessionExternalUserAgent;
+
 /*! @brief The callback of the most recent end-session request. Becomes nil once invoked.
  */
 @property(nonatomic, readonly, copy, nullable) OIDEndSessionCallback lastEndSessionCallback;
+
+/*! @brief The session returned from the most recent end-session request.
+ */
+@property(nonatomic, readonly, nullable) OIDFakeExternalUserAgentSession *lastEndSessionSession;
 
 /*! @brief How many token requests have been performed.
  */
