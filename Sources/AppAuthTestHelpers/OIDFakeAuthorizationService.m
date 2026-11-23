@@ -181,7 +181,7 @@ NS_ASSUME_NONNULL_BEGIN
     presentAuthorizationRequest:(OIDAuthorizationRequest *)request
                presentingWindow:(NSWindow *)presentingWindow
                        callback:(OIDAuthorizationCallback)callback {
-  OIDExternalUserAgentMac *externalUserAgent =
+  id<OIDExternalUserAgent> externalUserAgent =
       [[OIDExternalUserAgentMac alloc] initWithPresentingWindow:presentingWindow];
   return [self presentAuthorizationRequest:request
                          externalUserAgent:externalUserAgent
@@ -193,7 +193,7 @@ NS_ASSUME_NONNULL_BEGIN
                presentingWindow:(NSWindow *)presentingWindow
         prefersEphemeralSession:(BOOL)prefersEphemeralSession
                        callback:(OIDAuthorizationCallback)callback {
-  OIDExternalUserAgentMac *externalUserAgent =
+  id<OIDExternalUserAgent> externalUserAgent =
       [[OIDExternalUserAgentMac alloc] initWithPresentingWindow:presentingWindow
                                         prefersEphemeralSession:prefersEphemeralSession];
   return [self presentAuthorizationRequest:request
