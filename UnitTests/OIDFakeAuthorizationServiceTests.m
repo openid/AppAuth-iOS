@@ -29,6 +29,8 @@
 #endif
 #import "OIDAuthorizationRequestTests.h"
 #import "OIDAuthorizationResponseTests.h"
+#import "OIDEndSessionRequestTests.h"
+#import "OIDRegistrationRequestTests.h"
 #import "OIDTokenRequestTests.h"
 
 /*! @brief An external user agent that never presents anything.
@@ -186,6 +188,148 @@
 
   olderCallback(nil, nil);
   XCTAssertEqual(service.lastTokenCallback, newerCallback);
+}
+
+/*! @brief An end-session request is recorded and returns a fake session, and invoking the kept
+        callback reaches the caller.
+ */
+- (void)testPresentEndSessionRequestIsRecordedAndCallbackIsReturned {
+  OIDFakeAuthorizationService *service = [[OIDFakeAuthorizationService alloc] init];
+  OIDEndSessionRequest *request = [OIDEndSessionRequestTests testInstance];
+  OIDNoOpExternalUserAgent *userAgent = [[OIDNoOpExternalUserAgent alloc] init];
+  __block OIDEndSessionResponse *receivedResponse = nil;
+  __block NSError *receivedError = nil;
+
+  id<OIDExternalUserAgentSession> session =
+      [service presentEndSessionRequest:request
+                      externalUserAgent:userAgent
+                               callback:^(OIDEndSessionResponse *_Nullable response,
+                                          NSError *_Nullable error) {
+                                 receivedResponse = response;
+                                 receivedError = error;
+                               }];
+
+  XCTAssertEqual(session, service.lastEndSessionSession);
+  XCTAssertTrue([session isKindOfClass:[OIDFakeExternalUserAgentSession class]]);
+  XCTAssertEqual(service.lastEndSessionRequest, request);
+  XCTAssertEqual(service.lastEndSessionExternalUserAgent, userAgent);
+  XCTAssertNil(service.lastAuthorizationSession);
+  XCTAssertNil(service.lastExternalUserAgent);
+  XCTAssertNotNil(service.lastEndSessionCallback);
+
+  NSError *someError = [NSError errorWithDomain:@"com.example" code:42 userInfo:nil];
+  service.lastEndSessionCallback(nil, someError);
+  XCTAssertNil(receivedResponse);
+  XCTAssertEqual(receivedError, someError);
+}
+
+/*! @brief Invoking the kept end-session callback clears it, and the fake stops holding what it
+        captured.
+ */
+- (void)testInvokingEndSessionCallbackClearsIt {
+  OIDFakeAuthorizationService *service = [[OIDFakeAuthorizationService alloc] init];
+  OIDNoOpExternalUserAgent *userAgent = [[OIDNoOpExternalUserAgent alloc] init];
+  __weak NSObject *weakCaptured = nil;
+  @autoreleasepool {
+    NSObject *captured = [[NSObject alloc] init];
+    weakCaptured = captured;
+    [service presentEndSessionRequest:[OIDEndSessionRequestTests testInstance]
+                    externalUserAgent:userAgent
+                             callback:^(OIDEndSessionResponse *_Nullable response,
+                                        NSError *_Nullable error) {
+                               (void)captured;
+                             }];
+    service.lastEndSessionCallback(nil, nil);
+  }
+  XCTAssertNil(service.lastEndSessionCallback);
+  XCTAssertNil(weakCaptured);
+}
+
+/*! @brief Invoking an older kept end-session callback leaves the newer one in place.
+ */
+- (void)testInvokingOlderEndSessionCallbackKeepsNewerOne {
+  OIDFakeAuthorizationService *service = [[OIDFakeAuthorizationService alloc] init];
+  OIDEndSessionRequest *request = [OIDEndSessionRequestTests testInstance];
+  OIDNoOpExternalUserAgent *userAgent = [[OIDNoOpExternalUserAgent alloc] init];
+  [service presentEndSessionRequest:request
+                  externalUserAgent:userAgent
+                           callback:^(OIDEndSessionResponse *_Nullable response,
+                                      NSError *_Nullable error) {
+                           }];
+  OIDEndSessionCallback olderCallback = service.lastEndSessionCallback;
+  [service presentEndSessionRequest:request
+                  externalUserAgent:userAgent
+                           callback:^(OIDEndSessionResponse *_Nullable response,
+                                      NSError *_Nullable error) {
+                           }];
+  OIDEndSessionCallback newerCallback = service.lastEndSessionCallback;
+
+  olderCallback(nil, nil);
+  XCTAssertEqual(service.lastEndSessionCallback, newerCallback);
+}
+
+/*! @brief A registration request is recorded, and invoking the kept completion reaches the caller.
+ */
+- (void)testPerformRegistrationRequestIsRecordedAndCompletionIsReturned {
+  OIDFakeAuthorizationService *service = [[OIDFakeAuthorizationService alloc] init];
+  OIDRegistrationRequest *request = [OIDRegistrationRequestTests testInstance];
+  __block OIDRegistrationResponse *receivedResponse = nil;
+  __block NSError *receivedError = nil;
+
+  [service performRegistrationRequest:request
+                           completion:^(OIDRegistrationResponse *_Nullable response,
+                                        NSError *_Nullable error) {
+                             receivedResponse = response;
+                             receivedError = error;
+                           }];
+
+  XCTAssertEqual(service.lastRegistrationRequest, request);
+  XCTAssertNotNil(service.lastRegistrationCompletion);
+
+  NSError *someError = [NSError errorWithDomain:@"com.example" code:42 userInfo:nil];
+  service.lastRegistrationCompletion(nil, someError);
+  XCTAssertNil(receivedResponse);
+  XCTAssertEqual(receivedError, someError);
+}
+
+/*! @brief Invoking the kept registration completion clears it, and the fake stops holding what it
+        captured.
+ */
+- (void)testInvokingRegistrationCompletionClearsIt {
+  OIDFakeAuthorizationService *service = [[OIDFakeAuthorizationService alloc] init];
+  __weak NSObject *weakCaptured = nil;
+  @autoreleasepool {
+    NSObject *captured = [[NSObject alloc] init];
+    weakCaptured = captured;
+    [service performRegistrationRequest:[OIDRegistrationRequestTests testInstance]
+                             completion:^(OIDRegistrationResponse *_Nullable response,
+                                          NSError *_Nullable error) {
+                               (void)captured;
+                             }];
+    service.lastRegistrationCompletion(nil, nil);
+  }
+  XCTAssertNil(service.lastRegistrationCompletion);
+  XCTAssertNil(weakCaptured);
+}
+
+/*! @brief Invoking an older kept registration completion leaves the newer one in place.
+ */
+- (void)testInvokingOlderRegistrationCompletionKeepsNewerOne {
+  OIDFakeAuthorizationService *service = [[OIDFakeAuthorizationService alloc] init];
+  OIDRegistrationRequest *request = [OIDRegistrationRequestTests testInstance];
+  [service performRegistrationRequest:request
+                           completion:^(OIDRegistrationResponse *_Nullable response,
+                                        NSError *_Nullable error) {
+                           }];
+  OIDRegistrationCompletion olderCompletion = service.lastRegistrationCompletion;
+  [service performRegistrationRequest:request
+                           completion:^(OIDRegistrationResponse *_Nullable response,
+                                        NSError *_Nullable error) {
+                           }];
+  OIDRegistrationCompletion newerCompletion = service.lastRegistrationCompletion;
+
+  olderCompletion(nil, nil);
+  XCTAssertEqual(service.lastRegistrationCompletion, newerCompletion);
 }
 
 /*! @brief The fake conforms to @c OIDAuthorizationServiceProtocol, and is not an
