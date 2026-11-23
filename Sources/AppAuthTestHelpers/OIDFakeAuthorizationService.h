@@ -40,6 +40,9 @@ NS_ASSUME_NONNULL_BEGIN
         @c id<OIDAuthorizationServiceProtocol>.
         A kept callback clears itself once invoked. Callbacks usually capture the caller, and the
         caller often holds this fake. Keeping the callback would leak both.
+        The requests, external user agents and sessions are kept until the next request of that
+        kind. An agent built by a platform convenience method holds its view controller or window,
+        so the fake holds it too. Use a new fake for each test.
  */
 @interface OIDFakeAuthorizationService : NSObject <OIDAuthorizationServiceProtocol>
 
