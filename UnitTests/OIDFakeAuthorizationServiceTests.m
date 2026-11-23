@@ -170,6 +170,29 @@
   XCTAssertNil(weakCaptured);
 }
 
+/*! @brief Invoking an older kept authorization callback leaves the newer one in place.
+ */
+- (void)testInvokingOlderAuthorizationCallbackKeepsNewerOne {
+  OIDFakeAuthorizationService *service = [[OIDFakeAuthorizationService alloc] init];
+  OIDAuthorizationRequest *request = [OIDAuthorizationRequestTests testInstance];
+  OIDNoOpExternalUserAgent *userAgent = [[OIDNoOpExternalUserAgent alloc] init];
+  [service presentAuthorizationRequest:request
+                     externalUserAgent:userAgent
+                              callback:^(OIDAuthorizationResponse *_Nullable response,
+                                         NSError *_Nullable error) {
+                              }];
+  OIDAuthorizationCallback olderCallback = service.lastAuthorizationCallback;
+  [service presentAuthorizationRequest:request
+                     externalUserAgent:userAgent
+                              callback:^(OIDAuthorizationResponse *_Nullable response,
+                                         NSError *_Nullable error) {
+                              }];
+  OIDAuthorizationCallback newerCallback = service.lastAuthorizationCallback;
+
+  olderCallback(nil, nil);
+  XCTAssertEqual(service.lastAuthorizationCallback, newerCallback);
+}
+
 /*! @brief Invoking an older kept callback leaves the newer one in place.
  */
 - (void)testInvokingOlderTokenCallbackKeepsNewerOne {
