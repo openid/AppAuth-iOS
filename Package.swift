@@ -72,7 +72,7 @@ let package = Package(
         ),
         .target(
             name: "AppAuthTestHelpers",
-            dependencies: ["AppAuthCore"],
+            dependencies: ["AppAuthCore", "AppAuth"],
             path: "Sources/AppAuthTestHelpers",
             publicHeadersPath: ""
         ),
