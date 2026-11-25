@@ -48,7 +48,10 @@ let package = Package(
             name: "AppAuthCore",
             path: "Sources/AppAuthCore",
             resources: [.copy("Resources/PrivacyInfo.xcprivacy")],
-            publicHeadersPath: ""
+            publicHeadersPath: "",
+            cSettings: [
+                .define("NS_BLOCK_ASSERTIONS", to: "1", .when(configuration: .release)),
+            ]
         ),
         .target(
             name: "AppAuth",
@@ -61,6 +64,7 @@ let package = Package(
                 .headerSearchPath("iOS"),
                 .headerSearchPath("macOS"),
                 .headerSearchPath("macOS/LoopbackHTTPServer"),
+                .define("NS_BLOCK_ASSERTIONS", to: "1", .when(configuration: .release)),
             ]
         ),
         .target(
