@@ -48,7 +48,10 @@ let package = Package(
             name: "AppAuthCore",
             path: "Sources/AppAuthCore",
             resources: [.copy("Resources/PrivacyInfo.xcprivacy")],
-            publicHeadersPath: ""
+            publicHeadersPath: "",
+            linkerSettings: [
+                .linkedFramework("Security"),
+            ]
         ),
         .target(
             name: "AppAuth",
@@ -61,6 +64,10 @@ let package = Package(
                 .headerSearchPath("iOS"),
                 .headerSearchPath("macOS"),
                 .headerSearchPath("macOS/LoopbackHTTPServer"),
+            ],
+            linkerSettings: [
+                .linkedFramework("AuthenticationServices"),
+                .linkedFramework("SafariServices", .when(platforms: [.iOS])),
             ]
         ),
         .target(
