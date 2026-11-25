@@ -120,6 +120,7 @@
                                   }];
 
   XCTAssertEqual(session, service.lastAuthorizationSession);
+  XCTAssertEqual(service.authorizationRequestCount, 1u);
   XCTAssertTrue([session isKindOfClass:[OIDFakeExternalUserAgentSession class]]);
   XCTAssertEqual(service.lastAuthorizationRequest, request);
   XCTAssertEqual(service.lastAuthorizationExternalUserAgent, userAgent);
@@ -233,6 +234,7 @@
                                }];
 
   XCTAssertEqual(session, service.lastEndSessionSession);
+  XCTAssertEqual(service.endSessionRequestCount, 1u);
   XCTAssertTrue([session isKindOfClass:[OIDFakeExternalUserAgentSession class]]);
   XCTAssertEqual(service.lastEndSessionRequest, request);
   XCTAssertEqual(service.lastEndSessionExternalUserAgent, userAgent);
@@ -306,6 +308,7 @@
                              receivedError = error;
                            }];
 
+  XCTAssertEqual(service.registrationRequestCount, 1u);
   XCTAssertEqual(service.lastRegistrationRequest, request);
   XCTAssertNotNil(service.lastRegistrationCompletion);
 

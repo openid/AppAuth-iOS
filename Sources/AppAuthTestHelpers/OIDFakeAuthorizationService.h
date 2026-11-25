@@ -46,6 +46,10 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @interface OIDFakeAuthorizationService : NSObject <OIDAuthorizationServiceProtocol>
 
+/*! @brief How many authorization requests have been presented.
+ */
+@property(nonatomic, readonly) NSUInteger authorizationRequestCount;
+
 /*! @brief The request passed to the most recent
         @c -presentAuthorizationRequest:externalUserAgent:callback:.
  */
@@ -66,6 +70,10 @@ NS_ASSUME_NONNULL_BEGIN
 /*! @brief The session returned from the most recent authorization request.
  */
 @property(nonatomic, readonly, nullable) OIDFakeExternalUserAgentSession *lastAuthorizationSession;
+
+/*! @brief How many end-session requests have been presented.
+ */
+@property(nonatomic, readonly) NSUInteger endSessionRequestCount;
 
 /*! @brief The request passed to the most recent
         @c -presentEndSessionRequest:externalUserAgent:callback:.
@@ -102,6 +110,10 @@ NS_ASSUME_NONNULL_BEGIN
         Becomes nil once invoked.
  */
 @property(nonatomic, readonly, copy, nullable) OIDTokenCallback lastTokenCallback;
+
+/*! @brief How many registration requests have been performed.
+ */
+@property(nonatomic, readonly) NSUInteger registrationRequestCount;
 
 /*! @brief The request passed to the most recent @c -performRegistrationRequest:completion:.
  */

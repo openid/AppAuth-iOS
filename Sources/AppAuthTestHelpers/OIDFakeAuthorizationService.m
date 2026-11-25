@@ -38,20 +38,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@implementation OIDFakeAuthorizationService {
-  /*! @brief How many authorization requests have been made. A kept callback checks it, so an
-          older callback doesn't clear a newer one.
-   */
-  NSUInteger _authorizationRequestCount;
-
-  /*! @brief How many end-session requests have been made. Used the same way.
-   */
-  NSUInteger _endSessionRequestCount;
-
-  /*! @brief How many registration requests have been made. Used the same way.
-   */
-  NSUInteger _registrationRequestCount;
-}
+@implementation OIDFakeAuthorizationService
 
 - (id<OIDExternalUserAgentSession>)
     presentAuthorizationRequest:(OIDAuthorizationRequest *)request
